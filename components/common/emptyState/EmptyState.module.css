@@ -1,0 +1,78 @@
+.container{
+    width: 100%;
+    height:inherit;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+}
+
+.text{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.text > *{
+    font-size:1.2rem;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+.text > p >  a{
+    color:#233906;
+    transition:all 0.6s ease;
+}
+
+.text > p > a:hover{
+    color:#839270
+}
+
+.empty{
+    width: 8rem;
+    height:8rem;
+    background-image: url('src/assets/images/emptyState.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+
+.loader {
+    width: 2rem;
+    height: 2rem;
+    display: block;
+    position: relative;
+    border: 1px solid #233906;
+    border-radius: 50%;
+    box-sizing: border-box;
+    animation: animloader 2s linear infinite;
+  }
+  .loader::after {
+    content: '';  
+    box-sizing: border-box;
+    width: 0.25rem;
+    height: 1rem;
+    background: #233906;
+    transform: rotate(-45deg);
+    position: absolute;
+    bottom: -0.83rem;
+    left: 1.95rem;
+  }
+  
+  @keyframes animloader {
+    0% {
+      transform: translate(-10px, -10px);
+    }
+    25% {
+      transform: translate(-10px, 10px);
+    }
+    50% {
+      transform: translate(10px, 10px);
+    }
+    75% {
+      transform: translate(10px, -10px);
+    }
+    100% {
+      transform: translate(-10px, -10px);
+    }
+  }

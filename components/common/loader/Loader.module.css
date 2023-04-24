@@ -1,0 +1,41 @@
+.loader,
+.loader:before,
+.loader:after {
+  border-radius: 50%;
+  width: 0.6rem;
+  height: 0.6rem;
+  animation-fill-mode: both;
+  animation: loaderFadeInOut 1.8s infinite ease-in-out;
+}
+.loader {
+  color: #fff;
+  position: relative;
+  text-indent: -9999rem;
+  transform: translateZ(0);
+  transform: translateY(-100%);
+  animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+  content: "";
+  position: absolute;
+  top: 0;
+}
+.loader:before {
+  left: -1.5rem;
+  animation-delay: -0.32s;
+}
+.loader:after {
+  left: 1.5rem;
+}
+
+@keyframes loaderFadeInOut {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 1rem 0 -0.5rem;
+  }
+  40% {
+    box-shadow: 0 1rem 0 0;
+  }
+}

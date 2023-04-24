@@ -1,0 +1,33 @@
+.loader {
+    width: 4.8rem;
+    height: 4.8rem;
+    border-radius: 100%;
+    display: inline-block;
+    border-top: 4px solid #839270;
+    border-right: 4px solid transparent;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  .loader::after {
+    content: '';  
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4.8rem;
+    height: 4.8rem;
+    border-radius: 100%;
+    border-left: 4px solid #B5BBAD;
+    border-bottom: 4px solid transparent;
+    animation: rotation 0.5s linear infinite reverse;
+  }
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  } 
+
+
