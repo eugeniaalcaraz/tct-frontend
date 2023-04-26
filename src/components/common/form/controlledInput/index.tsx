@@ -1,6 +1,7 @@
 import React, { FC, FocusEventHandler } from "react";
 import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
+import { SyledTextField } from "@components/common/textInput/StyledTextField";
 
 type ControlledProps = {
     id?: string | number;
@@ -10,11 +11,11 @@ type ControlledProps = {
     multiline?: boolean;
     rows?: number;
     readOnly?: boolean;
-    onBlur?:
-        | FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>
-        | undefined;
+    onBlur?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     error?: boolean;
     helperText?: string;
+    maxLength?: number;
+    defaultValue?: string | number;
 };
 
 const ControlledInput: FC<ControlledProps> = ({
@@ -28,46 +29,32 @@ const ControlledInput: FC<ControlledProps> = ({
     onBlur,
     error = false,
     helperText = "",
+    maxLength,
+    defaultValue,
 }) => {
     return (
         <Controller
             shouldUnregister
             name={name}
             render={({ field: { onChange } }) => (
-                <TextField
-                    sx={{
-                        width: "13rem",
-                        maxWidth: "100%",
-                        "&& > *": { fontSize: "1.3rem" },
-                        "&& > label": { textTransform: "capitalize" },
-                        "&& > p": {
-                            margin: 0,
-                            paddingTop: "0.5rem",
-                            paddingLeft: "0.5rem",
-                            height: 0,
-                            overflow: "hidden",
-                            fontSize: "1rem",
-                            transition: "all 0.8s ease",
-                        },
-                        "&&.error > p": {
-                            height: "2.1rem",
-                        },
-                    }}
+                <SyledTextField
                     size="small"
                     id={String(id)}
                     label={label}
                     onChange={onChange}
                     autoComplete="off"
                     disabled={disabled}
-                    className={`input ${error ? "error" : ""}`}
+                    // className={`input ${error ? "error" : ""}`}
                     multiline={multiline}
                     rows={rows}
+                    inputProps={{ maxLength }}
                     InputProps={{
                         readOnly: readOnly,
                     }}
                     onBlur={onBlur}
                     error={error}
                     helperText={helperText}
+                    defaultValue={defaultValue}
                 />
             )}
         />

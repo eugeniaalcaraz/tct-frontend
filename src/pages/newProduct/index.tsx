@@ -49,6 +49,8 @@ const NewProduct = () => {
     const [seed, setSeed] = useState(1);
 
     const onSave = async (formData) => {
+        console.log(formData);
+
         const formattedDate = formData.fecha.format("YYYY-MM-DD");
         let fotos;
 
@@ -85,7 +87,7 @@ const NewProduct = () => {
                 {seed && (
                     <Content>
                         <Form
-                            resolver={resolver}
+                            // resolver={resolver}
                             onSubmit={onSave}
                             id="new-product-form"
                         >

@@ -56,6 +56,10 @@ export const productValidation = yup
                 "Mmm parece que tu nombre es muy largo, prueba con menos caracteres"
             )
             .required(required),
+        anio: yup
+            .string()
+            .max(2, "maximo 2 numeros")
+            .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!"),
         costo: yup.string().matches(/^[0-9.,\b]+$/, "Solo numeros aqui!"),
         precioVenta: yup.string().matches(/^[0-9.,\b]+$/, "Solo numeros aqui!"),
         cantidadEmbarque: yup

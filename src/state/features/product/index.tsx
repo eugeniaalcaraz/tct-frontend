@@ -15,7 +15,7 @@ interface productState {
     filteredData: Product[] | null;
     seasons: OptionsTypeName[] | null;
     tipology: OptionsType[] | null;
-    departments: OptionsType[] | null;
+    managementUnit: OptionsType[] | null;
     designers: Designers[] | null;
     fabrics: Fabric[] | null;
     composition: OptionsType[] | null;
@@ -37,7 +37,7 @@ const initialState: productState = {
     filteredData: null,
     seasons: null,
     tipology: null,
-    departments: null,
+    managementUnit: null,
     designers: null,
     fabrics: null,
     composition: null,
