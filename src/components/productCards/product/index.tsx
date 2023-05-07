@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useReducer, useState } from "react";
 import { useAppSelector } from "@/state/app/hooks";
 import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ProductStyles";
@@ -13,18 +13,20 @@ import {
 } from "@assets/mockedData/mockedData";
 import dayjs from "dayjs";
 import _ from "lodash";
+import { productReducer, initialProductState } from "./hooks/hooks";
 
 const ProductCard = () => {
     const { seasons, tipology, managementUnit, designers, errors } =
         useAppSelector((state) => state.product);
     //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
+    const [state, dispatch] = useReducer(productReducer, initialProductState);
 
     const [selectedHeading, setSelectedHeading] = useState("");
-    const [selectedBrand, setSelectedBrand] = useState("");
-    const [selectedSeason, setSelectedSeason] = useState("");
-    const [selectedYear, setSelectedYear] = useState("");
-    const [selectedTypology, setSelectedTypology] = useState("");
-    const [selectedproductNumber, setSelectedproductNumber] = useState("");
+    // const [selectedBrand, setSelectedBrand] = useState("");
+    // const [selectedSeason, setSelectedSeason] = useState("");
+    // const [selectedYear, setSelectedYear] = useState("");
+    // const [selectedTypology, setSelectedTypology] = useState("");
+    // const [selectedproductNumber, setSelectedproductNumber] = useState("");
 
     const yearsDropdownArr = useMemo(() => {
         const currentYear = Number(dayjs().format("YY"));
@@ -142,16 +144,16 @@ const ProductCard = () => {
             );
         }
         if (e.name === "marca") {
-            setSelectedBrand(e.value);
+            dispatch({ type: "setSelectedBrand", payload: e.value });
         }
         if (e.name === "temporada") {
-            setSelectedSeason(e.value);
+            dispatch({ type: "setSelectedSeason", payload: e.value });
         }
         if (e.name === "año") {
-            setSelectedYear(e.value);
+            dispatch({ type: "setSelectedYear", payload: e.value });
         }
         if (e.name === "tipologia") {
-            setSelectedTypology(e.value);
+            dispatch({ type: "setSelectedTypology", payload: e.value });
         }
     };
 
@@ -216,7 +218,12 @@ const ProductCard = () => {
                     disabled={true}
                     defaultValue={"test Numero"}
                     readOnly={true}
-                    externalOnChange={(e) => setSelectedproductNumber(e)}
+                    externalOnChange={(e) =>
+                        dispatch({
+                            type: "setSelectedProductNumber",
+                            payload: e,
+                        })
+                    }
                 />
             </div>
 
@@ -232,14 +239,8 @@ const ProductCard = () => {
                 <ControlledCheckbox name="proyecta" label="Proyecta" />
             </div>
             <div style={{ width: "100%" }}>
-                <h3>Código Rotunda</h3>
-                <h2>
-                    {selectedBrand +
-                        selectedSeason +
-                        selectedYear +
-                        selectedTypology +
-                        selectedproductNumber}
-                </h2>
+                <h2>Código Rotunda</h2>
+                <h1>{state.finalNumber}</h1>
                 {
                     //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
                 }
