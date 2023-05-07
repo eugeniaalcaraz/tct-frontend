@@ -1,11 +1,11 @@
 export const brandsArr = [{
-    Id: "Marca 1",
+    Id: "1",
     Description: "Marca 1"
 }, {
-    Id: "Marca 2",
+    Id: "2",
     Description: "Marca 2"
 }, {
-    Id: "Marca 3",
+    Id: "3",
     Description: "Marca 3"
 }];
 

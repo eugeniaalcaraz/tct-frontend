@@ -25,6 +25,7 @@ import { useAppSelector } from "@/state/app/hooks";
 import { createProduct } from "@/services/ProductRequests";
 import { toBase64 } from "@/utils/toBase64";
 import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 
 const product = {
     producto: <ProductCard />,
@@ -39,6 +40,8 @@ const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
     const { combos, trimCombos } = useAppSelector((state) => state.product);
     const resolver = yupResolver(productValidation);
+    const { register, getValues } = useForm();
+
     const {
         mutateAsync: createProdAsync,
         isLoading: productLoading,
@@ -49,7 +52,7 @@ const NewProduct = () => {
     const [seed, setSeed] = useState(1);
 
     const onSave = async (formData) => {
-        console.log(formData);
+        console.log({ formData, value: getValues("marca") });
 
         const formattedDate = formData.fecha.format("YYYY-MM-DD");
         let fotos;

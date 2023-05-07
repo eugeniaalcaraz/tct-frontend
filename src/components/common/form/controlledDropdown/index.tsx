@@ -20,6 +20,8 @@ type ControlledDropdownProps = {
     onBlur?: (e) => void;
     error?: boolean;
     helperText?: string;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    externalOnChange?: Function;
 };
 
 const ControlledDropdown: FC<ControlledDropdownProps> = ({
@@ -31,6 +33,7 @@ const ControlledDropdown: FC<ControlledDropdownProps> = ({
     onBlur,
     error = false,
     helperText = "",
+    externalOnChange,
 }) => {
     return (
         <FormControl
@@ -64,7 +67,14 @@ const ControlledDropdown: FC<ControlledDropdownProps> = ({
                             value={value}
                             multiple={multipleSelect}
                             label={label}
-                            onChange={onChange}
+                            onChange={(e) => {
+                                onChange(e);
+                                externalOnChange &&
+                                    externalOnChange({
+                                        value: e.target.value,
+                                        name,
+                                    });
+                            }}
                             input={<OutlinedInput label={label} />}
                             onBlur={onBlur}
                             error={error}

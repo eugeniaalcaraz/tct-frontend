@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useAppSelector } from "@/state/app/hooks";
 import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ProductStyles";
@@ -17,6 +17,14 @@ import _ from "lodash";
 const ProductCard = () => {
     const { seasons, tipology, managementUnit, designers, errors } =
         useAppSelector((state) => state.product);
+    //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
+
+    const [selectedHeading, setSelectedHeading] = useState("");
+    const [selectedBrand, setSelectedBrand] = useState("");
+    const [selectedSeason, setSelectedSeason] = useState("");
+    const [selectedYear, setSelectedYear] = useState("");
+    const [selectedTypology, setSelectedTypology] = useState("");
+    const [selectedproductNumber, setSelectedproductNumber] = useState("");
 
     const yearsDropdownArr = useMemo(() => {
         const currentYear = Number(dayjs().format("YY"));
@@ -67,15 +75,6 @@ const ProductCard = () => {
                 name: "tipologia",
                 options: tipology ?? [],
             },
-            // {
-            //     label: "diseñador",
-            //     name: "diseñador",
-            //     options:
-            //         designers?.map((designer) => ({
-            //             Id: designer.Id,
-            //             Description: `${designer.Name} ${designer.LastName}`,
-            //         })) ?? [],
-            // },
         ],
         [seasons, tipology, managementUnit]
     );
@@ -103,7 +102,7 @@ const ProductCard = () => {
                 options: tiro ?? [],
             },
         ],
-        [seasons, tipology, managementUnit]
+        [concepto, linea, bodyFit, tiro]
     );
 
     const checkIfError = (name) => {
@@ -135,6 +134,29 @@ const ProductCard = () => {
         return "";
     };
 
+    const dropdownOnSelect = (e) => {
+        console.log("test", e);
+        if (e.name === "rubro") {
+            setSelectedHeading(
+                rubro.find((element) => element.id === e.value) ?? ""
+            );
+        }
+        if (e.name === "marca") {
+            setSelectedBrand(e.value);
+        }
+        if (e.name === "temporada") {
+            setSelectedSeason(e.value);
+        }
+        if (e.name === "año") {
+            setSelectedYear(e.value);
+        }
+        if (e.name === "tipologia") {
+            setSelectedTypology(e.value);
+        }
+    };
+
+    const shouldEnableHeading = () => selectedHeading !== "Jean";
+
     return (
         <Container>
             {generalPropsDropdowns.map(({ name, label, options }) => {
@@ -148,6 +170,7 @@ const ProductCard = () => {
                         name={name}
                         error={checkIfError(name)}
                         helperText={checkErrorMessage(name)}
+                        externalOnChange={dropdownOnSelect}
                     />
                 );
             })}
@@ -170,6 +193,9 @@ const ProductCard = () => {
                         options={options}
                         name={name}
                         error={checkIfError(name)}
+                        disabled={
+                            name === "tiro" ? shouldEnableHeading() : false
+                        }
                         helperText={checkErrorMessage(name)}
                     />
                 );
@@ -190,6 +216,7 @@ const ProductCard = () => {
                     disabled={true}
                     defaultValue={"test Numero"}
                     readOnly={true}
+                    externalOnChange={(e) => setSelectedproductNumber(e)}
                 />
             </div>
 
@@ -201,8 +228,22 @@ const ProductCard = () => {
                 error={checkIfError("descripcion")}
                 helperText={checkErrorMessage("descripcion")}
             />
-
-            <ControlledCheckbox name="proyecta" label="Proyecta" />
+            <div>
+                <ControlledCheckbox name="proyecta" label="Proyecta" />
+            </div>
+            <div style={{ width: "100%" }}>
+                <h3>Código Rotunda</h3>
+                <h2>
+                    {selectedBrand +
+                        selectedSeason +
+                        selectedYear +
+                        selectedTypology +
+                        selectedproductNumber}
+                </h2>
+                {
+                    //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
+                }
+            </div>
         </Container>
     );
 };

@@ -1,5 +1,4 @@
 import React, { FC, FocusEventHandler } from "react";
-import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { SyledTextField } from "@components/common/textInput/StyledTextField";
 
@@ -16,6 +15,7 @@ type ControlledProps = {
     helperText?: string;
     maxLength?: number;
     defaultValue?: string | number;
+    externalOnChange?: (e) => void;
 };
 
 const ControlledInput: FC<ControlledProps> = ({
@@ -31,6 +31,7 @@ const ControlledInput: FC<ControlledProps> = ({
     helperText = "",
     maxLength,
     defaultValue,
+    externalOnChange,
 }) => {
     return (
         <Controller
@@ -41,7 +42,10 @@ const ControlledInput: FC<ControlledProps> = ({
                     size="small"
                     id={String(id)}
                     label={label}
-                    onChange={onChange}
+                    onChange={(e) => {
+                        onChange(e);
+                        externalOnChange && externalOnChange(e);
+                    }}
                     autoComplete="off"
                     disabled={disabled}
                     // className={`input ${error ? "error" : ""}`}
