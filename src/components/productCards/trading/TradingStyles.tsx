@@ -29,4 +29,13 @@ export const Container = styled(Box)({
         marginBottom: "0",
         marginTop: "2.5rem",
     },
+
+    "&& .pvp-container": {
+        width: "100%",
+        display: "flex",
+    },
+    "&& .toggle-container": {
+        width: "100%",
+        textAlign: "end",
+    },
 }) as typeof Box;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ControlledInput } from "@components/common";
 import { Container } from "./TradingStyles";
+import Switch from "@mui/material/Switch";
 import { useAppSelector } from "@/state/app/hooks";
 
 const Trading = () => {
@@ -9,6 +10,7 @@ const Trading = () => {
     const [buying, setBuying] = useState<number>(0);
     const [selling, setSelling] = useState<number>(0);
     const [margin, setMargin] = useState<number>(0);
+    const [pvpChecked, setPvpChecked] = useState(false);
 
     const checkIfError = (name) => {
         if (errors) {
@@ -40,7 +42,11 @@ const Trading = () => {
     };
 
     useEffect(() => {
-        setMargin(((selling / 1.22 - buying) / (selling / 1.22)) * 100);
+        if (selling !== 0 && buying !== 0) {
+            setMargin(((selling / 1.22 - buying) / (selling / 1.22)) * 100);
+        } else {
+            setMargin(0);
+        }
     }, [buying, selling]);
 
     return (
@@ -51,21 +57,44 @@ const Trading = () => {
                     : ""
             }
         >
+            <div className="toggle-container">
+                <span>Margen</span>
+                <Switch
+                    checked={pvpChecked}
+                    onChange={() => setPvpChecked(!pvpChecked)}
+                />
+                <span>PVP</span>
+            </div>
             <ControlledInput
-                label="Costo"
+                label="Costo(USD)"
                 name="costo"
                 onBlur={(e) => setBuying(Number(e.target.value))}
                 error={checkIfError("costo")}
                 helperText={checkErrorMessage("costo")}
             />
-            <ControlledInput
-                label="Precio Tienda"
-                name="precioVenta"
-                onBlur={(e) => setSelling(Number(e.target.value))}
-                error={checkIfError("precioVenta")}
-                helperText={checkErrorMessage("precioVenta")}
-            />
-            {margin > 0 && !isNaN(margin) && (
+            {pvpChecked ? (
+                <ControlledInput
+                    label="Margen"
+                    name="margen"
+                    onBlur={(e) => setMargin(Number(e.target.value))}
+                    error={checkIfError("precioVenta")}
+                    helperText={checkErrorMessage("precioVenta")}
+                />
+            ) : (
+                <ControlledInput
+                    label="Venta(USD)"
+                    name="precioVenta"
+                    onBlur={(e) => setSelling(Number(e.target.value))}
+                    error={checkIfError("precioVenta")}
+                    helperText={checkErrorMessage("precioVenta")}
+                />
+            )}
+            {pvpChecked ? (
+                <div className="pvp-container">
+                    <h2>{"PVP(USD):"}</h2>
+                    <h2>{"Precio Tienda:"}</h2>
+                </div>
+            ) : (
                 <span className="margin">Margen % {margin.toFixed(2)}</span>
             )}
         </Container>
