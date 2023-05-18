@@ -13,9 +13,10 @@ import {
 type FormProps<TFormValues extends FieldValues> = {
     onSubmit: SubmitHandler<TFormValues>;
     children: ReactNode;
-    resolver: Resolver<TFormValues>;
+    // resolver: Resolver<TFormValues>;
     id?: string;
     defaultValues?: unknown;
+    methods: any;
 };
 
 const Form = <
@@ -23,31 +24,12 @@ const Form = <
 >({
     onSubmit,
     children,
-    resolver,
+    // resolver,
     id,
-
-    defaultValues = {
-        temporada: "",
-        tipologia: "",
-        departamento: "",
-        ["diseñador"]: "",
-        origen: "",
-        proveedor: "",
-        embarque: "",
-        destino: "",
-        calidad: "",
-        fabricDescription: "",
-        peso: "",
-        ["composicion-0"]: "",
-        ["porcentaje-0"]: "",
-        localizacion: "",
-        selectedSizes: ["XS", "S", "M", "L", "XL"],
-        existingQuality: true,
-    },
+    methods,
 }: FormProps<TFormValues>) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const methods = useForm<TFormValues>({ resolver, defaultValues });
     const dispatch = useAppDispatch();
 
     const submit = async (data) => {

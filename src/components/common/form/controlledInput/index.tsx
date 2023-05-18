@@ -37,11 +37,12 @@ const ControlledInput: FC<ControlledProps> = ({
         <Controller
             shouldUnregister
             name={name}
-            render={({ field: { onChange } }) => (
+            render={({ field: { onChange, value } }) => (
                 <SyledTextField
                     size="small"
                     id={String(id)}
                     label={label}
+                    value={value}
                     onChange={(e) => {
                         onChange(e);
                         externalOnChange && externalOnChange(e);

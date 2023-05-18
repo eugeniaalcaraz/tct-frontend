@@ -8,6 +8,10 @@ export const Container = styled(Box)({
     flexWrap: "wrap",
     gap: "1rem",
 
+    "&& > div": {
+        flexGrow: "1",
+    },
+
     "&& > .input": {
         flex: 1,
         maxHeight: "3.5rem",
@@ -33,6 +37,15 @@ export const Container = styled(Box)({
     "&& .pvp-container": {
         width: "100%",
         display: "flex",
+        marginBottom: "0",
+        marginTop: "2.5rem",
+        fontWeight: 600,
+        fontSize: "1.8rem",
+        lineHeight: "2.5rem",
+        gap: "5rem",
+        span: {
+            flexGrow: "1",
+        },
     },
     "&& .toggle-container": {
         width: "100%",

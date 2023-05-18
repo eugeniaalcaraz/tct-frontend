@@ -137,7 +137,6 @@ const ProductCard = () => {
     };
 
     const dropdownOnSelect = (e) => {
-        console.log("test", e);
         if (e.name === "rubro") {
             setSelectedHeading(
                 rubro.find((element) => element.id === e.value) ?? ""

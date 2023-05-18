@@ -27,20 +27,30 @@ import { toBase64 } from "@/utils/toBase64";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
-const product = {
-    producto: <ProductCard />,
-    adjuntos: <Attachments />,
-    compraYVenta: <Trading />,
-    embarque: <Shipment />,
-    materiales: <Materials />,
-    curvaDeTalles: <SizeCurve />,
+const defaultValues = {
+    temporada: "",
+    tipologia: "",
+    departamento: "",
+    ["diseñador"]: "",
+    origen: "",
+    proveedor: "",
+    embarque: "",
+    destino: "",
+    calidad: "",
+    fabricDescription: "",
+    peso: "",
+    ["composicion-0"]: "",
+    ["porcentaje-0"]: "",
+    localizacion: "",
+    selectedSizes: ["XS", "S", "M", "L", "XL"],
+    existingQuality: true,
 };
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
     const { combos, trimCombos } = useAppSelector((state) => state.product);
     const resolver = yupResolver(productValidation);
-    const { register, getValues } = useForm();
+    const methods = useForm({ resolver, defaultValues });
 
     const {
         mutateAsync: createProdAsync,
@@ -52,8 +62,6 @@ const NewProduct = () => {
     const [seed, setSeed] = useState(1);
 
     const onSave = async (formData) => {
-        console.log({ formData, value: getValues("marca") });
-
         const formattedDate = formData.fecha.format("YYYY-MM-DD");
         let fotos;
 
@@ -84,6 +92,15 @@ const NewProduct = () => {
         setSeed(Math.random());
     };
 
+    const product = {
+        producto: <ProductCard />,
+        adjuntos: <Attachments />,
+        compraYVenta: <Trading formMethods={methods} />,
+        embarque: <Shipment />,
+        materiales: <Materials />,
+        curvaDeTalles: <SizeCurve />,
+    };
+
     return (
         <>
             <Container>
@@ -91,6 +108,7 @@ const NewProduct = () => {
                     <Content>
                         <Form
                             // resolver={resolver}
+                            methods={methods}
                             onSubmit={onSave}
                             id="new-product-form"
                         >
