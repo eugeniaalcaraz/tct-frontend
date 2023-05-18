@@ -44,6 +44,7 @@ const defaultValues = {
     localizacion: "",
     selectedSizes: ["XS", "S", "M", "L", "XL"],
     existingQuality: true,
+    cantidadDeTelas: 1,
 };
 
 const NewProduct = () => {
