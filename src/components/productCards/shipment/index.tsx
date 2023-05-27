@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     ControlledDatePicker,
     ControlledDropdown,
@@ -14,6 +14,8 @@ import { ShipmentCombo } from "./shipmentCombo";
 const Shipment = () => {
     const { countries, supplier, typeOfshipment, errors, combos } =
         useAppSelector((state) => state.product);
+
+    const [allCombosShareShipment, setAllCombosShareShipment] = useState(true);
 
     const checkIfError = (name) => {
         if (errors) {
@@ -64,24 +66,6 @@ const Shipment = () => {
                 }
                 name="proveedor"
             />
-            {/* <ControlledDatePicker name="fecha" label="Fecha" />
-            <ControlledDropdown
-                label="Embarque"
-                options={typeOfshipment ?? []}
-                name="embarque"
-            />
-            <ControlledDropdown
-                label="Destino"
-                options={
-                    countries?.map(
-                        ({ Id, Name }): OptionsType => ({
-                            Id: String(Id),
-                            Description: Name,
-                        })
-                    ) ?? []
-                }
-                name="destino"
-            /> */}
             <ControlledInput
                 label="Cantidad Total"
                 name="cantidadEmbarqueTotal"
@@ -99,11 +83,16 @@ const Shipment = () => {
                     name="mismoComboParaTodoEmbarque"
                     label="Todos los combos tienen el mismo embarque ?"
                     defaultCheckedProp={true}
+                    externalOnChange={() =>
+                        setAllCombosShareShipment(!allCombosShareShipment)
+                    }
                 />
             </div>
-            {combos.map((value, index) => (
-                <ShipmentCombo key={index} />
-            ))}
+            {!allCombosShareShipment &&
+                combos.map((value, index) => (
+                    <ShipmentCombo key={index} comboNumber={index + 1} />
+                ))}
+            {allCombosShareShipment && <ShipmentCombo comboNumber={1} />}
         </Container>
     );
 };

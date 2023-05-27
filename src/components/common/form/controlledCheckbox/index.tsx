@@ -6,12 +6,14 @@ type ControlledCheckboxProps = {
     name: string;
     label: string;
     defaultCheckedProp?: boolean;
+    externalOnChange?: any;
 };
 
 export const ControlledCheckbox: FC<ControlledCheckboxProps> = ({
     name,
     defaultCheckedProp = false,
     label,
+    externalOnChange,
 }) => {
     return (
         <Controller
@@ -21,7 +23,10 @@ export const ControlledCheckbox: FC<ControlledCheckboxProps> = ({
                 <FormControlLabel
                     control={
                         <Checkbox
-                            onChange={onChange}
+                            onChange={(e) => {
+                                onChange(e);
+                                externalOnChange && externalOnChange(e);
+                            }}
                             defaultChecked={defaultCheckedProp}
                         />
                     }
