@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { v4 as uuid } from "uuid";
 import {
     ControlledDropdown,
@@ -11,7 +11,11 @@ import { FabricContainer } from "../MaterialsStyles";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { handleTrimCombos } from "@/state/features/product";
 
-const Trims = () => {
+type TrimsProps = {
+    trimNumber: number;
+};
+
+const Trims: FC<TrimsProps> = ({ trimNumber }) => {
     const { trims, colors, trimCombos, errors } = useAppSelector(
         (state) => state.product
     );
@@ -68,11 +72,11 @@ const Trims = () => {
             <ControlledDropdown
                 label="Tipo"
                 options={trims ?? []}
-                name="tipoAvio"
+                name={`tipoAvio${trimNumber}`}
             />
             <ControlledInput
                 label="Cantidad"
-                name="cantidad"
+                name={`cantidad${trimNumber}`}
                 error={checkIfError("cantidad")}
                 helperText={checkErrorMessage("cantidad")}
             />

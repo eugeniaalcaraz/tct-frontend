@@ -1,6 +1,8 @@
 import { getErrorMessage } from "@/utils";
 
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+// const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+const BASE_URL = "http://localhost:5177";
 
 const baseRequest = async (
     path: string,
@@ -18,6 +20,8 @@ const baseRequest = async (
             },
             body: body ? JSON.stringify(body) : null,
         });
+        console.log({ BASE_URL });
+
         if (!response.ok) throw new Error();
         return blob ? response.blob() : response.json();
     } catch (error) {

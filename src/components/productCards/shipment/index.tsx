@@ -8,11 +8,12 @@ import { Button, Box, Tooltip } from "@mui/material";
 import { Container } from "./ShipmentStyles";
 import { useAppSelector } from "@/state/app/hooks";
 import { OptionsType } from "@/types";
+import { ControlledCheckbox } from "@components/common/form/controlledCheckbox";
+import { ShipmentCombo } from "./shipmentCombo";
 
 const Shipment = () => {
-    const { countries, supplier, typeOfshipment, errors } = useAppSelector(
-        (state) => state.product
-    );
+    const { countries, supplier, typeOfshipment, errors, combos } =
+        useAppSelector((state) => state.product);
 
     const checkIfError = (name) => {
         if (errors) {
@@ -63,7 +64,7 @@ const Shipment = () => {
                 }
                 name="proveedor"
             />
-            <ControlledDatePicker name="fecha" label="Fecha" />
+            {/* <ControlledDatePicker name="fecha" label="Fecha" />
             <ControlledDropdown
                 label="Embarque"
                 options={typeOfshipment ?? []}
@@ -80,23 +81,29 @@ const Shipment = () => {
                     ) ?? []
                 }
                 name="destino"
-            />
+            /> */}
             <ControlledInput
-                label="Cantidad"
-                name="cantidadEmbarque"
+                label="Cantidad Total"
+                name="cantidadEmbarqueTotal"
                 error={checkIfError("cantidadEmbarque")}
                 helperText={checkErrorMessage("cantidadEmbarque")}
             />
-
-            <Box className="add">
-                <hr />
-                <Tooltip title="Proximamente 😉" placement="right" arrow>
-                    <Button variant="text" type="button" color="primary">
-                        + AGREGAR EMBARQUE
-                    </Button>
-                </Tooltip>
-                <hr />
-            </Box>
+            <ControlledInput
+                label="Codigo de fabirca"
+                name="codigoFabricaEmbarque"
+                error={checkIfError("cantidadEmbarque")}
+                helperText={checkErrorMessage("cantidadEmbarque")}
+            />
+            <div className="checkboxContainer">
+                <ControlledCheckbox
+                    name="mismoComboParaTodoEmbarque"
+                    label="Todos los combos tienen el mismo embarque ?"
+                    defaultCheckedProp={true}
+                />
+            </div>
+            {combos.map((value, index) => (
+                <ShipmentCombo key={index} />
+            ))}
         </Container>
     );
 };

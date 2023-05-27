@@ -37,21 +37,29 @@ const defaultValues = {
     embarque: "",
     destino: "",
     calidad: "",
+    consumoCalidad: 0,
     fabricDescription: "",
     peso: "",
     ["composicion-0"]: "",
     ["porcentaje-0"]: "",
     localizacion: "",
     selectedSizes: ["XS", "S", "M", "L", "XL"],
-    existingQuality: true,
     cantidadDeTelas: 1,
+    existingQuality1: true,
+    existingQuality2: true,
+    existingQuality3: true,
+    existingQuality4: true,
+    existingQuality5: true,
+    cantidadDeAvios: 1,
+    proyecta: false,
+    mismoComboParaTodoEmbarque: true,
 };
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
     const { combos, trimCombos } = useAppSelector((state) => state.product);
     const resolver = yupResolver(productValidation);
-    const methods = useForm({ resolver, defaultValues });
+    const methods = useForm({ defaultValues });
 
     const {
         mutateAsync: createProdAsync,
@@ -63,6 +71,8 @@ const NewProduct = () => {
     const [seed, setSeed] = useState(1);
 
     const onSave = async (formData) => {
+        console.log({ formData });
+
         const formattedDate = formData.fecha.format("YYYY-MM-DD");
         let fotos;
 

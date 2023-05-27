@@ -139,7 +139,7 @@ export const FabricContainer = styled(Box)({
         display: "flex",
         gap: "2rem",
         paddingLeft: "1rem",
-        marginBottom: "1rem",
+        marginBottom: "3rem",
 
         "& > .combo": {
             fontSize: "1.3rem",
@@ -180,8 +180,8 @@ export const FabricContainer = styled(Box)({
     },
 
     "&& > .comboBox": {
+        width: "100%",
         height: 0,
-        width: "67%",
         gap: "1.2rem",
         overflow: "hidden",
         display: "flex",

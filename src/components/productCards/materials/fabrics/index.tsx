@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useRef, useEffect } from "react";
+import React, { ChangeEvent, useState, useRef, useEffect, FC } from "react";
 import { v4 as uuid } from "uuid";
 import {
     ControlledDropdown,
@@ -20,7 +20,11 @@ import { FabricOptionType } from "@/types";
 import { handleCombos } from "@/state/features/product";
 import { Controller } from "react-hook-form";
 
-const Fabrics = () => {
+type FabricProps = {
+    fabricNumber: number;
+};
+
+const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     const { fabrics, composition, localization, colors, combos, errors } =
         useAppSelector((state) => state.product);
     const [open, setOpen] = useState<boolean>(false);
@@ -119,6 +123,8 @@ const Fabrics = () => {
     };
 
     const addCombo = () => {
+        console.log({ option, colorAmount });
+
         if (
             (option === "solido" && solidColorName.length > 0) ||
             (option !== "solido" && colorAmount && printName !== "")
@@ -181,11 +187,10 @@ const Fabrics = () => {
 
     return (
         <>
-            <h3 className="calidad">Calidad</h3>
             <FormControl className="radios">
                 <Controller
                     rules={{ required: true }}
-                    name="existingQuality"
+                    name={`existingQuality${fabricNumber + 1}`}
                     render={({ field: { onChange, ...restField } }) => (
                         <RadioGroup
                             row
@@ -352,6 +357,7 @@ const Fabrics = () => {
                     options={localization ?? []}
                     name="localizacion"
                 />
+                <ControlledInput label="Consumo" name={"consumoCalidad"} />
                 <Button
                     variant="text"
                     type="button"
@@ -421,6 +427,7 @@ const Fabrics = () => {
                         + Agregar
                     </Button>
                 </Box>
+
                 {combos && combos.length > 0 && (
                     <Box className="combos">
                         {combos?.map(({ fabric }, i) => (

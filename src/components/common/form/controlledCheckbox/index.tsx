@@ -5,10 +5,12 @@ import { Controller } from "react-hook-form";
 type ControlledCheckboxProps = {
     name: string;
     label: string;
+    defaultCheckedProp?: boolean;
 };
 
 export const ControlledCheckbox: FC<ControlledCheckboxProps> = ({
     name,
+    defaultCheckedProp = false,
     label,
 }) => {
     return (
@@ -17,7 +19,12 @@ export const ControlledCheckbox: FC<ControlledCheckboxProps> = ({
             name={name}
             render={({ field: { onChange } }) => (
                 <FormControlLabel
-                    control={<Checkbox onChange={onChange} />}
+                    control={
+                        <Checkbox
+                            onChange={onChange}
+                            defaultChecked={defaultCheckedProp}
+                        />
+                    }
                     label={label}
                 />
             )}

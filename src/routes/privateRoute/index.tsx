@@ -13,7 +13,8 @@ const PrivateRoute = () => {
         dispatch(setIdMerchant(getCurrentUser().idMerchant));
     }
 
-    return user ? <Layout /> : <Navigate to={urlFormat(Pages.Login)} />;
+    // return user ? <Layout /> : <Navigate to={urlFormat(Pages.Login)} />;
+    return <Layout />;
 };
 
 export { PrivateRoute };

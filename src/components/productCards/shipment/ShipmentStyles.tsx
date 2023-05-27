@@ -12,7 +12,7 @@ export const Container = styled(Box)({
     "&& > .dropdown, && > .input, && > div": {
         width: "calc(50% - 0.5rem)",
     },
-
+    "&& > .checkboxContainer": { width: "100%" },
     "&& > div, && > div > * ": {
         maxHeight: "3.5rem",
         fontSize: "1.3rem",
