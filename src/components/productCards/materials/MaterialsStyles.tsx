@@ -149,12 +149,14 @@ export const FabricContainer = styled(Box)({
                 display: "flex",
                 whiteSpace: "nowrap",
                 alignItems: "center",
+                marginLeft: "0",
             },
             "& > div": {
                 width: "5.5rem",
                 height: "3rem",
                 border: "1px solid",
                 borderRadius: "2px",
+                marginLeft: "10px",
             },
 
             "& > .printed": {
