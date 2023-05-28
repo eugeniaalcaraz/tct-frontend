@@ -143,12 +143,20 @@ export const FabricContainer = styled(Box)({
 
         "& > .combo": {
             fontSize: "1.3rem",
+            width: "7rem",
+            "& > .upper-container": {
+                border: "none",
+                display: "flex",
+                whiteSpace: "nowrap",
+                alignItems: "center",
+            },
             "& > div": {
                 width: "5.5rem",
                 height: "3rem",
                 border: "1px solid",
                 borderRadius: "2px",
             },
+
             "& > .printed": {
                 backgroundImage: "url('src/assets/images/printExample.jpeg')",
                 backgroundRepeat: "no-repeat",

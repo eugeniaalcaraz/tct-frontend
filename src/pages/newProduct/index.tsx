@@ -138,7 +138,7 @@ const NewProduct = () => {
                                     content={product["compraYVenta"]}
                                 />
                                 <CardBase
-                                    header="Embarque"
+                                    header="Proveedores y Embarque"
                                     content={product["embarque"]}
                                 />
                             </Box>

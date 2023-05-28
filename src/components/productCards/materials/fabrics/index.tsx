@@ -17,8 +17,11 @@ import {
 import { FabricContainer } from "../MaterialsStyles";
 import { useAppSelector, useAppDispatch } from "@/state/app/hooks";
 import { FabricOptionType } from "@/types";
-import { handleCombos } from "@/state/features/product";
+import { handleCombos, removeCombo } from "@/state/features/product";
 import { Controller } from "react-hook-form";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { v4 as uuidv4 } from "uuid";
 
 type FabricProps = {
     fabricNumber: number;
@@ -137,6 +140,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                         option === "solido"
                             ? String(solidColorName[0])
                             : printName,
+                    uuid: uuidv4(),
                 })
             );
             setTimeout(() => {
@@ -145,6 +149,12 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
             setColorAmount(undefined);
             setPrintName("");
             setSolidColorName([]);
+        }
+    };
+
+    const deleteCombo = (uuid: string) => {
+        if (combos.length) {
+            dispatch(removeCombo(uuid));
         }
     };
 
@@ -430,9 +440,17 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
 
                 {combos && combos.length > 0 && (
                     <Box className="combos">
-                        {combos?.map(({ fabric }, i) => (
-                            <Box key={uuid()} className="combo">
-                                <span>Combo {i + 1}</span>
+                        {combos?.map(({ fabric, uuid }, i) => (
+                            <Box key={uuid} className="combo">
+                                <div className="upper-container">
+                                    Combo {i + 1}
+                                    <IconButton
+                                        aria-label="delete"
+                                        onClick={() => deleteCombo(uuid)}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </div>
                                 <Box className={fabric}></Box>
                             </Box>
                         ))}

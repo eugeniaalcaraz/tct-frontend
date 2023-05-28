@@ -25,7 +25,12 @@ interface productState {
     countries: OptionsTypeName[] | null;
     supplier: Suppliers[] | null;
     typeOfshipment: OptionsType[] | null;
-    combos: { fabric: string; colorAmount: number | undefined; name: string }[];
+    combos: {
+        fabric: string;
+        colorAmount: number | undefined;
+        name: string;
+        uuid: string;
+    }[];
     trimCombos: { idTrimColor: string }[];
     status: { IdStatus: number; Description: string }[];
     allSeasons: AllSeasons[] | null;
@@ -72,9 +77,16 @@ const productSlice = createSlice({
                 fabric: string;
                 colorAmount: number | undefined;
                 name: string;
+                uuid: string;
             }>
         ) {
             state.combos = [...state.combos, action.payload];
+        },
+        removeCombo(state, action: PayloadAction<string>) {
+            const index = state.combos.findIndex(
+                (combo) => combo.uuid === action.payload
+            );
+            state.combos.splice(index, 1);
         },
         clearCombos(state) {
             state.combos = [];
@@ -103,5 +115,6 @@ export const {
     handleTrimCombos,
     clearTrimCombos,
     setErrors,
+    removeCombo,
 } = productSlice.actions;
 export default productSlice.reducer;
