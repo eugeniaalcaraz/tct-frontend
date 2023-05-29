@@ -199,6 +199,17 @@ export const FabricContainer = styled(Box)({
         padding: 0,
         paddingLeft: "1rem",
         transition: "height .8s ease, width .8s ease, padding .3s ease",
+        ".dropdownSolid": { flexGrow: "1", "& > div": { width: "100%" } },
+
+        ".radioContainer": {
+            justifyContent: "space-between",
+        },
+        "&  button": {
+            fontWeight: "600",
+            fontSize: "1.3rem",
+            lineHeight: "1.8rem",
+            letterSpacing: "0.15em",
+        },
 
         "& > div": {
             display: "flex",

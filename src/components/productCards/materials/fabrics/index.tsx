@@ -28,8 +28,18 @@ type FabricProps = {
 };
 
 const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
-    const { fabrics, composition, localization, colors, combos, errors } =
-        useAppSelector((state) => state.product);
+    const {
+        fabrics,
+        composition,
+        localization,
+        colors,
+        combos1,
+        combos2,
+        combos3,
+        combos4,
+        combos5,
+        errors,
+    } = useAppSelector((state) => state.product);
     const [open, setOpen] = useState<boolean>(false);
     const [existingQuality, setExistingQuality] = useState<boolean>(true);
     const [selectedQuality, setSelectedQuality] = useState<string>("");
@@ -42,7 +52,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     const [colorAmount, setColorAmount] = useState<number>();
     const [solidColorName, setSolidColorName] = useState<number[]>([]);
     const dispatch = useAppDispatch();
-
+    const currentFabricNumber = fabricNumber + 1;
     const qualitiesWrapper = useRef<HTMLElement>(null);
     const existingQualityWrapper = useRef<HTMLElement>(null);
 
@@ -134,13 +144,16 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         ) {
             dispatch(
                 handleCombos({
-                    fabric: option === "solido" ? "solid" : "printed",
-                    colorAmount: option === "solido" ? 0 : colorAmount,
-                    name:
-                        option === "solido"
-                            ? String(solidColorName[0])
-                            : printName,
-                    uuid: uuidv4(),
+                    comboNumber: currentFabricNumber,
+                    combo: {
+                        fabric: option === "solido" ? "solid" : "printed",
+                        colorAmount: option === "solido" ? 0 : colorAmount,
+                        name:
+                            option === "solido"
+                                ? String(solidColorName[0])
+                                : printName,
+                        uuid: uuidv4(),
+                    },
                 })
             );
             setTimeout(() => {
@@ -152,9 +165,26 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         }
     };
 
+    const comboReturner = (comboNumber: number) => {
+        switch (comboNumber) {
+            case 1:
+                return combos1;
+            case 2:
+                return combos2;
+            case 3:
+                return combos3;
+            case 4:
+                return combos4;
+            case 5:
+                return combos5;
+            default:
+                return combos1;
+        }
+    };
+
     const deleteCombo = (uuid: string) => {
-        if (combos.length) {
-            dispatch(removeCombo(uuid));
+        if (comboReturner(currentFabricNumber).length) {
+            dispatch(removeCombo({ comboNumber: currentFabricNumber, uuid }));
         }
     };
 
@@ -200,7 +230,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
             <FormControl className="radios">
                 <Controller
                     rules={{ required: true }}
-                    name={`existingQuality${fabricNumber + 1}`}
+                    name={`existingQuality${currentFabricNumber}`}
                     render={({ field: { onChange, ...restField } }) => (
                         <RadioGroup
                             row
@@ -377,7 +407,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                     + COMBO
                 </Button>
                 <Box className={`comboBox ${open && "open"} ${option}`}>
-                    <Box>
+                    <Box className={"radioContainer"}>
                         <FormControl className="radios">
                             <RadioGroup
                                 row
@@ -399,14 +429,16 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                         </FormControl>
 
                         {option === "solido" ? (
-                            <Dropdown
-                                label="Color"
-                                options={colors ?? []}
-                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                // @ts-ignore
-                                value={solidColorName}
-                                onChange={(e) => setSolidColorName(e)}
-                            />
+                            <div className="dropdownSolid">
+                                <Dropdown
+                                    label="Color"
+                                    options={colors ?? []}
+                                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                    // @ts-ignore
+                                    value={solidColorName}
+                                    onChange={(e) => setSolidColorName(e)}
+                                />
+                            </div>
                         ) : (
                             <Box className="inputWrapper">
                                 <Input
@@ -427,35 +459,40 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                 />
                             </Box>
                         )}
+                        <Button
+                            variant="text"
+                            type="button"
+                            color="primary"
+                            onClick={addCombo}
+                        >
+                            + Agregar
+                        </Button>
                     </Box>
-                    <Button
-                        variant="text"
-                        type="button"
-                        color="primary"
-                        onClick={addCombo}
-                    >
-                        + Agregar
-                    </Button>
                 </Box>
 
-                {combos && combos.length > 0 && (
-                    <Box className="combos">
-                        {combos?.map(({ fabric, uuid }, i) => (
-                            <Box key={uuid} className="combo">
-                                <div className="upper-container">
-                                    Combo {i + 1}
-                                    <IconButton
-                                        aria-label="delete"
-                                        onClick={() => deleteCombo(uuid)}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </div>
-                                <Box className={fabric}></Box>
-                            </Box>
-                        ))}
-                    </Box>
-                )}
+                {comboReturner(currentFabricNumber) &&
+                    comboReturner(currentFabricNumber).length > 0 && (
+                        <Box className="combos">
+                            {comboReturner(currentFabricNumber)?.map(
+                                ({ fabric, uuid }, i) => (
+                                    <Box key={uuid} className="combo">
+                                        <div className="upper-container">
+                                            Combo {i + 1}
+                                            <IconButton
+                                                aria-label="delete"
+                                                onClick={() =>
+                                                    deleteCombo(uuid)
+                                                }
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </div>
+                                        <Box className={fabric}></Box>
+                                    </Box>
+                                )
+                            )}
+                        </Box>
+                    )}
             </FabricContainer>
         </>
     );

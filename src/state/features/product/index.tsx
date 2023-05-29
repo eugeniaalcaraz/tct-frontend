@@ -8,8 +8,9 @@ import {
     AllSeasons,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { comboChooser } from "./aux/auxFuncion";
 
-interface productState {
+export interface productState {
     errors: unknown;
     product: Product[] | null;
     filteredData: Product[] | null;
@@ -25,7 +26,31 @@ interface productState {
     countries: OptionsTypeName[] | null;
     supplier: Suppliers[] | null;
     typeOfshipment: OptionsType[] | null;
-    combos: {
+    combos1: {
+        fabric: string;
+        colorAmount: number | undefined;
+        name: string;
+        uuid: string;
+    }[];
+    combos2: {
+        fabric: string;
+        colorAmount: number | undefined;
+        name: string;
+        uuid: string;
+    }[];
+    combos3: {
+        fabric: string;
+        colorAmount: number | undefined;
+        name: string;
+        uuid: string;
+    }[];
+    combos4: {
+        fabric: string;
+        colorAmount: number | undefined;
+        name: string;
+        uuid: string;
+    }[];
+    combos5: {
         fabric: string;
         colorAmount: number | undefined;
         name: string;
@@ -52,7 +77,11 @@ const initialState: productState = {
     countries: null,
     supplier: null,
     typeOfshipment: null,
-    combos: [],
+    combos1: [],
+    combos2: [],
+    combos3: [],
+    combos4: [],
+    combos5: [],
     trimCombos: [],
     status: [],
     allSeasons: null,
@@ -74,22 +103,38 @@ const productSlice = createSlice({
         handleCombos(
             state,
             action: PayloadAction<{
-                fabric: string;
-                colorAmount: number | undefined;
-                name: string;
-                uuid: string;
+                comboNumber: number;
+                combo: {
+                    fabric: string;
+                    colorAmount: number | undefined;
+                    name: string;
+                    uuid: string;
+                };
             }>
         ) {
-            state.combos = [...state.combos, action.payload];
+            const selectedComboNumber = action.payload.comboNumber;
+            state[comboChooser(selectedComboNumber)] = [
+                ...state[comboChooser(selectedComboNumber)],
+                action.payload.combo,
+            ];
         },
-        removeCombo(state, action: PayloadAction<string>) {
-            const index = state.combos.findIndex(
-                (combo) => combo.uuid === action.payload
+        removeCombo(
+            state,
+            action: PayloadAction<{ comboNumber: number; uuid: string }>
+        ) {
+            const selectedComboNumber = action.payload.comboNumber;
+
+            const index = state[comboChooser(selectedComboNumber)].findIndex(
+                (combo) => combo.uuid === action.payload.uuid
             );
-            state.combos.splice(index, 1);
+            state[comboChooser(selectedComboNumber)].splice(index, 1);
         },
         clearCombos(state) {
-            state.combos = [];
+            state.combos1 = [];
+            state.combos2 = [];
+            state.combos3 = [];
+            state.combos4 = [];
+            state.combos5 = [];
         },
         handleTrimCombos(
             state,
