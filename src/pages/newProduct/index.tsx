@@ -57,7 +57,8 @@ const defaultValues = {
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { combos, trimCombos } = useAppSelector((state) => state.product);
+    const { combos1, combos2, combos3, combos4, combos5, trimCombos } =
+        useAppSelector((state) => state.product);
     const resolver = yupResolver(productValidation);
     const methods = useForm({ defaultValues });
 
@@ -93,7 +94,11 @@ const NewProduct = () => {
                 ...formData,
                 fecha: formattedDate,
                 fotos,
-                combos,
+                combos1,
+                combos2,
+                combos3,
+                combos4,
+                combos5,
                 trimCombos,
             },
             idMerchant,

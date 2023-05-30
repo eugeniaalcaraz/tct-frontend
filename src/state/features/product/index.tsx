@@ -8,7 +8,7 @@ import {
     AllSeasons,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { comboChooser } from "./aux/auxFuncion";
+import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
 
 export interface productState {
     errors: unknown;
@@ -56,7 +56,18 @@ export interface productState {
         name: string;
         uuid: string;
     }[];
-    trimCombos: { idTrimColor: string }[];
+    trimCombos1: { idTrimColor: string }[];
+    trimCombos2: { idTrimColor: string }[];
+    trimCombos3: { idTrimColor: string }[];
+    trimCombos4: { idTrimColor: string }[];
+    trimCombos5: { idTrimColor: string }[];
+    trimCombos6: { idTrimColor: string }[];
+    trimCombos7: { idTrimColor: string }[];
+    trimCombos8: { idTrimColor: string }[];
+    trimCombos9: { idTrimColor: string }[];
+    trimCombos10: { idTrimColor: string }[];
+    trimCombos11: { idTrimColor: string }[];
+    trimCombos12: { idTrimColor: string }[];
     status: { IdStatus: number; Description: string }[];
     allSeasons: AllSeasons[] | null;
 }
@@ -82,7 +93,18 @@ const initialState: productState = {
     combos3: [],
     combos4: [],
     combos5: [],
-    trimCombos: [],
+    trimCombos1: [],
+    trimCombos2: [],
+    trimCombos3: [],
+    trimCombos4: [],
+    trimCombos5: [],
+    trimCombos6: [],
+    trimCombos7: [],
+    trimCombos8: [],
+    trimCombos9: [],
+    trimCombos10: [],
+    trimCombos11: [],
+    trimCombos12: [],
     status: [],
     allSeasons: null,
 };
@@ -113,8 +135,8 @@ const productSlice = createSlice({
             }>
         ) {
             const selectedComboNumber = action.payload.comboNumber;
-            state[comboChooser(selectedComboNumber)] = [
-                ...state[comboChooser(selectedComboNumber)],
+            state[fabricCombos[selectedComboNumber]] = [
+                ...state[fabricCombos[selectedComboNumber]],
                 action.payload.combo,
             ];
         },
@@ -124,10 +146,10 @@ const productSlice = createSlice({
         ) {
             const selectedComboNumber = action.payload.comboNumber;
 
-            const index = state[comboChooser(selectedComboNumber)].findIndex(
+            const index = state[fabricCombos[selectedComboNumber]].findIndex(
                 (combo) => combo.uuid === action.payload.uuid
             );
-            state[comboChooser(selectedComboNumber)].splice(index, 1);
+            state[fabricCombos[selectedComboNumber]].splice(index, 1);
         },
         clearCombos(state) {
             state.combos1 = [];
@@ -138,12 +160,29 @@ const productSlice = createSlice({
         },
         handleTrimCombos(
             state,
-            action: PayloadAction<{ idTrimColor: string }>
+            action: PayloadAction<{
+                trimComboNumber: number;
+                trimCombo: { idTrimColor: string };
+            }>
         ) {
-            state.trimCombos = [...state.trimCombos, action.payload];
+            state[trimsCombos[action.payload.trimComboNumber]] = [
+                ...state[trimsCombos[action.payload.trimComboNumber]],
+                action.payload.trimComboNumber,
+            ];
         },
         clearTrimCombos(state) {
-            state.trimCombos = [];
+            state.trimCombos1 = [];
+            state.trimCombos2 = [];
+            state.trimCombos3 = [];
+            state.trimCombos4 = [];
+            state.trimCombos5 = [];
+            state.trimCombos6 = [];
+            state.trimCombos7 = [];
+            state.trimCombos8 = [];
+            state.trimCombos9 = [];
+            state.trimCombos10 = [];
+            state.trimCombos11 = [];
+            state.trimCombos12 = [];
         },
         setErrors(state, action: PayloadAction<unknown>) {
             state.errors = action.payload;
