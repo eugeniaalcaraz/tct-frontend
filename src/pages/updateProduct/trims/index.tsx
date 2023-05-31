@@ -6,6 +6,7 @@ import { ComboItem } from "../comboItem";
 export const Trims = () => {
     return (
         <section>
+            <h3>Avíos</h3>
             <TableContainer>
                 <Table>
                     <StyledTableRow>
