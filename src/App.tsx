@@ -25,6 +25,7 @@ declare module "@mui/styles/defaultTheme" {
 
 import Amplify from "aws-amplify";
 import { IconsProvider } from "@components/hooks";
+import { UpdateProduct } from "./pages/updateProduct";
 
 Amplify.configure({
     Auth: {
@@ -70,6 +71,10 @@ function App() {
                         <Route
                             path={urlFormat(Pages.ServerError)}
                             element={<ServerDown />}
+                        />
+                        <Route
+                            path={urlFormat(Pages.UpdateProduct)}
+                            element={<UpdateProduct />}
                         />
                     </Route>
                     <Route path="/*" element={<NotFound />} />

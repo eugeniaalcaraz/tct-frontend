@@ -3,6 +3,7 @@ export enum Pages {
     Dashboard = "Dashboard",
     Products = "Products",
     NewProduct = "New Product",
+    UpdateProduct = "Update Product",
     ServerError = "Server Error",
 }
 

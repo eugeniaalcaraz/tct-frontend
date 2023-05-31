@@ -57,8 +57,25 @@ const defaultValues = {
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { combos1, combos2, combos3, combos4, combos5, trimCombos } =
-        useAppSelector((state) => state.product);
+    const {
+        combos1,
+        combos2,
+        combos3,
+        combos4,
+        combos5,
+        trimCombos1,
+        trimCombos2,
+        trimCombos3,
+        trimCombos4,
+        trimCombos5,
+        trimCombos6,
+        trimCombos7,
+        trimCombos8,
+        trimCombos9,
+        trimCombos10,
+        trimCombos11,
+        trimCombos12,
+    } = useAppSelector((state) => state.product);
     const resolver = yupResolver(productValidation);
     const methods = useForm({ defaultValues });
 
@@ -99,7 +116,18 @@ const NewProduct = () => {
                 combos3,
                 combos4,
                 combos5,
-                trimCombos,
+                trimCombos1,
+                trimCombos2,
+                trimCombos3,
+                trimCombos4,
+                trimCombos5,
+                trimCombos6,
+                trimCombos7,
+                trimCombos8,
+                trimCombos9,
+                trimCombos10,
+                trimCombos11,
+                trimCombos12,
             },
             idMerchant,
             existingQuality: formData.existingQuality,

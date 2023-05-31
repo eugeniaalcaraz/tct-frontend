@@ -2,7 +2,7 @@ import { getErrorMessage } from "@/utils";
 
 // const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-const BASE_URL = "http://localhost:5177";
+const BASE_URL = "https://tct-backend.vercel.app:5177";
 
 const baseRequest = async (
     path: string,
