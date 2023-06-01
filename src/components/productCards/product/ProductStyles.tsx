@@ -23,4 +23,8 @@ export const Container = styled(Box)({
     "&& > .MuiFormControlLabel-root-checkbox": {
         width: "100",
     },
+
+    ".Mui-readOnly": {
+        height: "38px",
+    },
 }) as typeof Box;

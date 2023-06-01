@@ -33,24 +33,24 @@ export const concepto = [{
 }]
 
 export const linea = [{
-    Id: "linea 1",
+    Id: 1,
     Description: "linea 1"
 }, {
-    Id: "linea 2",
+    Id: 2,
     Description: "linea 2"
 }, {
-    Id: "linea 3",
+    Id: 3,
     Description: "linea 3"
 }]
 
 export const bodyFit = [{
-    Id: "body fit 1",
+    Id: 1,
     Description: "body fit 1"
 }, {
-    Id: "body fit 2",
+    Id: 2,
     Description: "body fit 2"
 }, {
-    Id: "body fit 3",
+    Id: 3,
     Description: "body fit 3"
 }]
 

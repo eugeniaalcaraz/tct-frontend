@@ -16,6 +16,9 @@ import { GeneralDetails } from "./generalDetails";
 import { CostAndMargin } from "./costAndMargins";
 import { Materials } from "./materials";
 import { Trims } from "./trims";
+import { Shipment } from "./shipment";
+import { SizeCurve } from "./sizeCurve";
+import { StatusLabel } from "./stateLabel";
 
 export const UpdateProduct = () => {
     const methods = useForm();
@@ -27,9 +30,18 @@ export const UpdateProduct = () => {
         <>
             <Container>
                 <Content>
-                    <Box>
+                    <Stack
+                        direction={"row"}
+                        gap={"15px"}
+                        style={{
+                            borderBottom: "#839270 2px solid",
+                            alignItems: "center",
+                        }}
+                    >
                         <h1>{"01S2404001 - ${Tipo de muestra}"}</h1>
-                    </Box>
+                        <StatusLabel status={"enviado"} />
+                        <div>{"{fechaEnvio}"}</div>
+                    </Stack>
                     <Form
                         // resolver={resolver}
                         methods={methods}
@@ -47,7 +59,9 @@ export const UpdateProduct = () => {
                             {/* avios */}
                             <Trims />
                             {/* embarque */}
+                            <Shipment />
                             {/* curva de talles */}
+                            <SizeCurve />
                             {/* tabla de medidas */}
                         </Stack>
                     </Form>

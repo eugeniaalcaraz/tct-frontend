@@ -28,8 +28,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
 const defaultValues = {
-    temporada: "",
-    tipologia: "",
+    idSeason: "",
+    idTipology: "",
     departamento: "",
     ["diseñador"]: "",
     origen: "",
@@ -37,7 +37,11 @@ const defaultValues = {
     embarque: "",
     destino: "",
     calidad: "",
-    consumoCalidad: 0,
+    consumoCalidad1: 0,
+    consumoCalidad2: 0,
+    consumoCalidad3: 0,
+    consumoCalidad4: 0,
+    consumoCalidad5: 0,
     fabricDescription: "",
     peso: "",
     ["composicion-0"]: "",
@@ -45,6 +49,7 @@ const defaultValues = {
     localizacion: "",
     selectedSizes: ["XS", "S", "M", "L", "XL"],
     cantidadDeTelas: 1,
+    existingQuality0: true,
     existingQuality1: true,
     existingQuality2: true,
     existingQuality3: true,
@@ -53,6 +58,14 @@ const defaultValues = {
     cantidadDeAvios: 1,
     proyecta: false,
     mismoComboParaTodoEmbarque: true,
+    fabric1: {
+        fabricDescription: "",
+        peso: "",
+    },
+    fabric2: {
+        fabricDescription: "",
+        peso: "",
+    },
 };
 
 const NewProduct = () => {

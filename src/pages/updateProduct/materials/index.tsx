@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { StyledTableRow } from "../UpdateProductStyles";
 import { ComboItem } from "../comboItem";
+import { StatusLabel } from "../stateLabel";
 
 export const Materials = () => {
     return (
@@ -17,9 +18,18 @@ export const Materials = () => {
             {[...Array(3).keys()].map((index) => (
                 <div key={index} style={{ margin: "40px 0" }}>
                     <div>
-                        <h3>LOCALIZACION DE PRENDA</h3>
-                        <Stack direction={"row"}>
-                            <div>estado</div> <div>fechaEstadoCalidad</div>
+                        <div>{"{LOCALIZACION DE PRENDA}"}</div>
+                        <Stack
+                            direction={"row"}
+                            gap={"7px"}
+                            style={{
+                                alignItems: "center",
+                                marginTop: "8px",
+                                marginBottom: "40px",
+                            }}
+                        >
+                            <StatusLabel status={"reprobado"} />
+                            <div>fechaEstadoCalidad</div>
                         </Stack>
                     </div>
                     <TableContainer>

@@ -397,7 +397,10 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                     options={localization ?? []}
                     name="localizacion"
                 />
-                <ControlledInput label="Consumo" name={"consumoCalidad"} />
+                <ControlledInput
+                    label="Consumo"
+                    name={`consumoCalidad${currentFabricNumber}`}
+                />
                 <Button
                     variant="text"
                     type="button"

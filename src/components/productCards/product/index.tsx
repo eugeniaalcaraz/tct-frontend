@@ -14,6 +14,7 @@ import {
 import dayjs from "dayjs";
 import _ from "lodash";
 import { productReducer, initialProductState } from "./hooks/hooks";
+import { SyledTextField } from "@components/common/textInput/StyledTextField";
 
 const ProductCard = () => {
     const { seasons, tipology, managementUnit, designers, errors } =
@@ -42,7 +43,7 @@ const ProductCard = () => {
             },
             {
                 label: "temporada *",
-                name: "temporada",
+                name: "idSeason",
                 options:
                     seasons?.map((season) => ({
                         Id: season.Id,
@@ -51,7 +52,7 @@ const ProductCard = () => {
             },
             {
                 label: "Año *",
-                name: "año",
+                name: "year",
                 options:
                     yearsDropdownArr?.map((year) => ({
                         Id: year,
@@ -74,7 +75,7 @@ const ProductCard = () => {
             },
             {
                 label: "tipologia *",
-                name: "tipologia",
+                name: "idTipology",
                 options: tipology ?? [],
             },
         ],
@@ -85,22 +86,22 @@ const ProductCard = () => {
         () => [
             {
                 label: "Concepto",
-                name: "concepto",
+                name: "idConcept",
                 options: concepto ?? [],
             },
             {
                 label: "Línea",
-                name: "linea",
+                name: "idLine",
                 options: linea ?? [],
             },
             {
                 label: "Body Fit",
-                name: "bodyFit",
+                name: "idBodyFit",
                 options: bodyFit ?? [],
             },
             {
                 label: "Tiro (Exclusivo Jean)",
-                name: "tiro",
+                name: "idRise",
                 options: tiro ?? [],
             },
         ],
@@ -175,13 +176,15 @@ const ProductCard = () => {
                     />
                 );
             })}
-            <div>
-                <ControlledInput
+            <div className="readOnlyContainer">
+                <SyledTextField
                     label="Peso"
                     name="peso"
                     disabled={true}
-                    defaultValue={"test"}
-                    readOnly={true}
+                    value={"test"}
+                    InputProps={{
+                        readOnly: true,
+                    }}
                 />
             </div>
             {specificPropsDropdowns.map(({ name, label, options }) => {
@@ -204,7 +207,7 @@ const ProductCard = () => {
             <div>
                 <ControlledInput
                     label="Nombre del producto *"
-                    name="nombreDelProducto"
+                    name="name"
                     error={checkIfError("nombreDelProducto")}
                     helperText={checkErrorMessage("nombreDelProducto")}
                 />

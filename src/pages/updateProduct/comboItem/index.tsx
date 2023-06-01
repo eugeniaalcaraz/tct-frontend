@@ -1,6 +1,7 @@
 import { Box, Stack } from "@mui/material";
 import React from "react";
 import { StyledComboItem } from "./StyledComboItem";
+import { StatusLabel } from "../stateLabel";
 
 export const ComboItem = () => {
     return (
@@ -19,10 +20,10 @@ export const ComboItem = () => {
                     sx={{ alignItems: "center" }}
                 >
                     <div className="colorBox">Box</div>
-                    <div>
-                        <div>state</div>
+                    <Stack gap={"8px"} style={{ alignItems: "center" }}>
+                        <StatusLabel status={"pendiente"} />
                         <div>{"{fechaEstado}"}</div>
-                    </div>
+                    </Stack>
                 </Stack>
             </Stack>
         </StyledComboItem>

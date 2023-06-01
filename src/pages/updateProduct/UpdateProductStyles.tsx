@@ -30,6 +30,11 @@ export const Content = styled(Box)({
     "&& .item": {
         flexGrow: 1,
     },
+    h3: {
+        fontSize: "13px",
+        fontWeight: "600",
+        lineHeight: "18px",
+    },
 }) as typeof Box;
 
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({

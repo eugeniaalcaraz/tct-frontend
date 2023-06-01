@@ -93,7 +93,7 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
             </div>
             <ControlledInput
                 label="Costo(USD)"
-                name="costo"
+                name="cost"
                 onBlur={(e) => setBuying(Number(e.target.value))}
                 error={checkIfError("costo")}
                 helperText={checkErrorMessage("costo")}

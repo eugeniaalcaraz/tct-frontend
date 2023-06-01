@@ -17,7 +17,10 @@ export const GeneralDetails = () => {
     return (
         <section>
             <Stack direction={"row"} gap={2}>
-                <div className="item" style={{ backgroundColor: "gray" }}>
+                <div
+                    className="item"
+                    style={{ backgroundColor: "gray", width: "25%" }}
+                >
                     Imagen
                 </div>
                 <div className="item">

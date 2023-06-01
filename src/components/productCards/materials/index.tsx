@@ -6,8 +6,8 @@ import { Trims } from "./trims";
 import { ControlledDropdown } from "@components/common";
 
 const Materials = () => {
-    const [numberOfFabricsSelected, setNumberOfFabricsSelected] = useState([1]);
-    const [numberOfTrimsSelected, setNumberOfTrimsSelected] = useState([1]);
+    const [numberOfFabricsSelected, setNumberOfFabricsSelected] = useState(1);
+    const [numberOfTrimsSelected, setNumberOfTrimsSelected] = useState(1);
 
     const fabricsArrOptions = useMemo(
         () =>
@@ -28,11 +28,11 @@ const Materials = () => {
     );
 
     const onSelectNumberOfFabrics = (e) => {
-        setNumberOfFabricsSelected(Array.from(Array(Number(e.value)).keys()));
+        setNumberOfFabricsSelected(Number(e.value));
     };
 
     const onSelectNumberOfTrims = (e) => {
-        setNumberOfTrimsSelected(Array.from(Array(Number(e.value)).keys()));
+        setNumberOfTrimsSelected(Number(e.value));
     };
 
     return (
@@ -44,7 +44,7 @@ const Materials = () => {
                 externalOnChange={onSelectNumberOfFabrics}
             />
             <h3 className="calidad">Calidad</h3>
-            {numberOfFabricsSelected.map((value) => (
+            {[...Array(numberOfFabricsSelected).keys()].map((value) => (
                 <Fabrics key={value} fabricNumber={value} />
             ))}
 
@@ -55,7 +55,7 @@ const Materials = () => {
                 externalOnChange={onSelectNumberOfTrims}
             />
 
-            {numberOfTrimsSelected.map((value) => (
+            {[...Array(numberOfTrimsSelected).keys()].map((value) => (
                 <Trims key={value} trimNumber={value} />
             ))}
         </Container>
