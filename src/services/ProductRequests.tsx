@@ -109,6 +109,16 @@ const getQuery = (card) => {
             return "getMerchantSuppliers";
         case "typeOfshipment":
             return "getShippingTypes";
+        case "brands":
+            return "getMerchantBrands";
+        case "concepts":
+            return "getMerchantConcepts";
+        case "lines":
+            return "getMerchantLines";
+        case "rises":
+            return "getMerchantRise";
+        case "bodyFit":
+            return "getMerchantBodyFit";
         default:
             return -1;
     }

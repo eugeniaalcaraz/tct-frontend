@@ -64,6 +64,13 @@ export type OptionsTypeName = {
     Name: string;
 };
 
+export type Brands = {
+    Id: number;
+    Name: string;
+    Code: string;
+    Id_merchant: number;
+};
+
 export type CompositionFabricCombo = {
     idFiber: number;
     percentage: number;

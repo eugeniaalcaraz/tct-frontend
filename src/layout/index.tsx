@@ -30,6 +30,11 @@ const dropdowns = [
     "status",
     "allSeasons",
     "name",
+    "brands",
+    "concepts",
+    "lines",
+    "rises",
+    "bodyFit",
 ];
 
 const Layout = () => {

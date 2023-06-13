@@ -8,17 +8,27 @@ import {
     rubro,
     concepto,
     tiro,
-    bodyFit,
     linea,
 } from "@assets/mockedData/mockedData";
 import dayjs from "dayjs";
 import _ from "lodash";
 import { productReducer, initialProductState } from "./hooks/hooks";
 import { SyledTextField } from "@components/common/textInput/StyledTextField";
+import { Description } from "@mui/icons-material";
 
 const ProductCard = () => {
-    const { seasons, tipology, managementUnit, designers, errors } =
-        useAppSelector((state) => state.product);
+    const {
+        seasons,
+        brands,
+        concepts,
+        lines,
+        rises,
+        bodyFit,
+        tipology,
+        managementUnit,
+        designers,
+        errors,
+    } = useAppSelector((state) => state.product);
     //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
     const [state, dispatch] = useReducer(productReducer, initialProductState);
 
@@ -39,7 +49,11 @@ const ProductCard = () => {
             {
                 label: "marca *",
                 name: "marca",
-                options: brandsArr ?? [],
+                options:
+                    brands?.map((brand) => ({
+                        Id: brand.Id,
+                        Description: brand.Name,
+                    })) ?? [],
             },
             {
                 label: "temporada *",
@@ -87,12 +101,12 @@ const ProductCard = () => {
             {
                 label: "Concepto",
                 name: "idConcept",
-                options: concepto ?? [],
+                options: concepts ?? [],
             },
             {
                 label: "Línea",
                 name: "idLine",
-                options: linea ?? [],
+                options: lines ?? [],
             },
             {
                 label: "Body Fit",
@@ -102,7 +116,7 @@ const ProductCard = () => {
             {
                 label: "Tiro (Exclusivo Jean)",
                 name: "idRise",
-                options: tiro ?? [],
+                options: rises ?? [],
             },
         ],
         [concepto, linea, bodyFit, tiro]
