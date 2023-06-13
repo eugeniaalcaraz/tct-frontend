@@ -6,9 +6,16 @@ import {
     Suppliers,
     Product,
     AllSeasons,
+    FabricCombo,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
+
+// tipo viejo de combos
+// fabric: string;
+//         // colorAmount: number | undefined;
+//         // name: string;
+//         // uuid: string;
 
 export interface productState {
     errors: unknown;
@@ -26,36 +33,31 @@ export interface productState {
     countries: OptionsTypeName[] | null;
     supplier: Suppliers[] | null;
     typeOfshipment: OptionsType[] | null;
-    combos1: {
-        fabric: string;
-        colorAmount: number | undefined;
-        name: string;
-        uuid: string;
-    }[];
-    combos2: {
-        fabric: string;
-        colorAmount: number | undefined;
-        name: string;
-        uuid: string;
-    }[];
-    combos3: {
-        fabric: string;
-        colorAmount: number | undefined;
-        name: string;
-        uuid: string;
-    }[];
-    combos4: {
-        fabric: string;
-        colorAmount: number | undefined;
-        name: string;
-        uuid: string;
-    }[];
-    combos5: {
-        fabric: string;
-        colorAmount: number | undefined;
-        name: string;
-        uuid: string;
-    }[];
+    combos: FabricCombo[];
+    // combos2: {
+    //     fabric: string;
+    //     colorAmount: number | undefined;
+    //     name: string;
+    //     uuid: string;
+    // }[];
+    // combos3: {
+    //     fabric: string;
+    //     colorAmount: number | undefined;
+    //     name: string;
+    //     uuid: string;
+    // }[];
+    // combos4: {
+    //     fabric: string;
+    //     colorAmount: number | undefined;
+    //     name: string;
+    //     uuid: string;
+    // }[];
+    // combos5: {
+    //     fabric: string;
+    //     colorAmount: number | undefined;
+    //     name: string;
+    //     uuid: string;
+    // }[];
     trimCombos1: { idTrimColor: string }[];
     trimCombos2: { idTrimColor: string }[];
     trimCombos3: { idTrimColor: string }[];
@@ -88,11 +90,11 @@ const initialState: productState = {
     countries: null,
     supplier: null,
     typeOfshipment: null,
-    combos1: [],
-    combos2: [],
-    combos3: [],
-    combos4: [],
-    combos5: [],
+    combos: [],
+    // combos2: [],
+    // combos3: [],
+    // combos4: [],
+    // combos5: [],
     trimCombos1: [],
     trimCombos2: [],
     trimCombos3: [],
@@ -152,11 +154,11 @@ const productSlice = createSlice({
             state[fabricCombos[selectedComboNumber]].splice(index, 1);
         },
         clearCombos(state) {
-            state.combos1 = [];
-            state.combos2 = [];
-            state.combos3 = [];
-            state.combos4 = [];
-            state.combos5 = [];
+            state.combos = [];
+            // state.combos2 = [];
+            // state.combos3 = [];
+            // state.combos4 = [];
+            // state.combos5 = [];
         },
         handleTrimCombos(
             state,

@@ -16,12 +16,19 @@ import {
 } from "@mui/material";
 import { FabricContainer } from "../MaterialsStyles";
 import { useAppSelector, useAppDispatch } from "@/state/app/hooks";
-import { FabricOptionType } from "@/types";
+import {
+    ColorCombo,
+    FabricCombo,
+    FabricOptionType,
+    OptionsType,
+} from "@/types";
 import { handleCombos, removeCombo } from "@/state/features/product";
 import { Controller } from "react-hook-form";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { v4 as uuidv4 } from "uuid";
+import { SyledTextField } from "@components/common/textInput/StyledTextField";
+import { OptionType } from "dayjs";
 
 type FabricProps = {
     fabricNumber: number;
@@ -33,11 +40,12 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         composition,
         localization,
         colors,
-        combos1,
-        combos2,
-        combos3,
-        combos4,
-        combos5,
+        combos,
+        // combos1,
+        // combos2,
+        // combos3,
+        // combos4,
+        // combos5,
         errors,
     } = useAppSelector((state) => state.product);
     const [open, setOpen] = useState<boolean>(false);
@@ -55,6 +63,22 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     const currentFabricNumber = fabricNumber + 1;
     const qualitiesWrapper = useRef<HTMLElement>(null);
     const existingQualityWrapper = useRef<HTMLElement>(null);
+    const compositionSelect = useState(0);
+    const [localColorList, setlocalColorList] = useState<OptionsType[]>([]);
+
+    const [finalComboObject, setFinalComboObject] = useState<FabricCombo>({
+        idFabric: "",
+        description: "",
+        consumption: 0,
+        weight: 0,
+        idColor: 0,
+        idPrint: 0,
+        placement: 0,
+        colorCount: 1,
+        printDescription: "",
+        composition: [],
+        colors: [],
+    });
 
     const openOptions = () => {
         setOpen((prevState) => !prevState);
@@ -65,19 +89,67 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     };
 
     const handleSelectedQuality = (e) => {
+        //aca estoy recibiendo el idFabric
+        console.log({ coso: e.target.value });
+
         setCompOfSelectedQuality([]);
-        const selectedFabric = fabrics?.filter(
+        const selectedFabric = fabrics?.find(
             ({ IdFabric }) => String(IdFabric) === e.target.value
         );
         if (selectedFabric) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            setSelectedQuality(String(selectedFabric[0]?.Weight));
+            setSelectedQuality(String(selectedFabric?.Weight));
 
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            setCompOfSelectedQuality(selectedFabric[0]?.Composition);
+            setCompOfSelectedQuality(selectedFabric?.Composition);
+            //TODO: chequear si el description es igual que el idFiber
+            //TODO: revisar tema de composition, el tipo no es el mismo
+            setFinalComboObject((prevState) => ({
+                ...prevState,
+                weight: Number(selectedFabric.Weight),
+                idFabric: e.target.value,
+                description: selectedFabric.Description,
+            }));
         }
+    };
+
+    const setLocalSolidColorObj = (e) => {
+        const tempSolidColorObj: ColorCombo = { Id: e, sizeCurve: [] };
+        //TODO: chequear esta logica que trae el e
+        setSolidColorName(e);
+
+        //elimina color seleccionado ya que no tiene sentido tener 2 combos con el mismo color?
+        const selectedColorIndex = localColorList.findIndex(
+            (color) => color.Id === e
+        );
+
+        if (selectedColorIndex !== 0) {
+            const tempArray = [...localColorList];
+            tempArray.splice(selectedColorIndex, 1);
+            setLocalSolidColorObj(tempArray);
+        }
+
+        setFinalComboObject((prevState) => ({
+            ...prevState,
+            colors: [...finalComboObject.colors, tempSolidColorObj],
+        }));
+    };
+
+    const handleCompositionSelect = (e) => {
+        const composition = {
+            idFiber: e,
+            percentage: 0,
+        };
+        const compositionCopy = [...finalComboObject.composition];
+
+        compositionCopy.push(composition);
+
+        setFinalComboObject((prevState) => ({
+            ...prevState,
+            composition: compositionCopy,
+        }));
     };
 
     const handleQualityDisabled = (e) => {
@@ -165,22 +237,22 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         }
     };
 
-    const comboReturner = (comboNumber: number) => {
-        switch (comboNumber) {
-            case 1:
-                return combos1;
-            case 2:
-                return combos2;
-            case 3:
-                return combos3;
-            case 4:
-                return combos4;
-            case 5:
-                return combos5;
-            default:
-                return combos1;
-        }
-    };
+    // const comboReturner = (comboNumber: number) => {
+    //     switch (comboNumber) {
+    //         case 1:
+    //             return combos1;
+    //         case 2:
+    //             return combos2;
+    //         case 3:
+    //             return combos3;
+    //         case 4:
+    //             return combos4;
+    //         case 5:
+    //             return combos5;
+    //         default:
+    //             return combos1;
+    //     }
+    // };
 
     const deleteCombo = (uuid: string) => {
         if (comboReturner(currentFabricNumber).length) {
@@ -190,7 +262,18 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
 
     const handleDescriptionBlur = (e) => {
         console.log(e.target.value);
+        setFinalComboObject((prevState) => ({
+            ...prevState,
+            description: e.target.value,
+        }));
         checkIfError("", true);
+    };
+
+    const handleWeightBlur = (e) => {
+        setFinalComboObject((prevState) => ({
+            ...prevState,
+            weight: e.target.value,
+        }));
     };
 
     const checkIfError = (name, error = false) => {
@@ -225,34 +308,34 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         adjustQualityWrapperHeight();
     }, [existingQualityWrapper, errors]);
 
+    useEffect(() => {
+        if (colors?.length) {
+            setlocalColorList([...colors]);
+        }
+    }, [colors]);
+
     return (
         <>
             <FormControl className="radios">
-                <Controller
-                    rules={{ required: true }}
-                    name={`existingQuality${currentFabricNumber}`}
-                    render={({ field: { onChange, ...restField } }) => (
-                        <RadioGroup
-                            row
-                            onChange={(event) => {
-                                onChange(event);
-                                setExistingQuality((prevState) => !prevState);
-                            }}
-                            {...restField}
-                        >
-                            <FormControlLabel
-                                value={true}
-                                control={<Radio />}
-                                label="Usar calidad existente"
-                            />
-                            <FormControlLabel
-                                value={false}
-                                control={<Radio />}
-                                label="Calidad nueva"
-                            />
-                        </RadioGroup>
-                    )}
-                />
+                <RadioGroup
+                    row
+                    onChange={(event) => {
+                        // onChange(event);
+                        setExistingQuality((prevState) => !prevState);
+                    }}
+                    value={existingQuality}
+                >
+                    <FormControlLabel
+                        value={true}
+                        control={<Radio />}
+                        label="Usar calidad existente"
+                    />
+                    <FormControlLabel
+                        value={false}
+                        control={<Radio />}
+                        label="Calidad nueva"
+                    />
+                </RadioGroup>
             </FormControl>
             <FabricContainer>
                 {existingQuality ? (
@@ -343,20 +426,20 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                     : ""
                             }`}
                         >
-                            <ControlledInput
+                            <SyledTextField
                                 label="Nombre *"
-                                name="fabricDescription"
                                 error={checkIfError("fabricDescription")}
                                 helperText={checkErrorMessage(
                                     "fabricDescription"
                                 )}
                                 onBlur={handleDescriptionBlur}
                             />
-                            <ControlledInput
+                            <SyledTextField
                                 label="peso (gr) *"
-                                name="peso"
+                                // name="peso"
                                 error={checkIfError("peso")}
                                 helperText={checkErrorMessage("peso")}
+                                onBlur={handleWeightBlur}
                             />
                         </Box>
 
@@ -375,11 +458,10 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                         helperText={checkErrorMessage(
                                             `composicion-${i}`
                                         )}
+                                        onBlur={handleCompositionSelect}
                                     />
-                                    <ControlledInput
+                                    <SyledTextField
                                         label="porcentaje *"
-                                        name={`porcentaje-${i}`}
-                                        id={i}
                                         onBlur={handleQualityDisabled}
                                         error={checkIfError(`porcentaje-${i}`)}
                                         helperText={checkErrorMessage(
@@ -396,10 +478,22 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                     label="Localización en la prenda"
                     options={localization ?? []}
                     name="localizacion"
+                    externalOnChange={(e) =>
+                        setFinalComboObject((prevObject) => ({
+                            ...prevObject,
+                            placement: e,
+                        }))
+                    }
                 />
                 <ControlledInput
                     label="Consumo"
                     name={`consumoCalidad${currentFabricNumber}`}
+                    onBlur={(e) =>
+                        setFinalComboObject((prevObject) => ({
+                            ...prevObject,
+                            consumption: Number(e.target.value),
+                        }))
+                    }
                 />
                 <Button
                     variant="text"
@@ -439,7 +533,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                     // @ts-ignore
                                     value={solidColorName}
-                                    onChange={(e) => setSolidColorName(e)}
+                                    onChange={(e) => setLocalSolidColorObj(e)}
                                 />
                             </div>
                         ) : (
@@ -473,7 +567,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                     </Box>
                 </Box>
 
-                {comboReturner(currentFabricNumber) &&
+                {/* {comboReturner(currentFabricNumber) &&
                     comboReturner(currentFabricNumber).length > 0 && (
                         <Box className="combos">
                             {comboReturner(currentFabricNumber)?.map(
@@ -495,7 +589,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                 )
                             )}
                         </Box>
-                    )}
+                    )} */}
             </FabricContainer>
         </>
     );

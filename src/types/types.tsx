@@ -64,6 +64,31 @@ export type OptionsTypeName = {
     Name: string;
 };
 
+export type CompositionFabricCombo = {
+    idFiber: number;
+    percentage: number;
+};
+
+export type ColorCombo = {
+    Id: string;
+    sizeCurve: string[];
+};
+
+export type FabricCombo = {
+    idFabric: string;
+    description: string;
+    saveDuplicateFabric?: number;
+    consumption: number;
+    weight: number;
+    colors: ColorCombo[];
+    idColor: number;
+    idPrint: number;
+    placement: number;
+    colorCount: number;
+    printDescription: string;
+    composition: CompositionFabricCombo[];
+};
+
 export type Dropdowns = {
     label: string;
     name: string;
