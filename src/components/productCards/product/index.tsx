@@ -93,7 +93,7 @@ const ProductCard = () => {
                 options: tipology ?? [],
             },
         ],
-        [seasons, tipology, managementUnit]
+        [seasons, tipology, managementUnit, rubro, yearsDropdownArr]
     );
 
     const specificPropsDropdowns = useMemo(
@@ -119,7 +119,7 @@ const ProductCard = () => {
                 options: rises ?? [],
             },
         ],
-        [concepto, linea, bodyFit, tiro]
+        [concepts, lines, bodyFit, rises]
     );
 
     const checkIfError = (name) => {
