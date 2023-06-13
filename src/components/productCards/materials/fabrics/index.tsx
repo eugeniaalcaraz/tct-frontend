@@ -21,6 +21,7 @@ import {
     FabricCombo,
     FabricOptionType,
     OptionsType,
+    PrintCombo,
 } from "@/types";
 import { handleCombos, removeCombo } from "@/state/features/product";
 import { Controller } from "react-hook-form";
@@ -57,7 +58,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     const [qualities, setQualities] = useState([0]);
     const [option, setOption] = useState("solido");
     const [printName, setPrintName] = useState<string>("");
-    const [colorAmount, setColorAmount] = useState<number>();
+    const [colorAmount, setColorAmount] = useState<number>(0);
     const [solidColorName, setSolidColorName] = useState<number[]>([]);
     const dispatch = useAppDispatch();
     const currentFabricNumber = fabricNumber + 1;
@@ -78,6 +79,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         printDescription: "",
         composition: [],
         colors: [],
+        prints: [],
     });
 
     const openOptions = () => {
@@ -115,26 +117,46 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         }
     };
 
-    const setLocalSolidColorObj = (e) => {
-        const tempSolidColorObj: ColorCombo = { Id: e, sizeCurve: [] };
-        //TODO: chequear esta logica que trae el e
-        setSolidColorName(e);
+    const restorePrintData = () => {
+        setPrintName("");
+        setColorAmount(0);
+    };
 
-        //elimina color seleccionado ya que no tiene sentido tener 2 combos con el mismo color?
-        const selectedColorIndex = localColorList.findIndex(
-            (color) => color.Id === e
-        );
+    const setLocalComboArray = () => {
+        if (option === "solido") {
+            //TODO: un vez q se sepa de donde sale el color del id, implementar logica de color solido
+            // const tempSolidColorObj: ColorCombo = { Id: solidColorName, sizeCurve: [] };
 
-        if (selectedColorIndex !== 0) {
-            const tempArray = [...localColorList];
-            tempArray.splice(selectedColorIndex, 1);
-            setLocalSolidColorObj(tempArray);
+            // //elimina color seleccionado ya que no tiene sentido tener 2 combos con el mismo color?
+            // const selectedColorIndex = localColorList.findIndex(
+            //     (color) => color.Id === solidColorName
+            // );
+
+            // if (selectedColorIndex !== 0) {
+            //     const tempArray = [...localColorList];
+            //     tempArray.splice(selectedColorIndex, 1);
+            //     setLocalSolidColorObj(tempArray);
+            // }
+
+            // setFinalComboObject((prevState) => ({
+            //     ...prevState,
+            //     colors: [...finalComboObject.colors, tempSolidColorObj],
+            // }));
+            return;
         }
+
+        //setting printObjetct on array
+        const tempLocalPrintObject: PrintCombo = {
+            nombre: printName,
+            cantidadColor: colorAmount,
+            sizeCurve: [],
+        };
 
         setFinalComboObject((prevState) => ({
             ...prevState,
-            colors: [...finalComboObject.colors, tempSolidColorObj],
+            prints: [...prevState.prints, tempLocalPrintObject],
         }));
+        restorePrintData();
     };
 
     const handleCompositionSelect = (e) => {
@@ -207,35 +229,35 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         }
     };
 
-    const addCombo = () => {
-        console.log({ option, colorAmount });
+    // const addCombo = () => {
+    //     console.log({ option, colorAmount });
 
-        if (
-            (option === "solido" && solidColorName.length > 0) ||
-            (option !== "solido" && colorAmount && printName !== "")
-        ) {
-            dispatch(
-                handleCombos({
-                    comboNumber: currentFabricNumber,
-                    combo: {
-                        fabric: option === "solido" ? "solid" : "printed",
-                        colorAmount: option === "solido" ? 0 : colorAmount,
-                        name:
-                            option === "solido"
-                                ? String(solidColorName[0])
-                                : printName,
-                        uuid: uuidv4(),
-                    },
-                })
-            );
-            setTimeout(() => {
-                setOpen(false);
-            }, 500);
-            setColorAmount(undefined);
-            setPrintName("");
-            setSolidColorName([]);
-        }
-    };
+    //     if (
+    //         (option === "solido" && solidColorName.length > 0) ||
+    //         (option !== "solido" && colorAmount && printName !== "")
+    //     ) {
+    //         dispatch(
+    //             handleCombos({
+    //                 comboNumber: currentFabricNumber,
+    //                 combo: {
+    //                     fabric: option === "solido" ? "solid" : "printed",
+    //                     colorAmount: option === "solido" ? 0 : colorAmount,
+    //                     name:
+    //                         option === "solido"
+    //                             ? String(solidColorName[0])
+    //                             : printName,
+    //                     uuid: uuidv4(),
+    //                 },
+    //             })
+    //         );
+    //         setTimeout(() => {
+    //             setOpen(false);
+    //         }, 500);
+    //         setColorAmount(undefined);
+    //         setPrintName("");
+    //         setSolidColorName([]);
+    //     }
+    // };
 
     // const comboReturner = (comboNumber: number) => {
     //     switch (comboNumber) {
@@ -533,7 +555,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                     // @ts-ignore
                                     value={solidColorName}
-                                    onChange={(e) => setLocalSolidColorObj(e)}
+                                    onChange={(e) => setSolidColorName(e)}
                                 />
                             </div>
                         ) : (
@@ -560,7 +582,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                             variant="text"
                             type="button"
                             color="primary"
-                            onClick={addCombo}
+                            onClick={() => setLocalComboArray()}
                         >
                             + Agregar
                         </Button>

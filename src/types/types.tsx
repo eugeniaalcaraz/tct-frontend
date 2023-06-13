@@ -74,6 +74,12 @@ export type ColorCombo = {
     sizeCurve: string[];
 };
 
+export type PrintCombo = {
+    nombre: string;
+    cantidadColor: number;
+    sizeCurve: string[];
+};
+
 export type FabricCombo = {
     idFabric: string;
     description: string;
@@ -81,6 +87,7 @@ export type FabricCombo = {
     consumption: number;
     weight: number;
     colors: ColorCombo[];
+    prints: PrintCombo[];
     idColor: number;
     idPrint: number;
     placement: number;
