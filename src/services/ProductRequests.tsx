@@ -89,8 +89,8 @@ const getQuery = (card) => {
             return "getMerchantSeasons";
         case "tipology":
             return "getTipologies";
-        case "departments":
-            return "getMerchantDepartments";
+        case "managementUnit":
+            return "getMerchantManagmentUnits";
         case "designers":
             return "getMerchantDesigners";
         case "fabrics":
@@ -119,6 +119,8 @@ const getQuery = (card) => {
             return "getMerchantRise";
         case "bodyFit":
             return "getMerchantBodyFit";
+        case "industries":
+            return "getMerchantIndustries";
         default:
             return -1;
     }

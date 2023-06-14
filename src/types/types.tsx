@@ -77,7 +77,7 @@ export type CompositionFabricCombo = {
 };
 
 export type ColorCombo = {
-    Id: string;
+    idColor: number[];
     sizeCurve: string[];
 };
 

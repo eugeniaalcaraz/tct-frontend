@@ -17,7 +17,7 @@ import { Pages } from "@/types";
 const dropdowns = [
     "seasons",
     "tipology",
-    "departments",
+    "managementUnit",
     "designers",
     "fabrics",
     "composition",
@@ -35,6 +35,7 @@ const dropdowns = [
     "lines",
     "rises",
     "bodyFit",
+    "industries",
 ];
 
 const Layout = () => {

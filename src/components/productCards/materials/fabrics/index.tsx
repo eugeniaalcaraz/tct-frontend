@@ -113,6 +113,13 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                 weight: Number(selectedFabric.Weight),
                 idFabric: e.target.value,
                 description: selectedFabric.Description,
+                composition: selectedFabric.Composition.map(
+                    ({ Description, Percentage }) => ({
+                        idFiber: 0,
+                        percentage: Percentage,
+                        descripcion: Description,
+                    })
+                ),
             }));
         }
     };
@@ -125,23 +132,15 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     const setLocalComboArray = () => {
         if (option === "solido") {
             //TODO: un vez q se sepa de donde sale el color del id, implementar logica de color solido
-            // const tempSolidColorObj: ColorCombo = { Id: solidColorName, sizeCurve: [] };
+            const tempSolidColorObj: ColorCombo = {
+                idColor: solidColorName,
+                sizeCurve: [],
+            };
 
-            // //elimina color seleccionado ya que no tiene sentido tener 2 combos con el mismo color?
-            // const selectedColorIndex = localColorList.findIndex(
-            //     (color) => color.Id === solidColorName
-            // );
-
-            // if (selectedColorIndex !== 0) {
-            //     const tempArray = [...localColorList];
-            //     tempArray.splice(selectedColorIndex, 1);
-            //     setLocalSolidColorObj(tempArray);
-            // }
-
-            // setFinalComboObject((prevState) => ({
-            //     ...prevState,
-            //     colors: [...finalComboObject.colors, tempSolidColorObj],
-            // }));
+            setFinalComboObject((prevState) => ({
+                ...prevState,
+                colors: [...finalComboObject.colors, tempSolidColorObj],
+            }));
             return;
         }
 
@@ -156,6 +155,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
             ...prevState,
             prints: [...prevState.prints, tempLocalPrintObject],
         }));
+        //TODO: CHEQUEAR ESTA LOGICA PARA LIMPAR ESTADOS DE INPUTS
         restorePrintData();
     };
 
@@ -503,7 +503,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                     externalOnChange={(e) =>
                         setFinalComboObject((prevObject) => ({
                             ...prevObject,
-                            placement: e,
+                            placement: e.value,
                         }))
                     }
                 />
@@ -555,7 +555,10 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                     // @ts-ignore
                                     value={solidColorName}
-                                    onChange={(e) => setSolidColorName(e)}
+                                    onChange={(e) => {
+                                        console.log({ colors: e });
+                                        setSolidColorName(e);
+                                    }}
                                 />
                             </div>
                         ) : (
