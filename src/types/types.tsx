@@ -13,6 +13,13 @@ export type OptionsType = {
     Description: number | string;
 };
 
+export type ColorsStateType = {
+    Id: string;
+    Description: number | string;
+    Code: string;
+    RGB: string;
+};
+
 export type FabricOptionType = {
     Id: string;
     Description: number | string;
@@ -77,7 +84,7 @@ export type CompositionFabricCombo = {
 };
 
 export type ColorCombo = {
-    idColor: number[];
+    idColor: number;
     sizeCurve: string[];
 };
 

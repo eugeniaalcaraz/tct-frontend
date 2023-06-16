@@ -23,7 +23,7 @@ import {
     OptionsType,
     PrintCombo,
 } from "@/types";
-import { handleCombos, removeCombo } from "@/state/features/product";
+import { addTela, removeCombo } from "@/state/features/product";
 import { Controller } from "react-hook-form";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -41,7 +41,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         composition,
         localization,
         colors,
-        combos,
+        telas,
         // combos1,
         // combos2,
         // combos3,
@@ -59,7 +59,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     const [option, setOption] = useState("solido");
     const [printName, setPrintName] = useState<string>("");
     const [colorAmount, setColorAmount] = useState<number>(0);
-    const [solidColorName, setSolidColorName] = useState<number[]>([]);
+    const [solidColorName, setSolidColorName] = useState<number>(0);
     const dispatch = useAppDispatch();
     const currentFabricNumber = fabricNumber + 1;
     const qualitiesWrapper = useRef<HTMLElement>(null);
@@ -92,11 +92,11 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
 
     const handleSelectedQuality = (e) => {
         //aca estoy recibiendo el idFabric
-        console.log({ coso: e.target.value });
+        console.log({ coso: e });
 
         setCompOfSelectedQuality([]);
         const selectedFabric = fabrics?.find(
-            ({ IdFabric }) => String(IdFabric) === e.target.value
+            ({ IdFabric }) => String(IdFabric) === e.value
         );
         if (selectedFabric) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -106,12 +106,12 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             setCompOfSelectedQuality(selectedFabric?.Composition);
-            //TODO: chequear si el description es igual que el idFiber
+
             //TODO: revisar tema de composition, el tipo no es el mismo
             setFinalComboObject((prevState) => ({
                 ...prevState,
                 weight: Number(selectedFabric.Weight),
-                idFabric: e.target.value,
+                idFabric: e.value,
                 description: selectedFabric.Description,
                 composition: selectedFabric.Composition.map(
                     ({ Description, Percentage }) => ({
@@ -125,8 +125,8 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     };
 
     const restorePrintData = () => {
-        setPrintName("");
-        setColorAmount(0);
+        // setPrintName("");
+        // setColorAmount(0);
     };
 
     const setLocalComboArray = () => {
@@ -136,6 +136,10 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                 idColor: solidColorName,
                 sizeCurve: [],
             };
+
+            setlocalColorList((prevState) =>
+                prevState.filter((color) => Number(color.Id) !== solidColorName)
+            );
 
             setFinalComboObject((prevState) => ({
                 ...prevState,
@@ -156,7 +160,6 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
             prints: [...prevState.prints, tempLocalPrintObject],
         }));
         //TODO: CHEQUEAR ESTA LOGICA PARA LIMPAR ESTADOS DE INPUTS
-        restorePrintData();
     };
 
     const handleCompositionSelect = (e) => {
@@ -229,57 +232,11 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         }
     };
 
-    // const addCombo = () => {
-    //     console.log({ option, colorAmount });
-
-    //     if (
-    //         (option === "solido" && solidColorName.length > 0) ||
-    //         (option !== "solido" && colorAmount && printName !== "")
-    //     ) {
-    //         dispatch(
-    //             handleCombos({
-    //                 comboNumber: currentFabricNumber,
-    //                 combo: {
-    //                     fabric: option === "solido" ? "solid" : "printed",
-    //                     colorAmount: option === "solido" ? 0 : colorAmount,
-    //                     name:
-    //                         option === "solido"
-    //                             ? String(solidColorName[0])
-    //                             : printName,
-    //                     uuid: uuidv4(),
-    //                 },
-    //             })
-    //         );
-    //         setTimeout(() => {
-    //             setOpen(false);
-    //         }, 500);
-    //         setColorAmount(undefined);
-    //         setPrintName("");
-    //         setSolidColorName([]);
-    //     }
-    // };
-
-    // const comboReturner = (comboNumber: number) => {
-    //     switch (comboNumber) {
-    //         case 1:
-    //             return combos1;
-    //         case 2:
-    //             return combos2;
-    //         case 3:
-    //             return combos3;
-    //         case 4:
-    //             return combos4;
-    //         case 5:
-    //             return combos5;
-    //         default:
-    //             return combos1;
-    //     }
-    // };
-
-    const deleteCombo = (uuid: string) => {
-        if (comboReturner(currentFabricNumber).length) {
-            dispatch(removeCombo({ comboNumber: currentFabricNumber, uuid }));
-        }
+    const deleteCombo = (id: number) => {
+        setFinalComboObject((prevState) => ({
+            ...prevState,
+            colors: prevState.colors.filter((color) => color.idColor !== id),
+        }));
     };
 
     const handleDescriptionBlur = (e) => {
@@ -336,6 +293,18 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         }
     }, [colors]);
 
+    useEffect(() => {
+        if (open) {
+            setOpen(false);
+            setColorAmount(0);
+            setPrintName("");
+            setSolidColorName(0);
+            setOption("solido");
+            // dispatch(addTela({ fabricNumber, tela: finalComboObject }));
+        }
+        dispatch(addTela({ fabricNumber, tela: finalComboObject }));
+    }, [finalComboObject]);
+
     return (
         <>
             <FormControl className="radios">
@@ -364,6 +333,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                     <>
                         <ControlledDropdown
                             label="calidad *"
+                            useFormHook={false}
                             options={
                                 fabrics?.map(
                                     ({
@@ -382,7 +352,8 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                             name="calidad"
                             error={checkIfError("calidad")}
                             helperText={checkErrorMessage("calidad")}
-                            onBlur={handleSelectedQuality}
+                            externalOnChange={handleSelectedQuality}
+                            selectedValue={finalComboObject.idFabric}
                         />
                         {selectedQuality !== "" && (
                             <Box
@@ -499,6 +470,8 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                 <ControlledDropdown
                     label="Localización en la prenda"
                     options={localization ?? []}
+                    useFormHook={false}
+                    selectedValue={finalComboObject.placement}
                     name="localizacion"
                     externalOnChange={(e) =>
                         setFinalComboObject((prevObject) => ({
@@ -509,8 +482,10 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                 />
                 <ControlledInput
                     label="Consumo"
+                    useFormhook={false}
+                    externalValue={String(finalComboObject.consumption)}
                     name={`consumoCalidad${currentFabricNumber}`}
-                    onBlur={(e) =>
+                    externalOnChange={(e) =>
                         setFinalComboObject((prevObject) => ({
                             ...prevObject,
                             consumption: Number(e.target.value),
@@ -551,7 +526,8 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                             <div className="dropdownSolid">
                                 <Dropdown
                                     label="Color"
-                                    options={colors ?? []}
+                                    options={localColorList}
+                                    multipleSelect={false}
                                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                     // @ts-ignore
                                     value={solidColorName}
@@ -572,9 +548,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                 />
                                 <Input
                                     label="Cantidad de colores"
-                                    value={
-                                        colorAmount ? String(colorAmount) : ""
-                                    }
+                                    value={String(colorAmount)}
                                     onInput={(e) =>
                                         setColorAmount(e.target.value)
                                     }
@@ -592,29 +566,56 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                     </Box>
                 </Box>
 
-                {/* {comboReturner(currentFabricNumber) &&
-                    comboReturner(currentFabricNumber).length > 0 && (
-                        <Box className="combos">
-                            {comboReturner(currentFabricNumber)?.map(
-                                ({ fabric, uuid }, i) => (
-                                    <Box key={uuid} className="combo">
-                                        <div className="upper-container">
-                                            Combo {i + 1}
-                                            <IconButton
-                                                aria-label="delete"
-                                                onClick={() =>
-                                                    deleteCombo(uuid)
-                                                }
-                                            >
-                                                <DeleteIcon />
-                                            </IconButton>
-                                        </div>
-                                        <Box className={fabric}></Box>
-                                    </Box>
-                                )
-                            )}
-                        </Box>
-                    )} */}
+                {!!telas[fabricNumber]?.colors.length && (
+                    <Box className="combos">
+                        {telas[fabricNumber].colors.map((selectedColor, i) => (
+                            <Box key={selectedColor.idColor} className="combo">
+                                <div className="upper-container">
+                                    Combo {i + 1}
+                                    <IconButton
+                                        aria-label="delete"
+                                        onClick={() =>
+                                            deleteCombo(selectedColor.idColor)
+                                        }
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </div>
+                                <Box
+                                    sx={{
+                                        backgroundColor: `${
+                                            colors?.find(
+                                                (color) =>
+                                                    color.Id ===
+                                                    selectedColor.idColor
+                                            ).RGB
+                                        }`,
+                                    }}
+                                ></Box>
+                            </Box>
+                        ))}
+                    </Box>
+                )}
+                {!!telas[fabricNumber]?.prints.length && (
+                    <Box className="combos">
+                        {telas[fabricNumber].prints.map((selectedPrint, i) => (
+                            <Box key={i} className="combo">
+                                <div className="upper-container">
+                                    Estampado {i + 1}
+                                    <IconButton
+                                        aria-label="delete"
+                                        // onClick={() =>
+                                        //     deleteCombo(uuid)
+                                        // }
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </div>
+                                <Box className={"printed"}></Box>
+                            </Box>
+                        ))}
+                    </Box>
+                )}
             </FabricContainer>
         </>
     );

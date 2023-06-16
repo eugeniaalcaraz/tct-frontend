@@ -16,6 +16,8 @@ type ControlledProps = {
     maxLength?: number;
     defaultValue?: string | number;
     externalOnChange?: (e) => void;
+    useFormhook?: boolean;
+    externalValue?: string;
 };
 
 const ControlledInput: FC<ControlledProps> = ({
@@ -32,36 +34,65 @@ const ControlledInput: FC<ControlledProps> = ({
     maxLength,
     defaultValue,
     externalOnChange,
+    useFormhook = true,
+    externalValue = "",
 }) => {
+    if (useFormhook) {
+        return (
+            <Controller
+                shouldUnregister
+                name={name}
+                render={({ field: { onChange, value } }) => (
+                    <SyledTextField
+                        size="small"
+                        id={String(id)}
+                        label={label}
+                        value={value}
+                        onChange={(e) => {
+                            onChange(e);
+                            externalOnChange && externalOnChange(e);
+                        }}
+                        autoComplete="off"
+                        disabled={disabled}
+                        // className={`input ${error ? "error" : ""}`}
+                        multiline={multiline}
+                        rows={rows}
+                        inputProps={{ maxLength }}
+                        InputProps={{
+                            readOnly: readOnly,
+                        }}
+                        onBlur={onBlur}
+                        error={error}
+                        helperText={helperText}
+                        defaultValue={defaultValue}
+                    />
+                )}
+            />
+        );
+    }
+
     return (
-        <Controller
-            shouldUnregister
-            name={name}
-            render={({ field: { onChange, value } }) => (
-                <SyledTextField
-                    size="small"
-                    id={String(id)}
-                    label={label}
-                    value={value}
-                    onChange={(e) => {
-                        onChange(e);
-                        externalOnChange && externalOnChange(e);
-                    }}
-                    autoComplete="off"
-                    disabled={disabled}
-                    // className={`input ${error ? "error" : ""}`}
-                    multiline={multiline}
-                    rows={rows}
-                    inputProps={{ maxLength }}
-                    InputProps={{
-                        readOnly: readOnly,
-                    }}
-                    onBlur={onBlur}
-                    error={error}
-                    helperText={helperText}
-                    defaultValue={defaultValue}
-                />
-            )}
+        <SyledTextField
+            size="small"
+            id={String(id)}
+            label={label}
+            value={externalValue}
+            onChange={(e) => {
+                externalOnChange && externalOnChange(e);
+            }}
+            autoComplete="off"
+            disabled={disabled}
+            // className={`input ${error ? "error" : ""}`}
+            multiline={multiline}
+            rows={rows}
+            inputProps={{ maxLength }}
+            InputProps={{
+                readOnly: readOnly,
+            }}
+            onBlur={onBlur}
+            error={error}
+            helperText={helperText}
+            defaultValue={defaultValue}
         />
     );
 };

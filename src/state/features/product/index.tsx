@@ -29,12 +29,12 @@ export interface productState {
     fabrics: Fabric[] | null;
     composition: OptionsType[] | null;
     localization: OptionsType[] | null;
-    colors: OptionsType[] | null;
+    colors: ColorsStateType[] | null;
     trims: OptionsType[] | null;
     countries: OptionsTypeName[] | null;
     supplier: Suppliers[] | null;
     typeOfshipment: OptionsType[] | null;
-    combos: FabricCombo[];
+    telas: FabricCombo[];
     brands: Brands[];
     concepts: OptionsType[];
     lines: OptionsType[];
@@ -96,7 +96,7 @@ const initialState: productState = {
     countries: null,
     supplier: null,
     typeOfshipment: null,
-    combos: [],
+    telas: [],
     // combos2: [],
     // combos3: [],
     // combos4: [],
@@ -135,23 +135,11 @@ const productSlice = createSlice({
         handleProductData(state, action: PayloadAction<Partial<productState>>) {
             return { ...state, ...action.payload };
         },
-        handleCombos(
+        addTela(
             state,
-            action: PayloadAction<{
-                comboNumber: number;
-                combo: {
-                    fabric: string;
-                    colorAmount: number | undefined;
-                    name: string;
-                    uuid: string;
-                };
-            }>
+            action: PayloadAction<{ fabricNumber: number; tela: FabricCombo }>
         ) {
-            const selectedComboNumber = action.payload.comboNumber;
-            state[fabricCombos[selectedComboNumber]] = [
-                ...state[fabricCombos[selectedComboNumber]],
-                action.payload.combo,
-            ];
+            state.telas[action.payload.fabricNumber] = action.payload.tela;
         },
         removeCombo(
             state,
@@ -207,7 +195,7 @@ export const {
     setData,
     setFilterData,
     handleProductData,
-    handleCombos,
+    addTela,
     clearCombos,
     handleTrimCombos,
     clearTrimCombos,
