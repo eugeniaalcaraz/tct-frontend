@@ -50,7 +50,6 @@ export enum ProductHeaders {
     Composition = "Composition",
     TotalQuanity = "Cantidad Total",
     Margin = "Márgen",
-    MarkUp = "Mark up",
     Buying = "Compra",
     Selling = "PVP (USD)",
     SellingUy = "PVP ($)",
