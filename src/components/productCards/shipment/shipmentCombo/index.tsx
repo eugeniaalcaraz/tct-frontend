@@ -1,3 +1,6 @@
+import React, { FC, useEffect, useMemo, useState } from "react";
+import { addTela, addTelasArray } from "@/state/features/product";
+import { Dayjs } from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { OptionsType } from "@/types";
 import {
@@ -6,15 +9,15 @@ import {
     ControlledInput,
 } from "@components/common";
 
-import React, { FC, useEffect, useMemo, useState } from "react";
-import { addTela } from "@/state/features/product";
-import { Dayjs } from "dayjs";
-
 type ShipmentComboProps = {
     comboNumber: number;
+    isForAllCombos: boolean;
 };
 
-export const ShipmentCombo: FC<ShipmentComboProps> = ({ comboNumber }) => {
+export const ShipmentCombo: FC<ShipmentComboProps> = ({
+    comboNumber,
+    isForAllCombos,
+}) => {
     const { countries, supplier, typeOfshipment, telas } = useAppSelector(
         (state) => state.product
     );
@@ -31,25 +34,45 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({ comboNumber }) => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(
-            addTela({
-                fabricNumber: comboNumber - 1,
-                tela: {
-                    ...telasUpdatableObject,
-                    idCountryDestination:
-                        selectedDestinationCountry !== ""
-                            ? Number(selectedDestinationCountry)
-                            : 0,
-                    idShipping:
-                        selectedShipmentType !== ""
-                            ? Number(selectedShipmentType)
-                            : 0,
-                    warehouseEntryDate,
-                    entryDate,
-                    shippingDate,
-                },
-            })
-        );
+        if (isForAllCombos) {
+            console.log("cosito testetete");
+            const updatedTelas = telas.map((tela) => ({
+                ...tela,
+                idCountryDestination:
+                    selectedDestinationCountry !== ""
+                        ? Number(selectedDestinationCountry)
+                        : 0,
+                idShipping:
+                    selectedShipmentType !== ""
+                        ? Number(selectedShipmentType)
+                        : 0,
+                warehouseEntryDate,
+                entryDate,
+                shippingDate,
+            }));
+            console.log({ updatedTelas });
+            dispatch(addTelasArray(updatedTelas));
+        } else {
+            dispatch(
+                addTela({
+                    fabricNumber: comboNumber - 1,
+                    tela: {
+                        ...telasUpdatableObject,
+                        idCountryDestination:
+                            selectedDestinationCountry !== ""
+                                ? Number(selectedDestinationCountry)
+                                : 0,
+                        idShipping:
+                            selectedShipmentType !== ""
+                                ? Number(selectedShipmentType)
+                                : 0,
+                        warehouseEntryDate,
+                        entryDate,
+                        shippingDate,
+                    },
+                })
+            );
+        }
     }, [
         selectedDestinationCountry,
         selectedShipmentType,

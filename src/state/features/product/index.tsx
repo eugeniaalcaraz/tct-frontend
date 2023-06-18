@@ -8,6 +8,7 @@ import {
     AllSeasons,
     FabricCombo,
     Brands,
+    ColorsStateType,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
@@ -40,42 +41,6 @@ export interface productState {
     lines: OptionsType[];
     rises: OptionsType[];
     bodyFit: OptionsType[];
-    // combos2: {
-    //     fabric: string;
-    //     colorAmount: number | undefined;
-    //     name: string;
-    //     uuid: string;
-    // }[];
-    // combos3: {
-    //     fabric: string;
-    //     colorAmount: number | undefined;
-    //     name: string;
-    //     uuid: string;
-    // }[];
-    // combos4: {
-    //     fabric: string;
-    //     colorAmount: number | undefined;
-    //     name: string;
-    //     uuid: string;
-    // }[];
-    // combos5: {
-    //     fabric: string;
-    //     colorAmount: number | undefined;
-    //     name: string;
-    //     uuid: string;
-    // }[];
-    // trimCombos1: { idTrimColor: string }[];
-    // trimCombos2: { idTrimColor: string }[];
-    // trimCombos3: { idTrimColor: string }[];
-    // trimCombos4: { idTrimColor: string }[];
-    // trimCombos5: { idTrimColor: string }[];
-    // trimCombos6: { idTrimColor: string }[];
-    // trimCombos7: { idTrimColor: string }[];
-    // trimCombos8: { idTrimColor: string }[];
-    // trimCombos9: { idTrimColor: string }[];
-    // trimCombos10: { idTrimColor: string }[];
-    // trimCombos11: { idTrimColor: string }[];
-    // trimCombos12: { idTrimColor: string }[];
     status: { IdStatus: number; Description: string }[];
     allSeasons: AllSeasons[] | null;
 }
@@ -97,22 +62,6 @@ const initialState: productState = {
     supplier: null,
     typeOfshipment: null,
     telas: [],
-    // combos2: [],
-    // combos3: [],
-    // combos4: [],
-    // combos5: [],
-    // trimCombos1: [],
-    // trimCombos2: [],
-    // trimCombos3: [],
-    // trimCombos4: [],
-    // trimCombos5: [],
-    // trimCombos6: [],
-    // trimCombos7: [],
-    // trimCombos8: [],
-    // trimCombos9: [],
-    // trimCombos10: [],
-    // trimCombos11: [],
-    // trimCombos12: [],
     status: [],
     allSeasons: null,
     brands: [],
@@ -141,6 +90,9 @@ const productSlice = createSlice({
         ) {
             state.telas[action.payload.fabricNumber] = action.payload.tela;
         },
+        addTelasArray(state, action: PayloadAction<FabricCombo[]>) {
+            state.telas = action.payload;
+        },
         removeCombo(
             state,
             action: PayloadAction<{ comboNumber: number; uuid: string }>
@@ -153,11 +105,7 @@ const productSlice = createSlice({
             state[fabricCombos[selectedComboNumber]].splice(index, 1);
         },
         clearCombos(state) {
-            state.combos = [];
-            // state.combos2 = [];
-            // state.combos3 = [];
-            // state.combos4 = [];
-            // state.combos5 = [];
+            state.telas = [];
         },
         handleTrimCombos(
             state,
@@ -201,5 +149,6 @@ export const {
     clearTrimCombos,
     setErrors,
     removeCombo,
+    addTelasArray,
 } = productSlice.actions;
 export default productSlice.reducer;

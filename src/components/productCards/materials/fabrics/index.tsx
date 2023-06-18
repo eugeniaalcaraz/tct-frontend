@@ -322,7 +322,15 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         dispatch(
             addTela({
                 fabricNumber,
-                tela: { ...telasUpdatableObject, ...finalComboObject },
+                tela: {
+                    ...finalComboObject,
+                    entryDate: telasUpdatableObject.entryDate,
+                    shippingDate: telasUpdatableObject.shippingDate,
+                    warehouseEntryDate: telasUpdatableObject.warehouseEntryDate,
+                    idCountryDestination:
+                        telasUpdatableObject.idCountryDestination,
+                    idShipping: telasUpdatableObject.idShipping,
+                },
             })
         );
     }, [finalComboObject]);
