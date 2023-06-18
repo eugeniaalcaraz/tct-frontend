@@ -8,14 +8,42 @@ import { Controller } from "react-hook-form";
 type ControlledDatePickerProps = {
     name: string;
     label: string;
+    useFormHook?: boolean;
+    externalOnChange?: any;
 };
 
 const ControlledDatePicker: FC<ControlledDatePickerProps> = ({
     name,
     label,
+    useFormHook = true,
+    externalOnChange,
 }) => {
     const [value, setValue] = useState<Dayjs | null>(dayjs().add(15, "day"));
     const [openCalendar, setOpenCalendar] = useState<boolean>(false);
+
+    if (!useFormHook) {
+        return (
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                    label={label}
+                    onChange={(event) => {
+                        externalOnChange(event);
+                        setValue(event as Dayjs);
+                        setOpenCalendar(false);
+                    }}
+                    value={value}
+                    open={openCalendar}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            onClick={() => setOpenCalendar(true)}
+                        />
+                    )}
+                    disablePast
+                />
+            </LocalizationProvider>
+        );
+    }
 
     return (
         <Controller

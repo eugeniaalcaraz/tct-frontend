@@ -102,12 +102,14 @@ export type FabricCombo = {
     weight: number;
     colors: ColorCombo[];
     prints: PrintCombo[];
-    idColor: number;
-    idPrint: number;
     placement: number;
-    colorCount: number;
     printDescription: string;
     composition: CompositionFabricCombo[];
+    idCountryDestination: number;
+    idShipping: number;
+    entryDate: string;
+    warehouseEntryDate: string;
+    shippingDate: string;
 };
 
 export type Dropdowns = {

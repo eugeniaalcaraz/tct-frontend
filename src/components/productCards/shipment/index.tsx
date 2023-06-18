@@ -12,7 +12,7 @@ import { ControlledCheckbox } from "@components/common/form/controlledCheckbox";
 import { ShipmentCombo } from "./shipmentCombo";
 
 const Shipment = () => {
-    const { countries, supplier, typeOfshipment, errors, combos } =
+    const { countries, supplier, typeOfshipment, errors, telas } =
         useAppSelector((state) => state.product);
 
     const [allCombosShareShipment, setAllCombosShareShipment] = useState(true);
@@ -52,7 +52,7 @@ const Shipment = () => {
                         })
                     ) ?? []
                 }
-                name="origen"
+                name="idCountry"
             />
             <ControlledDropdown
                 label="Proveedor"
@@ -64,11 +64,11 @@ const Shipment = () => {
                         })
                     ) ?? []
                 }
-                name="proveedor"
+                name="idSupplier"
             />
             <ControlledInput
                 label="Cantidad Total"
-                name="cantidadEmbarqueTotal"
+                name="quantity"
                 error={checkIfError("cantidadEmbarque")}
                 helperText={checkErrorMessage("cantidadEmbarque")}
             />
@@ -89,7 +89,7 @@ const Shipment = () => {
                 />
             </div>
             {!allCombosShareShipment &&
-                combos.map((value, index) => (
+                telas.map((value, index) => (
                     <ShipmentCombo key={index} comboNumber={index + 1} />
                 ))}
             {allCombosShareShipment && <ShipmentCombo comboNumber={1} />}

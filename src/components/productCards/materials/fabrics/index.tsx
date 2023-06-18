@@ -1,4 +1,11 @@
-import React, { ChangeEvent, useState, useRef, useEffect, FC } from "react";
+import React, {
+    ChangeEvent,
+    useState,
+    useRef,
+    useEffect,
+    FC,
+    useMemo,
+} from "react";
 import { v4 as uuid } from "uuid";
 import {
     ControlledDropdown,
@@ -66,20 +73,26 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     const existingQualityWrapper = useRef<HTMLElement>(null);
     const compositionSelect = useState(0);
     const [localColorList, setlocalColorList] = useState<OptionsType[]>([]);
+    const telasUpdatableObject = useMemo(
+        () => ({ ...telas[fabricNumber] }),
+        [telas]
+    );
 
     const [finalComboObject, setFinalComboObject] = useState<FabricCombo>({
         idFabric: "",
         description: "",
         consumption: 0,
         weight: 0,
-        idColor: 0,
-        idPrint: 0,
         placement: 0,
-        colorCount: 1,
         printDescription: "",
         composition: [],
         colors: [],
         prints: [],
+        idCountryDestination: 0,
+        entryDate: "",
+        warehouseEntryDate: "",
+        shippingDate: "",
+        idShipping: 0,
     });
 
     const openOptions = () => {
@@ -163,18 +176,22 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     };
 
     const handleCompositionSelect = (e) => {
-        const composition = {
-            idFiber: e,
-            percentage: 0,
-        };
-        const compositionCopy = [...finalComboObject.composition];
+        console.log(e);
+        if (e.target.value !== "") {
+            const composition = {
+                idFiber: e.target.value,
+                percentage: 0,
+            };
+            const compositionCopy = [...finalComboObject.composition];
 
-        compositionCopy.push(composition);
+            compositionCopy.push(composition);
 
-        setFinalComboObject((prevState) => ({
-            ...prevState,
-            composition: compositionCopy,
-        }));
+            setFinalComboObject((prevState) => ({
+                ...prevState,
+                idFabric: "0",
+                composition: compositionCopy,
+            }));
+        }
     };
 
     const handleQualityDisabled = (e) => {
@@ -211,7 +228,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                 return;
             }
         }
-        if (percentages + value < 100) {
+        if (percentages + value <= 100) {
             if (position < qualities.length) {
                 qualitiesCopy.splice(position, 1, value);
                 setQualities(qualitiesCopy);
@@ -302,8 +319,23 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
             setOption("solido");
             // dispatch(addTela({ fabricNumber, tela: finalComboObject }));
         }
-        dispatch(addTela({ fabricNumber, tela: finalComboObject }));
+        dispatch(
+            addTela({
+                fabricNumber,
+                tela: { ...telasUpdatableObject, ...finalComboObject },
+            })
+        );
     }, [finalComboObject]);
+
+    useEffect(() => {
+        setFinalComboObject((prevState) => ({
+            ...prevState,
+            composition: prevState.composition.map((fiber, index) => ({
+                ...fiber,
+                percentage: qualities[index + 1],
+            })),
+        }));
+    }, [qualities]);
 
     return (
         <>
@@ -419,17 +451,18 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                     : ""
                             }`}
                         >
-                            <SyledTextField
+                            <ControlledInput
                                 label="Nombre *"
+                                name="nombre"
                                 error={checkIfError("fabricDescription")}
                                 helperText={checkErrorMessage(
                                     "fabricDescription"
                                 )}
                                 onBlur={handleDescriptionBlur}
                             />
-                            <SyledTextField
+                            <ControlledInput
                                 label="peso (gr) *"
-                                // name="peso"
+                                name="peso"
                                 error={checkIfError("peso")}
                                 helperText={checkErrorMessage("peso")}
                                 onBlur={handleWeightBlur}
@@ -453,8 +486,13 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                         )}
                                         onBlur={handleCompositionSelect}
                                     />
-                                    <SyledTextField
+                                    <ControlledInput
                                         label="porcentaje *"
+                                        name={`porcentaje-${i}`}
+                                        disabled={
+                                            !finalComboObject.composition[i]
+                                        }
+                                        id={i}
                                         onBlur={handleQualityDisabled}
                                         error={checkIfError(`porcentaje-${i}`)}
                                         helperText={checkErrorMessage(
