@@ -632,9 +632,9 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                                         backgroundColor: `${
                                             colors?.find(
                                                 (color) =>
-                                                    color.Id ===
+                                                    Number(color.Id) ===
                                                     selectedColor.idColor
-                                            ).RGB
+                                            )?.RGB
                                         }`,
                                     }}
                                 ></Box>

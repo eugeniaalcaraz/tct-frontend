@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Button, Checkbox, FormControlLabel, Box } from "@mui/material";
 import { Container } from "./SizeCurveStyles";
 import { OptionsType } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
+import { addTelasArray } from "@/state/features/product";
 
 const sizes = [
     { Id: "XXS", Description: "XXS" },
@@ -18,6 +20,9 @@ const sizes = [
 
 const SizeCurve = () => {
     const [addSize, setAddSize] = useState<boolean>(false);
+    const { telas } = useAppSelector((state) => state.product);
+    const dispatch = useAppDispatch();
+
     const [selectedSizes, setSelectedSizes] = useState<OptionsType[]>([
         { Id: "XS", Description: "XS" },
         { Id: "S", Description: "S" },
@@ -25,6 +30,39 @@ const SizeCurve = () => {
         { Id: "L", Description: "L" },
         { Id: "XL", Description: "XL" },
     ]);
+
+    const [updatedSizeValues, setUpdatedSizeValues] = useState([
+        { Id: "XXS", value: "" },
+        { Id: "XS", value: "" },
+        { Id: "S", value: "" },
+        { Id: "M", value: "" },
+        { Id: "L", value: "" },
+        { Id: "XL", value: "" },
+        { Id: "XXL", value: "" },
+        { Id: "3XL", value: "" },
+        { Id: "4XL", value: "" },
+    ]);
+
+    const inputOnChange = ({
+        valueToUpdate,
+        id,
+    }: {
+        valueToUpdate: string;
+        id: string;
+    }) => {
+        console.log({ id, valueToUpdate });
+        setUpdatedSizeValues((prevState) => {
+            return prevState.map((sizeObj) => {
+                if (sizeObj.Id === id) {
+                    return {
+                        ...sizeObj,
+                        value: valueToUpdate,
+                    };
+                }
+                return sizeObj;
+            });
+        });
+    };
 
     const handleBlur = (e) => {
         setAddSize(false);
@@ -41,6 +79,51 @@ const SizeCurve = () => {
         return "hidden";
     };
 
+    const findIndex = (value, array) => {
+        return array.findIndex((obj) => obj.Id === value);
+    };
+
+    useEffect(() => {
+        setUpdatedSizeValues((prevState) => {
+            return prevState.map((size) => {
+                const selectedSize = selectedSizes.find(
+                    (sizeObj) => size.Id === sizeObj.Id
+                );
+                if (selectedSize) {
+                    return size;
+                }
+                return { ...size, value: "" };
+            });
+        });
+    }, [selectedSizes]);
+
+    const updateSizeCurveArray = (valueToUpdate, arrayTobeUpdated) => {
+        return arrayTobeUpdated.map((value) => ({
+            ...value,
+            sizeCurve: valueToUpdate,
+        }));
+    };
+
+    useEffect(() => {
+        const onlyNumberSizeCurveArr = updatedSizeValues.map((sizeObj) =>
+            Number(sizeObj.value)
+        );
+
+        const updatedTelasArray = telas.map((tela) => ({
+            ...tela,
+            colors:
+                tela.colors.length > 0
+                    ? updateSizeCurveArray(onlyNumberSizeCurveArr, tela.colors)
+                    : [],
+            prints:
+                tela.prints.length > 0
+                    ? updateSizeCurveArray(onlyNumberSizeCurveArr, tela.prints)
+                    : [],
+        }));
+
+        dispatch(addTelasArray(updatedTelasArray));
+    }, [updatedSizeValues]);
+
     return (
         <Container>
             <span className="label">Piezas por talle</span>
@@ -48,7 +131,22 @@ const SizeCurve = () => {
                 <span className="sizesBoxes">
                     {sizes.map(({ Id }) => (
                         <span key={Id} className={isIncludded(Id)}>
-                            <ControlledInput label={Id} name={Id} />
+                            <ControlledInput
+                                useFormhook={false}
+                                externalOnChange={(e) =>
+                                    inputOnChange({
+                                        valueToUpdate: e.target.value,
+                                        id: Id,
+                                    })
+                                }
+                                externalValue={
+                                    updatedSizeValues[
+                                        findIndex(Id, updatedSizeValues)
+                                    ]?.value
+                                }
+                                label={Id}
+                                name={Id}
+                            />
                         </span>
                     ))}
                 </span>
@@ -72,7 +170,7 @@ const SizeCurve = () => {
                 />
             </Box>
 
-            <Box className="packs">
+            {/* <Box className="packs">
                 <span className="label">Packs por caja</span>
                 <ControlledDropdown
                     label=""
@@ -85,11 +183,11 @@ const SizeCurve = () => {
                     ]}
                     name="packs"
                 />
-            </Box>
-            <FormControlLabel
+            </Box> */}
+            {/* <FormControlLabel
                 control={<Checkbox defaultChecked />}
                 label="Repetir curva para todos los embarques"
-            />
+            /> */}
         </Container>
     );
 };
