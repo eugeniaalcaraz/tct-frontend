@@ -88,17 +88,14 @@ const Shipment = () => {
                     }
                 />
             </div>
-            {/* TODO: chequear logica para cambiar entre input para todos los combos y para cada uno ya que estoy usando diferentes componentes */}
-            {!allCombosShareShipment &&
-                telas.map((value, index) => (
+            {(allCombosShareShipment ? Array.from(Array(1).keys()) : telas).map(
+                (value, index) => (
                     <ShipmentCombo
                         key={index}
                         comboNumber={index + 1}
-                        isForAllCombos={false}
+                        isForAllCombos={allCombosShareShipment}
                     />
-                ))}
-            {allCombosShareShipment && (
-                <ShipmentCombo comboNumber={1} isForAllCombos={true} />
+                )
             )}
         </Container>
     );
