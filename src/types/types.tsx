@@ -141,6 +141,12 @@ export type Product = {
     Tipo: string;
 };
 
+export type Avios = {
+    idAvio: number;
+    idColors: number[];
+    quantity: number;
+};
+
 export type PendingApprovals = {
     PercentegeAvios: number;
     PercentegeColorsAndPrints: number;

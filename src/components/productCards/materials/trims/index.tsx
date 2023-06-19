@@ -10,47 +10,37 @@ import { FabricContainer } from "../MaterialsStyles";
 
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { handleTrimCombos } from "@/state/features/product";
-
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 type TrimsProps = {
     trimNumber: number;
 };
 
 const Trims: FC<TrimsProps> = ({ trimNumber }) => {
-    const {
-        trims,
-        colors,
-        trimCombos1,
-        trimCombos2,
-        trimCombos3,
-        trimCombos4,
-        trimCombos5,
-        trimCombos6,
-        trimCombos7,
-        trimCombos8,
-        trimCombos9,
-        trimCombos10,
-        trimCombos11,
-        trimCombos12,
-        errors,
-    } = useAppSelector((state) => state.product);
+    const { trims, avios, colors, errors } = useAppSelector(
+        (state) => state.product
+    );
     const [open, setOpen] = useState<boolean>(false);
+    const [selectedIdColor, setSelectedIdColor] = useState("");
     const [trimColor, setTrimColor] = useState<number[]>([]);
+    const [quantity, setQuantity] = useState("");
+    const [idAvio, setIdAvio] = useState("");
     const dispatch = useAppDispatch();
 
-    const selectedTrim = {
-        1: trimCombos1,
-        2: trimCombos2,
-        3: trimCombos3,
-        4: trimCombos4,
-        5: trimCombos5,
-        6: trimCombos6,
-        7: trimCombos7,
-        8: trimCombos8,
-        9: trimCombos9,
-        10: trimCombos10,
-        11: trimCombos11,
-        12: trimCombos12,
-    };
+    // const selectedTrim = {
+    //     1: trimCombos1,
+    //     2: trimCombos2,
+    //     3: trimCombos3,
+    //     4: trimCombos4,
+    //     5: trimCombos5,
+    //     6: trimCombos6,
+    //     7: trimCombos7,
+    //     8: trimCombos8,
+    //     9: trimCombos9,
+    //     10: trimCombos10,
+    //     11: trimCombos11,
+    //     12: trimCombos12,
+    // };
 
     const openOptions = () => {
         setOpen((prevState) => !prevState);
@@ -61,13 +51,16 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
             dispatch(
                 handleTrimCombos({
                     trimComboNumber: trimNumber,
-                    trimCombo: { idTrimColor: String(trimColor[0]) },
+                    trimCombo: {
+                        idAvio: Number(idAvio),
+                        idColors: trimColor,
+                        quantity: Number(quantity),
+                    },
                 })
             );
             setTimeout(() => {
                 setOpen(false);
             }, 500);
-            setTrimColor([]);
         }
     };
 
@@ -107,12 +100,18 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                 label="Tipo"
                 options={trims ?? []}
                 name={`tipoAvio${trimNumber}`}
+                useFormHook={false}
+                externalOnChange={(e) => setIdAvio(e.value)}
+                selectedValue={idAvio}
             />
             <ControlledInput
                 label="Cantidad"
                 name={`cantidad${trimNumber}`}
                 error={checkIfError("cantidad")}
                 helperText={checkErrorMessage("cantidad")}
+                useFormhook={false}
+                externalOnChange={(e) => setQuantity(e.target.value)}
+                externalValue={quantity}
             />
 
             <Button
@@ -128,8 +127,12 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                     label="Color"
                     options={colors ?? []} // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    value={trimColor}
-                    onChange={(e) => setTrimColor(e)}
+                    value={selectedIdColor}
+                    multipleSelect={false}
+                    onChange={(e) => {
+                        setTrimColor((prevState) => [...prevState, e]);
+                        setSelectedIdColor(e);
+                    }}
                 />
 
                 <Button
@@ -141,17 +144,36 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                     + Agregar
                 </Button>
             </Box>
-            {selectedTrim[trimNumber] &&
-                selectedTrim[trimNumber].length > 0 && (
-                    <Box className="combos">
-                        {selectedTrim[trimNumber].map((combo, i) => (
-                            <Box key={uuid()} className="combo">
-                                <span>Combo {i + 1}</span>
-                                <Box className="solid"></Box>
-                            </Box>
-                        ))}
-                    </Box>
-                )}
+
+            {avios[trimNumber] && (
+                <Box className="combos">
+                    {avios[trimNumber].idColors.map((colorId, i) => (
+                        <Box key={colorId} className="combo">
+                            <div className="upper-container">
+                                Combo {i + 1}
+                                <IconButton
+                                    aria-label="delete"
+                                    // onClick={() =>
+                                    //     deleteCombo(selectedColor.idColor)
+                                    // }
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </div>
+                            <Box
+                                sx={{
+                                    backgroundColor: `${
+                                        colors?.find(
+                                            (color) =>
+                                                Number(color.Id) === colorId
+                                        )?.RGB
+                                    }`,
+                                }}
+                            ></Box>
+                        </Box>
+                    ))}
+                </Box>
+            )}
         </FabricContainer>
     );
 };

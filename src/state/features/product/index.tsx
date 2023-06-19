@@ -9,6 +9,7 @@ import {
     FabricCombo,
     Brands,
     ColorsStateType,
+    Avios,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
@@ -43,6 +44,7 @@ export interface productState {
     bodyFit: OptionsType[];
     status: { IdStatus: number; Description: string }[];
     allSeasons: AllSeasons[] | null;
+    avios: Avios[];
 }
 
 const initialState: productState = {
@@ -69,6 +71,7 @@ const initialState: productState = {
     lines: [],
     rises: [],
     bodyFit: [],
+    avios: [],
 };
 
 const productSlice = createSlice({
@@ -111,13 +114,11 @@ const productSlice = createSlice({
             state,
             action: PayloadAction<{
                 trimComboNumber: number;
-                trimCombo: { idTrimColor: string };
+                trimCombo: Avios;
             }>
         ) {
-            state[trimsCombos[action.payload.trimComboNumber]] = [
-                ...state[trimsCombos[action.payload.trimComboNumber]],
-                action.payload.trimComboNumber,
-            ];
+            state.avios[action.payload.trimComboNumber] =
+                action.payload.trimCombo;
         },
         clearTrimCombos(state) {
             // state.trimCombos1 = [];
