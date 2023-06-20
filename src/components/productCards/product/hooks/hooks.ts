@@ -4,6 +4,7 @@ export const initialProductState = {
     selectedYear: "",
     selectedTypology: "",
     selectedProductNumber: "",
+    selectedManagementUnit: "",
     finalNumber: "",
 };
 
@@ -58,6 +59,17 @@ export function productReducer(state, action) {
             return {
                 ...initialProductState,
                 selectedProductNumber: action.payload,
+                finalNumber:
+                    state.selectedBrand +
+                    state.selectedSeason +
+                    state.selectedYear +
+                    state.selectedTypology +
+                    action.payload,
+            };
+        case "setSelectedManagementUnit":
+            return {
+                ...initialProductState,
+                selectedManagementUnit: action.payload,
                 finalNumber:
                     state.selectedBrand +
                     state.selectedSeason +

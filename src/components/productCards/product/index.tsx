@@ -1,4 +1,4 @@
-import React, { useMemo, useReducer, useState } from "react";
+import React, { useEffect, useMemo, useReducer, useState } from "react";
 import { useAppSelector } from "@/state/app/hooks";
 import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ProductStyles";
@@ -15,6 +15,9 @@ import _ from "lodash";
 import { productReducer, initialProductState } from "./hooks/hooks";
 import { SyledTextField } from "@components/common/textInput/StyledTextField";
 import { Description } from "@mui/icons-material";
+import { useMutation } from "@tanstack/react-query";
+import { getMerchantIndustryDropdownValue } from "@/services/ProductRequests";
+import { OptionsType } from "@/types";
 
 const ProductCard = () => {
     const {
@@ -29,9 +32,13 @@ const ProductCard = () => {
         designers,
         errors,
     } = useAppSelector((state) => state.product);
+    const { idMerchant } = useAppSelector((state) => state.user);
+
     //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
     const [state, dispatch] = useReducer(productReducer, initialProductState);
-
+    const [rubros, setRubros] = useState<OptionsType>([
+        { Id: "", Description: "" },
+    ]);
     const [selectedHeading, setSelectedHeading] = useState("");
     // const [selectedBrand, setSelectedBrand] = useState("");
     // const [selectedSeason, setSelectedSeason] = useState("");
@@ -43,6 +50,12 @@ const ProductCard = () => {
         const currentYear = Number(dayjs().format("YY"));
         return _.range(currentYear, currentYear + 4);
     }, []);
+
+    const {
+        mutateAsync: getMerchantIndustryAsync,
+        isLoading: merchantIndustryIsLoading,
+        isError: merchantIndustryError,
+    } = useMutation(getMerchantIndustryDropdownValue);
 
     const generalPropsDropdowns = useMemo(
         () => [
@@ -81,11 +94,7 @@ const ProductCard = () => {
             {
                 label: "rubro *",
                 name: "rubro",
-                options:
-                    rubro?.map((season) => ({
-                        Id: season.Id,
-                        Description: season.Name,
-                    })) ?? [],
+                options: rubros,
             },
             {
                 label: "tipologia *",
@@ -93,7 +102,7 @@ const ProductCard = () => {
                 options: tipology ?? [],
             },
         ],
-        [seasons, tipology, managementUnit, rubro, yearsDropdownArr]
+        [seasons, tipology, managementUnit, rubros, yearsDropdownArr]
     );
 
     const specificPropsDropdowns = useMemo(
@@ -169,9 +178,25 @@ const ProductCard = () => {
         if (e.name === "tipologia") {
             dispatch({ type: "setSelectedTypology", payload: e.value });
         }
+        if (e.name === "unidadDeGestion") {
+            dispatch({ type: "setSelectedManagementUnit", payload: e.value });
+        }
     };
 
     const shouldEnableHeading = () => selectedHeading !== "Jean";
+
+    const getIndustriesDropdownValue = async () => {
+        const response = await getMerchantIndustryAsync({
+            idManagementUnit: state.selectedManagementUnit,
+            idMerchant,
+        });
+
+        return response;
+    };
+
+    useEffect(() => {
+        getIndustriesDropdownValue().then((response) => setRubros(response));
+    }, [state.selectedManagementUnit]);
 
     return (
         <Container>

@@ -31,6 +31,18 @@ export const getProducts = async ({
     }
 };
 
+export const getMerchantIndustryDropdownValue = async ({
+    idManagementUnit,
+    idMerchant,
+}) => {
+    const path = `${BASE_URL}/getMerchantIndustries/${idMerchant}/${idManagementUnit}`;
+    try {
+        return await getJsonRequest(path);
+    } catch (error) {
+        throw new Error(getErrorMessage(error));
+    }
+};
+
 export const getDropdownValues = async ({ card, idMerchant }) => {
     const query = getQuery(card);
 
