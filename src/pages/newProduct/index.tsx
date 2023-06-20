@@ -30,20 +30,15 @@ import { useForm } from "react-hook-form";
 const defaultValues = {
     idSeason: "",
     idTipology: "",
-    departamento: "",
-    ["diseñador"]: "",
-    origen: "",
-    proveedor: "",
-    destino: "",
-    calidad: "",
-    fabricDescription: "",
-    peso: "",
-    localizacion: "",
-    selectedSizes: ["XS", "S", "M", "L", "XL"],
+    // departamento: "",
+    // origen: "",
+    // proveedor: "",
+    // destino: "",
+    // calidad: "",
+    // localizacion: "",
     cantidadDeTelas: 1,
     cantidadDeAvios: 1,
-    proyecta: false,
-    mismoComboParaTodoEmbarque: true,
+    // margin: "",
 };
 
 const NewProduct = () => {
@@ -96,7 +91,7 @@ const NewProduct = () => {
     const product = {
         producto: <ProductCard />,
         adjuntos: <Attachments />,
-        compraYVenta: <Trading formMethods={methods} />,
+        // compraYVenta: <Trading formMethods={methods} />,
         embarque: <Shipment />,
         materiales: <Materials />,
         curvaDeTalles: <SizeCurve />,

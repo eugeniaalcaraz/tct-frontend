@@ -72,7 +72,7 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
         setBuying(0);
         setFinalPrice(0);
         setMargin(0);
-        formMethods.reset({ margen: "", costo: "", precioVenta: "" });
+        formMethods.reset({ margin: "", cost: "", precioVenta: "" });
     }, [pvpChecked]);
 
     return (
@@ -101,7 +101,7 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
             {pvpChecked ? (
                 <ControlledInput
                     label="Margen"
-                    name="margen"
+                    name="margin"
                     onBlur={(e) => setMargin(Number(e.target.value))}
                     error={checkIfError("precioVenta")}
                     helperText={checkErrorMessage("precioVenta")}

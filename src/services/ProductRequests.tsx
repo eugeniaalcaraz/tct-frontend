@@ -75,12 +75,14 @@ export const createProduct = async ({
         ? getBodyWithExitingQuality(formData, idMerchant)
         : getBody(formData, idMerchant);
 
-    try {
-        const response = await postJsonRequest(path, body);
-        return response;
-    } catch (error) {
-        throw new Error(getErrorMessage(error));
-    }
+    console.log({ body });
+
+    // try {
+    //     const response = await postJsonRequest(path, body);
+    //     return response;
+    // } catch (error) {
+    //     throw new Error(getErrorMessage(error));
+    // }
 };
 
 const getQuery = (card) => {
@@ -139,6 +141,7 @@ const getListingPath = (name) => {
 
 const getBodyWithExitingQuality = (formData, idMerchant) => {
     return {
+        // ...formData,
         idExistingProduct: "0",
         name: formData.nombreDelProducto,
         quantity: Number(formData.cantidadEmbarque),
@@ -149,81 +152,86 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
         idMeasurmentTable: 1,
         idCareLabel: "1",
         idSupplier: Number(formData.proveedor),
-        idDepartment: Number(formData.departamento),
-        sizeCurve: [
-            Number(formData["XXS"] ?? 0),
-            Number(formData["XS"] ?? 0),
-            Number(formData["S"] ?? 0),
-            Number(formData["M"] ?? 0),
-            Number(formData["L"] ?? 0),
-            Number(formData["XL"] ?? 0),
-            Number(formData["XXL"] ?? 0),
-            Number(formData["3XL"] ?? 0),
-            Number(formData["4XL"] ?? 0),
-        ],
+        // idDepartment: Number(formData.departamento),
+        // sizeCurve: [
+        //     Number(formData["XXS"] ?? 0),
+        //     Number(formData["XS"] ?? 0),
+        //     Number(formData["S"] ?? 0),
+        //     Number(formData["M"] ?? 0),
+        //     Number(formData["L"] ?? 0),
+        //     Number(formData["XL"] ?? 0),
+        //     Number(formData["XXL"] ?? 0),
+        //     Number(formData["3XL"] ?? 0),
+        //     Number(formData["4XL"] ?? 0),
+        // ],
         cost: Number(formData.costo),
         costInStore: Number(formData.precioVenta),
         idDesigner: Number(formData["diseñador"]),
         idSeason: Number(formData.temporada),
         idMerchant: Number(idMerchant),
         idShipping: String(formData.embarque),
-        idCountry: Number(formData.origen),
+        // idCountry: Number(formData.origen),
         idCountryDestination: Number(formData.destino),
         shippingDate: formData.fecha,
         idTipology: Number(formData.tipologia),
         pictures: [], // formData.fotos
-        fabrics:
-            formData.combos.length === 0
-                ? [
-                      {
-                          idFabric: Number(formData.calidad),
-                          description: "",
-                          weight: 0,
-                          idColor: 0,
-                          placement: Number(formData.localizacion),
-                          colorCount: 0,
-                          printDescription: "",
-                          composition: [],
-                      },
-                  ]
-                : formData.combos.map(({ fabric, colorAmount, name }) => ({
-                      idFabric: Number(formData.calidad),
-                      description: "",
-                      weight: 0,
-                      idColor: fabric === "solid" ? Number(name) : 0,
-                      placement: Number(formData.localizacion),
-                      colorCount:
-                          fabric === "printed" ? Number(colorAmount) : 0,
-                      printDescription: fabric === "printed" ? name : "",
-                      composition: Object.keys(formData)
-                          .filter(
-                              (key) =>
-                                  key.includes("composicion") &&
-                                  formData[key] &&
-                                  formData[`porcentaje-${key[key.length - 1]}`]
-                          )
-                          .map((composition) => ({
-                              idFiber: Number(formData[composition]),
-                              percentage: Number(
-                                  formData[
-                                      `porcentaje-${
-                                          composition[composition.length - 1]
-                                      }`
-                                  ]
-                              ),
-                          })),
-                  })),
+        // fabrics:
+        //     formData.combos.length === 0
+        //         ? [
+        //               {
+        //                   idFabric: Number(formData.calidad),
+        //                   description: "",
+        //                   weight: 0,
+        //                   idColor: 0,
+        //                   placement: Number(formData.localizacion),
+        //                   colorCount: 0,
+        //                   printDescription: "",
+        //                   composition: [],
+        //               },
+        //           ]
+        //         : formData.combos.map(({ fabric, colorAmount, name }) => ({
+        //               idFabric: Number(formData.calidad),
+        //               description: "",
+        //               weight: 0,
+        //               idColor: fabric === "solid" ? Number(name) : 0,
+        //               placement: Number(formData.localizacion),
+        //               colorCount:
+        //                   fabric === "printed" ? Number(colorAmount) : 0,
+        //               printDescription: fabric === "printed" ? name : "",
+        //               composition: Object.keys(formData)
+        //                   .filter(
+        //                       (key) =>
+        //                           key.includes("composicion") &&
+        //                           formData[key] &&
+        //                           formData[`porcentaje-${key[key.length - 1]}`]
+        //                   )
+        //                   .map((composition) => ({
+        //                       idFiber: Number(formData[composition]),
+        //                       percentage: Number(
+        //                           formData[
+        //                               `porcentaje-${
+        //                                   composition[composition.length - 1]
+        //                               }`
+        //                           ]
+        //                       ),
+        //                   })),
+        //           })),
 
-        avios: formData.trimCombos.map(({ idTrimColor }) => ({
-            idAvio: Number(formData.tipoAvio),
-            idColor: Number(idTrimColor ?? 1),
-            quantity: Number(formData.cantidad),
-        })),
+        // avios: formData.trimCombos.map(({ idTrimColor }) => ({
+        //     idAvio: Number(formData.tipoAvio),
+        //     idColor: Number(idTrimColor ?? 1),
+        //     quantity: Number(formData.cantidad),
+        // })),
+        idBodyFit: Number(formData.bodyfit),
+        idLine: Number(formData.idLine),
+        idRise: Number(formData.idRise),
     };
 };
 
 const getBody = (formData, idMerchant) => {
+    console.log({ formDataBody: formData });
     return {
+        // ...formData,
         idExistingProduct: "0",
         name: formData.nombreDelProducto,
         quantity: Number(formData.cantidadEmbarque),
@@ -234,95 +242,98 @@ const getBody = (formData, idMerchant) => {
         idMeasurmentTable: 1,
         idCareLabel: "1",
         idSupplier: Number(formData.proveedor),
-        idDepartment: Number(formData.departamento),
-        sizeCurve: [
-            Number(formData["XXS"] ?? 0),
-            Number(formData["XS"] ?? 0),
-            Number(formData["S"] ?? 0),
-            Number(formData["M"] ?? 0),
-            Number(formData["L"] ?? 0),
-            Number(formData["XL"] ?? 0),
-            Number(formData["XXL"] ?? 0),
-            Number(formData["3XL"] ?? 0),
-            Number(formData["4XL"] ?? 0),
-        ],
+        // idDepartment: Number(formData.departamento),
+        // sizeCurve: [
+        //     Number(formData["XXS"] ?? 0),
+        //     Number(formData["XS"] ?? 0),
+        //     Number(formData["S"] ?? 0),
+        //     Number(formData["M"] ?? 0),
+        //     Number(formData["L"] ?? 0),
+        //     Number(formData["XL"] ?? 0),
+        //     Number(formData["XXL"] ?? 0),
+        //     Number(formData["3XL"] ?? 0),
+        //     Number(formData["4XL"] ?? 0),
+        // ],
         cost: Number(formData.costo),
         costInStore: Number(formData.precioVenta),
-        idDesigner: Number(formData["diseñador"]),
+        // idDesigner: Number(formData["diseñador"]),
         idSeason: Number(formData.temporada),
         idMerchant: Number(idMerchant),
         idShipping: String(formData.embarque),
-        idCountry: Number(formData.origen),
-        idCountryDestination: Number(formData.destino),
-        shippingDate: formData.fecha,
+        // idCountry: Number(formData.origen),
+        // idCountryDestination: Number(formData.destino),
+        // shippingDate: formData.fecha,
         idTipology: Number(formData.tipologia),
         pictures: [], // formData.fotos
-        fabrics:
-            formData.combos.length === 0
-                ? [
-                      {
-                          idFabric: 0,
-                          description: formData.fabricDescription,
-                          weight: Number(formData.peso),
-                          idColor: 0,
-                          placement: Number(formData.localizacion),
-                          colorCount: 0,
-                          printDescription: "",
-                          composition: Object.keys(formData)
-                              .filter(
-                                  (key) =>
-                                      key.includes("composicion") &&
-                                      formData[key] &&
-                                      formData[
-                                          `porcentaje-${key[key.length - 1]}`
-                                      ]
-                              )
-                              .map((composition) => ({
-                                  idFiber: Number(formData[composition]),
-                                  percentage: Number(
-                                      formData[
-                                          `porcentaje-${
-                                              composition[
-                                                  composition.length - 1
-                                              ]
-                                          }`
-                                      ]
-                                  ),
-                              })),
-                      },
-                  ]
-                : formData.combos.map(({ fabric, colorAmount, name }) => ({
-                      idFabric: 0,
-                      description: formData.fabricDescription,
-                      weight: Number(formData.peso),
-                      idColor: fabric === "solid" ? Number(name) : 0,
-                      placement: Number(formData.localizacion),
-                      colorCount:
-                          fabric === "printed" ? Number(colorAmount) : 0,
-                      printDescription: fabric === "printed" ? name : "",
-                      composition: Object.keys(formData)
-                          .filter(
-                              (key) =>
-                                  key.includes("composicion") &&
-                                  formData[key] &&
-                                  formData[`porcentaje-${key[key.length - 1]}`]
-                          )
-                          .map((composition) => ({
-                              idFiber: Number(formData[composition]),
-                              percentage: Number(
-                                  formData[
-                                      `porcentaje-${
-                                          composition[composition.length - 1]
-                                      }`
-                                  ]
-                              ),
-                          })),
-                  })),
+        // fabrics:
+        //     formData.combos.length === 0
+        //         ? [
+        //               {
+        //                   idFabric: 0,
+        //                   description: formData.fabricDescription,
+        //                   weight: Number(formData.peso),
+        //                   idColor: 0,
+        //                   placement: Number(formData.localizacion),
+        //                   colorCount: 0,
+        //                   printDescription: "",
+        //                   composition: Object.keys(formData)
+        //                       .filter(
+        //                           (key) =>
+        //                               key.includes("composicion") &&
+        //                               formData[key] &&
+        //                               formData[
+        //                                   `porcentaje-${key[key.length - 1]}`
+        //                               ]
+        //                       )
+        //                       .map((composition) => ({
+        //                           idFiber: Number(formData[composition]),
+        //                           percentage: Number(
+        //                               formData[
+        //                                   `porcentaje-${
+        //                                       composition[
+        //                                           composition.length - 1
+        //                                       ]
+        //                                   }`
+        //                               ]
+        //                           ),
+        //                       })),
+        //               },
+        //           ]
+        //         : formData.combos.map(({ fabric, colorAmount, name }) => ({
+        //               idFabric: 0,
+        //               description: formData.fabricDescription,
+        //               weight: Number(formData.peso),
+        //               idColor: fabric === "solid" ? Number(name) : 0,
+        //               placement: Number(formData.localizacion),
+        //               colorCount:
+        //                   fabric === "printed" ? Number(colorAmount) : 0,
+        //               printDescription: fabric === "printed" ? name : "",
+        //               composition: Object.keys(formData)
+        //                   .filter(
+        //                       (key) =>
+        //                           key.includes("composicion") &&
+        //                           formData[key] &&
+        //                           formData[`porcentaje-${key[key.length - 1]}`]
+        //                   )
+        //                   .map((composition) => ({
+        //                       idFiber: Number(formData[composition]),
+        //                       percentage: Number(
+        //                           formData[
+        //                               `porcentaje-${
+        //                                   composition[composition.length - 1]
+        //                               }`
+        //                           ]
+        //                       ),
+        //                   })),
+        //           })),
 
-        avios: formData.trimCombos.map(({ idTrimColor }) => ({
-            idAvio: Number(formData.tipoAvio),
-            idColor: Number(idTrimColor ?? 1),
-            quantity: Number(formData.cantidad),
-        })),
+        // avios: formData.trimCombos.map(({ idTrimColor }) => ({
+        //     idAvio: Number(formData.tipoAvio),
+        //     idColor: Number(idTrimColor ?? 1),
+        //     quantity: Number(formData.cantidad),
+        // })),
+        idBodyFit: Number(formData.bodyfit),
+        idLine: Number(formData.idLine),
+        idRise: Number(formData.idRise),
     };
 };

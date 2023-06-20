@@ -22,7 +22,7 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
     );
     const [open, setOpen] = useState<boolean>(false);
     const [selectedIdColor, setSelectedIdColor] = useState("");
-    const [trimColor, setTrimColor] = useState<number[]>([]);
+    const [trimColor, setTrimColor] = useState<number>(0);
     const [quantity, setQuantity] = useState("");
     const [idAvio, setIdAvio] = useState("");
     const dispatch = useAppDispatch();
@@ -47,21 +47,19 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
     };
 
     const addCombo = () => {
-        if (trimColor.length > 0) {
-            dispatch(
-                handleTrimCombos({
-                    trimComboNumber: trimNumber,
-                    trimCombo: {
-                        idAvio: Number(idAvio),
-                        idColors: trimColor,
-                        quantity: Number(quantity),
-                    },
-                })
-            );
-            setTimeout(() => {
-                setOpen(false);
-            }, 500);
-        }
+        dispatch(
+            handleTrimCombos({
+                trimComboNumber: trimNumber,
+                trimCombo: {
+                    idAvio: Number(idAvio),
+                    idColor: trimColor,
+                    quantity: Number(quantity),
+                },
+            })
+        );
+        setTimeout(() => {
+            setOpen(false);
+        }, 500);
     };
 
     const checkIfError = (name) => {
@@ -130,7 +128,7 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                     value={selectedIdColor}
                     multipleSelect={false}
                     onChange={(e) => {
-                        setTrimColor((prevState) => [...prevState, e]);
+                        setTrimColor(e);
                         setSelectedIdColor(e);
                     }}
                 />
@@ -145,33 +143,32 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                 </Button>
             </Box>
 
-            {avios[trimNumber] && (
+            {avios[trimNumber]?.idColor !== 0 && (
                 <Box className="combos">
-                    {avios[trimNumber].idColors.map((colorId, i) => (
-                        <Box key={colorId} className="combo">
-                            <div className="upper-container">
-                                Combo {i + 1}
-                                <IconButton
-                                    aria-label="delete"
-                                    // onClick={() =>
-                                    //     deleteCombo(selectedColor.idColor)
-                                    // }
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </div>
-                            <Box
-                                sx={{
-                                    backgroundColor: `${
-                                        colors?.find(
-                                            (color) =>
-                                                Number(color.Id) === colorId
-                                        )?.RGB
-                                    }`,
-                                }}
-                            ></Box>
-                        </Box>
-                    ))}
+                    <Box className="combo">
+                        <div className="upper-container">
+                            Combo
+                            <IconButton
+                                aria-label="delete"
+                                // onClick={() =>
+                                //     deleteCombo(selectedColor.idColor)
+                                // }
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </div>
+                        <Box
+                            sx={{
+                                backgroundColor: `${
+                                    colors?.find(
+                                        (color) =>
+                                            Number(color.Id) ===
+                                            avios[trimNumber]?.idColor
+                                    )?.RGB
+                                }`,
+                            }}
+                        ></Box>
+                    </Box>
                 </Box>
             )}
         </FabricContainer>

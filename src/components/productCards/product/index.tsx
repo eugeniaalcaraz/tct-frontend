@@ -247,7 +247,7 @@ const ProductCard = () => {
                 label="Descripción"
                 multiline
                 rows={4}
-                name="descripcion"
+                name="detail"
                 error={checkIfError("descripcion")}
                 helperText={checkErrorMessage("descripcion")}
             />

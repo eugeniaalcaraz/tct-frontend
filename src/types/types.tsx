@@ -143,7 +143,7 @@ export type Product = {
 
 export type Avios = {
     idAvio: number;
-    idColors: number[];
+    idColor: number;
     quantity: number;
 };
 
