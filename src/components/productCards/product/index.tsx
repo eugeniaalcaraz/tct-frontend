@@ -10,7 +10,10 @@ import { productReducer, initialProductState } from "./hooks/hooks";
 import { SyledTextField } from "@components/common/textInput/StyledTextField";
 import { Description } from "@mui/icons-material";
 import { useMutation } from "@tanstack/react-query";
-import { getMerchantIndustryDropdownValue } from "@/services/ProductRequests";
+import {
+    getMerchantIndustryDropdownValue,
+    getMerchantTypologyDropdownValue,
+} from "@/services/ProductRequests";
 import { OptionsType } from "@/types";
 
 const ProductCard = () => {
@@ -21,7 +24,6 @@ const ProductCard = () => {
         lines,
         rises,
         bodyFit,
-        tipology,
         managementUnit,
         designers,
         errors,
@@ -31,6 +33,9 @@ const ProductCard = () => {
     //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
     const [state, dispatch] = useReducer(productReducer, initialProductState);
     const [rubros, setRubros] = useState<OptionsType[]>([
+        { Id: "", Description: "" },
+    ]);
+    const [tipology, setTipology] = useState<OptionsType[]>([
         { Id: "", Description: "" },
     ]);
     const [selectedHeading, setSelectedHeading] = useState("");
@@ -46,11 +51,19 @@ const ProductCard = () => {
         isError: merchantIndustryError,
     } = useMutation(getMerchantIndustryDropdownValue);
 
+    const {
+        mutateAsync: getMerchantTipologyAsync,
+        isLoading: merchantIsTipologyLoading,
+        isError: merchantTipologyError,
+    } = useMutation(getMerchantTypologyDropdownValue);
+
+    //getMerchantTypologyDropdownValue
+
     const generalPropsDropdowns = useMemo(
         () => [
             {
                 label: "marca *",
-                name: "marca",
+                name: "idMerchantBrand",
                 options:
                     brands?.map((brand) => ({
                         Id: brand.Id,
@@ -77,12 +90,12 @@ const ProductCard = () => {
             },
             {
                 label: "unidad de gestion",
-                name: "unidadDeGestion",
+                name: "idDepartment",
                 options: managementUnit ?? [],
             },
             {
                 label: "rubro *",
-                name: "rubro",
+                name: "idIndustry",
                 options: rubros,
             },
             {
@@ -150,6 +163,8 @@ const ProductCard = () => {
     };
 
     const dropdownOnSelect = (e) => {
+        console.log({ name: e.name });
+
         if (e.name === "rubro") {
             setSelectedHeading(
                 String(
@@ -158,20 +173,23 @@ const ProductCard = () => {
                 ) ?? ""
             );
         }
-        if (e.name === "marca") {
+        if (e.name === "idMerchantBrand") {
             dispatch({ type: "setSelectedBrand", payload: e.value });
         }
-        if (e.name === "temporada") {
+        if (e.name === "idSeason") {
             dispatch({ type: "setSelectedSeason", payload: e.value });
         }
-        if (e.name === "año") {
+        if (e.name === "year") {
             dispatch({ type: "setSelectedYear", payload: e.value });
         }
-        if (e.name === "tipologia") {
-            dispatch({ type: "setSelectedTypology", payload: e.value });
+        if (e.name === "idTipology") {
+            dispatch({ type: "setSelectedTipology", payload: e.value });
         }
-        if (e.name === "unidadDeGestion") {
+        if (e.name === "idDepartment") {
             dispatch({ type: "setSelectedManagementUnit", payload: e.value });
+        }
+        if (e.name === "idIndustry") {
+            dispatch({ type: "setSelectedIndustry", payload: e.value });
         }
     };
 
@@ -186,6 +204,15 @@ const ProductCard = () => {
         return response;
     };
 
+    const getTipologyDropdownValue = async () => {
+        const response = await getMerchantTipologyAsync({
+            idIndustry: state.selectedIndustry,
+            idMerchant,
+        });
+
+        return response;
+    };
+
     useEffect(() => {
         if (state.selectedManagementUnit !== "") {
             getIndustriesDropdownValue().then((response) =>
@@ -193,6 +220,14 @@ const ProductCard = () => {
             );
         }
     }, [state.selectedManagementUnit]);
+
+    useEffect(() => {
+        if (state.selectedIndustry !== "") {
+            getTipologyDropdownValue().then((response) =>
+                setTipology(response)
+            );
+        }
+    }, [state.selectedIndustry]);
 
     return (
         <Container>

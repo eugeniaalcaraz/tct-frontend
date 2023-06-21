@@ -43,7 +43,7 @@ const defaultValues = {
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { telas } = useAppSelector((state) => state.product);
+    const { telas, avios } = useAppSelector((state) => state.product);
     const resolver = yupResolver(productValidation);
     const methods = useForm({ defaultValues });
 
@@ -59,7 +59,7 @@ const NewProduct = () => {
     const onSave = async (formData) => {
         console.log({ formData });
 
-        const formattedDate = formData.fecha.format("YYYY-MM-DD");
+        // const formattedDate = formData.fecha.format("YYYY-MM-DD");
         let fotos;
 
         if (formData.fotos) {
@@ -77,9 +77,9 @@ const NewProduct = () => {
         createProdAsync({
             formData: {
                 ...formData,
-                fecha: formattedDate,
                 fotos,
                 telas,
+                avios,
             },
             idMerchant,
             existingQuality: formData.existingQuality,

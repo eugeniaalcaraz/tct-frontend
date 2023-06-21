@@ -2,82 +2,78 @@ export const initialProductState = {
     selectedBrand: "",
     selectedSeason: "",
     selectedYear: "",
-    selectedTypology: "",
+    selectedTipology: "",
     selectedProductNumber: "",
     selectedManagementUnit: "",
+    selectedIndustry: "",
     finalNumber: "",
 };
+
+//IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
 
 export function productReducer(state, action) {
     switch (action.type) {
         case "setSelectedBrand":
-            console.log(state);
             return {
-                ...initialProductState,
+                ...state,
                 selectedBrand: action.payload,
-                finalNumber:
-                    action.payload +
-                    state.selectedSeason +
-                    state.selectedYear +
-                    state.selectedTypology +
-                    state.selectedProductNumber,
+                finalNumber: `${action.payload}
+                    ${state.selectedSeason} 
+                    ${state.selectedYear} 
+                    ${state.selectedTipology} 
+                    ${state.selectedProductNumber}`,
             };
         case "setSelectedSeason":
             return {
-                ...initialProductState,
+                ...state,
                 selectedSeason: action.payload,
-                finalNumber:
-                    state.selectedBrand +
-                    action.payload +
-                    state.selectedYear +
-                    state.selectedTypology +
-                    state.selectedProductNumber,
+                finalNumber: `${state.selectedBrand} 
+                ${action.payload} 
+                ${state.selectedYear} 
+                ${state.selectedTipology} 
+                ${state.selectedProductNumber}`,
             };
         case "setSelectedYear":
             return {
-                ...initialProductState,
+                ...state,
                 selectedYear: action.payload,
-                finalNumber:
-                    state.selectedBrand +
-                    state.selectedSeason +
-                    action.payload +
-                    state.selectedTypology +
-                    state.selectedProductNumber,
+                finalNumber: `${state.selectedBrand} 
+                ${state.selectedSeason}
+                ${action.payload} 
+                ${state.selectedTipology} 
+                ${state.selectedProductNumber}`,
             };
-        case "setSelectedTypology":
+        case "setSelectedTipology":
             return {
-                ...initialProductState,
+                ...state,
                 selectedTypology: action.payload,
-                finalNumber:
-                    state.selectedBrand +
-                    state.selectedSeason +
-                    state.selectedYear +
-                    action.payload +
-                    state.selectedProductNumber,
+                finalNumber: `${state.selectedBrand} 
+                    ${state.selectedSeason} 
+                    ${state.selectedYear} 
+                    ${action.payload} 
+                    ${state.selectedProductNumber}`,
             };
         case "setSelectedProductNumber":
             return {
-                ...initialProductState,
+                ...state,
                 selectedProductNumber: action.payload,
-                finalNumber:
-                    state.selectedBrand +
-                    state.selectedSeason +
-                    state.selectedYear +
-                    state.selectedTypology +
-                    action.payload,
+                finalNumber: `${state.selectedBrand} 
+                    ${state.selectedSeason} 
+                    ${state.selectedYear} 
+                    ${state.selectedTypology} 
+                    ${action.payload}`,
             };
         case "setSelectedManagementUnit":
             return {
-                ...initialProductState,
+                ...state,
                 selectedManagementUnit: action.payload,
-                finalNumber:
-                    state.selectedBrand +
-                    state.selectedSeason +
-                    state.selectedYear +
-                    state.selectedTypology +
-                    action.payload,
+            };
+        case "setSelectedIndustry":
+            return {
+                ...state,
+                selectedIndustry: action.payload,
             };
         default:
-            throw new Error();
+            console.error("no type of action found");
     }
 }
