@@ -91,7 +91,7 @@ const NewProduct = () => {
     const product = {
         producto: <ProductCard />,
         adjuntos: <Attachments />,
-        // compraYVenta: <Trading formMethods={methods} />,
+        compraYVenta: <Trading formMethods={methods} />,
         embarque: <Shipment />,
         materiales: <Materials />,
         curvaDeTalles: <SizeCurve />,

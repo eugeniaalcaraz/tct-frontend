@@ -72,7 +72,7 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
         setBuying(0);
         setFinalPrice(0);
         setMargin(0);
-        formMethods.reset({ margin: "", cost: "", precioVenta: "" });
+        // formMethods.reset({ margin: "", cost: "", precioVenta: "" });
     }, [pvpChecked]);
 
     return (

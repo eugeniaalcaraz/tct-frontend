@@ -3,13 +3,7 @@ import { useAppSelector } from "@/state/app/hooks";
 import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ProductStyles";
 import { ControlledCheckbox } from "@components/common/form/controlledCheckbox";
-import {
-    brandsArr,
-    rubro,
-    concepto,
-    tiro,
-    linea,
-} from "@assets/mockedData/mockedData";
+
 import dayjs from "dayjs";
 import _ from "lodash";
 import { productReducer, initialProductState } from "./hooks/hooks";
@@ -36,15 +30,10 @@ const ProductCard = () => {
 
     //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
     const [state, dispatch] = useReducer(productReducer, initialProductState);
-    const [rubros, setRubros] = useState<OptionsType>([
+    const [rubros, setRubros] = useState<OptionsType[]>([
         { Id: "", Description: "" },
     ]);
     const [selectedHeading, setSelectedHeading] = useState("");
-    // const [selectedBrand, setSelectedBrand] = useState("");
-    // const [selectedSeason, setSelectedSeason] = useState("");
-    // const [selectedYear, setSelectedYear] = useState("");
-    // const [selectedTypology, setSelectedTypology] = useState("");
-    // const [selectedproductNumber, setSelectedproductNumber] = useState("");
 
     const yearsDropdownArr = useMemo(() => {
         const currentYear = Number(dayjs().format("YY"));
@@ -163,7 +152,10 @@ const ProductCard = () => {
     const dropdownOnSelect = (e) => {
         if (e.name === "rubro") {
             setSelectedHeading(
-                rubro.find((element) => element.id === e.value) ?? ""
+                String(
+                    rubros.find((element) => element.Id === e.value)
+                        ?.Description
+                ) ?? ""
             );
         }
         if (e.name === "marca") {
@@ -195,7 +187,11 @@ const ProductCard = () => {
     };
 
     useEffect(() => {
-        getIndustriesDropdownValue().then((response) => setRubros(response));
+        if (state.selectedManagementUnit !== "") {
+            getIndustriesDropdownValue().then((response) =>
+                setRubros(response)
+            );
+        }
     }, [state.selectedManagementUnit]);
 
     return (

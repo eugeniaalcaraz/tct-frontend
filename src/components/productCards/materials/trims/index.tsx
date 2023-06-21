@@ -143,7 +143,7 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                 </Button>
             </Box>
 
-            {avios[trimNumber]?.idColor !== 0 && (
+            {avios[trimNumber]?.idColor && (
                 <Box className="combos">
                     <Box className="combo">
                         <div className="upper-container">
