@@ -38,6 +38,7 @@ const defaultValues = {
     // localizacion: "",
     cantidadDeTelas: 1,
     cantidadDeAvios: 1,
+    proyecta: false,
     // margin: "",
 };
 

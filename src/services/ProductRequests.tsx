@@ -160,13 +160,17 @@ const getListingPath = (name) => {
 };
 
 const getBodyWithExitingQuality = (formData, idMerchant) => {
-    return {
+    delete formData.cantidadDeAvios;
+    delete formData.cantidadDeTelas;
+
+    const finalObj = {
         ...formData,
+        idMerchant,
         idExistingProduct: "0",
+        name: formData.nombre,
         quantity: Number(formData.quantity),
         sizeCurveType: 1, //TODO: sacar estos datos desde el ui
         idSizeCurve: 1, //TODO: sacar estos datos desde el ui
-        proyecta: false, //TODO: sacar estos datos desde el ui
         idMeasurmentTable: 1, //TODO: sacar estos datos desde el ui
         idSupplier: 1, //TODO: sacar estos datos desde el ui
         idModeling: 1,
@@ -174,23 +178,33 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
         costInStore: Number(formData.precioVenta),
         pictures: [], // formData.fotos
     };
+
+    delete finalObj.nombre;
+    return finalObj;
 };
 
 const getBody = (formData, idMerchant) => {
     console.log({ formDataBody: formData });
 
-    return {
+    delete formData.cantidadDeAvios;
+    delete formData.cantidadDeTelas;
+
+    const finalObj = {
         ...formData,
+        idMerchant,
         idExistingProduct: "0",
+        name: formData.nombre,
+        quantity: Number(formData.quantity),
         sizeCurveType: 1, //TODO: sacar estos datos desde el ui
         idSizeCurve: 1, //TODO: sacar estos datos desde el ui
-        proyecta: false, //TODO: sacar estos datos desde el ui
         idMeasurmentTable: 1, //TODO: sacar estos datos desde el ui
         idSupplier: 1, //TODO: sacar estos datos desde el ui
-        quantity: Number(formData.quantity),
         idModeling: 1,
         cost: Number(formData.cost),
         costInStore: Number(formData.precioVenta),
         pictures: [], // formData.fotos
     };
+
+    delete finalObj.nombre;
+    return finalObj;
 };

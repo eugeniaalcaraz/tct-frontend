@@ -277,7 +277,7 @@ const ProductCard = () => {
             <div>
                 <ControlledInput
                     label="Nombre del producto *"
-                    name="name"
+                    name="nombre"
                     error={checkIfError("nombreDelProducto")}
                     helperText={checkErrorMessage("nombreDelProducto")}
                 />
@@ -287,6 +287,7 @@ const ProductCard = () => {
                 <ControlledInput
                     label="Numero"
                     name="numero"
+                    useFormhook={false}
                     disabled={true}
                     defaultValue={"test Numero"}
                     readOnly={true}
