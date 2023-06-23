@@ -46,7 +46,7 @@ export function productReducer(state, action) {
         case "setSelectedTipology":
             return {
                 ...state,
-                selectedTypology: action.payload,
+                selectedTipology: action.payload,
                 finalNumber: `${state.selectedBrand} 
                     ${state.selectedSeason} 
                     ${state.selectedYear} 
@@ -60,7 +60,7 @@ export function productReducer(state, action) {
                 finalNumber: `${state.selectedBrand} 
                     ${state.selectedSeason} 
                     ${state.selectedYear} 
-                    ${state.selectedTypology} 
+                    ${state.selectedTipology} 
                     ${action.payload}`,
             };
         case "setSelectedManagementUnit":

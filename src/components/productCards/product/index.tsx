@@ -113,24 +113,32 @@ const ProductCard = () => {
                 label: "Concepto",
                 name: "idConcept",
                 options: concepts ?? [],
+                disable: false,
             },
             {
                 label: "Línea",
                 name: "idLine",
                 options: lines ?? [],
+                disable: false,
             },
             {
                 label: "Body Fit",
                 name: "idBodyFit",
                 options: bodyFit ?? [],
+                disable: false,
             },
             {
                 label: "Tiro (Exclusivo Jean)",
                 name: "idRise",
                 options: rises ?? [],
+                disable:
+                    state.selectedTipology !==
+                    tipology.find((tipo) =>
+                        (tipo.Description as string).includes("Jean")
+                    )?.Id,
             },
         ],
-        [concepts, lines, bodyFit, rises]
+        [concepts, lines, bodyFit, rises, state.selectedTipology]
     );
 
     const checkIfError = (name) => {
@@ -193,7 +201,7 @@ const ProductCard = () => {
         }
     };
 
-    const shouldEnableHeading = () => selectedHeading !== "Jean";
+    const shouldEnableHeading = () => state.selectedIndustry !== 3;
 
     const getIndustriesDropdownValue = async () => {
         const response = await getMerchantIndustryAsync({
@@ -256,7 +264,7 @@ const ProductCard = () => {
                     }}
                 />
             </div>
-            {specificPropsDropdowns.map(({ name, label, options }) => {
+            {specificPropsDropdowns.map(({ name, label, options, disable }) => {
                 return (
                     <ControlledDropdown
                         key={name}
@@ -266,9 +274,7 @@ const ProductCard = () => {
                         options={options}
                         name={name}
                         error={checkIfError(name)}
-                        disabled={
-                            name === "tiro" ? shouldEnableHeading() : false
-                        }
+                        disabled={disable}
                         helperText={checkErrorMessage(name)}
                     />
                 );
