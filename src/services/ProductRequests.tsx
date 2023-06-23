@@ -43,11 +43,8 @@ export const getMerchantIndustryDropdownValue = async ({
     }
 };
 
-export const getMerchantTypologyDropdownValue = async ({
-    idIndustry,
-    idMerchant,
-}) => {
-    const path = `${BASE_URL}/getTipologies/${idMerchant}/${idIndustry}`;
+export const getMerchantTypologyDropdownValue = async ({ idIndustry }) => {
+    const path = `${BASE_URL}/getTipologies/${idIndustry}`;
     try {
         return await getJsonRequest(path);
     } catch (error) {
@@ -160,51 +157,66 @@ const getListingPath = (name) => {
 };
 
 const getBodyWithExitingQuality = (formData, idMerchant) => {
-    delete formData.cantidadDeAvios;
-    delete formData.cantidadDeTelas;
-
     const finalObj = {
         ...formData,
-        idMerchant,
+        idMerchant: Number(idMerchant),
         idExistingProduct: "0",
         name: formData.nombre,
         quantity: Number(formData.quantity),
         sizeCurveType: 1, //TODO: sacar estos datos desde el ui
         idSizeCurve: 1, //TODO: sacar estos datos desde el ui
         idMeasurmentTable: 1, //TODO: sacar estos datos desde el ui
-        idSupplier: 1, //TODO: sacar estos datos desde el ui
+        idDesigner: 1, //TODO: sacar estos datos desde el ui,
+        idShoeMaterial: 1, //TODO: sacar estos datos desde el ui,
+        extendedSize: 0, //TODO: sacar estos datos desde el ui,
         idModeling: 1,
+        idCountry: Number(formData.idCountry),
         cost: Number(formData.cost),
         costInStore: Number(formData.precioVenta),
-        pictures: [], // formData.fotos
+        pictures: formData.fotos, // formData.fotos
     };
 
     delete finalObj.nombre;
+    delete finalObj.precioVenta;
+    delete finalObj.cantidadDeAvios;
+    delete finalObj.cantidadDeTelas;
+    delete finalObj.peso;
+    delete finalObj["porcentaje-0"];
+    delete finalObj.fotos;
+    delete finalObj.nombreNuevoFabric;
     return finalObj;
 };
 
 const getBody = (formData, idMerchant) => {
     console.log({ formDataBody: formData });
 
-    delete formData.cantidadDeAvios;
-    delete formData.cantidadDeTelas;
-
     const finalObj = {
         ...formData,
-        idMerchant,
+        idDesigner: 1, //TODO: sacar estos datos desde el ui
+        idMerchant: Number(idMerchant),
         idExistingProduct: "0",
         name: formData.nombre,
         quantity: Number(formData.quantity),
         sizeCurveType: 1, //TODO: sacar estos datos desde el ui
         idSizeCurve: 1, //TODO: sacar estos datos desde el ui
         idMeasurmentTable: 1, //TODO: sacar estos datos desde el ui
-        idSupplier: 1, //TODO: sacar estos datos desde el ui
+        idShoeMaterial: 1, //TODO: sacar estos datos desde el ui,
+        extendedSize: 0, //TODO: sacar estos datos desde el ui,
         idModeling: 1,
+        idCountry: Number(formData.idCountry),
         cost: Number(formData.cost),
         costInStore: Number(formData.precioVenta),
-        pictures: [], // formData.fotos
+        pictures: formData.fotos, // formData.fotos
     };
 
     delete finalObj.nombre;
+    delete finalObj.precioVenta;
+    delete finalObj.cantidadDeAvios;
+    delete finalObj.cantidadDeTelas;
+    delete finalObj.peso;
+    delete finalObj["porcentaje-0"];
+    delete finalObj.fotos;
+    delete finalObj.nombreNuevoFabric;
+
     return finalObj;
 };

@@ -73,6 +73,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     const existingQualityWrapper = useRef<HTMLElement>(null);
     const compositionSelect = useState(0);
     const [localColorList, setlocalColorList] = useState<OptionsType[]>([]);
+    const [consumption, setConsumption] = useState("");
     const telasUpdatableObject = useMemo(
         () => ({ ...telas[fabricNumber] }),
         [telas]
@@ -143,8 +144,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
     };
 
     const setLocalComboArray = () => {
-        if (option === "solido") {
-            //TODO: un vez q se sepa de donde sale el color del id, implementar logica de color solido
+        if (option === "solido" && solidColorName !== 0) {
             const tempSolidColorObj: ColorCombo = {
                 idColor: solidColorName,
                 sizeCurve: [],
@@ -162,17 +162,19 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         }
 
         //setting printObjetct on array
-        const tempLocalPrintObject: PrintCombo = {
-            nombre: printName,
-            cantidadColor: colorAmount,
-            sizeCurve: [],
-        };
 
-        setFinalComboObject((prevState) => ({
-            ...prevState,
-            prints: [...prevState.prints, tempLocalPrintObject],
-        }));
-        //TODO: CHEQUEAR ESTA LOGICA PARA LIMPAR ESTADOS DE INPUTS
+        if (printName !== "" && colorAmount !== 0) {
+            const tempLocalPrintObject: PrintCombo = {
+                nombre: printName,
+                cantidadColor: colorAmount,
+                sizeCurve: [],
+            };
+
+            setFinalComboObject((prevState) => ({
+                ...prevState,
+                prints: [...prevState.prints, tempLocalPrintObject],
+            }));
+        }
     };
 
     const handleCompositionSelect = (e) => {
@@ -345,6 +347,18 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
         }));
     }, [qualities]);
 
+    useEffect(() => {
+        setFinalComboObject((prevState) => ({
+            ...prevState,
+            weight: 0,
+            description: "",
+            composition: [],
+            idFabric: "",
+        }));
+        setCompOfSelectedQuality([]);
+        setSelectedQuality("");
+    }, [existingQuality]);
+
     return (
         <>
             <FormControl className="radios">
@@ -461,7 +475,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                         >
                             <ControlledInput
                                 label="Nombre *"
-                                name="nombre"
+                                name="nombreNuevoFabric"
                                 error={checkIfError("fabricDescription")}
                                 helperText={checkErrorMessage(
                                     "fabricDescription"
@@ -529,12 +543,13 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
                 <ControlledInput
                     label="Consumo"
                     useFormhook={false}
-                    externalValue={String(finalComboObject.consumption)}
+                    externalValue={consumption}
                     name={`consumoCalidad${currentFabricNumber}`}
-                    externalOnChange={(e) =>
+                    externalOnChange={(e) => setConsumption(e.target.value)}
+                    onBlur={() =>
                         setFinalComboObject((prevObject) => ({
                             ...prevObject,
-                            consumption: Number(e.target.value),
+                            consumption: Number(consumption),
                         }))
                     }
                 />

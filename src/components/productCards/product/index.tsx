@@ -207,7 +207,6 @@ const ProductCard = () => {
     const getTipologyDropdownValue = async () => {
         const response = await getMerchantTipologyAsync({
             idIndustry: state.selectedIndustry,
-            idMerchant,
         });
 
         return response;
@@ -286,11 +285,11 @@ const ProductCard = () => {
             <div>
                 <ControlledInput
                     label="Numero"
-                    name="numero"
                     useFormhook={false}
+                    name="numero"
                     disabled={true}
-                    defaultValue={"test Numero"}
                     readOnly={true}
+                    externalValue={"test Numero"}
                     externalOnChange={(e) =>
                         dispatch({
                             type: "setSelectedProductNumber",
