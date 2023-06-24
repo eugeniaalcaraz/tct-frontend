@@ -43,6 +43,15 @@ export const getMerchantIndustryDropdownValue = async ({
     }
 };
 
+export const getMerchantShoeMaterialDropdownValue = async ({ idMerchant }) => {
+    const path = `${BASE_URL}/getMerchantShoeMaterials/${idMerchant}`;
+    try {
+        return await getJsonRequest(path);
+    } catch (error) {
+        throw new Error(getErrorMessage(error));
+    }
+};
+
 export const getMerchantTypologyDropdownValue = async ({ idIndustry }) => {
     const path = `${BASE_URL}/getTipologies/${idIndustry}`;
     try {
@@ -161,7 +170,6 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
         idExistingProduct: "0",
         name: formData.nombre,
         quantity: Number(formData.quantity),
-        sizeCurveType: 1, //TODO: sacar estos datos desde el ui
         idMeasurmentTable: 1, //TODO: sacar estos datos desde el ui
         idDesigner: 1, //TODO: sacar estos datos desde el ui,
         extendedSize: 0, //TODO: sacar estos datos desde el ui,
@@ -191,7 +199,6 @@ const getBody = (formData, idMerchant) => {
         idExistingProduct: "0",
         name: formData.nombre,
         quantity: Number(formData.quantity),
-        sizeCurveType: 1, //TODO: sacar estos datos desde el ui
         idMeasurmentTable: 1, //TODO: sacar estos datos desde el ui
         extendedSize: 0, //TODO: sacar estos datos desde el ui,
         idModeling: 1,

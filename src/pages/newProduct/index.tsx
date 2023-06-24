@@ -79,12 +79,45 @@ const NewProduct = () => {
             fotos = [];
         }
 
+        // esto es lo que recibo en tipology
+        // {
+        //     "Id": 1,
+        //     "Description": "Remera",
+        //     "Code": "AAAA",
+        //     "Weight": "11"
+        // },
+        // {
+        //     "Id": 2,
+        //     "Description": "Zapato",
+        //     "Code": "BBBB",
+        //     "Weight": "10"
+        // },
+        // {
+        //     "Id": 3,
+        //     "Description": "Jean",
+        //     "Code": "CCC",
+        //     "Weight": "50"
+        // }
+        // este es el enum de back
+        // const sizeCurveEnum = {
+        //     shoe: 1,
+        //     clothes: 2,
+        //     denim: 3
+        //   };
+
+        const sizeCurveTypeChooser = {
+            2: 1,
+            1: 2,
+            3: 3,
+        };
+
         createProdAsync({
             formData: {
                 ...formData,
                 fotos,
                 telas,
                 avios,
+                sizeCurveType: sizeCurveTypeChooser[formData.idTipology],
             },
             idMerchant,
             existingQuality: formData.existingQuality,
