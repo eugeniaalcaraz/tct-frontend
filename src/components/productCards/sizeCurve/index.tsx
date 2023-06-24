@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { addTelasArray } from "@/state/features/product";
 
 const sizes = [
+    { Id: "U", Description: "U" },
     { Id: "XXS", Description: "XXS" },
     { Id: "XS", Description: "XS" },
     { Id: "S", Description: "S" },
@@ -16,6 +17,8 @@ const sizes = [
     { Id: "XXL", Description: "XXL" },
     { Id: "3XL", Description: "3XL" },
     { Id: "4XL", Description: "4XL" },
+    { Id: "5XL", Description: "5XL" },
+    { Id: "6XL", Description: "6XL" },
 ];
 
 const SizeCurve = () => {
@@ -32,6 +35,7 @@ const SizeCurve = () => {
     ]);
 
     const [updatedSizeValues, setUpdatedSizeValues] = useState([
+        { Id: "U", value: "" },
         { Id: "XXS", value: "" },
         { Id: "XS", value: "" },
         { Id: "S", value: "" },
@@ -41,6 +45,8 @@ const SizeCurve = () => {
         { Id: "XXL", value: "" },
         { Id: "3XL", value: "" },
         { Id: "4XL", value: "" },
+        { Id: "5XL", value: "" },
+        { Id: "6XL", value: "" },
     ]);
 
     const inputOnChange = ({

@@ -74,7 +74,7 @@ const Shipment = () => {
             />
             <ControlledInput
                 label="Codigo de fabirca"
-                name="codigoFabricaEmbarque"
+                name="fabricCode"
                 error={checkIfError("cantidadEmbarque")}
                 helperText={checkErrorMessage("cantidadEmbarque")}
             />

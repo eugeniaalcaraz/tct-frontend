@@ -26,10 +26,14 @@ import { createProduct } from "@/services/ProductRequests";
 import { toBase64 } from "@/utils/toBase64";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { tipology } from "./enum";
+import { NumberSizeCurve } from "@components/productCards/sizeCurve/numberSizeCurve";
+import { denimSizes, shoesSizes } from "./aux/aux";
 
 const defaultValues = {
     idSeason: "",
     idTipology: "",
+    idShoeMaterial: 0,
     // departamento: "",
     // origen: "",
     // proveedor: "",
@@ -46,6 +50,7 @@ const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
     const { telas, avios } = useAppSelector((state) => state.product);
     const [isShoe, setIsShoe] = useState(false);
+    const [selectedTipology, setSelectedTipology] = useState(0);
     const resolver = yupResolver(productValidation);
     const methods = useForm({ defaultValues });
 
@@ -89,12 +94,24 @@ const NewProduct = () => {
     };
 
     const product = {
-        producto: <ProductCard setIsShoe={setIsShoe} />,
+        producto: <ProductCard setSelectedTipology={setSelectedTipology} />,
         adjuntos: <Attachments />,
         compraYVenta: <Trading formMethods={methods} />,
         embarque: <Shipment />,
-        materiales: <Materials isShoe={isShoe} />,
-        curvaDeTalles: <SizeCurve />,
+        materiales: <Materials isShoe={selectedTipology === tipology.ZAPATO} />,
+        curvaDeTalles:
+            selectedTipology === tipology.ZAPATO ||
+            selectedTipology === tipology.DENIM ? (
+                <NumberSizeCurve
+                    sizes={
+                        selectedTipology === tipology.ZAPATO
+                            ? shoesSizes
+                            : denimSizes
+                    }
+                />
+            ) : (
+                <SizeCurve />
+            ),
     };
 
     return (

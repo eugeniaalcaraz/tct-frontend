@@ -17,10 +17,10 @@ import {
 import { OptionsType } from "@/types";
 
 type ProductCardType = {
-    setIsShoe: any;
+    setSelectedTipology: any;
 };
 
-const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
+const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
     const {
         seasons,
         brands,
@@ -193,6 +193,7 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
             dispatch({ type: "setSelectedYear", payload: e.value });
         }
         if (e.name === "idTipology") {
+            setSelectedTipology(e.value);
             dispatch({ type: "setSelectedTipology", payload: e.value });
         }
         if (e.name === "idDepartment") {
@@ -202,8 +203,6 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
             dispatch({ type: "setSelectedIndustry", payload: e.value });
         }
     };
-
-    const shouldEnableHeading = () => state.selectedIndustry !== 3;
 
     const getIndustriesDropdownValue = async () => {
         const response = await getMerchantIndustryAsync({
@@ -237,15 +236,6 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
             );
         }
     }, [state.selectedIndustry]);
-
-    useEffect(() => {
-        //TODO: CAMBIAR NUMERO POR BUSQUEDA DE ID
-        if (state.selectedTipology === 2) {
-            setIsShoe(true);
-        } else {
-            setIsShoe(false);
-        }
-    }, [state.selectedTipology]);
 
     return (
         <Container>
