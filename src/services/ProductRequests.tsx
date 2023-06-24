@@ -167,7 +167,6 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
         idSizeCurve: 1, //TODO: sacar estos datos desde el ui
         idMeasurmentTable: 1, //TODO: sacar estos datos desde el ui
         idDesigner: 1, //TODO: sacar estos datos desde el ui,
-        idShoeMaterial: 1, //TODO: sacar estos datos desde el ui,
         extendedSize: 0, //TODO: sacar estos datos desde el ui,
         idModeling: 1,
         idCountry: Number(formData.idCountry),
@@ -200,7 +199,6 @@ const getBody = (formData, idMerchant) => {
         sizeCurveType: 1, //TODO: sacar estos datos desde el ui
         idSizeCurve: 1, //TODO: sacar estos datos desde el ui
         idMeasurmentTable: 1, //TODO: sacar estos datos desde el ui
-        idShoeMaterial: 1, //TODO: sacar estos datos desde el ui,
         extendedSize: 0, //TODO: sacar estos datos desde el ui,
         idModeling: 1,
         idCountry: Number(formData.idCountry),

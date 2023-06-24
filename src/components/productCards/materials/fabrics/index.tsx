@@ -40,22 +40,12 @@ import { OptionType } from "dayjs";
 
 type FabricProps = {
     fabricNumber: number;
+    title?: string;
 };
 
-const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
-    const {
-        fabrics,
-        composition,
-        localization,
-        colors,
-        telas,
-        // combos1,
-        // combos2,
-        // combos3,
-        // combos4,
-        // combos5,
-        errors,
-    } = useAppSelector((state) => state.product);
+const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
+    const { fabrics, composition, localization, colors, telas, errors } =
+        useAppSelector((state) => state.product);
     const [open, setOpen] = useState<boolean>(false);
     const [existingQuality, setExistingQuality] = useState<boolean>(true);
     const [selectedQuality, setSelectedQuality] = useState<string>("");
@@ -361,6 +351,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber }) => {
 
     return (
         <>
+            {title && <h2>{title}</h2>}
             <FormControl className="radios">
                 <RadioGroup
                     row

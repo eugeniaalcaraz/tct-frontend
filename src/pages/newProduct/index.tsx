@@ -45,6 +45,7 @@ const defaultValues = {
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
     const { telas, avios } = useAppSelector((state) => state.product);
+    const [isShoe, setIsShoe] = useState(false);
     const resolver = yupResolver(productValidation);
     const methods = useForm({ defaultValues });
 
@@ -90,11 +91,11 @@ const NewProduct = () => {
     };
 
     const product = {
-        producto: <ProductCard />,
+        producto: <ProductCard setIsShoe={setIsShoe} />,
         adjuntos: <Attachments />,
         compraYVenta: <Trading formMethods={methods} />,
         embarque: <Shipment />,
-        materiales: <Materials />,
+        materiales: <Materials isShoe={isShoe} />,
         curvaDeTalles: <SizeCurve />,
     };
 

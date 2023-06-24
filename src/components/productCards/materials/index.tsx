@@ -1,11 +1,16 @@
-import React, { useMemo, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import { Button, Box, Tooltip } from "@mui/material";
 import { Container } from "./MaterialsStyles";
 import { Fabrics } from "./fabrics";
 import { Trims } from "./trims";
 import { ControlledDropdown } from "@components/common";
+import { ShoesFabric } from "../shoesFabric";
 
-const Materials = () => {
+type MaterialsProps = {
+    isShoe: boolean;
+};
+
+const Materials: FC<MaterialsProps> = ({ isShoe }) => {
     const [numberOfFabricsSelected, setNumberOfFabricsSelected] = useState(1);
     const [numberOfTrimsSelected, setNumberOfTrimsSelected] = useState(1);
 
@@ -35,18 +40,35 @@ const Materials = () => {
         setNumberOfTrimsSelected(Number(e.value));
     };
 
+    const materialsOptions = [
+        { Id: "1", Description: "Cuero" },
+        { Id: "2", Description: "Cuero2" },
+    ];
+
     return (
         <Container>
-            <ControlledDropdown
-                label="Cantidad de telas"
-                options={fabricsArrOptions}
-                name="cantidadDeTelas"
-                externalOnChange={onSelectNumberOfFabrics}
-            />
+            {isShoe ? (
+                <ControlledDropdown
+                    label="Material"
+                    options={materialsOptions}
+                    name="idShoeMaterial"
+                />
+            ) : (
+                <ControlledDropdown
+                    label="Cantidad de telas"
+                    options={fabricsArrOptions}
+                    name="cantidadDeTelas"
+                    externalOnChange={onSelectNumberOfFabrics}
+                />
+            )}
             <h3 className="calidad">Calidad</h3>
-            {[...Array(numberOfFabricsSelected).keys()].map((value) => (
-                <Fabrics key={value} fabricNumber={value} />
-            ))}
+            {isShoe ? (
+                <ShoesFabric />
+            ) : (
+                [...Array(numberOfFabricsSelected).keys()].map((value) => (
+                    <Fabrics key={value} fabricNumber={value} />
+                ))
+            )}
 
             <ControlledDropdown
                 label="Cuantos avíos tiene tu prenda?"

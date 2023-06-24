@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer, useState } from "react";
+import React, { FC, useEffect, useMemo, useReducer, useState } from "react";
 import { useAppSelector } from "@/state/app/hooks";
 import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ProductStyles";
@@ -16,7 +16,11 @@ import {
 } from "@/services/ProductRequests";
 import { OptionsType } from "@/types";
 
-const ProductCard = () => {
+type ProductCardType = {
+    setIsShoe: any;
+};
+
+const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
     const {
         seasons,
         brands,
@@ -235,6 +239,15 @@ const ProductCard = () => {
             );
         }
     }, [state.selectedIndustry]);
+
+    useEffect(() => {
+        //TODO: CAMBIAR NUMERO POR BUSQUEDA DE ID
+        if (state.selectedTipology === 2) {
+            setIsShoe(true);
+        } else {
+            setIsShoe(false);
+        }
+    }, [state.selectedTipology]);
 
     return (
         <Container>
