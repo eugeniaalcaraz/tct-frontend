@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 export const Container = styled(Box)({
     zIndex: 10,
     padding: "1%",
-    width: "calc(100% - 8.5%)",
+    width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",

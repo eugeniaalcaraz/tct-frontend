@@ -9,8 +9,8 @@ export const theme = createTheme({
             light: "#B5BBAD",
         },
         secondary: {
-            main: "#839270",
-            light: "rgba(131, 146, 112, 0.6)",
+            main: "#8297CA",
+            light: "#CFD779",
         },
         warning: {
             main: "#CEB471",
