@@ -21,9 +21,6 @@ const FilterChips = () => {
     };
 
     const getDescription = (filter) => {
-        console.log("filters", filter);
-        console.log("season", filter[0]);
-        console.log("id", filter[1][0]);
         return getFilterDescription(
             filter[0],
             filter[1][0],

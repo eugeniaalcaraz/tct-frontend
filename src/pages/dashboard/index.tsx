@@ -10,10 +10,10 @@ import {
     Balance,
     ProductionStatus,
     Shipments,
-    Sections,
+    Colors,
     PendingApprovals,
     Margin,
-    SentSamples,
+    Overall,
 } from "@components/dashboardCards";
 import { getLocalStorage, setLocalStorage } from "@/utils/localStorage";
 import { LocalStorageKeys } from "@/types";
@@ -35,12 +35,8 @@ const dashboard = {
     embarques: <Shipments />,
     aprobacionesPendientes: <PendingApprovals />,
     margen: <Margin />,
-    camisetasTops: <Sections name="camisetasTops" />,
-    camisasBlusas: <Sections name="camisasBlusas" />,
-    faldasShorts: <Sections name="faldasShorts" />,
-    vestidosMonos: <Sections name="vestidosMonos" />,
-    muestrasEnviadas: <SentSamples />,
-    skuYPiezasTotales: <Sections name="all" layout="vertical" />,
+    overall: <Overall />,
+    composicionPorColor: <Colors />,
 };
 
 const originalItems = [
@@ -49,12 +45,8 @@ const originalItems = [
     "Embarques",
     "Aprobaciones pendientes",
     "Margen",
-    "Camisetas & tops",
-    "Camisas & blusas",
-    "Faldas & shorts",
-    "Vestidos & monos",
-    "Muestras Enviadas",
-    "SKU y Piezas totales",
+    "Overall",
+    "Composición por color",
 ];
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -115,20 +107,20 @@ const Dashboard = () => {
         setBreakpoint(breakpoint);
     };
 
-    useEffect(() => {
-        Number(temporada) !== 0 && getCardData(temporada);
-    }, [temporada]);
+    // useEffect(() => {
+    //     Number(temporada) !== 0 && getCardData(temporada);
+    // }, [temporada]);
 
-    useEffect(() => {
-        if (cardsError) {
-            navigate(urlFormat(Pages.ServerError));
-        }
-    }, [cardsError]);
+    // useEffect(() => {
+    //     if (cardsError) {
+    //         navigate(urlFormat(Pages.ServerError));
+    //     }
+    // }, [cardsError]);
 
     return (
         <>
             <Container>
-                {/* <ResponsiveReactGridLayout
+                <ResponsiveReactGridLayout
                     cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
                     rowHeight={30}
                     margin={[15, 15]}
@@ -151,7 +143,7 @@ const Dashboard = () => {
                             />
                         </div>
                     ))}
-                </ResponsiveReactGridLayout> */}
+                </ResponsiveReactGridLayout>
                 <Box sx={{ padding: "2rem 0 3rem 0" }}>
                     <Footer />
                 </Box>

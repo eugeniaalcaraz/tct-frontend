@@ -50,7 +50,6 @@ const SizeCurve = () => {
         valueToUpdate: string;
         id: string;
     }) => {
-        console.log({ id, valueToUpdate });
         setUpdatedSizeValues((prevState) => {
             return prevState.map((sizeObj) => {
                 if (sizeObj.Id === id) {

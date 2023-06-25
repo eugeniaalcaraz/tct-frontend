@@ -35,7 +35,6 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
 
     useEffect(() => {
         if (isForAllCombos) {
-            console.log("cosito testetete");
             const updatedTelas = telas.map((tela) => ({
                 ...tela,
                 idCountryDestination:
@@ -50,7 +49,7 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 entryDate,
                 shippingDate,
             }));
-            console.log({ updatedTelas });
+
             dispatch(addTelasArray(updatedTelas));
         } else {
             dispatch(

@@ -175,8 +175,6 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
     };
 
     const dropdownOnSelect = (e) => {
-        console.log({ name: e.name });
-
         if (e.name === "rubro") {
             setSelectedHeading(
                 String(

@@ -20,7 +20,6 @@ const baseRequest = async (
             },
             body: body ? JSON.stringify(body) : null,
         });
-        console.log({ BASE_URL });
 
         if (!response.ok) throw new Error();
         return blob ? response.blob() : response.json();
