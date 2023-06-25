@@ -1,5 +1,13 @@
 import React, { FC, ReactNode } from "react";
-import { Menu, Search, Plus, Filter, Close, Logout } from "@/assets/icons";
+import {
+    Menu,
+    Search,
+    Plus,
+    Filter,
+    Close,
+    Logout,
+    Download,
+} from "@/assets/icons";
 
 type IconProps = {
     name: string;
@@ -16,6 +24,7 @@ const icons: iconObject = {
     filter: <Filter />,
     close: <Close />,
     logout: <Logout />,
+    download: <Download />,
 };
 
 const Icon: FC<IconProps> = ({ name }) => <>{icons[name]}</>;

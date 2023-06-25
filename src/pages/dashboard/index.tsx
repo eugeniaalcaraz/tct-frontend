@@ -128,7 +128,7 @@ const Dashboard = () => {
     return (
         <>
             <Container>
-                <ResponsiveReactGridLayout
+                {/* <ResponsiveReactGridLayout
                     cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
                     rowHeight={30}
                     margin={[15, 15]}
@@ -151,7 +151,7 @@ const Dashboard = () => {
                             />
                         </div>
                     ))}
-                </ResponsiveReactGridLayout>
+                </ResponsiveReactGridLayout> */}
                 <Box sx={{ padding: "2rem 0 3rem 0" }}>
                     <Footer />
                 </Box>

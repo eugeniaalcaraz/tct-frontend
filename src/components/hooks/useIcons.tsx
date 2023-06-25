@@ -8,6 +8,7 @@ import {
     Close,
     Logout,
     Info,
+    Download,
 } from "@/assets/icons";
 
 interface IconsProps {
@@ -31,6 +32,7 @@ export const IconsProvider = ({ children }: IconsProviderProps) => {
             close: <Close />,
             logout: <Logout />,
             info: <Info />,
+            download: <Download />,
         }),
         []
     );
