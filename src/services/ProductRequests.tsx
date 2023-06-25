@@ -96,8 +96,6 @@ export const createProduct = async ({
         ? getBodyWithExitingQuality(formData, idMerchant)
         : getBody(formData, idMerchant);
 
-    console.log({ body });
-
     try {
         const response = await postJsonRequest(path, body);
         return response;
@@ -187,8 +185,6 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
 };
 
 const getBody = (formData, idMerchant) => {
-    console.log({ formDataBody: formData });
-
     const finalObj = {
         ...formData,
         idDesigner: 1, //TODO: sacar estos datos desde el ui

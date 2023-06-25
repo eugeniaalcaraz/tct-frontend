@@ -95,9 +95,6 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
     };
 
     const handleSelectedQuality = (e) => {
-        //aca estoy recibiendo el idFabric
-        console.log({ coso: e });
-
         setCompOfSelectedQuality([]);
         const selectedFabric = fabrics?.find(
             ({ IdFabric }) => String(IdFabric) === e.value
@@ -168,7 +165,6 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
     };
 
     const handleCompositionSelect = (e) => {
-        console.log(e);
         if (e.target.value !== "") {
             const composition = {
                 idFiber: e.target.value,
@@ -249,7 +245,6 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
     };
 
     const handleDescriptionBlur = (e) => {
-        console.log(e.target.value);
         setFinalComboObject((prevState) => ({
             ...prevState,
             description: e.target.value,
@@ -584,7 +579,6 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                                     // @ts-ignore
                                     value={solidColorName}
                                     onChange={(e) => {
-                                        console.log({ colors: e });
                                         setSolidColorName(e);
                                     }}
                                 />

@@ -13,8 +13,10 @@ const CardBase: FC<CardProps> = ({ header, content }) => {
     return (
         <Container elevation={2} sx={{ height: "inherit" }}>
             <HeaderContainer>
-                <Typography variant="h2">{header}</Typography>
-                {header.toLowerCase() === "balance" && (
+                <Typography variant="h2">
+                    {header !== "Overall" ? header : ""}
+                </Typography>
+                {/* {header.toLowerCase() === "balance" && (
                     <Tooltip
                         title="Promedio basado
                     en estado de los productos
@@ -25,7 +27,7 @@ const CardBase: FC<CardProps> = ({ header, content }) => {
                     >
                         <div>{icons["info"]}</div>
                     </Tooltip>
-                )}
+                )} */}
             </HeaderContainer>
             {content}
         </Container>

@@ -57,3 +57,10 @@ export enum ProductHeaders {
     DepositDate = "Ingreso a Depósito",
     StoreDate = "Ingreso a Tienda",
 }
+
+export enum OverallHeaders {
+    Category = "RUBRO",
+    Total = "COSTO TOTAL",
+    Pieces = "PIEZAS",
+    Skus = "SKUS",
+}

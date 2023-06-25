@@ -5,3 +5,5 @@ export * from "./sections";
 export * from "./pendingApprovals";
 export * from "./margin";
 export * from "./sentSamples";
+export * from "./overall";
+export * from "./colors";

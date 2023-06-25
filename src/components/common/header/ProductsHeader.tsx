@@ -53,7 +53,7 @@ const ProductsHeader = () => {
         } else if (product) {
             products = product;
         } else {
-            products([]);
+            products = [];
         }
 
         products.forEach((product) => {
