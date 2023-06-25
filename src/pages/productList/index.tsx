@@ -5,7 +5,7 @@ import { ProductTable, Footer } from "@/components";
 const ProductList = () => {
     return (
         <Container>
-            <ProductTable />
+            {/* <ProductTable /> */}
             <Footer />
         </Container>
     );

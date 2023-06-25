@@ -6,6 +6,7 @@ import { urlFormat } from "@/utils";
 import { Pages } from "@/types";
 
 import ProductsHeader from "./ProductsHeader";
+import ProductHeader from "./ProductHeader";
 import DashboardHeader from "./DashboardHeader";
 import NewProductHeader from "./NewProductHeader";
 import { useIconsContext } from "@components/hooks";
@@ -53,8 +54,10 @@ const Header: FC<HeaderProps> = ({ handleMenu }) => {
                 <DashboardHeader />
             ) : location.pathname === urlFormat(Pages.Products) ? (
                 <ProductsHeader />
-            ) : (
+            ) : location.pathname === urlFormat(Pages.NewProduct) ? (
                 <NewProductHeader />
+            ) : (
+                <ProductHeader />
             )}
         </Container>
     );

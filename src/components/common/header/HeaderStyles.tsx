@@ -62,3 +62,11 @@ export const NewProductContainer = styled(Box)({
     width: "calc(100% - 6rem)",
     transition: "all 0.8s ease",
 }) as typeof Box;
+
+export const ActionsButtons = styled(Box)({
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    gap: "1.5rem",
+    width: "100%",
+}) as typeof Box;
