@@ -94,7 +94,7 @@ export type PrintCombo = {
     sizeCurve: string[];
 };
 
-export type FabricCombo = {
+export type FabricComboMaterial = {
     idFabric: string;
     description: string;
     saveDuplicateFabric?: number;
@@ -103,8 +103,10 @@ export type FabricCombo = {
     colors: ColorCombo[];
     prints: PrintCombo[];
     placement: number;
-    printDescription: string;
     composition: CompositionFabricCombo[];
+};
+
+export type FabricCombo = FabricComboMaterial & {
     idCountryDestination: number;
     idShipping: number;
     entryDate: string;
@@ -145,6 +147,11 @@ export type Avios = {
     idAvio: number;
     idColor: number;
     quantity: number;
+    shippingDate: string;
+    warehouseEntryDate: string;
+    idShipping: string;
+    idCountryDestination: string;
+    entryDate: string;
 };
 
 export type PendingApprovals = {

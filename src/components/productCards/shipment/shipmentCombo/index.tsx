@@ -45,9 +45,18 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                     selectedShipmentType !== ""
                         ? Number(selectedShipmentType)
                         : 0,
-                warehouseEntryDate,
-                entryDate,
-                shippingDate,
+                warehouseEntryDate:
+                    warehouseEntryDate !== ""
+                        ? warehouseEntryDate
+                        : telasUpdatableObject.warehouseEntryDate,
+                entryDate:
+                    entryDate !== ""
+                        ? entryDate
+                        : telasUpdatableObject.entryDate,
+                shippingDate:
+                    shippingDate !== ""
+                        ? shippingDate
+                        : telasUpdatableObject.shippingDate,
             }));
 
             dispatch(addTelasArray(updatedTelas));

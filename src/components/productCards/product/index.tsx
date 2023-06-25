@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useReducer, useState } from "react";
-import { useAppSelector } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ProductStyles";
 import { ControlledCheckbox } from "@components/common/form/controlledCheckbox";
@@ -15,6 +15,7 @@ import {
     getMerchantTypologyDropdownValue,
 } from "@/services/ProductRequests";
 import { OptionsType } from "@/types";
+import { changeTelasLength } from "@/state/features/product";
 
 type ProductCardType = {
     setSelectedTipology: any;
@@ -33,6 +34,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
         errors,
     } = useAppSelector((state) => state.product);
     const { idMerchant } = useAppSelector((state) => state.user);
+    const reduxDispatch = useAppDispatch();
 
     //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
     const [state, dispatch] = useReducer(productReducer, initialProductState);
@@ -60,6 +62,15 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
         isLoading: merchantIsTipologyLoading,
         isError: merchantTipologyError,
     } = useMutation(getMerchantTypologyDropdownValue);
+
+    const idShoes = useMemo(
+        () =>
+            tipology.find(
+                (tipology) =>
+                    (tipology.Description as string).includes("Zapato") ?? 0
+            ),
+        [tipology]
+    );
 
     //getMerchantTypologyDropdownValue
 
@@ -195,6 +206,9 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
         if (e.name === "idTipology") {
             setSelectedTipology(e.value);
             dispatch({ type: "setSelectedTipology", payload: e.value });
+            if (e.value !== idShoes) {
+                reduxDispatch(changeTelasLength(1));
+            }
         }
         if (e.name === "idDepartment") {
             dispatch({ type: "setSelectedManagementUnit", payload: e.value });

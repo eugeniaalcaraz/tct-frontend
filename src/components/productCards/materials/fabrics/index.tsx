@@ -26,6 +26,7 @@ import { useAppSelector, useAppDispatch } from "@/state/app/hooks";
 import {
     ColorCombo,
     FabricCombo,
+    FabricComboMaterial,
     FabricOptionType,
     OptionsType,
     PrintCombo,
@@ -36,7 +37,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { v4 as uuidv4 } from "uuid";
 import { SyledTextField } from "@components/common/textInput/StyledTextField";
-import { OptionType } from "dayjs";
+import dayjs, { OptionType } from "dayjs";
 
 type FabricProps = {
     fabricNumber: number;
@@ -69,22 +70,17 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
         [telas]
     );
 
-    const [finalComboObject, setFinalComboObject] = useState<FabricCombo>({
-        idFabric: "",
-        description: "",
-        consumption: 0,
-        weight: 0,
-        placement: 0,
-        printDescription: "",
-        composition: [],
-        colors: [],
-        prints: [],
-        idCountryDestination: 0,
-        entryDate: "",
-        warehouseEntryDate: "",
-        shippingDate: "",
-        idShipping: 0,
-    });
+    const [finalComboObject, setFinalComboObject] =
+        useState<FabricComboMaterial>({
+            idFabric: "",
+            description: "",
+            consumption: 0,
+            weight: 0,
+            placement: 0,
+            composition: [],
+            colors: [],
+            prints: [],
+        });
 
     const openOptions = () => {
         setOpen((prevState) => !prevState);
@@ -311,12 +307,18 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                 fabricNumber,
                 tela: {
                     ...finalComboObject,
-                    entryDate: telasUpdatableObject.entryDate,
-                    shippingDate: telasUpdatableObject.shippingDate,
-                    warehouseEntryDate: telasUpdatableObject.warehouseEntryDate,
+                    entryDate:
+                        telasUpdatableObject.entryDate ??
+                        dayjs().add(15, "day").format("YYYY-DD-MM"),
+                    shippingDate:
+                        telasUpdatableObject.shippingDate ??
+                        dayjs().add(15, "day").format("YYYY-DD-MM"),
+                    warehouseEntryDate:
+                        telasUpdatableObject.warehouseEntryDate ??
+                        dayjs().add(15, "day").format("YYYY-DD-MM"),
                     idCountryDestination:
-                        telasUpdatableObject.idCountryDestination,
-                    idShipping: telasUpdatableObject.idShipping,
+                        telasUpdatableObject.idCountryDestination ?? 0,
+                    idShipping: telasUpdatableObject.idShipping ?? 0,
                 },
             })
         );

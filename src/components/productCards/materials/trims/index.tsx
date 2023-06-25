@@ -27,21 +27,6 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
     const [idAvio, setIdAvio] = useState("");
     const dispatch = useAppDispatch();
 
-    // const selectedTrim = {
-    //     1: trimCombos1,
-    //     2: trimCombos2,
-    //     3: trimCombos3,
-    //     4: trimCombos4,
-    //     5: trimCombos5,
-    //     6: trimCombos6,
-    //     7: trimCombos7,
-    //     8: trimCombos8,
-    //     9: trimCombos9,
-    //     10: trimCombos10,
-    //     11: trimCombos11,
-    //     12: trimCombos12,
-    // };
-
     const openOptions = () => {
         setOpen((prevState) => !prevState);
     };
@@ -54,6 +39,11 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                     idAvio: Number(idAvio),
                     idColor: trimColor,
                     quantity: Number(quantity),
+                    idShipping: "",
+                    idCountryDestination: "",
+                    shippingDate: "",
+                    entryDate: "",
+                    warehouseEntryDate: "",
                 },
             })
         );
