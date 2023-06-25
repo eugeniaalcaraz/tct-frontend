@@ -20,7 +20,7 @@ import { Row } from "./Row";
 import { Container } from "./TableStyles";
 import { filterUrlFormat, urlFormat } from "@/utils";
 import { setData } from "@/state/features/product";
-import { Pages, Product } from "@/types";
+import { Pages, Product, ProductHeaders } from "@/types";
 import { isEmpty } from "@aws-amplify/core";
 import { EmptyState, ScreenLoader } from "..";
 import { useMutation } from "@tanstack/react-query";
@@ -56,6 +56,7 @@ const ProductTable = () => {
         isError: productsError,
     } = useMutation(getProducts);
     const navigate = useNavigate();
+    const headerValues = Object.entries(ProductHeaders);
 
     const getNewListData = async () => {
         dispatch(
@@ -83,52 +84,52 @@ const ProductTable = () => {
     };
 
     const loadTableData = () => {
-        if (filteredData && filteredData.length > 0) {
-            setTableData(filteredData);
-        } else if (product) {
-            setTableData(product);
-        } else {
-            setTableData([]);
-        }
+        // if (filteredData && filteredData.length > 0) {
+        //     setTableData(filteredData);
+        // } else if (product) {
+        //     setTableData(product);
+        // } else {
+        //     setTableData([]);
+        // }
     };
 
-    useEffect(() => {
-        getNewListData();
-    }, [
-        temporada,
-        proveedor,
-        departamento,
-        tipologia,
-        calidad,
-        estado,
-        diseñador,
-        origen,
-        destino,
-        embarque,
-        fecha,
-        nombre,
-        cantidad,
-        costo,
-        peso,
-    ]);
+    // useEffect(() => {
+    //     getNewListData();
+    // }, [
+    //     temporada,
+    //     proveedor,
+    //     departamento,
+    //     tipologia,
+    //     calidad,
+    //     estado,
+    //     diseñador,
+    //     origen,
+    //     destino,
+    //     embarque,
+    //     fecha,
+    //     nombre,
+    //     cantidad,
+    //     costo,
+    //     peso,
+    // ]);
 
-    useEffect(() => {
-        if (
-            isEmpty(filters) &&
-            product?.length === 0 &&
-            filteredData?.length === 0
-        ) {
-            setEmptyProduct(true);
-        } else {
-            setEmptyProduct(false);
-        }
-    }, [filters, product, filteredData]);
+    // useEffect(() => {
+    //     if (
+    //         isEmpty(filters) &&
+    //         product?.length === 0 &&
+    //         filteredData?.length === 0
+    //     ) {
+    //         setEmptyProduct(true);
+    //     } else {
+    //         setEmptyProduct(false);
+    //     }
+    // }, [filters, product, filteredData]);
 
-    useEffect(() => loadTableData(), [product, filteredData]);
+    // useEffect(() => loadTableData(), [product, filteredData]);
 
-    useEffect(() => {
-        productsError && navigate(urlFormat(Pages.ServerError));
-    }, [productsError]);
+    // useEffect(() => {
+    //     productsError && navigate(urlFormat(Pages.ServerError));
+    // }, [productsError]);
 
     return (
         <Container>
@@ -148,6 +149,7 @@ const ProductTable = () => {
                         aria-label="collapsible table"
                         sx={{
                             borderCollapse: "collapse",
+                            minWidth: "2000px",
                         }}
                     >
                         <TableHead>
@@ -158,19 +160,11 @@ const ProductTable = () => {
                                     },
                                 }}
                             >
-                                <TableCell />
-                                <TableCell>Nº</TableCell>
-                                <TableCell>Nombre</TableCell>
-                                <TableCell>Proveedor</TableCell>
-                                <TableCell>Cantidad</TableCell>
-                                <TableCell>Departamento</TableCell>
-                                <TableCell>Tipo</TableCell>
-                                <TableCell>Calidad</TableCell>
-                                <TableCell>Peso</TableCell>
-                                <TableCell>Costo</TableCell>
-                                <TableCell>Precio</TableCell>
-                                <TableCell>Margen</TableCell>
-                                <TableCell>Estado</TableCell>
+                                {headerValues.map(([, header]) => (
+                                    <TableCell key={String(header)}>
+                                        {header}
+                                    </TableCell>
+                                ))}
                             </TableRow>
                         </TableHead>
 
