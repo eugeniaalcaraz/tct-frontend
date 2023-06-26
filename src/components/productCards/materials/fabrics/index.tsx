@@ -240,6 +240,17 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
         }));
     };
 
+    const deletePrintCombo = (printCombo: PrintCombo) => {
+        console.log(printCombo);
+
+        setFinalComboObject((prevState) => ({
+            ...prevState,
+            prints: prevState.prints.filter(
+                (print) => print.nombre !== printCombo.nombre
+            ),
+        }));
+    };
+
     const handleDescriptionBlur = (e) => {
         setFinalComboObject((prevState) => ({
             ...prevState,
@@ -647,14 +658,14 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                 {!!telas[fabricNumber]?.prints.length && (
                     <Box className="combos">
                         {telas[fabricNumber].prints.map((selectedPrint, i) => (
-                            <Box key={i} className="combo">
+                            <Box key={i} className="combo combo-print">
                                 <div className="upper-container">
                                     Estampado {i + 1}
                                     <IconButton
                                         aria-label="delete"
-                                        // onClick={() =>
-                                        //     deleteCombo(uuid)
-                                        // }
+                                        onClick={() =>
+                                            deletePrintCombo(selectedPrint)
+                                        }
                                     >
                                         <DeleteIcon />
                                     </IconButton>

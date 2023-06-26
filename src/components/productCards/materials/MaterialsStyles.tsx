@@ -143,7 +143,7 @@ export const FabricContainer = styled(Box)({
 
         "& > .combo": {
             fontSize: "1.3rem",
-            width: "7rem",
+            width: "10rem",
             "& > .upper-container": {
                 border: "none",
                 display: "flex",
@@ -165,6 +165,10 @@ export const FabricContainer = styled(Box)({
                 backgroundSize: "100px 100px",
                 opacity: 0.7,
             },
+        },
+
+        "& > .combo-print": {
+            width: "9rem",
         },
     },
 
