@@ -74,7 +74,9 @@ const Dashboard = () => {
 
     const getCardData = useCallback(
         (season) => {
-            Object.keys(dashboard).map((card) => callCardsValues(card, season));
+            Object.keys(dashboard)?.map((card) =>
+                callCardsValues(card, season)
+            );
         },
         [dashboard]
     );
