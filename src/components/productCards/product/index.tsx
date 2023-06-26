@@ -14,7 +14,7 @@ import {
     getMerchantIndustryDropdownValue,
     getMerchantTypologyDropdownValue,
 } from "@/services/ProductRequests";
-import { OptionsType } from "@/types";
+import { OptionsType, TipologyOptions } from "@/types";
 import { changeTelasLength } from "@/state/features/product";
 
 type ProductCardType = {
@@ -41,10 +41,9 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
     const [rubros, setRubros] = useState<OptionsType[]>([
         { Id: "", Description: "" },
     ]);
-    const [tipology, setTipology] = useState<OptionsType[]>([
-        { Id: "", Description: "" },
+    const [tipology, setTipology] = useState<TipologyOptions[]>([
+        { Id: "", Description: "", Code: "", Weight: "" },
     ]);
-    const [selectedHeading, setSelectedHeading] = useState("");
 
     const yearsDropdownArr = useMemo(() => {
         const currentYear = Number(dayjs().format("YY"));
@@ -71,8 +70,6 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
             ),
         [tipology]
     );
-
-    //getMerchantTypologyDropdownValue
 
     const generalPropsDropdowns = useMemo(
         () => [
@@ -186,14 +183,6 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
     };
 
     const dropdownOnSelect = (e) => {
-        if (e.name === "rubro") {
-            setSelectedHeading(
-                String(
-                    rubros.find((element) => element.Id === e.value)
-                        ?.Description
-                ) ?? ""
-            );
-        }
         if (e.name === "idMerchantBrand") {
             dispatch({ type: "setSelectedBrand", payload: e.value });
         }
@@ -269,14 +258,16 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                 );
             })}
             <div className="readOnlyContainer">
-                <SyledTextField
+                <ControlledInput
                     label="Peso"
                     name="peso"
+                    useFormhook={false}
                     disabled={true}
-                    value={"test"}
-                    InputProps={{
-                        readOnly: true,
-                    }}
+                    externalValue={
+                        tipology.find(
+                            (tipology) => tipology.Id === state.selectedTipology
+                        )?.Weight
+                    }
                 />
             </div>
             {specificPropsDropdowns.map(({ name, label, options, disable }) => {

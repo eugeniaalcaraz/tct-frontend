@@ -73,7 +73,6 @@ const Materials: FC<MaterialsProps> = ({ isShoe }) => {
         getShoeMaterials().then((response) => {
             setShoesOptions(response);
         });
-        dispatch(changeTelasLength(1));
     }, []);
 
     return (

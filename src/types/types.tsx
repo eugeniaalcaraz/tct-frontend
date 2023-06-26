@@ -13,6 +13,13 @@ export type OptionsType = {
     Description: number | string;
 };
 
+export type TipologyOptions = {
+    Id: string;
+    Description: string;
+    Code: string;
+    Weight: string;
+};
+
 export type ColorsStateType = {
     Id: string;
     Description: number | string;
