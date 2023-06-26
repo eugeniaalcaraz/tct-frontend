@@ -54,7 +54,7 @@ const Overall = () => {
                                 "& td, & th": {
                                     border: 0,
                                 },
-                                "&:first-child td, &:first-child th": {
+                                "&:first-of-type td, &:first-of-type th": {
                                     fontWeight: 600,
                                 },
                             }}
@@ -75,7 +75,7 @@ const Overall = () => {
                                 "& td, & th": {
                                     border: 0,
                                 },
-                                "&:first-child td, &:first-child th": {
+                                "&:first-of-type td, &:first-of-type th": {
                                     fontWeight: 600,
                                 },
                             }}
@@ -96,7 +96,7 @@ const Overall = () => {
                                 "& td, & th": {
                                     border: 0,
                                 },
-                                "&:first-child td, &:first-child th": {
+                                "&:first-of-type td, &:first-of-type th": {
                                     fontWeight: 600,
                                 },
                             }}
@@ -117,7 +117,7 @@ const Overall = () => {
                                 "& td, & th": {
                                     border: 0,
                                 },
-                                "&:first-child td, &:first-child th": {
+                                "&:first-of-type td, &:first-of-type th": {
                                     fontWeight: 600,
                                 },
                             }}
