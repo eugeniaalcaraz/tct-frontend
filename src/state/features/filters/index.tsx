@@ -29,6 +29,8 @@ interface filterState {
     linea: string[];
     fit: string[];
     fecha: string;
+    deposito: string;
+    store: string;
     nombre: string;
     cantidad: string;
     costo: string;
@@ -54,6 +56,8 @@ const initialState: filterState = {
     linea: [],
     fit: [],
     fecha: "",
+    deposito: "",
+    store: "",
     nombre: "",
     cantidad: "",
     costo: "",

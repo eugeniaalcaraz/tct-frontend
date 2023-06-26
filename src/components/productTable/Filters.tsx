@@ -86,7 +86,7 @@ const Filters = () => {
                     />
                 );
             })}
-            <Date label="Fecha Embarque" type="embarque" />
+            <Date label="Fecha Embarque" type="fecha" />
             <Date label="Ingreso Depósito" type="deposito" />
             <Date label="Ingreso Tienda" type="store" />
             {/* {inputFilters.map((filter) => {
