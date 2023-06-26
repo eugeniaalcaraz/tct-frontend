@@ -67,7 +67,7 @@ const BarChartGraph: FC<BarChartProps> = ({ data, layout = "horizontal" }) => {
                         />
                         <Tooltip
                             wrapperStyle={{ outline: "none" }}
-                            itemStyle={{ color: "#233906" }}
+                            itemStyle={{ color: "#000" }}
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                             // @ts-ignore
                             content={(props) => renderTooltip(props)}
@@ -87,15 +87,15 @@ const BarChartGraph: FC<BarChartProps> = ({ data, layout = "horizontal" }) => {
                                 fill={
                                     layout === "horizontal"
                                         ? d.TotalPieces < d.TargetPCS * 0.2
-                                            ? "#BB855E"
+                                            ? "#E28B4A"
                                             : d.TotalPieces <= d.TargetPCS * 0.7
-                                            ? "#CEB471"
-                                            : "#839270"
+                                            ? "#DFB6D2"
+                                            : "#CFD779"
                                         : d.SkuQuantity < d.TargetSKU * 0.2
-                                        ? "#BB855E"
+                                        ? "#E28B4A"
                                         : d.SkuQuantity <= d.TargetSKU * 0.7
-                                        ? "#CEB471"
-                                        : "#839270"
+                                        ? "#DFB6D2"
+                                        : "#CFD779"
                                 }
                                 key={Symbol(index).toString()}
                                 style={{ paddingLeft: 100 }}
@@ -118,7 +118,7 @@ const BarChartGraph: FC<BarChartProps> = ({ data, layout = "horizontal" }) => {
                                 formatter={(props: string) =>
                                     renderLabel(props, "SKU")
                                 }
-                                style={{ fontSize: "1.4rem", fill: "#233906" }}
+                                style={{ fontSize: "1.4rem", fill: "#000" }}
                             />
                             <LabelList
                                 dataKey="TargetSKU"
@@ -127,7 +127,7 @@ const BarChartGraph: FC<BarChartProps> = ({ data, layout = "horizontal" }) => {
                                 formatter={(props: string) =>
                                     renderTarget(props)
                                 }
-                                style={{ fontSize: "1.4rem", fill: "#233906" }}
+                                style={{ fontSize: "1.4rem", fill: "#000" }}
                             />
                         </>
                     ) : (
@@ -139,7 +139,7 @@ const BarChartGraph: FC<BarChartProps> = ({ data, layout = "horizontal" }) => {
                                 formatter={(props: string) =>
                                     renderLabel(props, "pcs")
                                 }
-                                style={{ fontSize: "1.2rem", fill: "#233906" }}
+                                style={{ fontSize: "1.2rem", fill: "#000" }}
                             />
                         </>
                     )}

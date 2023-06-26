@@ -13,7 +13,7 @@ export const Container = styled(Box)({
         fontWeight: 600,
         fontSize: "6.4rem",
         lineHeight: "8.7rem",
-        color: "#839270",
+        color: "#314C95",
     },
 }) as typeof Box;
 

@@ -48,10 +48,10 @@ const RadialChart: FC<RadialChartProps> = ({ data }) => (
                         <Cell
                             fill={
                                 d.value <= 45
-                                    ? "#BB855E"
+                                    ? "#E28B4A"
                                     : d.value >= 80
-                                    ? "#839270"
-                                    : "#CEB471"
+                                    ? "#CFD779"
+                                    : "#DFB6D2"
                             }
                             key={Symbol(index).toString()}
                         />
@@ -64,7 +64,7 @@ const RadialChart: FC<RadialChartProps> = ({ data }) => (
                     style={{
                         fontSize: "1.8rem",
                         fontWeight: 600,
-                        fill: "#233906",
+                        fill: "#000",
                     }}
                 />
             </RadialBar>
