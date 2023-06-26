@@ -6,24 +6,21 @@ export const theme = createTheme({
     palette: {
         primary: {
             main: "#31654B",
-            light: "#B5BBAD",
+            light: "#CFD779",
         },
         secondary: {
             main: "#314C95",
-            light: "#CFD779",
+            light: "#919ECC",
         },
         warning: {
-            main: "#CEB471",
-            light: "rgba(206, 180, 113, 0.6)",
+            main: "#E28B4A",
+            light: "#E9CE67",
         },
         error: {
-            main: "#BB855E",
-            light: "rgba(187, 133, 94, 0.6)",
+            main: "#DFB6D2",
+            light: "#BC392B",
         },
-        // disabled: {
-        //     main: "#D0D8D0",
-        //     text: "#D9D9D9",
-        // },
+
         background: {
             default: "#E4E4E4",
         },
@@ -81,7 +78,7 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     backgroundColor: "#E8E8E8",
-                    color: "#233906",
+                    color: "#000000",
                     padding: "1.8rem",
                     borderRadius: "5px",
                 },
@@ -151,7 +148,7 @@ export const theme = createTheme({
                     "&& > svg": {
                         width: "2rem",
                         height: "2rem",
-                        fill: "#233906",
+                        fill: "#000000",
                     },
                 },
             },

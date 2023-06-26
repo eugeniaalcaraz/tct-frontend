@@ -34,7 +34,7 @@ export const UpdateProduct = () => {
                         direction={"row"}
                         gap={"15px"}
                         style={{
-                            borderBottom: "#839270 2px solid",
+                            borderBottom: "#314C95 2px solid",
                             alignItems: "center",
                         }}
                     >

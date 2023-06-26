@@ -27,7 +27,7 @@ export const DayContainer = styled(Box)({
         fontWeight: 600,
         textTransform: "capitalize",
         letterSpacing: "0.15rem",
-        color: "#839270",
+        color: "#31654B",
     },
     "& > span:nth-of-type(2)": {
         display: "flex",
@@ -50,7 +50,7 @@ export const DayContainer = styled(Box)({
             transition: "all 0.8s ease",
 
             "&:hover": {
-                color: "#839270",
+                color: "#31654B",
             },
         },
     },

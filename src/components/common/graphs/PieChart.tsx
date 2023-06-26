@@ -23,10 +23,10 @@ const PieChartGraph: FC<PieChartProps> = ({ data }) => (
                         <Cell
                             fill={
                                 d.Status === ProdStatusOptions.Approval
-                                    ? "#BB855E"
+                                    ? "#DFB6D2"
                                     : d.Status === ProdStatusOptions.Produccion
-                                    ? "#839270"
-                                    : "#CEB471"
+                                    ? "#CFD779"
+                                    : "#919ECC"
                             }
                             key={Symbol(index).toString()}
                         />
@@ -75,7 +75,7 @@ const renderLegend = (props) => {
                             letterSpacing: "0.15rem",
                             fontWeight: 400,
                             verticalAlign: "bottom",
-                            color: "#233906",
+                            color: "#000",
                             lineHeight: "1.9rem",
                         }}
                     >

@@ -107,7 +107,7 @@ const Shipments = () => {
                             <Badge key={day.toString()} overlap="circular">
                                 <PickersDay
                                     style={{
-                                        background: isSelected ? "#BB855E" : "",
+                                        background: isSelected ? "#DFB6D2" : "",
                                     }}
                                     {...DayComponentProps}
                                 />

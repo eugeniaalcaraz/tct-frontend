@@ -34,7 +34,7 @@ export const Container = styled(Box)({
                 width: "1.2rem",
                 height: "1.2rem",
                 "& > path": {
-                    stroke: "#233906",
+                    stroke: "#000",
                 },
             },
         },
