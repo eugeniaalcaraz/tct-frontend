@@ -46,6 +46,7 @@ export interface productState {
     allSeasons: AllSeasons[] | null;
     avios: Avios[];
     edition: boolean;
+    industries: OptionsType[];
 }
 
 const initialState: productState = {
@@ -74,6 +75,7 @@ const initialState: productState = {
     bodyFit: [],
     avios: [],
     edition: false,
+    industries: [],
 };
 
 const productSlice = createSlice({

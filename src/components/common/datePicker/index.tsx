@@ -8,9 +8,10 @@ import { useAppDispatch } from "@/state/app/hooks";
 
 type DateProps = {
     label: string;
+    type: string;
 };
 
-const Date: FC<DateProps> = ({ label }) => {
+const Date: FC<DateProps> = ({ label, type }) => {
     const dispatch = useAppDispatch();
     const [value, setValue] = useState<Dayjs | null>(null);
     const [openCalendar, setOpenCalendar] = useState<boolean>(false);
@@ -24,7 +25,7 @@ const Date: FC<DateProps> = ({ label }) => {
         () =>
             dispatch(
                 handleSelectChange({
-                    label: "fecha",
+                    label: `${type}`,
                     value: value?.format("YYYY-MM-DD") ?? "",
                 })
             ),

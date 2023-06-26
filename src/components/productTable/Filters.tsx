@@ -13,13 +13,18 @@ const Filters = () => {
     const {
         allSeasons,
         supplier,
-        departments,
+        managementUnit,
         tipology,
         fabrics,
         designers,
         countries,
         status,
         typeOfshipment,
+        brands,
+        industries,
+        concepts,
+        lines,
+        bodyFit,
     } = useAppSelector((state) => state.product);
 
     const dropdownFilters = [
@@ -41,8 +46,21 @@ const Filters = () => {
                 })
             ),
         },
-        { name: "departamento", options: departments },
+        {
+            name: "marca",
+            options: brands?.map(
+                ({ Id, Name }): OptionsType => ({
+                    Id: String(Id),
+                    Description: Name,
+                })
+            ),
+        },
+        { name: "unidad", options: managementUnit },
+        { name: "rubro", options: industries },
         { name: "tipologia", options: tipology },
+        { name: "concepto", options: concepts },
+        { name: "linea", options: lines },
+        { name: "fit", options: bodyFit },
         {
             name: "calidad",
             options: fabrics?.map(
@@ -51,46 +69,6 @@ const Filters = () => {
                     Description,
                 })
             ),
-        },
-        {
-            name: "estado",
-            options: status?.map(
-                ({ IdStatus, Description }): OptionsType => ({
-                    Id: String(IdStatus),
-                    Description,
-                })
-            ),
-        },
-        {
-            name: "diseñador",
-            options: designers?.map(
-                ({ Id, Name, LastName }): OptionsType => ({
-                    Id: String(Id),
-                    Description: `${Name} ${LastName}`,
-                })
-            ),
-        },
-        {
-            name: "origen",
-            options: countries?.map(
-                ({ Id, Name }): OptionsType => ({
-                    Id: String(Id),
-                    Description: Name,
-                })
-            ),
-        },
-        {
-            name: "destino",
-            options: countries?.map(
-                ({ Id, Name }): OptionsType => ({
-                    Id: String(Id),
-                    Description: Name,
-                })
-            ),
-        },
-        {
-            name: "embarque",
-            options: typeOfshipment,
         },
     ];
 
@@ -108,8 +86,10 @@ const Filters = () => {
                     />
                 );
             })}
-            <Date label="Fecha" />
-            {inputFilters.map((filter) => {
+            <Date label="Fecha Embarque" type="embarque" />
+            <Date label="Ingreso Depósito" type="deposito" />
+            <Date label="Ingreso Tienda" type="store" />
+            {/* {inputFilters.map((filter) => {
                 return (
                     <Input
                         key={filter}
@@ -117,7 +97,7 @@ const Filters = () => {
                         value={filters[filter]}
                     />
                 );
-            })}
+            })} */}
         </FiltersContainer>
     );
 };
