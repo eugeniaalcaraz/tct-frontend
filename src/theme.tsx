@@ -5,12 +5,12 @@ export const theme = createTheme({
     spacing: 10,
     palette: {
         primary: {
-            main: "#233906",
+            main: "#31654B",
             light: "#B5BBAD",
         },
         secondary: {
-            main: "#839270",
-            light: "rgba(131, 146, 112, 0.6)",
+            main: "#314C95",
+            light: "#CFD779",
         },
         warning: {
             main: "#CEB471",
