@@ -123,7 +123,7 @@ const Login = () => {
                             textTransform: "capitalize",
                             letterSpacing: "0.1rem",
                             fontSize: "1rem",
-                            color: "#fff",
+                            // color: "#fff",
                         }}
                     >
                         {loading ? <Loader /> : "Ingresar"}
