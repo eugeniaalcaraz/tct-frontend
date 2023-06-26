@@ -36,7 +36,11 @@ export const GeneralDetails = () => {
             <Stack direction={"row"} gap={2}>
                 <div
                     className="item"
-                    style={{ backgroundColor: "gray", width: "25%" }}
+                    style={{
+                        backgroundColor: "gray",
+                        maxWidth: "30rem",
+                        borderRadius: "10px",
+                    }}
                 >
                     Imagen
                 </div>
