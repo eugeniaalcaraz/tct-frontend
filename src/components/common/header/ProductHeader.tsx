@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { NewProductContainer } from "./HeaderStyles";
 import { FilterButton } from "./HeaderStyles";
 import { useIconsContext } from "@components/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
+import { setEdition } from "@/state/features/product";
 
 const ProductHeader = () => {
-    const [editMode, setEditMode] = useState(false);
+    const { edition } = useAppSelector((state) => state.product);
     const { icons } = useIconsContext();
+    const dispatch = useAppDispatch();
+
     return (
         <NewProductContainer>
             <FilterButton
@@ -20,12 +24,12 @@ const ProductHeader = () => {
 
             <FilterButton
                 variant="contained"
-                type={editMode ? "submit" : "button"}
+                type={edition ? "submit" : "button"}
                 color="primary"
                 form="product-form"
-                onClick={() => !editMode && setEditMode(true)}
+                onClick={() => dispatch(setEdition(!edition))}
             >
-                {editMode ? "Guardar" : "Editar"}
+                {edition ? "Guardar" : "Editar"}
             </FilterButton>
         </NewProductContainer>
     );

@@ -4,9 +4,7 @@ import { Box, TableRow } from "@mui/material";
 export const Container = styled(Box)({
     width: "100%",
     height: "fit-content",
-    paddingTop: "60px",
-    paddingRight: "15px",
-    paddingLeft: "15px",
+    padding: "6rem 3rem",
     display: "flex",
     flexDirection: "column",
     backgroundColor: "#E8E8E8",

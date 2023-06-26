@@ -3,15 +3,23 @@ import {
     Table,
     TableCell,
     TableBody,
-    Box,
+    TextField,
     Stack,
 } from "@mui/material";
 import React from "react";
 import { StyledTableRow } from "../UpdateProductStyles";
 import { ComboItem } from "../comboItem";
 import { StatusLabel } from "../stateLabel";
+import { v4 as uuid } from "uuid";
+import { useAppSelector } from "@/state/app/hooks";
+
+const rowStructure = [
+    ["Calidad", "Composición"],
+    ["Peso", "Consumo"],
+];
 
 export const Materials = () => {
+    const { edition } = useAppSelector((state) => state.product);
     return (
         <section>
             <h3>Materiales</h3>
@@ -35,22 +43,29 @@ export const Materials = () => {
                     <TableContainer>
                         <Table>
                             <TableBody>
-                                <StyledTableRow>
-                                    <TableCell>
-                                        {"Calidad: {calidad}"}
-                                    </TableCell>
-                                    <TableCell>
-                                        {"Composicion: {peso}"}
-                                    </TableCell>
-                                </StyledTableRow>
-                                <StyledTableRow>
-                                    <TableCell>
-                                        {"Peso: {pesoCalidad1}"}
-                                    </TableCell>
-                                    <TableCell>
-                                        {"Consumo: {consumo}"}
-                                    </TableCell>
-                                </StyledTableRow>
+                                {rowStructure.map((row) => (
+                                    <StyledTableRow key={uuid()}>
+                                        {row.map((cell) => (
+                                            <TableCell key={uuid()}>
+                                                {cell}
+                                                {cell !== "" && ": "}
+                                                {edition && cell !== "" ? (
+                                                    <TextField
+                                                        id="outlined-read-only-input"
+                                                        defaultValue={cell}
+                                                        variant="standard"
+                                                        size="small"
+                                                        sx={{
+                                                            width: "calc(100% - 15rem)",
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <>{cell}</>
+                                                )}
+                                            </TableCell>
+                                        ))}
+                                    </StyledTableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -63,7 +78,8 @@ export const Materials = () => {
                             <div
                                 key={index}
                                 style={{
-                                    width: "31%",
+                                    marginRight: "5rem",
+                                    padding: "0 2rem",
                                     alignItems: "center",
                                     display: "flex",
                                     justifyContent: "center",
