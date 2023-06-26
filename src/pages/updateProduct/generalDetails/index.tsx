@@ -8,12 +8,29 @@ import {
     TableHead,
     TableRow,
     TableBody,
+    TextField,
 } from "@mui/material";
+import { v4 as uuid } from "uuid";
 import { Form } from "@components/common";
 import { Container, Content, StyledTableRow } from "../UpdateProductStyles";
 import { useForm } from "react-hook-form";
+import { useAppSelector } from "@/state/app/hooks";
+
+const rowStructure = [
+    ["Nombre", "Temporada"],
+    ["Fecha de embarque", "Fecha depósito"],
+    ["", ""],
+    ["Unidad de gestión", "Rubro"],
+    ["Tipología", "Peso"],
+    ["Concepto", "Línea"],
+    ["Body Fit", "Tiro"],
+];
+
+const bottomRows = ["Descripción", "Proyecta"];
 
 export const GeneralDetails = () => {
+    const { edition } = useAppSelector((state) => state.product);
+
     return (
         <section>
             <Stack direction={"row"} gap={2}>
@@ -27,50 +44,40 @@ export const GeneralDetails = () => {
                     <TableContainer>
                         <Table>
                             <TableBody>
-                                <StyledTableRow>
-                                    <TableCell>Nombre: {"{Nombre}"}</TableCell>
-                                    <TableCell>
-                                        Temporada: {"{Temporada}"}
-                                    </TableCell>
-                                </StyledTableRow>
-                                <StyledTableRow>
-                                    <TableCell>
-                                        Fecha de embarque:{" "}
-                                        {"{Fecha de embarque}"}
-                                    </TableCell>
-                                    <TableCell>
-                                        Fecha deposito: {"{Fecha deposito}"}
-                                    </TableCell>
-                                </StyledTableRow>
-                                <TableRow>
-                                    <TableCell />
-                                    <TableCell />
-                                </TableRow>
-                                <StyledTableRow>
-                                    <TableCell>
-                                        Unidad de gestion:{" "}
-                                        {"{Unidad de gestion}"}
-                                    </TableCell>
-                                    <TableCell>Rubro: {"{Rubro}"}</TableCell>
-                                </StyledTableRow>
-                                <StyledTableRow>
-                                    <TableCell>
-                                        Tipologia: {"{Tipologia}"}
-                                    </TableCell>
-                                    <TableCell>Peso: {"{Peso}"}</TableCell>
-                                </StyledTableRow>
-                                <StyledTableRow>
-                                    <TableCell>
-                                        Concepto: {"{Concepto}"}
-                                    </TableCell>
-                                    <TableCell>Linea: {"{Linea}"}</TableCell>
-                                </StyledTableRow>
-                                <StyledTableRow>
-                                    <TableCell>
-                                        Body Fit: {"{Body Fit}"}
-                                    </TableCell>
-                                    <TableCell>Tiro: {"{Tiro}"}</TableCell>
-                                </StyledTableRow>
+                                {rowStructure.map((row) => (
+                                    <>
+                                        {row[0] !== "" ? (
+                                            <StyledTableRow key={uuid()}>
+                                                {row.map((cell) => (
+                                                    <TableCell key={uuid()}>
+                                                        {cell}
+                                                        {": "}
+                                                        {edition ? (
+                                                            <TextField
+                                                                id="outlined-read-only-input"
+                                                                defaultValue={
+                                                                    cell
+                                                                }
+                                                                variant="standard"
+                                                                size="small"
+                                                                sx={{
+                                                                    width: "calc(100% - 15rem)",
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <>{cell}</>
+                                                        )}
+                                                    </TableCell>
+                                                ))}
+                                            </StyledTableRow>
+                                        ) : (
+                                            <TableRow>
+                                                <TableCell />
+                                                <TableCell />
+                                            </TableRow>
+                                        )}
+                                    </>
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -80,14 +87,24 @@ export const GeneralDetails = () => {
                 <TableContainer>
                     <Table>
                         <TableBody>
-                            <StyledTableRow>
-                                <TableCell>
-                                    {"Descriipcion: {descripcion}"}
-                                </TableCell>
-                            </StyledTableRow>
-                            <StyledTableRow>
-                                <TableCell>{"Proyecta: {proyecta}"}</TableCell>
-                            </StyledTableRow>
+                            {bottomRows.map((cell) => (
+                                <StyledTableRow key={uuid()}>
+                                    <TableCell>
+                                        {cell}
+                                        {": "}
+                                        {edition ? (
+                                            <TextField
+                                                id="outlined-read-only-input"
+                                                defaultValue={cell}
+                                                variant="standard"
+                                                size="small"
+                                            />
+                                        ) : (
+                                            <>{cell}</>
+                                        )}
+                                    </TableCell>
+                                </StyledTableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>

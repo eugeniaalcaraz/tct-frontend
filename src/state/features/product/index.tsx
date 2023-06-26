@@ -45,6 +45,7 @@ export interface productState {
     status: { IdStatus: number; Description: string }[];
     allSeasons: AllSeasons[] | null;
     avios: Avios[];
+    edition: boolean;
 }
 
 const initialState: productState = {
@@ -72,6 +73,7 @@ const initialState: productState = {
     rises: [],
     bodyFit: [],
     avios: [],
+    edition: false,
 };
 
 const productSlice = createSlice({
@@ -137,6 +139,9 @@ const productSlice = createSlice({
         setErrors(state, action: PayloadAction<unknown>) {
             state.errors = action.payload;
         },
+        setEdition(state, action: PayloadAction<boolean>) {
+            state.edition = action.payload;
+        },
     },
 });
 
@@ -151,5 +156,6 @@ export const {
     setErrors,
     removeCombo,
     addTelasArray,
+    setEdition,
 } = productSlice.actions;
 export default productSlice.reducer;
