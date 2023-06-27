@@ -7,7 +7,7 @@ const Balance = () => {
 
     return (
         <Container>
-            {balance.map(({ Type, Percetage }) => (
+            {balance?.map(({ Type, Percetage }) => (
                 <State key={Type} className={Type}>
                     <p>{`${Percetage} % ${Type}`}</p>
                 </State>

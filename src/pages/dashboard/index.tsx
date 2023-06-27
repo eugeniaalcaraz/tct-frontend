@@ -109,15 +109,15 @@ const Dashboard = () => {
         setBreakpoint(breakpoint);
     };
 
-    // useEffect(() => {
-    //     Number(temporada) !== 0 && getCardData(temporada);
-    // }, [temporada]);
+    useEffect(() => {
+        Number(temporada) !== 0 && getCardData(temporada);
+    }, [temporada]);
 
-    // useEffect(() => {
-    //     if (cardsError) {
-    //         navigate(urlFormat(Pages.ServerError));
-    //     }
-    // }, [cardsError]);
+    useEffect(() => {
+        if (cardsError) {
+            navigate(urlFormat(Pages.ServerError));
+        }
+    }, [cardsError]);
 
     return (
         <>

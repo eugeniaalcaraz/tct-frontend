@@ -19,7 +19,12 @@ interface dashboardState {
     skuYPiezasTotales: SkuType[];
     departamento: string;
     temporada: string | number;
-    embarques: { ShippingDate: string; OrderNumber: number }[];
+    embarques: {
+        ShippingDate: string;
+        EntryDate: string;
+        WarehouseDate: string;
+        ProductNumber: number;
+    }[];
     muestrasEnviadas: { name: string }[];
 }
 

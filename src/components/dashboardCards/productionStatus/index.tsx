@@ -6,7 +6,7 @@ import { useAppSelector } from "@/state/app/hooks";
 const ProductionStatus = () => {
     const { estadoDeProduccion } = useAppSelector((state) => state.dashboard);
 
-    const data = estadoDeProduccion.map((data) => ({
+    const data = estadoDeProduccion?.map((data) => ({
         ...data,
         percentage: Number(data.Percentage),
     }));

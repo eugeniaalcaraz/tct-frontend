@@ -28,18 +28,18 @@ export const getCalendarValue = async (idMerchant, idSeason, month, year) => {
 
 const getQuery = (card) => {
     switch (card) {
-        case "balance":
-            return "getBalanceData";
-        case "estadoDeProduccion":
-            return "getProductsStatus";
-        case "aprobacionesPendientes":
-            return "getPendantApprovals";
-        case "margen":
-            return "getSeasonMargin";
-        case "muestrasEnviadas":
-            return "getTopSixSentSamples";
-        case "skuYPiezasTotales":
-            return "getAllSKUsAndPieces";
+        // case "balance":
+        //     return "getBalanceData";
+        // case "estadoDeProduccion":
+        //     return "getProductsStatus";
+        // case "aprobacionesPendientes":
+        //     return "getPendantApprovals";
+        // case "margen":
+        //     return "getSeasonMargin";
+        // case "muestrasEnviadas":
+        //     return "getTopSixSentSamples";
+        // case "skuYPiezasTotales":
+        //     return "getAllSKUsAndPieces";
         default:
             return -1;
     }
