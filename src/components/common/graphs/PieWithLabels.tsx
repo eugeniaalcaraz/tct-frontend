@@ -2,10 +2,10 @@ import React from "react";
 import { PieChart, Pie, Legend, Cell, ResponsiveContainer } from "recharts";
 
 const data = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
+    { name: "Group A", value: 400, weight: 200 },
+    { name: "Group B", value: 300, weight: 100 },
+    { name: "Group C", value: 300, weight: 50 },
+    { name: "Group D", value: 200, weight: 400 },
 ];
 
 const COLORS = [
@@ -48,7 +48,7 @@ const renderCustomizedLabel = ({
 
 const PieWithLabels = () => {
     return (
-        <ResponsiveContainer height="80%" width="70%">
+        <ResponsiveContainer height="80%" width="80%">
             <PieChart width={700} height={800}>
                 <Pie
                     data={data}
@@ -73,7 +73,7 @@ const PieWithLabels = () => {
                     align="right"
                     wrapperStyle={{
                         top: "25%",
-                        left: "100%",
+                        left: "85%",
                     }}
                     content={renderLegend}
                     iconType="circle"
@@ -101,7 +101,7 @@ const renderLegend = (props) => {
                         fontSize: "3rem",
                         lineHeight: "1.9rem",
                         display: "list-item",
-                        width: "8rem",
+                        width: "9rem",
                     }}
                 >
                     <span
@@ -114,7 +114,7 @@ const renderLegend = (props) => {
                             lineHeight: "1.9rem",
                         }}
                     >
-                        {entry.payload.name} {entry.payload.weight}
+                        {entry.payload.name} Peso: {entry.payload.weight} gr
                     </span>
                 </li>
             ))}
