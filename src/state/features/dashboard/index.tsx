@@ -26,6 +26,12 @@ interface dashboardState {
         ProductNumber: number;
     }[];
     muestrasEnviadas: { name: string }[];
+    overall: [];
+    resumenDeMaterialidades: {
+        Description: string;
+        Weight: string;
+        Percentage: number;
+    }[];
 }
 
 const initialState: dashboardState = {
@@ -38,6 +44,8 @@ const initialState: dashboardState = {
     temporada: "",
     embarques: [],
     muestrasEnviadas: [],
+    overall: [],
+    resumenDeMaterialidades: [],
 };
 
 const dashboardSlice = createSlice({
