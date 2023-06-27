@@ -7,12 +7,13 @@ const MaterialsOverall = () => {
         (state) => state.dashboard
     );
 
-    const data = resumenDeMaterialidades?.map((data) => ({
-        ...data,
-        percentage: Number(data.Percentage),
+    const data = resumenDeMaterialidades?.map((material) => ({
+        name: material.Description,
+        value: Number(material.Percentage),
+        weight: Number(material.Weight),
     }));
 
-    return <PieWithLabels />;
+    return <PieWithLabels data={data} />;
 };
 
 export { MaterialsOverall };

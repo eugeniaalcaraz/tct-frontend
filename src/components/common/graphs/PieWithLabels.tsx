@@ -1,12 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import { PieChart, Pie, Legend, Cell, ResponsiveContainer } from "recharts";
 
-const data = [
-    { name: "Group A", value: 400, weight: 200 },
-    { name: "Group B", value: 300, weight: 100 },
-    { name: "Group C", value: 300, weight: 50 },
-    { name: "Group D", value: 200, weight: 400 },
-];
+type PieWithLabelsProps = {
+    data: { name: string; value: number; weight: number }[];
+};
 
 const COLORS = [
     "#CFD779",
@@ -46,7 +43,7 @@ const renderCustomizedLabel = ({
     );
 };
 
-const PieWithLabels = () => {
+const PieWithLabels: FC<PieWithLabelsProps> = ({ data }) => {
     return (
         <ResponsiveContainer height="80%" width="80%">
             <PieChart width={700} height={800}>
@@ -59,6 +56,7 @@ const PieWithLabels = () => {
                     outerRadius={100}
                     fill="#8884d8"
                     dataKey="value"
+                    stroke="#E8E8E8"
                 >
                     {data.map((entry, index) => (
                         <Cell
