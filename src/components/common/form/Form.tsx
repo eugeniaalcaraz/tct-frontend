@@ -6,7 +6,7 @@ import {
     SubmitHandler,
     FieldValues,
     Path,
-    Resolver,
+    // Resolver,
     FormProvider,
 } from "react-hook-form";
 

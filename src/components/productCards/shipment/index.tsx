@@ -53,6 +53,8 @@ const Shipment = () => {
                     ) ?? []
                 }
                 name="idCountry"
+                error={checkIfError("idCountry")}
+                helperText={checkErrorMessage("idCountry")}
             />
             <ControlledDropdown
                 label="Proveedor"
@@ -65,18 +67,20 @@ const Shipment = () => {
                     ) ?? []
                 }
                 name="idSupplier"
+                error={checkIfError("idSupplier")}
+                helperText={checkErrorMessage("idSupplier")}
             />
             <ControlledInput
                 label="Cantidad Total"
                 name="quantity"
-                error={checkIfError("cantidadEmbarque")}
-                helperText={checkErrorMessage("cantidadEmbarque")}
+                error={checkIfError("quantity")}
+                helperText={checkErrorMessage("quantity")}
             />
             <ControlledInput
-                label="Codigo de fabirca"
+                label="Codigo de fabrica"
                 name="fabricCode"
-                error={checkIfError("cantidadEmbarque")}
-                helperText={checkErrorMessage("cantidadEmbarque")}
+                error={checkIfError("fabricCode")}
+                helperText={checkErrorMessage("fabricCode")}
             />
             <div className="checkboxContainer">
                 {/* TODO: queda para implementar despues<ControlledCheckbox

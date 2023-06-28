@@ -95,16 +95,16 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
                 label="Costo(USD)"
                 name="cost"
                 onBlur={(e) => setBuying(Number(e.target.value))}
-                error={checkIfError("costo")}
-                helperText={checkErrorMessage("costo")}
+                error={checkIfError("cost")}
+                helperText={checkErrorMessage("cost")}
             />
             {pvpChecked ? (
                 <ControlledInput
                     label="Margen"
                     name="margin"
                     onBlur={(e) => setMargin(Number(e.target.value))}
-                    error={checkIfError("precioVenta")}
-                    helperText={checkErrorMessage("precioVenta")}
+                    error={checkIfError("margin")}
+                    helperText={checkErrorMessage("margin")}
                 />
             ) : (
                 <ControlledInput

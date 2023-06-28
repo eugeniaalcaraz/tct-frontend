@@ -34,18 +34,9 @@ import { tipologyEnum } from "./enum";
 
 const defaultValues = {
     idRise: 0,
-    // idSeason: "",
-    // idTipology: "",
-    // departamento: "",
-    // origen: "",
-    // proveedor: "",
-    // destino: "",
-    // calidad: "",
-    // localizacion: "",
     cantidadDeTelas: 1,
     cantidadDeAvios: 1,
     proyecta: false,
-    // margin: "",
 };
 
 const NewProduct = () => {
@@ -53,10 +44,9 @@ const NewProduct = () => {
     const { telas, avios, specialSizeCurve, tipology } = useAppSelector(
         (state) => state.product
     );
-    const [isShoe, setIsShoe] = useState(false);
     const [selectedTipology, setSelectedTipology] = useState(0);
     const resolver = yupResolver(productValidation);
-    const methods = useForm({ defaultValues });
+    const methods = useForm({ resolver, defaultValues });
     const dispatch = useAppDispatch();
 
     const {
@@ -69,7 +59,6 @@ const NewProduct = () => {
     const [seed, setSeed] = useState(1);
 
     const onSave = async (formData) => {
-        // const formattedDate = formData.fecha.format("YYYY-MM-DD");
         let fotos;
         let medidas;
         console.log({ formData });

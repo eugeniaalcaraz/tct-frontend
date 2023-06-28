@@ -18,9 +18,8 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
     comboNumber,
     isForAllCombos,
 }) => {
-    const { countries, supplier, typeOfshipment, telas } = useAppSelector(
-        (state) => state.product
-    );
+    const { countries, supplier, typeOfshipment, telas, errors } =
+        useAppSelector((state) => state.product);
     const [selectedDestinationCountry, setselectedDestinationCountry] =
         useState("");
     const [selectedShipmentType, setSelectedShipmentType] = useState("");
@@ -95,6 +94,25 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
         quantity,
     ]);
 
+    const mesgReturner = (valueToEvaluate: string) => {
+        if (errors) {
+            if (valueToEvaluate.length) {
+                return "Requerido";
+            }
+            if (!/^[0-9.,\b]+$/.test(valueToEvaluate)) {
+                return "Solo numbero aqui!";
+            }
+        }
+    };
+
+    const checkError = (valueToEvaluate) => {
+        if (errors) {
+            return valueToEvaluate === "";
+        } else {
+            return false;
+        }
+    };
+
     return (
         <>
             {/* <h2 style={{ width: "100%" }}>{`Combo ${comboNumber}`}</h2> */}
@@ -105,6 +123,8 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 useFormHook={false}
                 externalOnChange={(e) => setselectedDestinationCountry(e.value)}
                 selectedValue={selectedDestinationCountry}
+                error={checkError(selectedDestinationCountry)}
+                helperText={mesgReturner(selectedDestinationCountry)}
                 options={
                     countries?.map(
                         ({ Id, Name }): OptionsType => ({
@@ -121,6 +141,8 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 name={`cantidadComboEmbarque${comboNumber}`}
                 externalOnChange={(e) => setQuantity(e.target.value)}
                 externalValue={quantity}
+                error={quantity === ""}
+                helperText={() => mesgReturner(quantity)}
             />
             <ControlledDatePicker
                 name={`fechaEmbarque${comboNumber}`}
