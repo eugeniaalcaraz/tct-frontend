@@ -19,6 +19,7 @@ import { Trims } from "./trims";
 import { Shipment } from "./shipment";
 import { SizeCurve } from "./sizeCurve";
 import { StatusLabel } from "./stateLabel";
+import { Measurements } from "./measurements";
 
 /*
 {
@@ -191,6 +192,7 @@ export const UpdateProduct = () => {
                             {/* curva de talles */}
                             <SizeCurve />
                             {/* tabla de medidas */}
+                            <Measurements />
                         </Stack>
                     </Form>
                 </Content>

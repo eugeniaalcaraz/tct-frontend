@@ -33,7 +33,7 @@ export const CostAndMargin = () => {
 
     return (
         <section>
-            <h3>Costo y margen</h3>
+            <h3>COSTO Y MARGEN</h3>
             <TableContainer>
                 <Table>
                     <TableBody>

@@ -97,7 +97,7 @@ export const Materials = () => {
     const { edition } = useAppSelector((state) => state.product);
     return (
         <section>
-            <h3>Materiales</h3>
+            <h3>MATERIALES</h3>
             {/*TODO telas.map((tela)=> <div key={index} style={{ margin: "40px 0" }}>
                     <div>
                         <div>{"getPlacementById(placement)"}</div>

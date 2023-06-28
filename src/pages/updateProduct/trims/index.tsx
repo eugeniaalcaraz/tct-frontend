@@ -43,7 +43,7 @@ export const Trims = () => {
     const { edition } = useAppSelector((state) => state.product);
     return (
         <section>
-            <h3>Avíos</h3>
+            <h3>AVÍOS</h3>
             {/* TODO avios.map((avio)=><>      <TableContainer>
                 <Table>
                     {rowStructure.map((row) => (

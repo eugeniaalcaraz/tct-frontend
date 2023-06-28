@@ -151,7 +151,7 @@ export const Shipment = () => {
     const { edition } = useAppSelector((state) => state.product);
     return (
         <section>
-            <h3>Embarque</h3>
+            <h3>EMBARQUE</h3>
             <div style={{ marginBottom: "50px" }}>
                 <TableContainer>
                     <Table>
