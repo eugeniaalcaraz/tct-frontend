@@ -43,7 +43,7 @@ const RadialChart: FC<RadialChartProps> = ({ data }) => (
             />
 
             <RadialBar background dataKey="value">
-                {data.map((d, index) => {
+                {data?.map((d, index) => {
                     return (
                         <Cell
                             fill={
@@ -81,7 +81,7 @@ const renderLegend = (props) => {
 
     return (
         <>
-            {payload.map((entry) => (
+            {payload?.map((entry) => (
                 <span
                     key={entry}
                     style={{

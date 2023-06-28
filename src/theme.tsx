@@ -162,6 +162,18 @@ export const theme = createTheme({
                 },
             },
         },
+        MuiBadge: {
+            styleOverrides: {
+                root: {
+                    "& > .Mui-selected": {
+                        background: "#314C95",
+                        "&:focus": {
+                            background: "#314C95",
+                        },
+                    },
+                },
+            },
+        },
         MuiDayPicker: {
             styleOverrides: {
                 header: {

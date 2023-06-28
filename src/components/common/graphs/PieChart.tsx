@@ -18,7 +18,7 @@ const PieChartGraph: FC<PieChartProps> = ({ data }) => (
                 dataKey="percentage"
                 stroke="0"
             >
-                {data.map((d, index) => {
+                {data?.map((d, index) => {
                     return (
                         <Cell
                             fill={
@@ -56,7 +56,7 @@ const renderLegend = (props) => {
 
     return (
         <ul>
-            {payload.map((entry, index) => (
+            {payload?.map((entry, index) => (
                 <li
                     key={`list-${entry}-${index}`}
                     style={{

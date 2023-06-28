@@ -14,6 +14,7 @@ import {
     PendingApprovals,
     Margin,
     Overall,
+    MaterialsOverall,
 } from "@components/dashboardCards";
 import { getLocalStorage, setLocalStorage } from "@/utils/localStorage";
 import { LocalStorageKeys } from "@/types";
@@ -35,6 +36,7 @@ const dashboard = {
     embarques: <Shipments />,
     aprobacionesPendientes: <PendingApprovals />,
     margen: <Margin />,
+    resumenDeMaterialidades: <MaterialsOverall />,
     overall: <Overall />,
     composicionPorColor: <Colors />,
 };
@@ -45,6 +47,7 @@ const originalItems = [
     "Embarques",
     "Aprobaciones pendientes",
     "Margen",
+    "Resumen de Materialidades",
     "Overall",
     "Composición por color",
 ];
@@ -109,15 +112,15 @@ const Dashboard = () => {
         setBreakpoint(breakpoint);
     };
 
-    // useEffect(() => {
-    //     Number(temporada) !== 0 && getCardData(temporada);
-    // }, [temporada]);
+    useEffect(() => {
+        Number(temporada) !== 0 && getCardData(temporada);
+    }, [temporada]);
 
-    // useEffect(() => {
-    //     if (cardsError) {
-    //         navigate(urlFormat(Pages.ServerError));
-    //     }
-    // }, [cardsError]);
+    useEffect(() => {
+        if (cardsError) {
+            navigate(urlFormat(Pages.ServerError));
+        }
+    }, [cardsError]);
 
     return (
         <>
