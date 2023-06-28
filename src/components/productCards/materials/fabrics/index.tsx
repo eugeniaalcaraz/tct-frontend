@@ -355,6 +355,8 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
             weight: 0,
             description: "",
             composition: [],
+            placement: 0,
+            consumption: 0,
             idFabric: "",
         }));
         setCompOfSelectedQuality([]);

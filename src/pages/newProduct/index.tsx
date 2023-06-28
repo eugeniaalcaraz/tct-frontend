@@ -71,8 +71,10 @@ const NewProduct = () => {
     const onSave = async (formData) => {
         // const formattedDate = formData.fecha.format("YYYY-MM-DD");
         let fotos;
+        let medidas;
+        console.log({ formData });
 
-        if (formData.fotos) {
+        if (formData.fotos.length) {
             const files = Object.values(formData.fotos);
             const response = files.map((file) => toBase64(file));
             const picturesArray = await Promise.all(response);
@@ -82,6 +84,18 @@ const NewProduct = () => {
             }));
         } else {
             fotos = [];
+        }
+
+        if (formData.medidas.length) {
+            console.log({ medidas: formData.medidas });
+
+            const files = Object.values(formData.medidas);
+            const response = files.map((file) => toBase64(file));
+            const excelArr = await Promise.all(response);
+            console.log({ excelArr });
+            medidas = excelArr[0];
+        } else {
+            medidas = "";
         }
 
         // esto es lo que recibo en tipology
@@ -120,6 +134,7 @@ const NewProduct = () => {
             formData: {
                 ...formData,
                 fotos,
+                medidas,
                 telas,
                 avios,
                 sizeCurveType: sizeCurveTypeChooser[formData.idTipology],
