@@ -102,7 +102,6 @@ export const Trims = () => {
                 }}
             >
                 <StateOptions status={"aprobado"} />
-                <div>fechaEstadoCalidad</div>
             </Stack>
             <TableContainer>
                 <Table>

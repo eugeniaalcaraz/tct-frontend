@@ -112,7 +112,6 @@ export const Materials = () => {
                             }}
                         >
                             <StateOptions status={"reprobado"} />
-                            <div>fechaEstadoCalidad</div>
                         </Stack>
                     </div>
                     <TableContainer>
@@ -207,7 +206,6 @@ export const Materials = () => {
                             }}
                         >
                             <StateOptions status={"reprobado"} />
-                            <div>fechaEstadoCalidad</div>
                         </Stack>
                     </div>
                     <TableContainer>

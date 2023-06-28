@@ -10,6 +10,7 @@ import {
     TableBody,
     TextField,
     Button,
+    MenuItem,
 } from "@mui/material";
 import { v4 as uuid } from "uuid";
 import { Form } from "@components/common";
@@ -17,49 +18,112 @@ import { Container, Content, StyledTableRow } from "../UpdateProductStyles";
 import { useForm } from "react-hook-form";
 import { useAppSelector } from "@/state/app/hooks";
 import { useIconsContext } from "@components/hooks";
-
-const rowStructure = [
-    [
-        { label: "Nombre", data: "name" },
-        { label: "Temporada", data: "getSeasonById(idSeason)" },
-        { label: "Año", data: "year" },
-    ],
-    [
-        { label: "Fecha de embarque", data: "telas[0].shippingDate" },
-        { label: "Fecha depósito", data: "telas[0].warehouseEntryDate" },
-        { label: "", data: "" },
-    ],
-    [{ label: "", data: "" }],
-    [
-        { label: "Unidad de gestión", data: "getDepartmentById(idDepartment)" },
-        { label: "Rubro", data: "getIndustryById(idIndustry)" },
-        { label: "", data: "" },
-    ],
-    [
-        { label: "Tipología", data: "getTipologyById(idTipology)" },
-        { label: "Peso", data: "weight" },
-        { label: "", data: "" },
-    ],
-    [
-        { label: "Concepto", data: "getConceptById(idConcept)" },
-        { label: "Línea", data: "getLineById(idLine)" },
-        { label: "", data: "" },
-    ],
-    [
-        { label: "Body Fit", data: "getBoyFitById(idBodyFit)" },
-        { label: "Tiro", data: "getRiseById(idRise)" },
-        { label: "", data: "" },
-    ],
-];
-
-const bottomRows = [
-    { label: "Descripción", data: "detail" },
-    { label: "Proyecta", data: "proyecta" },
-];
+import { OptionsType } from "@/types";
 
 export const GeneralDetails = () => {
-    const { edition } = useAppSelector((state) => state.product);
+    const {
+        edition,
+        allSeasons,
+        supplier,
+        managementUnit,
+        tipology,
+        fabrics,
+        designers,
+        countries,
+        status,
+        typeOfshipment,
+        brands,
+        industries,
+        concepts,
+        lines,
+        bodyFit,
+    } = useAppSelector((state) => state.product);
+
     const { icons } = useIconsContext();
+
+    const rowStructure = [
+        [
+            { label: "Nombre", data: "name" },
+            {
+                label: "Temporada",
+                data: "getSeasonById(idSeason)",
+                select: true,
+                options: allSeasons?.map(
+                    ({ IdSeason, SeasonName }): OptionsType => ({
+                        Id: String(IdSeason),
+                        Description: SeasonName,
+                    })
+                ),
+            },
+            { label: "Año", data: "year" },
+        ],
+        [
+            { label: "Fecha de embarque", data: "telas[0].shippingDate" },
+            { label: "Fecha depósito", data: "telas[0].warehouseEntryDate" },
+            { label: "", data: "" },
+        ],
+        [{ label: "", data: "" }],
+        [
+            {
+                label: "Unidad de gestión",
+                data: "getDepartmentById(idDepartment)",
+                select: true,
+                options: managementUnit,
+            },
+            {
+                label: "Rubro",
+                data: "getIndustryById(idIndustry)",
+                select: true,
+                options: industries,
+            },
+            { label: "", data: "" },
+        ],
+        [
+            {
+                label: "Tipología",
+                data: "getTipologyById(idTipology)",
+                select: true,
+                options: tipology,
+            },
+            { label: "Peso", data: "weight" },
+            { label: "", data: "" },
+        ],
+        [
+            {
+                label: "Concepto",
+                data: "getConceptById(idConcept)",
+                select: true,
+                options: concepts,
+            },
+            {
+                label: "Línea",
+                data: "getLineById(idLine)",
+                select: true,
+                options: lines,
+            },
+            { label: "", data: "" },
+        ],
+        [
+            {
+                label: "Body Fit",
+                data: "getBoyFitById(idBodyFit)",
+                select: true,
+                options: bodyFit,
+            },
+            {
+                label: "Tiro",
+                data: "getRiseById(idRise)",
+                select: true,
+                options: bodyFit,
+            },
+            { label: "", data: "" },
+        ],
+    ];
+
+    const bottomRows = [
+        { label: "Descripción", data: "detail" },
+        { label: "Proyecta", data: "proyecta" },
+    ];
 
     return (
         <section>
@@ -68,7 +132,9 @@ export const GeneralDetails = () => {
                     className="item"
                     style={{
                         backgroundColor: "#DAD9D9",
-                        maxWidth: "30rem",
+                        width: "350px",
+                        maxWidth: "350px",
+                        //height: "330px",
                         borderRadius: "10px",
                         display: "flex",
                         justifyContent: "center",
@@ -103,25 +169,49 @@ export const GeneralDetails = () => {
                                     <>
                                         {row[0].label !== "" ? (
                                             <StyledTableRow key={uuid()}>
-                                                {row.map(({ label, data }) => (
+                                                {row.map((row) => (
                                                     <TableCell key={uuid()}>
-                                                        {label}
-                                                        {label !== "" && ": "}
+                                                        {row?.label}
+                                                        {row?.label !== "" &&
+                                                            ": "}
                                                         {edition &&
-                                                        label !== "" ? (
+                                                        row?.label !== "" ? (
                                                             <TextField
                                                                 id="outlined-read-only-input"
                                                                 defaultValue={
-                                                                    data
+                                                                    row?.data
                                                                 }
                                                                 variant="standard"
                                                                 size="small"
                                                                 sx={{
                                                                     width: "calc(100% - 15rem)",
                                                                 }}
-                                                            />
+                                                                select={
+                                                                    row?.select
+                                                                }
+                                                            >
+                                                                {row?.select &&
+                                                                    row?.options?.map(
+                                                                        (
+                                                                            option
+                                                                        ) => (
+                                                                            <MenuItem
+                                                                                key={
+                                                                                    option.Id
+                                                                                }
+                                                                                value={
+                                                                                    option.Id
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    option.Description
+                                                                                }
+                                                                            </MenuItem>
+                                                                        )
+                                                                    )}
+                                                            </TextField>
                                                         ) : (
-                                                            <>{data}</>
+                                                            <>{row?.data}</>
                                                         )}
                                                     </TableCell>
                                                 ))}
