@@ -26,10 +26,11 @@ import { createProduct } from "@/services/ProductRequests";
 import { toBase64 } from "@/utils/toBase64";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
-import { tipology } from "./enum";
 import { NumberSizeCurve } from "@components/productCards/sizeCurve/numberSizeCurve";
 import { denimSizes, shoesSizes } from "./aux/aux";
 import { setSpecialSizeCurve } from "@/state/features/product";
+import dayjs from "dayjs";
+import { tipologyEnum } from "./enum";
 
 const defaultValues = {
     idRise: 0,
@@ -49,7 +50,7 @@ const defaultValues = {
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { telas, avios, specialSizeCurve } = useAppSelector(
+    const { telas, avios, specialSizeCurve, tipology } = useAppSelector(
         (state) => state.product
     );
     const [isShoe, setIsShoe] = useState(false);
@@ -123,6 +124,10 @@ const NewProduct = () => {
                 avios,
                 sizeCurveType: sizeCurveTypeChooser[formData.idTipology],
                 extendedSize: specialSizeCurve,
+                modelingDate: dayjs().format("YYYY-MM-DD"),
+                weight: tipology?.find(
+                    (tipology) => tipology.Id === formData.idTipology
+                )?.Weight,
             },
             idMerchant,
             existingQuality: formData.existingQuality,
@@ -136,13 +141,15 @@ const NewProduct = () => {
         adjuntos: <Attachments />,
         compraYVenta: <Trading formMethods={methods} />,
         embarque: <Shipment />,
-        materiales: <Materials isShoe={selectedTipology === tipology.ZAPATO} />,
+        materiales: (
+            <Materials isShoe={selectedTipology === tipologyEnum.ZAPATO} />
+        ),
         curvaDeTalles:
-            selectedTipology === tipology.ZAPATO ||
-            selectedTipology === tipology.DENIM ? (
+            selectedTipology === tipologyEnum.ZAPATO ||
+            selectedTipology === tipologyEnum.DENIM ? (
                 <NumberSizeCurve
                     sizes={
-                        selectedTipology === tipology.ZAPATO
+                        selectedTipology === tipologyEnum.ZAPATO
                             ? shoesSizes
                             : denimSizes
                     }

@@ -10,6 +10,7 @@ import {
     Brands,
     ColorsStateType,
     Avios,
+    TipologyOptions,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
@@ -26,7 +27,7 @@ export interface productState {
     product: Product[] | null;
     filteredData: Product[] | null;
     seasons: OptionsTypeName[] | null;
-    tipology: OptionsType[] | null;
+    tipology: TipologyOptions[] | null;
     managementUnit: OptionsType[] | null;
     designers: Designers[] | null;
     fabrics: Fabric[] | null;

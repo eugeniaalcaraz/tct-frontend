@@ -15,7 +15,7 @@ import {
     getMerchantTypologyDropdownValue,
 } from "@/services/ProductRequests";
 import { OptionsType, TipologyOptions } from "@/types";
-import { changeTelasLength } from "@/state/features/product";
+import { changeTelasLength, handleProductData } from "@/state/features/product";
 
 type ProductCardType = {
     setSelectedTipology: any;
@@ -234,9 +234,10 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
 
     useEffect(() => {
         if (state.selectedIndustry !== "") {
-            getTipologyDropdownValue().then((response) =>
-                setTipology(response)
-            );
+            getTipologyDropdownValue().then((tipology) => {
+                setTipology(tipology);
+                reduxDispatch(handleProductData({ tipology }));
+            });
         }
     }, [state.selectedIndustry]);
 
