@@ -6,3 +6,4 @@ export * from "./Close";
 export * from "./Logout";
 export * from "./Info";
 export * from "./Download";
+export * from "./Upload";

@@ -9,38 +9,46 @@ import {
     TableRow,
     TableBody,
     TextField,
+    Button,
 } from "@mui/material";
 import { v4 as uuid } from "uuid";
 import { Form } from "@components/common";
 import { Container, Content, StyledTableRow } from "../UpdateProductStyles";
 import { useForm } from "react-hook-form";
 import { useAppSelector } from "@/state/app/hooks";
+import { useIconsContext } from "@components/hooks";
 
 const rowStructure = [
     [
         { label: "Nombre", data: "name" },
-        { label: "Temporada", data: "getSeasonById(idSeason) year" },
+        { label: "Temporada", data: "getSeasonById(idSeason)" },
+        { label: "Año", data: "year" },
     ],
     [
         { label: "Fecha de embarque", data: "telas[0].shippingDate" },
         { label: "Fecha depósito", data: "telas[0].warehouseEntryDate" },
+        { label: "", data: "" },
     ],
-    ["", ""],
+    [{ label: "", data: "" }],
     [
         { label: "Unidad de gestión", data: "getDepartmentById(idDepartment)" },
         { label: "Rubro", data: "getIndustryById(idIndustry)" },
+        { label: "", data: "" },
     ],
     [
         { label: "Tipología", data: "getTipologyById(idTipology)" },
         { label: "Peso", data: "weight" },
+        { label: "", data: "" },
     ],
     [
         { label: "Concepto", data: "getConceptById(idConcept)" },
         { label: "Línea", data: "getLineById(idLine)" },
+        { label: "", data: "" },
     ],
     [
         { label: "Body Fit", data: "getBoyFitById(idBodyFit)" },
         { label: "Tiro", data: "getRiseById(idRise)" },
+        { label: "", data: "" },
     ],
 ];
 
@@ -51,6 +59,7 @@ const bottomRows = [
 
 export const GeneralDetails = () => {
     const { edition } = useAppSelector((state) => state.product);
+    const { icons } = useIconsContext();
 
     return (
         <section>
@@ -58,12 +67,33 @@ export const GeneralDetails = () => {
                 <div
                     className="item"
                     style={{
-                        backgroundColor: "gray",
+                        backgroundColor: "#DAD9D9",
                         maxWidth: "30rem",
                         borderRadius: "10px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
                     }}
                 >
-                    Imagen
+                    {edition ? (
+                        <Button
+                            variant="outlined"
+                            component="label"
+                            className="files"
+                        >
+                            <span style={{ marginRight: "1rem" }}>
+                                Modificar
+                            </span>{" "}
+                            {icons["upload"]}
+                            <input
+                                type="file"
+                                hidden
+                                // onChange={handlePreview}
+                            />
+                        </Button>
+                    ) : (
+                        <>Imagen</>
+                    )}
                 </div>
                 <div className="item">
                     <TableContainer>
@@ -71,17 +101,18 @@ export const GeneralDetails = () => {
                             <TableBody>
                                 {rowStructure.map((row) => (
                                     <>
-                                        {row[0] !== "" ? (
+                                        {row[0].label !== "" ? (
                                             <StyledTableRow key={uuid()}>
-                                                {row.map((cell) => (
+                                                {row.map(({ label, data }) => (
                                                     <TableCell key={uuid()}>
-                                                        {cell?.label}
-                                                        {": "}
-                                                        {edition ? (
+                                                        {label}
+                                                        {label !== "" && ": "}
+                                                        {edition &&
+                                                        label !== "" ? (
                                                             <TextField
                                                                 id="outlined-read-only-input"
                                                                 defaultValue={
-                                                                    cell?.data
+                                                                    data
                                                                 }
                                                                 variant="standard"
                                                                 size="small"
@@ -90,7 +121,7 @@ export const GeneralDetails = () => {
                                                                 }}
                                                             />
                                                         ) : (
-                                                            <>{cell?.data}</>
+                                                            <>{data}</>
                                                         )}
                                                     </TableCell>
                                                 ))}
