@@ -13,6 +13,13 @@ export type OptionsType = {
     Description: number | string;
 };
 
+export type TipologyOptions = {
+    Id: string;
+    Description: string;
+    Code: string;
+    Weight: string;
+};
+
 export type ColorsStateType = {
     Id: string;
     Description: number | string;
@@ -86,16 +93,19 @@ export type CompositionFabricCombo = {
 export type ColorCombo = {
     idColor: number;
     sizeCurve: string[];
+    idStatus: number;
 };
 
 export type PrintCombo = {
     nombre: string;
     cantidadColor: number;
     sizeCurve: string[];
+    idStatus: number;
 };
 
-export type FabricCombo = {
+export type FabricComboMaterial = {
     idFabric: string;
+    idStatus: number;
     description: string;
     saveDuplicateFabric?: number;
     consumption: number;
@@ -103,13 +113,16 @@ export type FabricCombo = {
     colors: ColorCombo[];
     prints: PrintCombo[];
     placement: number;
-    printDescription: string;
     composition: CompositionFabricCombo[];
+};
+
+export type FabricCombo = FabricComboMaterial & {
     idCountryDestination: number;
     idShipping: number;
     entryDate: string;
     warehouseEntryDate: string;
     shippingDate: string;
+    quantity: number;
 };
 
 export type Dropdowns = {
@@ -144,7 +157,14 @@ export type Product = {
 export type Avios = {
     idAvio: number;
     idColor: number;
+    idStatus: number;
     quantity: number;
+    shippingDate: string;
+    warehouseEntryDate: string;
+    idShipping: string;
+    idCountryDestination: string;
+    entryDate: string;
+    colors: { idColor: number; idStatus: number }[];
 };
 
 export type PendingApprovals = {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { productValidation } from "./productValidation";
 import {
@@ -20,16 +20,22 @@ import {
     Shipment,
     SizeCurve,
 } from "@components/productCards";
-import { useAppSelector } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 
 import { createProduct } from "@/services/ProductRequests";
 import { toBase64 } from "@/utils/toBase64";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { NumberSizeCurve } from "@components/productCards/sizeCurve/numberSizeCurve";
+import { denimSizes, shoesSizes } from "./aux/aux";
+import { setSpecialSizeCurve } from "@/state/features/product";
+import dayjs from "dayjs";
+import { tipologyEnum } from "./enum";
 
 const defaultValues = {
-    idSeason: "",
-    idTipology: "",
+    idRise: 0,
+    // idSeason: "",
+    // idTipology: "",
     // departamento: "",
     // origen: "",
     // proveedor: "",
@@ -44,10 +50,14 @@ const defaultValues = {
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { telas, avios } = useAppSelector((state) => state.product);
+    const { telas, avios, specialSizeCurve, tipology } = useAppSelector(
+        (state) => state.product
+    );
     const [isShoe, setIsShoe] = useState(false);
+    const [selectedTipology, setSelectedTipology] = useState(0);
     const resolver = yupResolver(productValidation);
     const methods = useForm({ defaultValues });
+    const dispatch = useAppDispatch();
 
     const {
         mutateAsync: createProdAsync,
@@ -74,12 +84,50 @@ const NewProduct = () => {
             fotos = [];
         }
 
+        // esto es lo que recibo en tipology
+        // {
+        //     "Id": 1,
+        //     "Description": "Remera",
+        //     "Code": "AAAA",
+        //     "Weight": "11"
+        // },
+        // {
+        //     "Id": 2,
+        //     "Description": "Zapato",
+        //     "Code": "BBBB",
+        //     "Weight": "10"
+        // },
+        // {
+        //     "Id": 3,
+        //     "Description": "Jean",
+        //     "Code": "CCC",
+        //     "Weight": "50"
+        // }
+        // este es el enum de back
+        // const sizeCurveEnum = {
+        //     shoe: 1,
+        //     clothes: 2,
+        //     denim: 3
+        //   };
+
+        const sizeCurveTypeChooser = {
+            2: 1,
+            1: 2,
+            3: 3,
+        };
+
         createProdAsync({
             formData: {
                 ...formData,
                 fotos,
                 telas,
                 avios,
+                sizeCurveType: sizeCurveTypeChooser[formData.idTipology],
+                extendedSize: specialSizeCurve,
+                modelingDate: dayjs().format("YYYY-MM-DD"),
+                weight: tipology?.find(
+                    (tipology) => tipology.Id === formData.idTipology
+                )?.Weight,
             },
             idMerchant,
             existingQuality: formData.existingQuality,
@@ -89,13 +137,33 @@ const NewProduct = () => {
     };
 
     const product = {
-        producto: <ProductCard setIsShoe={setIsShoe} />,
+        producto: <ProductCard setSelectedTipology={setSelectedTipology} />,
         adjuntos: <Attachments />,
         compraYVenta: <Trading formMethods={methods} />,
         embarque: <Shipment />,
-        materiales: <Materials isShoe={isShoe} />,
-        curvaDeTalles: <SizeCurve />,
+        materiales: (
+            <Materials isShoe={selectedTipology === tipologyEnum.ZAPATO} />
+        ),
+        curvaDeTalles:
+            selectedTipology === tipologyEnum.ZAPATO ||
+            selectedTipology === tipologyEnum.DENIM ? (
+                <NumberSizeCurve
+                    sizes={
+                        selectedTipology === tipologyEnum.ZAPATO
+                            ? shoesSizes
+                            : denimSizes
+                    }
+                />
+            ) : (
+                <SizeCurve />
+            ),
     };
+
+    useEffect(() => {
+        if (productSuccess) {
+            dispatch(setSpecialSizeCurve(false));
+        }
+    }, [productSuccess]);
 
     return (
         <>

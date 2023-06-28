@@ -10,6 +10,7 @@ import {
     Brands,
     ColorsStateType,
     Avios,
+    TipologyOptions,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
@@ -22,10 +23,11 @@ import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
 
 export interface productState {
     errors: unknown;
+    specialSizeCurve: boolean;
     product: Product[] | null;
     filteredData: Product[] | null;
     seasons: OptionsTypeName[] | null;
-    tipology: OptionsType[] | null;
+    tipology: TipologyOptions[] | null;
     managementUnit: OptionsType[] | null;
     designers: Designers[] | null;
     fabrics: Fabric[] | null;
@@ -51,6 +53,7 @@ export interface productState {
 
 const initialState: productState = {
     errors: null,
+    specialSizeCurve: false,
     product: null,
     filteredData: null,
     seasons: null,
@@ -124,25 +127,20 @@ const productSlice = createSlice({
             state.avios[action.payload.trimComboNumber] =
                 action.payload.trimCombo;
         },
-        clearTrimCombos(state) {
-            // state.trimCombos1 = [];
-            // state.trimCombos2 = [];
-            // state.trimCombos3 = [];
-            // state.trimCombos4 = [];
-            // state.trimCombos5 = [];
-            // state.trimCombos6 = [];
-            // state.trimCombos7 = [];
-            // state.trimCombos8 = [];
-            // state.trimCombos9 = [];
-            // state.trimCombos10 = [];
-            // state.trimCombos11 = [];
-            // state.trimCombos12 = [];
+        changeTelasLength(state, action: PayloadAction<number>) {
+            state.telas.length = action.payload;
+        },
+        changeAviosLength(state, action: PayloadAction<number>) {
+            state.avios.length = action.payload;
         },
         setErrors(state, action: PayloadAction<unknown>) {
             state.errors = action.payload;
         },
         setEdition(state, action: PayloadAction<boolean>) {
             state.edition = action.payload;
+        },
+        setSpecialSizeCurve(state, action: PayloadAction<boolean>) {
+            state.specialSizeCurve = action.payload;
         },
     },
 });
@@ -154,10 +152,12 @@ export const {
     addTela,
     clearCombos,
     handleTrimCombos,
-    clearTrimCombos,
+    changeTelasLength,
+    changeAviosLength,
     setErrors,
     removeCombo,
     addTelasArray,
     setEdition,
+    setSpecialSizeCurve,
 } = productSlice.actions;
 export default productSlice.reducer;

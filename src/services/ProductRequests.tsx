@@ -43,6 +43,15 @@ export const getMerchantIndustryDropdownValue = async ({
     }
 };
 
+export const getMerchantShoeMaterialDropdownValue = async ({ idMerchant }) => {
+    const path = `${BASE_URL}/getMerchantShoeMaterials/${idMerchant}`;
+    try {
+        return await getJsonRequest(path);
+    } catch (error) {
+        throw new Error(getErrorMessage(error));
+    }
+};
+
 export const getMerchantTypologyDropdownValue = async ({ idIndustry }) => {
     const path = `${BASE_URL}/getTipologies/${idIndustry}`;
     try {
@@ -157,20 +166,22 @@ const getListingPath = (name) => {
 const getBodyWithExitingQuality = (formData, idMerchant) => {
     const finalObj = {
         ...formData,
+        idDesigner: 1, //TODO: sacar estos datos desde el ui
         idMerchant: Number(idMerchant),
         idExistingProduct: "0",
         name: formData.nombre,
         quantity: Number(formData.quantity),
-        sizeCurveType: 1, //TODO: sacar estos datos desde el ui
-        idSizeCurve: 1, //TODO: sacar estos datos desde el ui
-        idMeasurmentTable: 1, //TODO: sacar estos datos desde el ui
-        idDesigner: 1, //TODO: sacar estos datos desde el ui,
-        extendedSize: 0, //TODO: sacar estos datos desde el ui,
         idModeling: 1,
+        idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1,
+        measurmentTable: "blobtext", //TODO: sacar estos datos desde el ui,
+        idModelingStatus: 1,
+        idStatusMeasurmentTable: 1,
+        idShoeMaterial: 0,
         idCountry: Number(formData.idCountry),
         cost: Number(formData.cost),
         costInStore: Number(formData.precioVenta),
         pictures: formData.fotos, // formData.fotos
+        idSupplier: Number(formData.idSupplier),
     };
 
     delete finalObj.nombre;
@@ -179,6 +190,7 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
     delete finalObj.cantidadDeTelas;
     delete finalObj.peso;
     delete finalObj["porcentaje-0"];
+    delete finalObj["composicion-0"];
     delete finalObj.fotos;
     delete finalObj.nombreNuevoFabric;
     return finalObj;
@@ -192,15 +204,17 @@ const getBody = (formData, idMerchant) => {
         idExistingProduct: "0",
         name: formData.nombre,
         quantity: Number(formData.quantity),
-        sizeCurveType: 1, //TODO: sacar estos datos desde el ui
-        idSizeCurve: 1, //TODO: sacar estos datos desde el ui
-        idMeasurmentTable: 1, //TODO: sacar estos datos desde el ui
-        extendedSize: 0, //TODO: sacar estos datos desde el ui,
         idModeling: 1,
+        idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1
+        measurmentTable: "blobtext", //TODO: sacar estos datos desde el ui,
+        idModelingStatus: 1,
+        idStatusMeasurmentTable: 1,
+        idShoeMaterial: 0,
         idCountry: Number(formData.idCountry),
         cost: Number(formData.cost),
         costInStore: Number(formData.precioVenta),
         pictures: formData.fotos, // formData.fotos
+        idSupplier: Number(formData.idSupplier),
     };
 
     delete finalObj.nombre;
@@ -209,6 +223,8 @@ const getBody = (formData, idMerchant) => {
     delete finalObj.cantidadDeTelas;
     delete finalObj.peso;
     delete finalObj["porcentaje-0"];
+    delete finalObj["composicion-0"];
+
     delete finalObj.fotos;
     delete finalObj.nombreNuevoFabric;
 

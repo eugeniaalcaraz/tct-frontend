@@ -1,10 +1,15 @@
-import React, { FC, useMemo, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import { Button, Box, Tooltip } from "@mui/material";
 import { Container } from "./MaterialsStyles";
 import { Fabrics } from "./fabrics";
 import { Trims } from "./trims";
 import { ControlledDropdown } from "@components/common";
 import { ShoesFabric } from "../shoesFabric";
+import { getMerchantShoeMaterialDropdownValue } from "@/services/ProductRequests";
+import { useMutation } from "@tanstack/react-query";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
+import { OptionsType } from "@/types";
+import { changeAviosLength, changeTelasLength } from "@/state/features/product";
 
 type MaterialsProps = {
     isShoe: boolean;
@@ -13,6 +18,11 @@ type MaterialsProps = {
 const Materials: FC<MaterialsProps> = ({ isShoe }) => {
     const [numberOfFabricsSelected, setNumberOfFabricsSelected] = useState(1);
     const [numberOfTrimsSelected, setNumberOfTrimsSelected] = useState(1);
+    const { idMerchant } = useAppSelector((state) => state.user);
+    const { telas, avios } = useAppSelector((state) => state.product);
+
+    const [shoesOptions, setShoesOptions] = useState<OptionsType[]>([]);
+    const dispatch = useAppDispatch();
 
     const fabricsArrOptions = useMemo(
         () =>
@@ -33,24 +43,44 @@ const Materials: FC<MaterialsProps> = ({ isShoe }) => {
     );
 
     const onSelectNumberOfFabrics = (e) => {
-        setNumberOfFabricsSelected(Number(e.value));
+        const selectedNumberOfFabrics = Number(e.value);
+        setNumberOfFabricsSelected(selectedNumberOfFabrics);
+        if (telas.length > selectedNumberOfFabrics) {
+            dispatch(changeTelasLength(selectedNumberOfFabrics));
+        }
     };
 
     const onSelectNumberOfTrims = (e) => {
-        setNumberOfTrimsSelected(Number(e.value));
+        const selectedNumberOfTrims = Number(e.value);
+        setNumberOfTrimsSelected(selectedNumberOfTrims);
+        if (avios.length > selectedNumberOfTrims) {
+            dispatch(changeAviosLength(selectedNumberOfTrims));
+        }
     };
 
-    const materialsOptions = [
-        { Id: "1", Description: "Cuero" },
-        { Id: "2", Description: "Cuero2" },
-    ];
+    const {
+        mutateAsync: getMerchantShoeMaterialsAsync,
+        isLoading: merchantShoeMaterialsIsLoading,
+        isError: merchantshoeMaterialError,
+    } = useMutation(getMerchantShoeMaterialDropdownValue);
+
+    const getShoeMaterials = async () => {
+        const response = await getMerchantShoeMaterialsAsync({ idMerchant });
+        return response;
+    };
+
+    useEffect(() => {
+        getShoeMaterials().then((response) => {
+            setShoesOptions(response);
+        });
+    }, []);
 
     return (
         <Container>
             {isShoe ? (
                 <ControlledDropdown
                     label="Material"
-                    options={materialsOptions}
+                    options={shoesOptions}
                     name="idShoeMaterial"
                 />
             ) : (

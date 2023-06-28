@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useReducer, useState } from "react";
-import { useAppSelector } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ProductStyles";
 import { ControlledCheckbox } from "@components/common/form/controlledCheckbox";
@@ -14,13 +14,14 @@ import {
     getMerchantIndustryDropdownValue,
     getMerchantTypologyDropdownValue,
 } from "@/services/ProductRequests";
-import { OptionsType } from "@/types";
+import { OptionsType, TipologyOptions } from "@/types";
+import { changeTelasLength, handleProductData } from "@/state/features/product";
 
 type ProductCardType = {
-    setIsShoe: any;
+    setSelectedTipology: any;
 };
 
-const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
+const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
     const {
         seasons,
         brands,
@@ -33,16 +34,16 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
         errors,
     } = useAppSelector((state) => state.product);
     const { idMerchant } = useAppSelector((state) => state.user);
+    const reduxDispatch = useAppDispatch();
 
     //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
     const [state, dispatch] = useReducer(productReducer, initialProductState);
     const [rubros, setRubros] = useState<OptionsType[]>([
         { Id: "", Description: "" },
     ]);
-    const [tipology, setTipology] = useState<OptionsType[]>([
-        { Id: "", Description: "" },
+    const [tipology, setTipology] = useState<TipologyOptions[]>([
+        { Id: "", Description: "", Code: "", Weight: "" },
     ]);
-    const [selectedHeading, setSelectedHeading] = useState("");
 
     const yearsDropdownArr = useMemo(() => {
         const currentYear = Number(dayjs().format("YY"));
@@ -61,7 +62,14 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
         isError: merchantTipologyError,
     } = useMutation(getMerchantTypologyDropdownValue);
 
-    //getMerchantTypologyDropdownValue
+    const idShoes = useMemo(
+        () =>
+            tipology.find(
+                (tipology) =>
+                    (tipology.Description as string).includes("Zapato") ?? 0
+            ),
+        [tipology]
+    );
 
     const generalPropsDropdowns = useMemo(
         () => [
@@ -175,14 +183,6 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
     };
 
     const dropdownOnSelect = (e) => {
-        if (e.name === "rubro") {
-            setSelectedHeading(
-                String(
-                    rubros.find((element) => element.Id === e.value)
-                        ?.Description
-                ) ?? ""
-            );
-        }
         if (e.name === "idMerchantBrand") {
             dispatch({ type: "setSelectedBrand", payload: e.value });
         }
@@ -193,7 +193,11 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
             dispatch({ type: "setSelectedYear", payload: e.value });
         }
         if (e.name === "idTipology") {
+            setSelectedTipology(e.value);
             dispatch({ type: "setSelectedTipology", payload: e.value });
+            if (e.value !== idShoes) {
+                reduxDispatch(changeTelasLength(1));
+            }
         }
         if (e.name === "idDepartment") {
             dispatch({ type: "setSelectedManagementUnit", payload: e.value });
@@ -202,8 +206,6 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
             dispatch({ type: "setSelectedIndustry", payload: e.value });
         }
     };
-
-    const shouldEnableHeading = () => state.selectedIndustry !== 3;
 
     const getIndustriesDropdownValue = async () => {
         const response = await getMerchantIndustryAsync({
@@ -232,20 +234,12 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
 
     useEffect(() => {
         if (state.selectedIndustry !== "") {
-            getTipologyDropdownValue().then((response) =>
-                setTipology(response)
-            );
+            getTipologyDropdownValue().then((tipology) => {
+                setTipology(tipology);
+                reduxDispatch(handleProductData({ tipology }));
+            });
         }
     }, [state.selectedIndustry]);
-
-    useEffect(() => {
-        //TODO: CAMBIAR NUMERO POR BUSQUEDA DE ID
-        if (state.selectedTipology === 2) {
-            setIsShoe(true);
-        } else {
-            setIsShoe(false);
-        }
-    }, [state.selectedTipology]);
 
     return (
         <Container>
@@ -265,14 +259,16 @@ const ProductCard: FC<ProductCardType> = ({ setIsShoe }) => {
                 );
             })}
             <div className="readOnlyContainer">
-                <SyledTextField
+                <ControlledInput
                     label="Peso"
                     name="peso"
+                    useFormhook={false}
                     disabled={true}
-                    value={"test"}
-                    InputProps={{
-                        readOnly: true,
-                    }}
+                    externalValue={
+                        tipology.find(
+                            (tipology) => tipology.Id === state.selectedTipology
+                        )?.Weight
+                    }
                 />
             </div>
             {specificPropsDropdowns.map(({ name, label, options, disable }) => {
