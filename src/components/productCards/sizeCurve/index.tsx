@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { ControlledDropdown, ControlledInput } from "@components/common";
-import { Button, Checkbox, FormControlLabel, Box } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { Container } from "./SizeCurveStyles";
 import { OptionsType } from "@/types";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
-import { addTelasArray } from "@/state/features/product";
+import { addTelasArray, setSpecialSizeCurve } from "@/state/features/product";
 
 const sizes = [
     { Id: "U", Description: "U" },
@@ -138,12 +138,23 @@ const SizeCurve = () => {
                         <span key={Id} className={isIncludded(Id)}>
                             <ControlledInput
                                 useFormhook={false}
-                                externalOnChange={(e) =>
+                                externalOnChange={(e) => {
                                     inputOnChange({
                                         valueToUpdate: e.target.value,
                                         id: Id,
-                                    })
-                                }
+                                    });
+                                    if (
+                                        [
+                                            "XXS",
+                                            "3XL",
+                                            "4XL",
+                                            "5XL",
+                                            "6XL",
+                                        ].includes(Id)
+                                    ) {
+                                        dispatch(setSpecialSizeCurve(true));
+                                    }
+                                }}
                                 externalValue={
                                     updatedSizeValues[
                                         findIndex(Id, updatedSizeValues)

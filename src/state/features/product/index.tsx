@@ -22,6 +22,7 @@ import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
 
 export interface productState {
     errors: unknown;
+    specialSizeCurve: boolean;
     product: Product[] | null;
     filteredData: Product[] | null;
     seasons: OptionsTypeName[] | null;
@@ -51,6 +52,7 @@ export interface productState {
 
 const initialState: productState = {
     errors: null,
+    specialSizeCurve: false,
     product: null,
     filteredData: null,
     seasons: null,
@@ -136,6 +138,9 @@ const productSlice = createSlice({
         setEdition(state, action: PayloadAction<boolean>) {
             state.edition = action.payload;
         },
+        setSpecialSizeCurve(state, action: PayloadAction<boolean>) {
+            state.specialSizeCurve = action.payload;
+        },
     },
 });
 
@@ -152,5 +157,6 @@ export const {
     removeCombo,
     addTelasArray,
     setEdition,
+    setSpecialSizeCurve,
 } = productSlice.actions;
 export default productSlice.reducer;

@@ -79,14 +79,14 @@ const Shipment = () => {
                 helperText={checkErrorMessage("cantidadEmbarque")}
             />
             <div className="checkboxContainer">
-                <ControlledCheckbox
+                {/* TODO: queda para implementar despues<ControlledCheckbox
                     name="mismoComboParaTodoEmbarque"
                     label="Todos los combos tienen el mismo embarque ?"
                     defaultCheckedProp={true}
                     externalOnChange={() =>
                         setAllCombosShareShipment(!allCombosShareShipment)
                     }
-                />
+                /> */}
             </div>
             {(allCombosShareShipment ? Array.from(Array(1).keys()) : telas).map(
                 (value, index) => (

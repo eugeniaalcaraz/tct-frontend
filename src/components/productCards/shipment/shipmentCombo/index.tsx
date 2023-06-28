@@ -27,6 +27,7 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
     const [shippingDate, setShippingDate] = useState("");
     const [warehouseEntryDate, setWarehouseEntryDate] = useState("");
     const [entryDate, setEntryDate] = useState("");
+    const [quantity, setQuantity] = useState("");
     const telasUpdatableObject = useMemo(
         () => ({ ...telas[comboNumber - 1] }),
         [telas]
@@ -57,6 +58,10 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                     shippingDate !== ""
                         ? shippingDate
                         : telasUpdatableObject.shippingDate,
+                quantity:
+                    quantity !== ""
+                        ? Number(quantity)
+                        : telasUpdatableObject.quantity,
             }));
 
             dispatch(addTelasArray(updatedTelas));
@@ -87,11 +92,13 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
         warehouseEntryDate,
         entryDate,
         shippingDate,
+        quantity,
     ]);
 
     return (
         <>
-            <h2 style={{ width: "100%" }}>{`Combo ${comboNumber}`}</h2>
+            {/* <h2 style={{ width: "100%" }}>{`Combo ${comboNumber}`}</h2> */}
+            <h2 style={{ width: "100%" }}>{`Combo`}</h2>
 
             <ControlledDropdown
                 label="Destino"
@@ -109,15 +116,18 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 name={`embarque-${comboNumber}`}
             />
             <ControlledInput
+                useFormhook={false}
                 label="Cantidad"
                 name={`cantidadComboEmbarque${comboNumber}`}
+                externalOnChange={(e) => setQuantity(e.target.value)}
+                externalValue={quantity}
             />
             <ControlledDatePicker
                 name={`fechaEmbarque${comboNumber}`}
                 label="Fecha de embarque"
                 useFormHook={false}
                 externalOnChange={(e: Dayjs) =>
-                    setShippingDate(e.format("YYYY-DD-MM"))
+                    setShippingDate(e.format("YYYY-MM-DD"))
                 }
             />
             <ControlledDropdown
@@ -133,7 +143,7 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 label="Ingreso Deposito"
                 useFormHook={false}
                 externalOnChange={(e: Dayjs) =>
-                    setWarehouseEntryDate(e.format("YYYY-DD-MM"))
+                    setWarehouseEntryDate(e.format("YYYY-MM-DD"))
                 }
             />
 
@@ -142,7 +152,7 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 label="Ingreso Tienda"
                 useFormHook={false}
                 externalOnChange={(e: Dayjs) =>
-                    setEntryDate(e.format("YYYY-DD-MM"))
+                    setEntryDate(e.format("YYYY-MM-DD"))
                 }
             />
         </>

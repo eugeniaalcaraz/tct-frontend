@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { productValidation } from "./productValidation";
 import {
@@ -20,7 +20,7 @@ import {
     Shipment,
     SizeCurve,
 } from "@components/productCards";
-import { useAppSelector } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 
 import { createProduct } from "@/services/ProductRequests";
 import { toBase64 } from "@/utils/toBase64";
@@ -29,11 +29,12 @@ import { useForm } from "react-hook-form";
 import { tipology } from "./enum";
 import { NumberSizeCurve } from "@components/productCards/sizeCurve/numberSizeCurve";
 import { denimSizes, shoesSizes } from "./aux/aux";
+import { setSpecialSizeCurve } from "@/state/features/product";
 
 const defaultValues = {
-    idSeason: "",
-    idTipology: "",
-    idShoeMaterial: 0,
+    idRise: 0,
+    // idSeason: "",
+    // idTipology: "",
     // departamento: "",
     // origen: "",
     // proveedor: "",
@@ -48,11 +49,14 @@ const defaultValues = {
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { telas, avios } = useAppSelector((state) => state.product);
+    const { telas, avios, specialSizeCurve } = useAppSelector(
+        (state) => state.product
+    );
     const [isShoe, setIsShoe] = useState(false);
     const [selectedTipology, setSelectedTipology] = useState(0);
     const resolver = yupResolver(productValidation);
     const methods = useForm({ defaultValues });
+    const dispatch = useAppDispatch();
 
     const {
         mutateAsync: createProdAsync,
@@ -118,6 +122,7 @@ const NewProduct = () => {
                 telas,
                 avios,
                 sizeCurveType: sizeCurveTypeChooser[formData.idTipology],
+                extendedSize: specialSizeCurve,
             },
             idMerchant,
             existingQuality: formData.existingQuality,
@@ -146,6 +151,12 @@ const NewProduct = () => {
                 <SizeCurve />
             ),
     };
+
+    useEffect(() => {
+        if (productSuccess) {
+            dispatch(setSpecialSizeCurve(false));
+        }
+    }, [productSuccess]);
 
     return (
         <>

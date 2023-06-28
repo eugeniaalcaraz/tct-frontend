@@ -93,16 +93,19 @@ export type CompositionFabricCombo = {
 export type ColorCombo = {
     idColor: number;
     sizeCurve: string[];
+    idStatus: number;
 };
 
 export type PrintCombo = {
     nombre: string;
     cantidadColor: number;
     sizeCurve: string[];
+    idStatus: number;
 };
 
 export type FabricComboMaterial = {
     idFabric: string;
+    idStatus: number;
     description: string;
     saveDuplicateFabric?: number;
     consumption: number;
@@ -119,6 +122,7 @@ export type FabricCombo = FabricComboMaterial & {
     entryDate: string;
     warehouseEntryDate: string;
     shippingDate: string;
+    quantity: number;
 };
 
 export type Dropdowns = {
@@ -153,12 +157,14 @@ export type Product = {
 export type Avios = {
     idAvio: number;
     idColor: number;
+    idStatus: number;
     quantity: number;
     shippingDate: string;
     warehouseEntryDate: string;
     idShipping: string;
     idCountryDestination: string;
     entryDate: string;
+    colors: { idColor: number; idStatus: number }[];
 };
 
 export type PendingApprovals = {

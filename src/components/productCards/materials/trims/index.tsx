@@ -37,6 +37,7 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                 trimComboNumber: trimNumber,
                 trimCombo: {
                     idAvio: Number(idAvio),
+                    idStatus: 1,
                     idColor: trimColor,
                     quantity: Number(quantity),
                     idShipping: "",
@@ -44,6 +45,7 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                     shippingDate: "",
                     entryDate: "",
                     warehouseEntryDate: "",
+                    colors: [{ idColor: trimColor, idStatus: 1 }],
                 },
             })
         );
