@@ -17,16 +17,37 @@ import { useForm } from "react-hook-form";
 import { useAppSelector } from "@/state/app/hooks";
 
 const rowStructure = [
-    ["Nombre", "Temporada"],
-    ["Fecha de embarque", "Fecha depósito"],
+    [
+        { label: "Nombre", data: "name" },
+        { label: "Temporada", data: "getSeasonById(idSeason) year" },
+    ],
+    [
+        { label: "Fecha de embarque", data: "telas[0].shippingDate" },
+        { label: "Fecha depósito", data: "telas[0].warehouseEntryDate" },
+    ],
     ["", ""],
-    ["Unidad de gestión", "Rubro"],
-    ["Tipología", "Peso"],
-    ["Concepto", "Línea"],
-    ["Body Fit", "Tiro"],
+    [
+        { label: "Unidad de gestión", data: "getDepartmentById(idDepartment)" },
+        { label: "Rubro", data: "getIndustryById(idIndustry)" },
+    ],
+    [
+        { label: "Tipología", data: "getTipologyById(idTipology)" },
+        { label: "Peso", data: "weight" },
+    ],
+    [
+        { label: "Concepto", data: "getConceptById(idConcept)" },
+        { label: "Línea", data: "getLineById(idLine)" },
+    ],
+    [
+        { label: "Body Fit", data: "getBoyFitById(idBodyFit)" },
+        { label: "Tiro", data: "getRiseById(idRise)" },
+    ],
 ];
 
-const bottomRows = ["Descripción", "Proyecta"];
+const bottomRows = [
+    { label: "Descripción", data: "detail" },
+    { label: "Proyecta", data: "proyecta" },
+];
 
 export const GeneralDetails = () => {
     const { edition } = useAppSelector((state) => state.product);
@@ -54,13 +75,13 @@ export const GeneralDetails = () => {
                                             <StyledTableRow key={uuid()}>
                                                 {row.map((cell) => (
                                                     <TableCell key={uuid()}>
-                                                        {cell}
+                                                        {cell?.label}
                                                         {": "}
                                                         {edition ? (
                                                             <TextField
                                                                 id="outlined-read-only-input"
                                                                 defaultValue={
-                                                                    cell
+                                                                    cell?.data
                                                                 }
                                                                 variant="standard"
                                                                 size="small"
@@ -69,7 +90,7 @@ export const GeneralDetails = () => {
                                                                 }}
                                                             />
                                                         ) : (
-                                                            <>{cell}</>
+                                                            <>{cell?.data}</>
                                                         )}
                                                     </TableCell>
                                                 ))}
@@ -91,20 +112,20 @@ export const GeneralDetails = () => {
                 <TableContainer>
                     <Table>
                         <TableBody>
-                            {bottomRows.map((cell) => (
+                            {bottomRows.map(({ label, data }) => (
                                 <StyledTableRow key={uuid()}>
                                     <TableCell>
-                                        {cell}
+                                        {label}
                                         {": "}
                                         {edition ? (
                                             <TextField
                                                 id="outlined-read-only-input"
-                                                defaultValue={cell}
+                                                defaultValue={data}
                                                 variant="standard"
                                                 size="small"
                                             />
                                         ) : (
-                                            <>{cell}</>
+                                            <>{data}</>
                                         )}
                                     </TableCell>
                                 </StyledTableRow>

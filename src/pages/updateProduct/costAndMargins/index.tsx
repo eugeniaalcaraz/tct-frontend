@@ -11,9 +11,21 @@ import { useAppSelector } from "@/state/app/hooks";
 import { v4 as uuid } from "uuid";
 
 const rowStructure = [
-    ["Costo(USD)", "Precio Venta(USD)", "Precio Tienda($)"],
-    ["Margen", "Markup", ""],
-    ["Precio Santander($)", "Margen Santander($)", ""],
+    [
+        { label: "Costo(USD)", data: "cost" },
+        { label: "Precio Venta(USD)", data: "costInStore" },
+        { label: "Precio Tienda($)", data: "costInStore * conversionRate" },
+    ],
+    [
+        { label: "Margen", data: "calculo de margen" },
+        { label: "Markup", data: "" },
+        { label: "", data: "" },
+    ],
+    [
+        { label: "Precio Santander($)", data: "" },
+        { label: "Margen Santander($)", data: "" },
+        { label: "", data: "" },
+    ],
 ];
 
 export const CostAndMargin = () => {
@@ -27,14 +39,14 @@ export const CostAndMargin = () => {
                     <TableBody>
                         {rowStructure.map((row) => (
                             <StyledTableRow key={uuid()}>
-                                {row.map((cell) => (
+                                {row.map(({ label, data }) => (
                                     <TableCell key={uuid()}>
-                                        {cell}
-                                        {cell !== "" && ": "}
-                                        {edition && cell !== "" ? (
+                                        {label}
+                                        {label !== "" && ": "}
+                                        {edition && label !== "" ? (
                                             <TextField
                                                 id="outlined-read-only-input"
-                                                defaultValue={cell}
+                                                defaultValue={data}
                                                 variant="standard"
                                                 size="small"
                                                 sx={{
@@ -42,7 +54,7 @@ export const CostAndMargin = () => {
                                                 }}
                                             />
                                         ) : (
-                                            <>{cell}</>
+                                            <>{data}</>
                                         )}
                                     </TableCell>
                                 ))}

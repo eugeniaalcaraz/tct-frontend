@@ -1,9 +1,23 @@
 import { Box, Stack } from "@mui/material";
-import React from "react";
+import React, { FC } from "react";
 import { StyledComboItem } from "./StyledComboItem";
 import { StatusLabel } from "../stateLabel";
 
-export const ComboItem = () => {
+type ComboItemProps = {
+    combo: number;
+    color: string;
+    status: string;
+    name?: string;
+    colorCount?: number;
+};
+
+export const ComboItem: FC<ComboItemProps> = ({
+    combo,
+    color,
+    status,
+    name,
+    colorCount,
+}) => {
     return (
         <StyledComboItem>
             <Stack
@@ -13,16 +27,17 @@ export const ComboItem = () => {
                     justifyContent: "center",
                 }}
             >
-                <div className="title">Combo 1</div>
+                <div className="title">Combo {combo}</div>
                 <Stack
                     direction={"row"}
                     gap={"16px"}
                     sx={{ alignItems: "center" }}
                 >
-                    <div className="colorBox">Box</div>
+                    <div className="colorBox" style={{ background: color }} />
+
                     <Stack gap={"8px"} style={{ alignItems: "center" }}>
                         <StatusLabel status={"pendiente"} />
-                        <div>{"{fechaEstado}"}</div>
+                        {name && <div>name colorCount</div>}
                     </Stack>
                 </Stack>
             </Stack>
