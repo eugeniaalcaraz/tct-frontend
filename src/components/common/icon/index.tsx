@@ -8,6 +8,8 @@ import {
     Logout,
     Download,
     Upload,
+    Down,
+    Up,
 } from "@/assets/icons";
 
 type IconProps = {
@@ -27,6 +29,8 @@ const icons: iconObject = {
     logout: <Logout />,
     download: <Download />,
     upload: <Upload />,
+    down: <Down />,
+    up: <Up />,
 };
 
 const Icon: FC<IconProps> = ({ name }) => <>{icons[name]}</>;

@@ -12,6 +12,7 @@ import { ComboItem } from "../comboItem";
 import { StatusLabel } from "../stateLabel";
 import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
+import StateOptions from "../stateLabel/StateOptions";
 
 /*
 "telas": [
@@ -110,7 +111,7 @@ export const Materials = () => {
                                 marginBottom: "40px",
                             }}
                         >
-                            <StatusLabel status={"reprobado"} />
+                            <StateOptions status={"reprobado"} />
                             <div>fechaEstadoCalidad</div>
                         </Stack>
                     </div>
@@ -205,7 +206,7 @@ export const Materials = () => {
                                 marginBottom: "40px",
                             }}
                         >
-                            <StatusLabel status={"reprobado"} />
+                            <StateOptions status={"reprobado"} />
                             <div>fechaEstadoCalidad</div>
                         </Stack>
                     </div>

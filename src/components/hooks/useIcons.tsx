@@ -10,6 +10,8 @@ import {
     Info,
     Download,
     Upload,
+    Down,
+    Up,
 } from "@/assets/icons";
 
 interface IconsProps {
@@ -35,6 +37,8 @@ export const IconsProvider = ({ children }: IconsProviderProps) => {
             info: <Info />,
             download: <Download />,
             upload: <Upload />,
+            down: <Down />,
+            up: <Up />,
         }),
         []
     );

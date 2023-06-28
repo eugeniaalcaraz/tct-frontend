@@ -20,6 +20,7 @@ import { Shipment } from "./shipment";
 import { SizeCurve } from "./sizeCurve";
 import { StatusLabel } from "./stateLabel";
 import { Measurements } from "./measurements";
+import StateOptions from "./stateLabel/StateOptions";
 
 /*
 {
@@ -167,7 +168,7 @@ export const UpdateProduct = () => {
                         }}
                     >
                         <h1>{"01S2404001 - ${Tipo de muestra}"}</h1>
-                        <StatusLabel status={"enviado"} />
+                        <StateOptions status={"enviado"} />
                         {/* <div>{"{fechaEnvio}"}</div> */}
                     </Stack>
                     <Form

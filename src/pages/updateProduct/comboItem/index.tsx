@@ -2,6 +2,7 @@ import { Box, Stack } from "@mui/material";
 import React, { FC } from "react";
 import { StyledComboItem } from "./StyledComboItem";
 import { StatusLabel } from "../stateLabel";
+import StateOptions from "../stateLabel/StateOptions";
 
 type ComboItemProps = {
     combo: number;
@@ -36,7 +37,7 @@ export const ComboItem: FC<ComboItemProps> = ({
                     <div className="colorBox" style={{ background: color }} />
 
                     <Stack gap={"8px"} style={{ alignItems: "center" }}>
-                        <StatusLabel status={"pendiente"} />
+                        <StateOptions status={"pendiente"} />
                         {name && <div>name colorCount</div>}
                     </Stack>
                 </Stack>

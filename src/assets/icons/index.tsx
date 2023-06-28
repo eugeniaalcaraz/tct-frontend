@@ -7,3 +7,5 @@ export * from "./Logout";
 export * from "./Info";
 export * from "./Download";
 export * from "./Upload";
+export * from "./Down";
+export * from "./Up";

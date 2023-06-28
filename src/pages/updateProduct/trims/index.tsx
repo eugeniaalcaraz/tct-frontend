@@ -8,9 +8,9 @@ import {
     TextField,
 } from "@mui/material";
 import { ComboItem } from "../comboItem";
-import { StatusLabel } from "../stateLabel";
 import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
+import StateOptions from "../stateLabel/StateOptions";
 
 // "avios": [
 //     {
@@ -101,7 +101,7 @@ export const Trims = () => {
                     marginBottom: "40px",
                 }}
             >
-                <StatusLabel status={"aprobado"} />
+                <StateOptions status={"aprobado"} />
                 <div>fechaEstadoCalidad</div>
             </Stack>
             <TableContainer>

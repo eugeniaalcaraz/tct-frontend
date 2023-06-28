@@ -1,8 +1,8 @@
 import React from "react";
-import { StatusLabel } from "../stateLabel";
 import { Button } from "@mui/material";
 import { useAppSelector } from "@/state/app/hooks";
 import { useIconsContext } from "@components/hooks";
+import StateOptions from "../stateLabel/StateOptions";
 
 const Measurements = () => {
     const { edition } = useAppSelector((state) => state.product);
@@ -10,7 +10,7 @@ const Measurements = () => {
     return (
         <section>
             <h3 style={{ marginBottom: "1.5rem" }}>TABLA DE MEDIDAS</h3>
-            <StatusLabel status={"aprobado"} />
+            <StateOptions status={"aprobado"} />
             <div
                 className="item"
                 style={{
