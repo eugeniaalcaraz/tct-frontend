@@ -36,7 +36,7 @@ const Row = (props: { row }) => {
         bodyFit,
     } = useAppSelector((state) => state.product);
     const [open, setOpen] = useState(false);
-    const [photo, setPhoto] = useState("");
+    const [photo, setPhoto] = useState(convertImage);
     const [approval, setApproval] = useState<Approvals[] | null>([]);
 
     const handleOpen = async () => {
@@ -47,6 +47,13 @@ const Row = (props: { row }) => {
             setOpen(false);
         }
     };
+
+    function convertImage() {
+        // const picture = new ArrayBuffer(row.pic);
+        // const blob = new Blob([picture]);
+        // const url = URL.createObjectURL(blob);
+        // return url ?? "hola";
+    }
 
     return (
         <React.Fragment>
@@ -65,8 +72,8 @@ const Row = (props: { row }) => {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row" align="center">
+                    {/* <img style={{ width: 50, height: 50 }} src={photo} alt="" /> */}
                     Foto
-                    {/* <img src={FilePreview} alt="" /> */}
                 </TableCell>
                 <TableCell>Codigo</TableCell>
                 <TableCell>{row?.name}</TableCell>
@@ -88,7 +95,7 @@ const Row = (props: { row }) => {
                 <TableCell>Venta USD</TableCell>
                 <TableCell>Venta $</TableCell>
                 <TableCell>Fecha deposito</TableCell>
-                <TableCell>FEcha Tienda</TableCell>
+                <TableCell>Fecha Tienda</TableCell>
             </StyledTableRow>
 
             <TableRow

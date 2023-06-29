@@ -13,7 +13,9 @@ const MaterialsOverall = () => {
         weight: Number(material.Weight),
     }));
 
-    return <PieWithLabels data={data} />;
+    const slicedData = data.slice(0, 6);
+
+    return <PieWithLabels data={slicedData} />;
 };
 
 export { MaterialsOverall };

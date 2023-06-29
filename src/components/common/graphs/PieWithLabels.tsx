@@ -12,8 +12,6 @@ const COLORS = [
     "#EB9D6F",
     "#E9CE67",
     "#AAB96E",
-    "#314C95",
-    "#31654B",
 ];
 
 const RADIAN = Math.PI / 180;
@@ -67,10 +65,10 @@ const PieWithLabels: FC<PieWithLabelsProps> = ({ data }) => {
                 </Pie>
                 <Legend
                     layout="vertical"
-                    verticalAlign="middle"
+                    verticalAlign="top"
                     align="right"
                     wrapperStyle={{
-                        top: "25%",
+                        top: "10%",
                         left: "85%",
                     }}
                     content={renderLegend}
@@ -97,23 +95,30 @@ const renderLegend = (props) => {
                         color: `${entry.color}`,
                         fontWeight: 400,
                         fontSize: "3rem",
-                        lineHeight: "1.9rem",
+                        lineHeight: "2.5rem",
                         display: "list-item",
-                        width: "9rem",
+                        width: "10rem",
+                        position: "relative",
                     }}
                 >
-                    <span
+                    <div
                         style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
                             textTransform: "capitalize",
-                            fontSize: "1.4rem",
+                            fontSize: "1.2rem",
                             fontWeight: 400,
                             verticalAlign: "bottom",
                             color: "#000",
                             lineHeight: "1.9rem",
+                            position: "absolute",
+                            top: "-10px",
                         }}
                     >
-                        {entry.payload.name} Peso: {entry.payload.weight} gr
-                    </span>
+                        <span>{entry.payload.name}</span>
+                        <span>Peso: {entry.payload.weight} gr</span>
+                    </div>
                 </li>
             ))}
         </ul>

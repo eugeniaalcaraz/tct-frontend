@@ -125,10 +125,6 @@ const ProductTable = () => {
         productsError && navigate(urlFormat(Pages.ServerError));
     }, [productsError]);
 
-    useEffect(() => {
-        console.log(tableData);
-    }, [tableData]);
-
     return (
         <Container>
             <Filters />
