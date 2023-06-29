@@ -4,7 +4,7 @@ import { FilterButton, ActionsButtons } from "./HeaderStyles";
 
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { toggleFilters } from "@/state/features";
-import { handleInputNumber } from "@/utils";
+import { getSeasonById, handleInputNumber } from "@/utils";
 import { setFilterData } from "@/state/features/product";
 import { useIconsContext } from "@components/hooks";
 import { ProductHeaders } from "@/types";
@@ -12,6 +12,18 @@ import { exportToExcel } from "@/utils";
 
 const ProductsHeader = () => {
     const { product, filteredData } = useAppSelector((state) => state.product);
+    const {
+        allSeasons,
+        supplier,
+        managementUnit,
+        tipology,
+        fabrics,
+        brands,
+        industries,
+        concepts,
+        lines,
+        bodyFit,
+    } = useAppSelector((state) => state.product);
     const dispatch = useAppDispatch();
     const { icons } = useIconsContext();
 
@@ -26,7 +38,7 @@ const ProductsHeader = () => {
             if (product) {
                 const filteredData = product.filter((p) =>
                     Object.keys(p).some(() =>
-                        String(p["IdProduct"]).includes(query)
+                        String(p["idProduct"]).includes(query)
                     )
                 );
                 dispatch(setFilterData(filteredData));
@@ -35,6 +47,8 @@ const ProductsHeader = () => {
     };
 
     const headerValues = Object.entries(ProductHeaders);
+
+    headerValues.shift();
 
     const headers = headerValues.map(([, value]) => value);
 
@@ -58,23 +72,24 @@ const ProductsHeader = () => {
 
         products.forEach((product) => {
             const row = {};
-            row[ProductHeaders.Picture] = product?.pictures[0];
+            row[ProductHeaders.Picture] = ""; //product?.pictures[0];
             //row[ProductHeaders.Code] = product?.code, TODO - No lo encontre;
             row[ProductHeaders.Name] = product?.name;
-            row[
-                ProductHeaders.Season
-            ] = `${product?.idSeason} ${product?.year}`;
-            row[ProductHeaders.Supplier] = product?.idSupplier;
+            row[ProductHeaders.Season] = `${getSeasonById(
+                product?.idSeason,
+                allSeasons
+            )} ${product?.year}`;
+            row[ProductHeaders.Supplier] = product?.supplier;
             //row[ProductHeaders.ShipmentDate] = String(
             //         product?.Fabrics.map((fabric) => fabric?.shippingDate) &&
             //             "-"
             //     ), //TODO - En un lugar de la doc encontre el array "Fabrics" no se si eso se mantiene o no;
-            row[ProductHeaders.Concept] = product?.idConcept;
-            row[ProductHeaders.Line] = product?.idLine;
-            //row[ProductHeaders.Unit] =   //product?.idUnit, TODO no lo encontre;
-            row[ProductHeaders.Category] = product?.idIndustry; // TODO creo que esto es = a "Rubro"
-            row[ProductHeaders.Tipology] = product?.idTipology;
-            row[ProductHeaders.BodyFit] = product?.idBodyFit;
+            row[ProductHeaders.Concept] = product?.concept;
+            row[ProductHeaders.Line] = product?.line;
+            (row[ProductHeaders.Unit] = product?.managementUnit),
+                (row[ProductHeaders.Category] = product?.industry); // TODO creo que esto es = a "Rubro"
+            row[ProductHeaders.Tipology] = product?.tipology;
+            row[ProductHeaders.BodyFit] = product?.bodyFit;
             //row[ProductHeaders.Composition] = String(product?.combos[0].map((fabric) => fabric.composition)), //TODO - En un lugar de la doc encontre el array "combos" no se si eso se mantiene o no
             row[ProductHeaders.TotalQuanity] = product?.quantity;
             row[ProductHeaders.Buying] = product?.cost;

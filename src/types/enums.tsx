@@ -36,6 +36,7 @@ export enum ApprovalElements {
 }
 
 export enum ProductHeaders {
+    ExpandIcon = "",
     Picture = "Foto",
     Code = "Código",
     Name = "Nombre",

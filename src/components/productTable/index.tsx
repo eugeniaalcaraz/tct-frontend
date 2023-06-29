@@ -33,20 +33,18 @@ const ProductTable = () => {
     const [tableData, setTableData] = useState<Product[]>([]);
     const {
         temporada,
-        proveedor,
-        departamento,
         tipologia,
         calidad,
-        estado,
-        diseñador,
-        origen,
-        destino,
         embarque,
         fecha,
-        nombre,
-        cantidad,
-        costo,
-        peso,
+        marca,
+        unidad,
+        rubro,
+        concepto,
+        linea,
+        fit,
+        deposito,
+        store,
     } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const dispatch = useAppDispatch();
@@ -64,72 +62,72 @@ const ProductTable = () => {
                 await getProductsAsync({
                     idMerchant,
                     idSeason: filterUrlFormat(temporada),
-                    idDesigner: filterUrlFormat(diseñador),
-                    idFabric: filterUrlFormat(calidad),
-                    idDepartment: filterUrlFormat(departamento),
-                    idSupplier: filterUrlFormat(proveedor),
+                    idBrand: filterUrlFormat(marca),
+                    idManagmentUnit: filterUrlFormat(unidad),
+                    idIndustry: filterUrlFormat(rubro),
                     idTipology: filterUrlFormat(tipologia),
-                    idStatus: filterUrlFormat(estado),
-                    ProductName: filterUrlFormat(nombre),
-                    ProductPrice: filterUrlFormat(costo),
-                    ProductWeight: filterUrlFormat(peso),
-                    idOrigin: filterUrlFormat(origen),
-                    idDestination: filterUrlFormat(destino),
+                    idConcept: filterUrlFormat(concepto),
+                    idLine: filterUrlFormat(linea),
+                    idBodyFit: filterUrlFormat(fit),
+                    entryDate: filterUrlFormat(fecha),
+                    warehouseEntryDate: filterUrlFormat(deposito),
+                    storeDate: filterUrlFormat(store),
                     idShippingType: filterUrlFormat(embarque),
-                    shippingDate: filterUrlFormat(fecha),
-                    quantity: filterUrlFormat(cantidad),
+                    idFabric: filterUrlFormat(calidad),
                 })
             )
         );
     };
 
     const loadTableData = () => {
-        // if (filteredData && filteredData.length > 0) {
-        //     setTableData(filteredData);
-        // } else if (product) {
-        //     setTableData(product);
-        // } else {
-        //     setTableData([]);
-        // }
+        if (filteredData && filteredData.length > 0) {
+            setTableData(filteredData);
+        } else if (product) {
+            setTableData(product);
+        } else {
+            setTableData([]);
+        }
     };
 
-    // useEffect(() => {
-    //     getNewListData();
-    // }, [
-    //     temporada,
-    //     proveedor,
-    //     departamento,
-    //     tipologia,
-    //     calidad,
-    //     estado,
-    //     diseñador,
-    //     origen,
-    //     destino,
-    //     embarque,
-    //     fecha,
-    //     nombre,
-    //     cantidad,
-    //     costo,
-    //     peso,
-    // ]);
+    useEffect(() => {
+        getNewListData();
+    }, [
+        temporada,
+        tipologia,
+        calidad,
+        embarque,
+        fecha,
+        marca,
+        unidad,
+        rubro,
+        concepto,
+        linea,
+        fit,
+        deposito,
+        store,
+    ]);
 
-    // useEffect(() => {
-    //     if (
-    //         isEmpty(filters) &&
-    //         product?.length === 0 &&
-    //         filteredData?.length === 0
-    //     ) {
-    //         setEmptyProduct(true);
-    //     } else {
-    //         setEmptyProduct(false);
-    //     }
-    // }, [filters, product, filteredData]);
+    useEffect(() => {
+        if (
+            isEmpty(filters) &&
+            product?.length === 0 &&
+            filteredData?.length === 0
+        ) {
+            setEmptyProduct(true);
+        } else {
+            setEmptyProduct(false);
+        }
+    }, [filters, product, filteredData]);
 
-    // useEffect(() => loadTableData(), [product, filteredData]);
+    useEffect(() => loadTableData(), [product, filteredData]);
 
-    // useEffect(() => {
-    //     productsError && navigate(urlFormat(Pages.ServerError));
-    // }, [productsError]);
+    useEffect(() => {
+        productsError && navigate(urlFormat(Pages.ServerError));
+    }, [productsError]);
+
+    useEffect(() => {
+        console.log(tableData);
+    }, [tableData]);
 
     return (
         <Container>
@@ -149,7 +147,7 @@ const ProductTable = () => {
                         aria-label="collapsible table"
                         sx={{
                             borderCollapse: "collapse",
-                            minWidth: "2000px",
+                            minWidth: "2500px",
                         }}
                     >
                         <TableHead>

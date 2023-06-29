@@ -7,22 +7,20 @@ const BASE_LISTING = "/listing";
 export const getProducts = async ({
     idMerchant,
     idSeason,
-    idDesigner,
-    idFabric,
-    idDepartment,
-    idSupplier,
+    idBrand,
+    idManagmentUnit,
+    idIndustry,
     idTipology,
-    idStatus,
-    ProductName,
-    ProductPrice,
-    ProductWeight,
-    idOrigin,
-    idDestination,
+    idConcept,
+    idLine,
+    idBodyFit,
+    entryDate,
+    warehouseEntryDate,
+    storeDate,
     idShippingType,
-    shippingDate,
-    quantity,
+    idFabric,
 }) => {
-    const path = `/listing/getAllProductsWithFilters/${idMerchant}/${idSeason}/${idDesigner}/${idFabric}/${idDepartment}/${idSupplier}/${idTipology}/${idStatus}/${ProductName}/${ProductPrice}/${ProductWeight}/${idOrigin}/${idDestination}/${idShippingType}/${shippingDate}/${quantity}`;
+    const path = `/listing/getAllProductsWithFilters/${idMerchant}/${idSeason}/${idBrand}/${idManagmentUnit}/${idIndustry}/${idTipology}/${idConcept}/${idLine}/${idBodyFit}/${entryDate}/${warehouseEntryDate}/${storeDate}/${idShippingType}/${idFabric}`;
 
     try {
         return await getJsonRequest(path);

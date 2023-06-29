@@ -18,10 +18,23 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { StyledTableRow } from "./TableStyles";
 import { ApprovalElements, Approvals, Product } from "@/types";
 import { getApprovalsOfProduct } from "@/services/ProductRequests";
-import { getApprovalName } from "@/utils";
+import { getApprovalName, getSeasonById } from "@/utils";
+import { useAppSelector } from "@/state/app/hooks";
 
-const Row = (props: { row: Product }) => {
+const Row = (props: { row }) => {
     const { row } = props;
+    const {
+        allSeasons,
+        supplier,
+        managementUnit,
+        tipology,
+        fabrics,
+        brands,
+        industries,
+        concepts,
+        lines,
+        bodyFit,
+    } = useAppSelector((state) => state.product);
     const [open, setOpen] = useState(false);
     const [photo, setPhoto] = useState("");
     const [approval, setApproval] = useState<Approvals[] | null>([]);
@@ -51,25 +64,31 @@ const Row = (props: { row: Product }) => {
                         )}
                     </IconButton>
                 </TableCell>
-                {/* <TableCell component="th" scope="row" align="center">
-                    <img src={FilePreview} alt="" />
-                </TableCell> */}
-                <TableCell>{row.IdProduct}</TableCell>
-                <TableCell>{row.ProductoNombre}</TableCell>
-                <TableCell>{row.Proveedor}</TableCell>
-                <TableCell>{row.Cantidad} pcs</TableCell>
-                <TableCell>{row.Departamento}</TableCell>
-                <TableCell>{row.Tipo}</TableCell>
-                <TableCell>
-                    {row.Calidad}{" "}
-                    {row.CalidadesAdicionales &&
-                        `(+${row.CalidadesAdicionales})`}
+                <TableCell component="th" scope="row" align="center">
+                    Foto
+                    {/* <img src={FilePreview} alt="" /> */}
                 </TableCell>
-                <TableCell>{row.Peso} gr</TableCell>
-                <TableCell>$ {row.Costo}</TableCell>
-                <TableCell>$ {row.Precio}</TableCell>
-                <TableCell>{row.Margin} %</TableCell>
-                <TableCell>{row.Estado}</TableCell>
+                <TableCell>Codigo</TableCell>
+                <TableCell>{row?.name}</TableCell>
+                <TableCell>
+                    {getSeasonById(row?.idSeason, allSeasons)} {row?.year}
+                </TableCell>
+                <TableCell>{row?.supplier}</TableCell>
+                <TableCell>Fecha</TableCell>
+                <TableCell>{row.concept}</TableCell>
+                <TableCell>{row.line}</TableCell>
+                <TableCell>{row.managmentUnit}</TableCell>
+                <TableCell>{row.industry}</TableCell>
+                <TableCell>{row.tipology}</TableCell>
+                <TableCell>{row.bodyFit}</TableCell>
+                <TableCell>Composicion</TableCell>
+                <TableCell>Cantidad</TableCell>
+                <TableCell>Margen</TableCell>
+                <TableCell>Compra USD</TableCell>
+                <TableCell>Venta USD</TableCell>
+                <TableCell>Venta $</TableCell>
+                <TableCell>Fecha deposito</TableCell>
+                <TableCell>FEcha Tienda</TableCell>
             </StyledTableRow>
 
             <TableRow
