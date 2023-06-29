@@ -65,6 +65,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
     const compositionSelect = useState(0);
     const [localColorList, setlocalColorList] = useState<OptionsType[]>([]);
     const [consumption, setConsumption] = useState("");
+    const [errorComposition, setErrorComposition] = useState(false);
     const telasUpdatableObject = useMemo(
         () => ({ ...telas[fabricNumber] }),
         [telas]
@@ -182,49 +183,34 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
     };
 
     const handleQualityDisabled = (e) => {
-        const qualitiesCopy = qualities;
+        const qualitiesCopy = [...qualities];
         const value = Number(e.target.value);
-        const position = Number(e.target.id) + 1;
-        const valueInPosition =
-            qualities.length > 1 ? qualities[position] : qualities[e.target.id];
+        qualitiesCopy[e.target.id] = value;
+        setErrorComposition(false);
 
-        const percentages = qualities.reduce(
+        const percentages = qualitiesCopy.reduce(
             (partialSum, a) => partialSum + a,
             0
         );
 
-        if (value === valueInPosition && qualities.length > 1) {
+        if (value === 0) {
             return;
         }
-
-        if (value === 0) {
-            if (qualities.length > 1) {
-                qualitiesWrapper.current!.style.maxHeight = `${
-                    5.5 * (qualities.length - 1)
-                }rem`;
-                const indexOfMatch = qualities.lastIndexOf(value);
-                qualitiesCopy.splice(indexOfMatch + 1, 1);
-
-                setTimeout(
-                    () => indexOfMatch && setQualities(qualitiesCopy),
-
-                    800
-                );
-                return;
-            } else {
-                return;
-            }
-        }
-        if (percentages + value <= 100) {
-            if (position < qualities.length) {
-                qualitiesCopy.splice(position, 1, value);
-                setQualities(qualitiesCopy);
-            } else {
-                setQualities((prevState) => [...prevState, value]);
-                qualitiesWrapper.current!.style.maxHeight = `${
-                    6 * (qualities.length + 1)
-                }rem`;
-            }
+        if (percentages < 100) {
+            qualitiesWrapper.current!.style.maxHeight = `${
+                5 * qualitiesCopy.length
+            }rem`;
+            setQualities(qualitiesCopy);
+            //}
+        } else if (percentages === 100) {
+            setQualities(qualitiesCopy);
+            //TODO: verificar el tema para mostrar error cuando es mayor a 100%
+            // qualitiesWrapper.current!.style.maxHeight = `${5}rem`;
+        } else if (percentages > 100) {
+            setErrorComposition(true);
+            // qualitiesWrapper.current!.style.maxHeight = `${
+            //     5 * qualitiesCopy.length + 5
+            // }rem`;
         }
     };
 
@@ -519,7 +505,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                                         disabled={
                                             !finalComboObject.composition[i]
                                         }
-                                        id={i}
+                                        id={i + 1}
                                         onBlur={handleQualityDisabled}
                                         error={checkIfError(`porcentaje-${i}`)}
                                         helperText={checkErrorMessage(
@@ -528,6 +514,12 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                                     />
                                 </Box>
                             ))}
+                            {errorComposition && (
+                                <h4>
+                                    la suma de porcentajes no puede ser mayor a
+                                    100%
+                                </h4>
+                            )}
                         </Box>
                     </>
                 )}

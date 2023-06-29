@@ -82,7 +82,7 @@ const ControlledInput: FC<ControlledProps> = ({
             }}
             autoComplete="off"
             disabled={disabled}
-            className={`input ${error ? "error" : ""}`}
+            className={` ${error ? "error" : ""}`}
             multiline={multiline}
             rows={rows}
             inputProps={{ maxLength }}

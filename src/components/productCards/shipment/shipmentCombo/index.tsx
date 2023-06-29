@@ -123,8 +123,9 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 useFormHook={false}
                 externalOnChange={(e) => setselectedDestinationCountry(e.value)}
                 selectedValue={selectedDestinationCountry}
-                error={checkError(selectedDestinationCountry)}
-                helperText={mesgReturner(selectedDestinationCountry)}
+                // TODO: implementar la validacion en dropdowns que no usan el ract hook form
+                // error={checkError(selectedDestinationCountry)}
+                // helperText={mesgReturner(selectedDestinationCountry)}
                 options={
                     countries?.map(
                         ({ Id, Name }): OptionsType => ({
@@ -141,8 +142,9 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 name={`cantidadComboEmbarque${comboNumber}`}
                 externalOnChange={(e) => setQuantity(e.target.value)}
                 externalValue={quantity}
-                error={quantity === ""}
-                helperText={() => mesgReturner(quantity)}
+                // TODO: implementar la validacion en dropdowns que no usan el ract hook form
+                // error={quantity === ""}
+                // helperText={mesgReturner(quantity)}
             />
             <ControlledDatePicker
                 name={`fechaEmbarque${comboNumber}`}
