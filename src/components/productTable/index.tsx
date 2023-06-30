@@ -155,9 +155,7 @@ const ProductTable = () => {
                                 }}
                             >
                                 {headerValues.map(([, header]) => (
-                                    <TableCell key={String(header)}>
-                                        {header}
-                                    </TableCell>
+                                    <TableCell key={uuid()}>{header}</TableCell>
                                 ))}
                             </TableRow>
                         </TableHead>

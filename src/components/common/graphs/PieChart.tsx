@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { v4 as uuid } from "uuid";
 import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { ProdStatusOptions, ProductionStatusType } from "@/types";
 
@@ -28,7 +29,7 @@ const PieChartGraph: FC<PieChartProps> = ({ data }) => (
                                     ? "#CFD779"
                                     : "#919ECC"
                             }
-                            key={Symbol(index).toString()}
+                            key={uuid()}
                         />
                     );
                 })}

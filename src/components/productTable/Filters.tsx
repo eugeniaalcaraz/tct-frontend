@@ -1,5 +1,5 @@
 import React from "react";
-
+import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
 import { Date, Dropdown, Input } from "@/components/common";
 
@@ -73,7 +73,7 @@ const Filters = () => {
             {dropdownFilters.map(({ name, options }) => {
                 return (
                     <Dropdown
-                        key={name}
+                        key={uuid()}
                         label={name}
                         options={options ?? []}
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

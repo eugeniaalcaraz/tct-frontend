@@ -8,6 +8,7 @@ import {
     TableRow,
     TableBody,
 } from "@mui/material";
+import dayjs from "dayjs";
 import React from "react";
 import { Form } from "@components/common";
 import { Container, Content, StyledTableRow } from "./UpdateProductStyles";
@@ -21,10 +22,13 @@ import { SizeCurve } from "./sizeCurve";
 import { StatusLabel } from "./stateLabel";
 import { Measurements } from "./measurements";
 import StateOptions from "./stateLabel/StateOptions";
+import { useAppSelector } from "@/state/app/hooks";
+import { getStatus } from "@/utils";
 
 /*
 {
-    "medidas": {},
+    "idSampleStatus":1,
+    "sampleDate": "2023-07-28",
     "idMerchantBrand": 1,
     "idSeason": 1,
     "year": 23,
@@ -151,6 +155,9 @@ import StateOptions from "./stateLabel/StateOptions";
 
 export const UpdateProduct = () => {
     const methods = useForm();
+    const { updateProduct } = useAppSelector((state) => state.product);
+
+    const productInfo = updateProduct?.basicInfo[0];
 
     const onUpdate = () => {
         console.log("onSave");
@@ -167,9 +174,16 @@ export const UpdateProduct = () => {
                             alignItems: "center",
                         }}
                     >
-                        <h1>{"01S2404001 - ${Tipo de muestra}"}</h1>
-                        <StateOptions status={"enviado"} />
-                        {/* <div>{"{fechaEnvio}"}</div> */}
+                        <h1>{"01S2404001 - ${sampleType}"}</h1>
+                        <StateOptions
+                            status={getStatus(productInfo?.idsamplestatus)}
+                            id="idSampleStatus"
+                        />
+                        <div>
+                            {dayjs(productInfo?.sampledate).format(
+                                "YYYY-MM-DD"
+                            )}
+                        </div>
                     </Stack>
                     <Form
                         // resolver={resolver}

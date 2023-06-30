@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { v4 as uuid } from "uuid";
 import {
     ControlledDatePicker,
     ControlledDropdown,
@@ -91,7 +92,7 @@ const Shipment = () => {
             {(allCombosShareShipment ? Array.from(Array(1).keys()) : telas).map(
                 (value, index) => (
                     <ShipmentCombo
-                        key={index}
+                        key={uuid()}
                         comboNumber={index + 1}
                         isForAllCombos={allCombosShareShipment}
                     />

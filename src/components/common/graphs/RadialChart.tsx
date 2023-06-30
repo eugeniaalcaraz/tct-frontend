@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { v4 as uuid } from "uuid";
 import {
     ResponsiveContainer,
     RadialBar,
@@ -53,7 +54,7 @@ const RadialChart: FC<RadialChartProps> = ({ data }) => (
                                     ? "#CFD779"
                                     : "#DFB6D2"
                             }
-                            key={Symbol(index).toString()}
+                            key={uuid()}
                         />
                     );
                 })}
@@ -83,7 +84,7 @@ const renderLegend = (props) => {
         <>
             {payload?.map((entry) => (
                 <span
-                    key={entry}
+                    key={uuid()}
                     style={{
                         textTransform: "uppercase",
                         fontSize: "1.3rem",

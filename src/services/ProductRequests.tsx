@@ -93,6 +93,15 @@ export const getApprovalsOfProduct = async (idProduct) => {
     }
 };
 
+export const getProductById = async (idProduct) => {
+    const path = `/merchant/getProduct/${idProduct}`;
+    try {
+        return await getJsonRequest(path);
+    } catch (error) {
+        throw new Error(getErrorMessage(error));
+    }
+};
+
 export const createProduct = async ({
     formData,
     idMerchant,

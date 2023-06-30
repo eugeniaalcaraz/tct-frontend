@@ -138,20 +138,102 @@ export type Suppliers = {
 };
 
 export type Product = {
-    Calidad: string;
-    CalidadesAdicionales: number;
-    Cantidad: number;
-    Departamento: string;
-    Estado: string;
-    Foto: ArrayBuffer;
-    Peso: number;
-    Costo: number;
-    Margin: number;
-    Precio: number;
-    IdProduct: number;
-    ProductoNombre: string;
-    Proveedor: string;
-    Tipo: string;
+    idSampleStatus: number;
+    sampleDate: string | Date;
+    idMerchantBrand: number;
+    idSeason: number;
+    year: number;
+    idDepartment: number;
+    idIndustry: number;
+    idTipology: number;
+    idConcept: number;
+    idLine: number;
+    idBodyFit: number;
+    idRise: number;
+    detail: string;
+    proyecta: boolean;
+    cost: number;
+    idCountry: number;
+    idSupplier: number;
+    quantity: number;
+    fabricCode: string;
+    idModelingStatus: number;
+    telas: [
+        {
+            idFabric: number;
+            idStatus: number;
+            description: string;
+            consumption: number;
+            weight: string;
+            placement: number;
+            composition: [
+                {
+                    idFiber: number;
+                    percentage: number;
+                }
+            ];
+            colors: [
+                {
+                    idColor: number;
+                    sizeCurve: number[];
+                    idStatus: number;
+                }
+            ];
+            prints: [
+                {
+                    nombre: string;
+                    cantidadColor: string;
+                    sizeCurve: number[];
+                    idStatus: number;
+                }
+            ];
+            entryDate: string | Date;
+            shippingDate: string | Date;
+            warehouseEntryDate: string | Date;
+            idCountryDestination: number;
+            idShipping: number;
+            quantity: number;
+        }
+    ];
+    avios: [
+        {
+            idAvio: number;
+            idStatus: number;
+            idColor: number;
+            quantity: number;
+            idShipping: string;
+            idCountryDestination: string;
+            shippingDate: string;
+            entryDate: string;
+            warehouseEntryDate: string;
+            colors: [
+                {
+                    idColor: number;
+                    idStatus: number;
+                }
+            ];
+        }
+    ];
+    sizeCurveType: number;
+    extendedSize: boolean;
+    idDesigner: number;
+    idMerchant: number;
+    idExistingProduct: string;
+    name: string;
+    idModeling: number;
+    weight: 200;
+    modelingDate: string | Date;
+    idCareLabel: string;
+    measurmentTable: string;
+    idStatusMeasurmentTable: number;
+    idShoeMaterial: number;
+    costInStore: number;
+    pictures: [
+        {
+            pic: string;
+            isMain: number;
+        }
+    ];
 };
 
 export type Avios = {
@@ -167,10 +249,98 @@ export type Avios = {
     colors: { idColor: number; idStatus: number }[];
 };
 
+export type UpdateProduct = {
+    avios: Trims[];
+    basicInfo: basicInfo;
+    comboColorAvios: [ComboColorAvios[]];
+    comboFabricColors: [ComboFabrics[]];
+    comboFabricPrints: [ComboFabrics[]];
+    fabrics: Fabrics[];
+    productPictures: string;
+};
+
+export type Trims = {
+    entrydate: Date | string;
+    id: number;
+    idavio: number;
+    idcountrydestination: number;
+    idproduct: number;
+    idshipping: number;
+    idstatus: number;
+    quantity: number;
+    shippingdate: Date | string;
+    warehouseentrydate: Date | string;
+};
+
+export type basicInfo = {
+    cost: string;
+    costinstore: string;
+    detail: string;
+    extendedsize: number;
+    id: number;
+    idbodyfit: number;
+    idconcept: number;
+    idcountry: number;
+    iddesigner: number;
+    idindustry: number;
+    idinspection: number;
+    idline: number;
+    idmerchant: number;
+    idmerchantbrand: number;
+    idmodelingstatus: number;
+    idrise: number;
+    idsamplestatus: number;
+    idseason: number;
+    idstatus: number;
+    idstatusmeasurementtable: number;
+    idsupplier: number;
+    idtipology: number;
+    measurementtable: { type: "Buffer"; data: string | number[] };
+    modelingdate: Date | string;
+    name: string;
+    productnumber: number;
+    proyecta: number;
+    quantity: number;
+    sampledate: Date | string;
+    sizecurvetype: number;
+    weight: string;
+    year: number;
+};
+
+export type Fabrics = {
+    consumption: string;
+    entrydate: Date | string;
+    id: number;
+    idcountrydestination: number;
+    idfabric: number;
+    idplacement: number;
+    idshipping: number;
+    idstatus: number;
+    quantity: number;
+    shippingdate: Date | string;
+    warehouseentrydate: Date | string;
+};
+
 export type PendingApprovals = {
     PercentegeAvios: number;
     PercentegeColorsAndPrints: number;
     PercentageQualities: number;
+};
+
+export type ComboColorAvios = {
+    id: number;
+    idcolor: number;
+    idcomboavio: number;
+    idstatus: number;
+    statusdate: Date | string | null;
+};
+
+export type ComboFabrics = {
+    id: number;
+    idColor: number;
+    idComboFabric: number;
+    idSizeCurve: number;
+    idStatus: number;
 };
 
 export type AllSeasons = {

@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useMemo, useReducer, useState } from "react";
+import { v4 as uuid } from "uuid";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ProductStyles";
@@ -246,7 +247,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
             {generalPropsDropdowns.map(({ name, label, options }) => {
                 return (
                     <ControlledDropdown
-                        key={name}
+                        key={uuid()}
                         label={label}
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
@@ -274,7 +275,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
             {specificPropsDropdowns.map(({ name, label, options, disable }) => {
                 return (
                     <ControlledDropdown
-                        key={name}
+                        key={uuid()}
                         label={label}
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore

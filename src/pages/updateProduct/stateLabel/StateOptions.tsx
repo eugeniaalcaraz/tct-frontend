@@ -3,6 +3,7 @@ import { StatusLabel } from ".";
 
 type StateOptionsProps = {
     status: string;
+    id?: string;
 };
 
 const states = ["pendiente", "enviado", "aprobado", "reprobado", "recibido"];

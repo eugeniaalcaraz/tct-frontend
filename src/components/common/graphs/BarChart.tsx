@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { v4 as uuid } from "uuid";
 import {
     ResponsiveContainer,
     BarChart,
@@ -97,7 +98,7 @@ const BarChartGraph: FC<BarChartProps> = ({ data, layout = "horizontal" }) => {
                                         ? "#DFB6D2"
                                         : "#CFD779"
                                 }
-                                key={Symbol(index).toString()}
+                                key={uuid()}
                                 style={{ paddingLeft: 100 }}
                             />
                         );

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import dayjs from "dayjs";
 import {
     Box,
     Stack,
@@ -19,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { useAppSelector } from "@/state/app/hooks";
 import { useIconsContext } from "@components/hooks";
 import { OptionsType } from "@/types";
+import { getNameById, getSeasonById } from "@/utils";
 
 export const GeneralDetails = () => {
     const {
@@ -37,16 +39,19 @@ export const GeneralDetails = () => {
         concepts,
         lines,
         bodyFit,
+        updateProduct,
     } = useAppSelector((state) => state.product);
 
     const { icons } = useIconsContext();
+    const productInfo = updateProduct?.basicInfo[0];
+    const comboInfo = updateProduct?.fabrics[0];
 
     const rowStructure = [
         [
             { label: "Nombre", data: "name" },
             {
                 label: "Temporada",
-                data: "getSeasonById(idSeason)",
+                data: getSeasonById(productInfo?.idseason, allSeasons),
                 select: true,
                 options: allSeasons?.map(
                     ({ IdSeason, SeasonName }): OptionsType => ({
@@ -55,24 +60,30 @@ export const GeneralDetails = () => {
                     })
                 ),
             },
-            { label: "Año", data: "year" },
+            { label: "Año", data: productInfo?.year },
         ],
         [
-            { label: "Fecha de embarque", data: "telas[0].shippingDate" },
-            { label: "Fecha depósito", data: "telas[0].warehouseEntryDate" },
+            {
+                label: "Fecha de embarque",
+                data: dayjs(comboInfo?.shippingdate).format("YYYY-MM-DD"), //updateProduct?.telas[0]?.shippingDate,
+            },
+            {
+                label: "Fecha depósito",
+                data: dayjs(comboInfo?.warehouseentrydate).format("YYYY-MM-DD"), //updateProduct?.telas[0]?.warehouseEntryDate,
+            },
             { label: "", data: "" },
         ],
         [{ label: "", data: "" }],
         [
             {
                 label: "Unidad de gestión",
-                data: "getDepartmentById(idDepartment)",
+                data: "", //getNameById(updateProduct?.idDepartment, managementUnit),
                 select: true,
                 options: managementUnit,
             },
             {
                 label: "Rubro",
-                data: "getIndustryById(idIndustry)",
+                data: getNameById(productInfo?.idindustry, industries),
                 select: true,
                 options: industries,
             },
@@ -81,23 +92,23 @@ export const GeneralDetails = () => {
         [
             {
                 label: "Tipología",
-                data: "getTipologyById(idTipology)",
+                data: getNameById(productInfo?.idtipology, tipology),
                 select: true,
                 options: tipology,
             },
-            { label: "Peso", data: "weight" },
+            { label: "Peso", data: productInfo?.weight },
             { label: "", data: "" },
         ],
         [
             {
                 label: "Concepto",
-                data: "getConceptById(idConcept)",
+                data: getNameById(productInfo?.idconcept, concepts),
                 select: true,
                 options: concepts,
             },
             {
                 label: "Línea",
-                data: "getLineById(idLine)",
+                data: getNameById(productInfo?.idline, lines),
                 select: true,
                 options: lines,
             },
@@ -106,7 +117,7 @@ export const GeneralDetails = () => {
         [
             {
                 label: "Body Fit",
-                data: "getBoyFitById(idBodyFit)",
+                data: getNameById(productInfo?.idbodyfit, bodyFit),
                 select: true,
                 options: bodyFit,
             },
@@ -121,8 +132,8 @@ export const GeneralDetails = () => {
     ];
 
     const bottomRows = [
-        { label: "Descripción", data: "detail" },
-        { label: "Proyecta", data: "proyecta" },
+        { label: "Descripción", data: productInfo?.detail },
+        { label: "Proyecta", data: productInfo?.proyecta === 0 ? "No" : "Si" },
     ];
 
     return (
@@ -196,9 +207,7 @@ export const GeneralDetails = () => {
                                                                             option
                                                                         ) => (
                                                                             <MenuItem
-                                                                                key={
-                                                                                    option.Id
-                                                                                }
+                                                                                key={uuid()}
                                                                                 value={
                                                                                     option.Id
                                                                                 }

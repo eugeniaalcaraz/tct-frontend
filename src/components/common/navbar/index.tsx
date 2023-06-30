@@ -15,12 +15,7 @@ type NavbarProps = {
     handleMenu: (arg: boolean) => void;
 };
 
-const navLinks = [
-    Pages.Dashboard,
-    Pages.Products,
-    Pages.NewProduct,
-    Pages.UpdateProduct,
-];
+const navLinks = [Pages.Dashboard, Pages.Products, Pages.NewProduct];
 
 const Navbar: FC<NavbarProps> = ({ open, handleMenu }) => {
     const navigate = useNavigate();

@@ -11,162 +11,96 @@ import { ComboItem } from "../comboItem";
 import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
-
-// "avios": [
-//     {
-//         "idAvio": 1,
-//         "idStatus": 1,
-//         "idColor": 1,
-//         "quantity": 34,
-//         "idShipping": "",
-//         "idCountryDestination": "",
-//         "shippingDate": "",
-//         "entryDate": "",
-//         "warehouseEntryDate": "",
-//         "colors": [
-//             {
-//                 "idColor": 1,
-//                 "idStatus": 1
-//             }
-//         ]
-//     }
-// ],
-
-const rowStructure = [
-    [
-        { label: "Tipo", data: "getTrimById(idAvio)" },
-        { label: "Cantidad", data: "quantity" },
-    ],
-];
+import { getNameById, getStatus } from "@/utils";
 
 export const Trims = () => {
-    const { edition } = useAppSelector((state) => state.product);
+    const { edition, updateProduct, trims, colors } = useAppSelector(
+        (state) => state.product
+    );
+
+    const trimsCombo = updateProduct?.avios;
+    const combos = updateProduct?.comboColorAvios[0];
+
+    const rowStructure = [
+        [
+            { label: "Tipo", data: "" },
+            { label: "Cantidad", data: "quantity" },
+        ],
+    ];
+
     return (
         <section>
             <h3>AVÍOS</h3>
-            {/* TODO avios.map((avio)=><>      <TableContainer>
-                <Table>
-                    {rowStructure.map((row) => (
-                        <StyledTableRow key={uuid()}>
-                            {row.map(({ label, data }) => (
-                                <TableCell key={uuid()}>
-                                    {label}
-                                    {label !== "" && ": "}
-                                    {edition && label !== "" ? (
-                                        <TextField
-                                            id="outlined-read-only-input"
-                                            defaultValue={data}
-                                            variant="standard"
-                                            size="small"
-                                            sx={{
-                                                width: "calc(100% - 15rem)",
-                                            }}
-                                        />
-                                    ) : (
-                                        <>{data}</>
-                                    )}
-                                </TableCell>
+            {trimsCombo?.map((avio) => (
+                <>
+                    <StateOptions status={getStatus(avio?.idstatus)} />
+                    <TableContainer>
+                        <Table>
+                            {rowStructure.map((row) => (
+                                <StyledTableRow key={uuid()}>
+                                    {row.map(({ label, data }) => (
+                                        <TableCell key={uuid()}>
+                                            {label}
+                                            {label !== "" && ": "}
+                                            {edition && label !== "" ? (
+                                                <TextField
+                                                    id="outlined-read-only-input"
+                                                    defaultValue={
+                                                        label === "Tipo"
+                                                            ? getNameById(
+                                                                  avio?.idavio,
+                                                                  trims
+                                                              )
+                                                            : avio[data]
+                                                    }
+                                                    variant="standard"
+                                                    size="small"
+                                                    sx={{
+                                                        width: "calc(100% - 15rem)",
+                                                    }}
+                                                />
+                                            ) : (
+                                                <>{avio[data]}</>
+                                            )}
+                                        </TableCell>
+                                    ))}
+                                </StyledTableRow>
                             ))}
-                        </StyledTableRow>
-                    ))}
-                </Table>
-            </TableContainer>
-            <Stack
-                direction={"row"}
-                gap={"15px"}
-                sx={{ padding: "20px 0", flexWrap: "wrap" }}
-            >
-                {[...Array(5).keys()].map((index) => (
-                    <div
-                        key={index}
-                        style={{
-                            marginRight: "5rem",
-                            padding: "0 2rem",
-                            alignItems: "center",
-                            display: "flex",
-                            justifyContent: "center",
-                        }}
+                        </Table>
+                    </TableContainer>
+                    <Stack
+                        direction={"row"}
+                        gap={"15px"}
+                        sx={{ padding: "20px 0", flexWrap: "wrap" }}
                     >
-                        <ComboItem key={index} />
-                    </div>
-                ))}
-            </Stack>
-            <Stack /></>) */}
-            <Stack
-                direction={"row"}
-                gap={"7px"}
-                style={{
-                    alignItems: "center",
-                    marginTop: "8px",
-                    marginBottom: "40px",
-                }}
-            >
-                <StateOptions status={"aprobado"} />
-            </Stack>
-            <TableContainer>
-                <Table>
-                    {rowStructure.map((row) => (
-                        <StyledTableRow key={uuid()}>
-                            {row.map(({ label, data }) => (
-                                <TableCell key={uuid()}>
-                                    {label}
-                                    {label !== "" && ": "}
-                                    {edition && label !== "" ? (
-                                        <TextField
-                                            id="outlined-read-only-input"
-                                            defaultValue={data}
-                                            variant="standard"
-                                            size="small"
-                                            sx={{
-                                                width: "calc(100% - 15rem)",
-                                            }}
+                        {combos?.map(
+                            (combo, index) =>
+                                avio?.id === combo?.idcomboavio && (
+                                    <div
+                                        key={uuid()}
+                                        style={{
+                                            marginRight: "5rem",
+                                            padding: "0 2rem",
+                                            alignItems: "center",
+                                            display: "flex",
+                                            justifyContent: "center",
+                                        }}
+                                    >
+                                        <ComboItem
+                                            combo={index + 1}
+                                            color={getNameById(
+                                                combo?.idcolor,
+                                                colors
+                                            )}
+                                            status={getStatus(combo?.idstatus)}
                                         />
-                                    ) : (
-                                        <>{data}</>
-                                    )}
-                                </TableCell>
-                            ))}
-                        </StyledTableRow>
-                    ))}
-                </Table>
-            </TableContainer>
-            <Stack
-                direction={"row"}
-                gap={"15px"}
-                sx={{ padding: "20px 0", flexWrap: "wrap" }}
-            >
-                {/* TODO avios.colors.map(({idColor, idStatus},index)=> <div
-                        key={index}
-                        style={{
-                            marginRight: "5rem",
-                            padding: "0 2rem",
-                            alignItems: "center",
-                            display: "flex",
-                            justifyContent: "center",
-                        }}
-                    >
-                        <ComboItem combo={index} color={getColorById(idColor)} status={getStatusById(idStatus)/>
-                    </div>) */}
-                {[...Array(5).keys()].map((index) => (
-                    <div
-                        key={index}
-                        style={{
-                            marginRight: "5rem",
-                            padding: "0 2rem",
-                            alignItems: "center",
-                            display: "flex",
-                            justifyContent: "center",
-                        }}
-                    >
-                        <ComboItem
-                            combo={index + 1}
-                            color="#E9CE67"
-                            status="Pending"
-                        />
-                    </div>
-                ))}
-            </Stack>
-            <Stack />
+                                    </div>
+                                )
+                        )}
+                    </Stack>
+                    <Stack />
+                </>
+            ))}
         </section>
     );
 };

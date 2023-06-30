@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import FilePreview from "@/assets/images/filePreview.png";
 import { v4 as uuid } from "uuid";
 import {
@@ -16,10 +16,17 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 import { StyledTableRow } from "./TableStyles";
-import { ApprovalElements, Approvals, Product } from "@/types";
-import { getApprovalsOfProduct } from "@/services/ProductRequests";
-import { getApprovalName, getSeasonById } from "@/utils";
-import { useAppSelector } from "@/state/app/hooks";
+import { ApprovalElements, Approvals, Pages, Product } from "@/types";
+import {
+    getApprovalsOfProduct,
+    getProductById,
+} from "@/services/ProductRequests";
+import { getApprovalName, getSeasonById, urlFormat } from "@/utils";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
+import { setUpdateProduct } from "@/state/features/product";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { ScreenLoader } from "@components/common";
 
 const Row = (props: { row }) => {
     const { row } = props;
@@ -38,14 +45,27 @@ const Row = (props: { row }) => {
     const [open, setOpen] = useState(false);
     const [photo, setPhoto] = useState(convertImage);
     const [approval, setApproval] = useState<Approvals[] | null>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const { mutateAsync } = useMutation(getApprovalsOfProduct);
 
-    const handleOpen = async () => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const handleOpen = async (e) => {
+        e.stopPropagation();
         if (!open) {
-            setApproval(await getApprovalsOfProduct(row.IdProduct));
+            setApproval(await mutateAsync(row.idProduct));
             setOpen(true);
         } else {
             setOpen(false);
         }
+    };
+
+    const handleClick = async () => {
+        setIsLoading(true);
+        dispatch(setUpdateProduct(await getProductById(row.idProduct)));
+        navigate(urlFormat(Pages.UpdateProduct));
+        setIsLoading(false);
     };
 
     function convertImage() {
@@ -57,7 +77,10 @@ const Row = (props: { row }) => {
 
     return (
         <React.Fragment>
-            <StyledTableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+            <StyledTableRow
+                sx={{ cursor: "pointer", "& > *": { borderBottom: "unset" } }}
+                onClick={handleClick}
+            >
                 <TableCell>
                     <IconButton
                         aria-label="expand row"
@@ -166,6 +189,7 @@ const Row = (props: { row }) => {
                     </Collapse>
                 </TableCell>
             </TableRow>
+            {isLoading && <ScreenLoader loading={true} />}
         </React.Fragment>
     );
 };

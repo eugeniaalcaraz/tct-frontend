@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { v4 as uuid } from "uuid";
 import { urlFormat } from "@/utils";
 import { Pages } from "@/types";
 import { WidthProvider, Responsive } from "react-grid-layout";
@@ -135,7 +136,7 @@ const Dashboard = () => {
                 >
                     {items.map((key, index) => (
                         <div
-                            key={key}
+                            key={uuid()}
                             data-grid={initialLayouts[breakpoint][index]}
                         >
                             <CardBase

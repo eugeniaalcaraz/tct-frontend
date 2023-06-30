@@ -8,6 +8,7 @@ import {
     TableRow,
     Typography,
 } from "@mui/material";
+import { v4 as uuid } from "uuid";
 import { OverallHeaders } from "@/types";
 
 const Overall = () => {
@@ -49,7 +50,7 @@ const Overall = () => {
                 <TableBody>
                     {rows.map((row) => (
                         <TableRow
-                            key={row.name}
+                            key={uuid()}
                             sx={{
                                 "& td, & th": {
                                     border: 0,
@@ -70,7 +71,7 @@ const Overall = () => {
                     <TableRow sx={{ height: "2rem" }} />
                     {rows.map((row) => (
                         <TableRow
-                            key={row.name}
+                            key={uuid()}
                             sx={{
                                 "& td, & th": {
                                     border: 0,
@@ -91,7 +92,7 @@ const Overall = () => {
                     <TableRow sx={{ height: "2rem" }} />
                     {rows.map((row) => (
                         <TableRow
-                            key={row.name}
+                            key={uuid()}
                             sx={{
                                 "& td, & th": {
                                     border: 0,
@@ -112,7 +113,7 @@ const Overall = () => {
                     <TableRow sx={{ height: "2rem" }} />
                     {rows.map((row) => (
                         <TableRow
-                            key={row.name}
+                            key={uuid()}
                             sx={{
                                 "& td, & th": {
                                     border: 0,

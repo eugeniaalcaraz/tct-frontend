@@ -11,6 +11,7 @@ import {
     ColorsStateType,
     Avios,
     TipologyOptions,
+    UpdateProduct,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
@@ -49,6 +50,7 @@ export interface productState {
     avios: Avios[];
     edition: boolean;
     industries: OptionsType[];
+    updateProduct: UpdateProduct | null;
 }
 
 const initialState: productState = {
@@ -79,6 +81,7 @@ const initialState: productState = {
     avios: [],
     edition: false,
     industries: [],
+    updateProduct: null,
 };
 
 const productSlice = createSlice({
@@ -142,6 +145,9 @@ const productSlice = createSlice({
         setSpecialSizeCurve(state, action: PayloadAction<boolean>) {
             state.specialSizeCurve = action.payload;
         },
+        setUpdateProduct(state, action: PayloadAction<UpdateProduct>) {
+            state.updateProduct = action.payload;
+        },
     },
 });
 
@@ -159,5 +165,6 @@ export const {
     addTelasArray,
     setEdition,
     setSpecialSizeCurve,
+    setUpdateProduct,
 } = productSlice.actions;
 export default productSlice.reducer;

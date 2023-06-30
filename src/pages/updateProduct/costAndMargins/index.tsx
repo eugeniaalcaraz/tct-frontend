@@ -10,26 +10,29 @@ import { StyledTableRow } from "../UpdateProductStyles";
 import { useAppSelector } from "@/state/app/hooks";
 import { v4 as uuid } from "uuid";
 
-const rowStructure = [
-    [
-        { label: "Costo(USD)", data: "cost" },
-        { label: "Precio Venta(USD)", data: "costInStore" },
-        { label: "Precio Tienda($)", data: "costInStore * conversionRate" },
-    ],
-    [
-        { label: "Margen", data: "calculo de margen" },
-        { label: "Markup", data: "" },
-        { label: "", data: "" },
-    ],
-    [
-        { label: "Precio Santander($)", data: "" },
-        { label: "Margen Santander($)", data: "" },
-        { label: "", data: "" },
-    ],
-];
-
 export const CostAndMargin = () => {
-    const { edition } = useAppSelector((state) => state.product);
+    const { edition, updateProduct } = useAppSelector((state) => state.product);
+
+    const productInfo = updateProduct?.basicInfo[0];
+    const comboInfo = updateProduct?.fabrics[0];
+
+    const rowStructure = [
+        [
+            { label: "Costo(USD)", data: productInfo?.cost },
+            { label: "Precio Venta(USD)", data: productInfo?.costinstore },
+            { label: "Precio Tienda($)", data: productInfo?.costinstore * 40 },
+        ],
+        [
+            { label: "Margen", data: "calculo de margen" },
+            { label: "Markup", data: "" },
+            { label: "", data: "" },
+        ],
+        [
+            { label: "Precio Santander($)", data: "" },
+            { label: "Margen Santander($)", data: "" },
+            { label: "", data: "" },
+        ],
+    ];
 
     return (
         <section>
