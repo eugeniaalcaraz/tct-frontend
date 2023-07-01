@@ -9,6 +9,7 @@ const ProductionStatus = () => {
     const data = estadoDeProduccion?.map((data) => ({
         ...data,
         percentage: Number(data.Percentage),
+        status: data.Status,
     }));
 
     return <PieChartGraph data={data} />;

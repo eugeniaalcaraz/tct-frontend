@@ -23,9 +23,14 @@ const PieChartGraph: FC<PieChartProps> = ({ data }) => (
                     return (
                         <Cell
                             fill={
-                                d.Status === ProdStatusOptions.Approval
+                                // d.Status === ProdStatusOptions.Approval
+                                //     ? "#DFB6D2"
+                                //     : d.Status === ProdStatusOptions.Produccion
+                                //     ? "#CFD779"
+                                //     : "#919ECC"
+                                index === 0
                                     ? "#DFB6D2"
-                                    : d.Status === ProdStatusOptions.Produccion
+                                    : index === 1
                                     ? "#CFD779"
                                     : "#919ECC"
                             }

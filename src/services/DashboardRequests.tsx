@@ -30,12 +30,12 @@ const getQuery = (card) => {
     switch (card) {
         // case "balance":
         //     return "getBalanceData";
-        // case "estadoDeProduccion":
-        //     return "getProductsStatus";
+        case "estadoDeProduccion":
+            return "getProductsStatus";
         case "aprobacionesPendientes":
             return "getPendantApprovals";
-        // case "margen":
-        //     return "getSeasonMargin";
+        case "margen":
+            return "getSeasonMargin";
         // case "muestrasEnviadas":
         //     return "getTopSixSentSamples";
         case "resumenDeMaterialidades":
