@@ -30,6 +30,12 @@ const Input: FC<InputProps> = ({ value, label, disabled = false, onInput }) => {
         }
     };
 
+    const handleEnter = (e) => {
+        if (e.key === "Enter") {
+            dispatch(handleInputChange({ label, value: inputValue }));
+        }
+    };
+
     return (
         <TextField
             sx={{
@@ -43,6 +49,7 @@ const Input: FC<InputProps> = ({ value, label, disabled = false, onInput }) => {
             label={label}
             value={inputValue}
             onChange={handleChange}
+            onKeyDown={handleEnter}
             onInput={onInput}
             onBlur={() => handleBlur(label)}
             autoComplete="off"

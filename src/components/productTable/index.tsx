@@ -107,6 +107,7 @@ const ProductTable = () => {
         fit,
         deposito,
         store,
+        nombre,
     ]);
 
     useEffect(() => {
