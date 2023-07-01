@@ -14,11 +14,14 @@ const PendingApprovals = () => {
         }[]
     >([]);
     const [trims, setTrims] = useState<{ name: string; value: number }[]>([]);
+    const [fitting, setFitting] = useState<{ name: string; value: number }[]>(
+        []
+    );
 
     const loadValues = useCallback(() => {
         for (const approval in aprobacionesPendientes) {
             switch (approval) {
-                case "PercentegeAvios":
+                case "PercentageAvios":
                     setTrims([
                         {
                             name: "avíos",
@@ -26,7 +29,7 @@ const PendingApprovals = () => {
                         },
                     ]);
                     break;
-                case "PercentegeColorsAndPrints":
+                case "PercentageColorsAndPrints":
                     setPrints([
                         {
                             name: "colores / estampas",
@@ -34,13 +37,24 @@ const PendingApprovals = () => {
                         },
                     ]);
                     break;
-                default:
+                case "PercentageQualities":
                     setQualities([
                         {
                             name: "calidades",
                             value: aprobacionesPendientes[approval] ?? 0,
                         },
                     ]);
+                    break;
+                case "PercentageModeling":
+                    setFitting([
+                        {
+                            name: "modelaje",
+                            value: aprobacionesPendientes[approval] ?? 0,
+                        },
+                    ]);
+                    break;
+                default:
+                    return;
             }
         }
     }, [aprobacionesPendientes]);
@@ -62,6 +76,7 @@ const PendingApprovals = () => {
                 <RadialChart data={prints} />
                 <RadialChart data={qualities} />
                 <RadialChart data={trims} />
+                <RadialChart data={fitting} />
             </div>
         </div>
     );

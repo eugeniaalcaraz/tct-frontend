@@ -6,7 +6,7 @@ import { Date, Dropdown, Input } from "@/components/common";
 import { FiltersContainer } from "./TableStyles";
 import { OptionsType } from "@/types";
 
-const inputFilters = ["nombre", "cantidad", "costo", "peso"];
+const inputFilters = ["nombre"];
 
 const Filters = () => {
     const filters = useAppSelector((state) => state.filters);
@@ -70,6 +70,15 @@ const Filters = () => {
 
     return (
         <FiltersContainer className={filters.open ? "open" : "closed"}>
+            {inputFilters.map((filter) => {
+                return (
+                    <Input
+                        key={filter}
+                        label={filter}
+                        value={filters[filter]}
+                    />
+                );
+            })}
             {dropdownFilters.map(({ name, options }) => {
                 return (
                     <Dropdown
@@ -85,15 +94,6 @@ const Filters = () => {
             <Date label="Fecha Embarque" type="fecha" />
             <Date label="Ingreso Depósito" type="deposito" />
             <Date label="Ingreso Tienda" type="store" />
-            {/* {inputFilters.map((filter) => {
-                return (
-                    <Input
-                        key={filter}
-                        label={filter}
-                        value={filters[filter]}
-                    />
-                );
-            })} */}
         </FiltersContainer>
     );
 };

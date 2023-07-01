@@ -32,8 +32,8 @@ const getQuery = (card) => {
         //     return "getBalanceData";
         // case "estadoDeProduccion":
         //     return "getProductsStatus";
-        // case "aprobacionesPendientes":
-        //     return "getPendantApprovals";
+        case "aprobacionesPendientes":
+            return "getPendantApprovals";
         // case "margen":
         //     return "getSeasonMargin";
         // case "muestrasEnviadas":

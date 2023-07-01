@@ -45,6 +45,7 @@ const ProductTable = () => {
         fit,
         deposito,
         store,
+        nombre,
     } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const dispatch = useAppDispatch();
@@ -60,6 +61,7 @@ const ProductTable = () => {
         dispatch(
             setData(
                 await getProductsAsync({
+                    productName: filterUrlFormat(nombre),
                     idMerchant,
                     idSeason: filterUrlFormat(temporada),
                     idBrand: filterUrlFormat(marca),
