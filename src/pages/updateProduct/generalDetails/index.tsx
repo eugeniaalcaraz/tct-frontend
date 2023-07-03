@@ -39,6 +39,7 @@ export const GeneralDetails = () => {
         concepts,
         lines,
         bodyFit,
+        rises,
         updateProduct,
     } = useAppSelector((state) => state.product);
 
@@ -51,7 +52,7 @@ export const GeneralDetails = () => {
             { label: "Nombre", data: "name" },
             {
                 label: "Temporada",
-                data: getSeasonById(productInfo?.idseason, allSeasons),
+                data: getSeasonById(productInfo?.idSeason, allSeasons),
                 select: true,
                 options: allSeasons?.map(
                     ({ IdSeason, SeasonName }): OptionsType => ({
@@ -65,11 +66,11 @@ export const GeneralDetails = () => {
         [
             {
                 label: "Fecha de embarque",
-                data: dayjs(comboInfo?.shippingdate).format("YYYY-MM-DD"), //updateProduct?.telas[0]?.shippingDate,
+                data: dayjs(comboInfo?.shippinDate).format("YYYY-MM-DD"), //updateProduct?.telas[0]?.shippingDate,
             },
             {
                 label: "Fecha depósito",
-                data: dayjs(comboInfo?.warehouseentrydate).format("YYYY-MM-DD"), //updateProduct?.telas[0]?.warehouseEntryDate,
+                data: dayjs(comboInfo?.warehouseEntryDate).format("YYYY-MM-DD"), //updateProduct?.telas[0]?.warehouseEntryDate,
             },
             { label: "", data: "" },
         ],
@@ -83,7 +84,7 @@ export const GeneralDetails = () => {
             },
             {
                 label: "Rubro",
-                data: getNameById(productInfo?.idindustry, industries),
+                data: getNameById(productInfo?.idIndustry, industries),
                 select: true,
                 options: industries,
             },
@@ -92,7 +93,7 @@ export const GeneralDetails = () => {
         [
             {
                 label: "Tipología",
-                data: getNameById(productInfo?.idtipology, tipology),
+                data: getNameById(productInfo?.idTipology, tipology),
                 select: true,
                 options: tipology,
             },
@@ -102,13 +103,13 @@ export const GeneralDetails = () => {
         [
             {
                 label: "Concepto",
-                data: getNameById(productInfo?.idconcept, concepts),
+                data: getNameById(productInfo?.idConcept, concepts),
                 select: true,
                 options: concepts,
             },
             {
                 label: "Línea",
-                data: getNameById(productInfo?.idline, lines),
+                data: getNameById(productInfo?.idLine, lines),
                 select: true,
                 options: lines,
             },
@@ -117,15 +118,15 @@ export const GeneralDetails = () => {
         [
             {
                 label: "Body Fit",
-                data: getNameById(productInfo?.idbodyfit, bodyFit),
+                data: getNameById(productInfo?.idBodyFit, bodyFit),
                 select: true,
                 options: bodyFit,
             },
             {
                 label: "Tiro",
-                data: "getRiseById(idRise)",
+                data: getNameById(productInfo?.idRise, rises),
                 select: true,
-                options: bodyFit,
+                options: rises,
             },
             { label: "", data: "" },
         ],

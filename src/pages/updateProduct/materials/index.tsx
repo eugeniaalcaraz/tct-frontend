@@ -14,21 +14,20 @@ import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
 import { getNameById, getStatus } from "@/utils";
+import dayjs from "dayjs";
 
 export const Materials = () => {
     const { edition, updateProduct, localization, fabrics, colors } =
         useAppSelector((state) => state.product);
 
     const fabricInfo = updateProduct?.fabrics;
-    const combos = updateProduct?.comboFabricColors[0];
-    const prints = updateProduct?.comboFabricPrints[0];
 
     const rowStructure = [
         [
             { label: "Calidad", data: "description" },
             {
                 label: "Composición",
-                data: "",
+                data: "composition",
             },
         ],
         [
@@ -40,11 +39,11 @@ export const Materials = () => {
     return (
         <section>
             <h3>MATERIALES</h3>
-            {fabricInfo?.map((fabric) => (
+            {fabricInfo?.map((fabric, i) => (
                 <div key={uuid()} style={{ margin: "40px 0" }}>
                     <div>
                         <div>
-                            {getNameById(fabric?.idplacement, localization)}
+                            {getNameById(fabric?.idPlacement, localization)}
                         </div>
                         <Stack
                             direction={"row"}
@@ -56,8 +55,10 @@ export const Materials = () => {
                             }}
                         >
                             <StateOptions
-                                status={getStatus(fabric?.idstatus)}
+                                status={getStatus(fabric?.idStatus)}
+                                id={{ index: i, item: "fabric" }}
                             />
+                            <div>{dayjs().format("YYYY-MM-DD")}</div>
                         </Stack>
                     </div>
                     <TableContainer>
@@ -80,7 +81,11 @@ export const Materials = () => {
                                                                       ],
                                                                       fabrics
                                                                   )
-                                                                : fabric[data]
+                                                                : String(
+                                                                      fabric[
+                                                                          data
+                                                                      ]
+                                                                  )
                                                         }
                                                         variant="standard"
                                                         size="small"
@@ -89,7 +94,7 @@ export const Materials = () => {
                                                         }}
                                                     />
                                                 ) : (
-                                                    <>{fabric[data]}</>
+                                                    <>{String(fabric[data])}</>
                                                 )}
                                             </TableCell>
                                         ))}
@@ -103,31 +108,30 @@ export const Materials = () => {
                         gap={"15px"}
                         sx={{ padding: "20px 0", flexWrap: "wrap" }}
                     >
-                        {combos?.map(
-                            (combo, index) =>
-                                fabric?.id === combo?.idComboFabric && (
-                                    <div
-                                        key={uuid()}
-                                        style={{
-                                            marginRight: "5rem",
-                                            padding: "0 2rem",
-                                            alignItems: "center",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                        <ComboItem
-                                            combo={index + 1}
-                                            color={getNameById(
-                                                combo?.idColor,
-                                                colors
-                                            )}
-                                            status={getStatus(combo?.idStatus)}
-                                        />
-                                    </div>
-                                )
-                        )}
-                        {prints?.map(
+                        {fabric?.comboColors?.map((combo, index) => (
+                            <div
+                                key={uuid()}
+                                style={{
+                                    marginRight: "5rem",
+                                    padding: "0 2rem",
+                                    alignItems: "center",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <ComboItem
+                                    combo={index + 1}
+                                    color={getNameById(combo?.idColor, colors)}
+                                    status={getStatus(combo?.idStatus)}
+                                    id={{
+                                        index,
+                                        parentIndex: i,
+                                        item: "fabricColor",
+                                    }}
+                                />
+                            </div>
+                        ))}
+                        {fabric?.comboPrints?.map(
                             (print, index) =>
                                 fabric?.id === print?.idComboFabric && (
                                     <div
@@ -141,9 +145,18 @@ export const Materials = () => {
                                         }}
                                     >
                                         <ComboItem
-                                            combo={index + 1}
-                                            color={"purple"}
+                                            combo={
+                                                fabric?.comboColors?.length +
+                                                index +
+                                                1
+                                            }
+                                            name={"idPrint"}
                                             status={getStatus(print?.idStatus)}
+                                            id={{
+                                                index,
+                                                parentIndex: i,
+                                                item: "fabricPrint",
+                                            }}
                                         />
                                     </div>
                                 )

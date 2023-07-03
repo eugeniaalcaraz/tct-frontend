@@ -9,38 +9,52 @@ import React, { FC } from "react";
 import { StyledTableRow } from "../../UpdateProductStyles";
 import { useAppSelector } from "@/state/app/hooks";
 import { v4 as uuid } from "uuid";
-
-// "entryDate": "2023-07-28",
-// "shippingDate": "2023-07-29",
-// "warehouseEntryDate": "2023-07-16",
-// "idCountryDestination": 1,
-// "idShipping": 1,
-// "quantity": 45
-
-const rowStructure = [
-    [
-        { label: "Destino", data: "getCountryById(idCountryDestination)" },
-        { label: "Embarque", data: "getShipmentById(idShipping)" },
-        { label: "Cantidad", data: "quantity" },
-    ],
-    [
-        { label: "Fecha de embarque", data: "shippingDate" },
-        { label: "Ingreso Depósito", data: "warehouseEntryDate" },
-        { label: "Ingreso Tienda", data: "entryDate" },
-    ],
-];
+import { Fabrics } from "@/types";
+import { getNameById } from "@/utils";
+import dayjs from "dayjs";
 
 type ComboTableProps = {
-    combo: number;
-    embarque?: unknown;
+    number: number;
+    combo: Fabrics;
 };
 
-export const ComboTable: FC<ComboTableProps> = ({ combo }) => {
-    const { edition } = useAppSelector((state) => state.product);
+export const ComboTable: FC<ComboTableProps> = ({ number, combo }) => {
+    const { edition, countries, typeOfshipment } = useAppSelector(
+        (state) => state.product
+    );
+
+    const rowStructure = [
+        [
+            {
+                label: "Destino",
+                data: getNameById(combo?.idCountryDestination, countries),
+            },
+            {
+                label: "Embarque",
+                data: getNameById(combo?.idShipping, typeOfshipment),
+            },
+            { label: "Cantidad", data: combo?.quantity },
+        ],
+        [
+            {
+                label: "Fecha de embarque",
+                data: dayjs(combo?.shippinDate).format("YYYY-MM-DD"),
+            },
+            {
+                label: "Ingreso Depósito",
+                data: dayjs(combo?.warehouseEntryDate).format("YYYY-MM-DD"),
+            },
+            {
+                label: "Ingreso Tienda",
+                data: dayjs(combo?.entryDate).format("YYYY-MM-DD"),
+            },
+        ],
+    ];
+
     return (
         <div>
             <div style={{ fontWeight: "400", lineHeight: "19px" }}>
-                Combo {combo}
+                Combo {number}
             </div>
             <TableContainer>
                 <Table>

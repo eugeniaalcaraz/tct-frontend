@@ -10,7 +10,10 @@ const Measurements = () => {
     return (
         <section>
             <h3 style={{ marginBottom: "1.5rem" }}>TABLA DE MEDIDAS</h3>
-            <StateOptions status={"aprobado"} />
+            <StateOptions
+                status={"aprobado"}
+                id={{ index: 0, item: "measurements" }}
+            />
             <div
                 className="item"
                 style={{

@@ -3,17 +3,18 @@ import { StatusLabel } from ".";
 
 type StateOptionsProps = {
     status: string;
-    id?: string;
+    id: { index: number; parentIndex?: number; item: string };
 };
 
 const states = ["pendiente", "enviado", "aprobado", "reprobado", "recibido"];
 
-const StateOptions: FC<StateOptionsProps> = ({ status }) => {
+const StateOptions: FC<StateOptionsProps> = ({ status, id }) => {
     const [chipStatus, setChipStatus] = useState(status);
     const [openList, setOpenList] = useState(false);
 
     const handleChipStatus = (clickedStatus) => {
         setChipStatus(clickedStatus);
+        console.log(id);
     };
 
     return (

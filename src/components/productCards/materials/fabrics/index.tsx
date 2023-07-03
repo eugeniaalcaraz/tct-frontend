@@ -244,8 +244,6 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
     };
 
     const deletePrintCombo = (printCombo: PrintCombo) => {
-        console.log(printCombo);
-
         setFinalComboObject((prevState) => ({
             ...prevState,
             prints: prevState.prints.filter(

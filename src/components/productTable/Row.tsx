@@ -65,7 +65,7 @@ const Row = (props: { row }) => {
     const handleClick = async () => {
         setIsLoading(true);
         dispatch(setUpdateProduct(await getProductById(row.idProduct)));
-        navigate(urlFormat(Pages.UpdateProduct));
+        navigate(`${urlFormat(Pages.UpdateProduct)}/${row.idProduct}`);
         setIsLoading(false);
     };
 

@@ -3,13 +3,16 @@ import React, { FC } from "react";
 import { StyledComboItem } from "./StyledComboItem";
 import { StatusLabel } from "../stateLabel";
 import StateOptions from "../stateLabel/StateOptions";
+import dayjs from "dayjs";
 
 type ComboItemProps = {
     combo: number;
-    color: string;
+    color?: string;
     status: string;
     name?: string;
     colorCount?: number;
+    date?: Date | string;
+    id: { index: number; parentIndex?: number; item: string };
 };
 
 export const ComboItem: FC<ComboItemProps> = ({
@@ -18,12 +21,14 @@ export const ComboItem: FC<ComboItemProps> = ({
     status,
     name,
     colorCount,
+    date,
+    id,
 }) => {
     return (
         <StyledComboItem>
             <Stack
                 sx={{
-                    alignItems: "center",
+                    alignItems: "flex-start",
                     width: "145px",
                     justifyContent: "center",
                 }}
@@ -35,10 +40,14 @@ export const ComboItem: FC<ComboItemProps> = ({
                     sx={{ alignItems: "center" }}
                 >
                     <div className="colorBox" style={{ background: color }} />
-
+                    {name && (
+                        <div>
+                            {name} - {colorCount}
+                        </div>
+                    )}
                     <Stack gap={"8px"} style={{ alignItems: "center" }}>
-                        <StateOptions status={"pendiente"} />
-                        {name && <div>name colorCount</div>}
+                        <StateOptions id={id} status={status} />
+                        {date && <div>{dayjs(date).format("YYYY-MM-DD")}</div>}
                     </Stack>
                 </Stack>
             </Stack>

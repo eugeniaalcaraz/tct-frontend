@@ -12,6 +12,7 @@ import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
 import { getNameById, getStatus } from "@/utils";
+import dayjs from "dayjs";
 
 export const Trims = () => {
     const { edition, updateProduct, trims, colors } = useAppSelector(
@@ -19,7 +20,6 @@ export const Trims = () => {
     );
 
     const trimsCombo = updateProduct?.avios;
-    const combos = updateProduct?.comboColorAvios[0];
 
     const rowStructure = [
         [
@@ -30,10 +30,14 @@ export const Trims = () => {
 
     return (
         <section>
-            <h3>AVÍOS</h3>
-            {trimsCombo?.map((avio) => (
+            <h3 style={{ marginBottom: "1.5rem" }}>AVÍOS</h3>
+            {trimsCombo?.map((avio, i) => (
                 <>
-                    <StateOptions status={getStatus(avio?.idstatus)} />
+                    <StateOptions
+                        status={getStatus(avio?.idStatus)}
+                        id={{ index: i, item: "trims" }}
+                    />
+
                     <TableContainer>
                         <Table>
                             {rowStructure.map((row) => (
@@ -48,7 +52,7 @@ export const Trims = () => {
                                                     defaultValue={
                                                         label === "Tipo"
                                                             ? getNameById(
-                                                                  avio?.idavio,
+                                                                  avio?.idAvio,
                                                                   trims
                                                               )
                                                             : avio[data]
@@ -73,30 +77,29 @@ export const Trims = () => {
                         gap={"15px"}
                         sx={{ padding: "20px 0", flexWrap: "wrap" }}
                     >
-                        {combos?.map(
-                            (combo, index) =>
-                                avio?.id === combo?.idcomboavio && (
-                                    <div
-                                        key={uuid()}
-                                        style={{
-                                            marginRight: "5rem",
-                                            padding: "0 2rem",
-                                            alignItems: "center",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                        <ComboItem
-                                            combo={index + 1}
-                                            color={getNameById(
-                                                combo?.idcolor,
-                                                colors
-                                            )}
-                                            status={getStatus(combo?.idstatus)}
-                                        />
-                                    </div>
-                                )
-                        )}
+                        {avio?.colors?.map((combo, index) => (
+                            <div
+                                key={uuid()}
+                                style={{
+                                    marginRight: "5rem",
+                                    padding: "0 2rem",
+                                    alignItems: "center",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
+                            >
+                                <ComboItem
+                                    combo={index + 1}
+                                    color={getNameById(combo?.idcolor, colors)}
+                                    status={getStatus(combo?.idstatus)}
+                                    id={{
+                                        index,
+                                        parentIndex: i,
+                                        item: "trimColor",
+                                    }}
+                                />
+                            </div>
+                        ))}
                     </Stack>
                     <Stack />
                 </>

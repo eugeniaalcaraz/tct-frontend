@@ -21,7 +21,6 @@ export const getFabricById = (id, fabrics) => {
 
 export const getNameById = (id, category) => {
     const item = category?.find((item) => Number(item.Id) === Number(id));
-    console.log(category, item);
     return item?.Description ?? "-";
 };
 

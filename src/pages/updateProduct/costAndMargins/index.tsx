@@ -14,13 +14,12 @@ export const CostAndMargin = () => {
     const { edition, updateProduct } = useAppSelector((state) => state.product);
 
     const productInfo = updateProduct?.basicInfo[0];
-    const comboInfo = updateProduct?.fabrics[0];
 
     const rowStructure = [
         [
             { label: "Costo(USD)", data: productInfo?.cost },
-            { label: "Precio Venta(USD)", data: productInfo?.costinstore },
-            { label: "Precio Tienda($)", data: productInfo?.costinstore * 40 },
+            { label: "Precio Venta(USD)", data: productInfo?.costInStore },
+            { label: "Precio Tienda($)", data: productInfo?.costInStore * 40 },
         ],
         [
             { label: "Margen", data: "calculo de margen" },
