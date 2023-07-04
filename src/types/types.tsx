@@ -378,3 +378,102 @@ export type Approvals = {
     Responsable: string;
     Fecha: string;
 };
+
+export type UpdatedProductData = {
+    idSampleStatus: number;
+    sampleDate: Date | string;
+    idMerchantBrand: number;
+    idSeason: number;
+    year: number;
+    idDepartment: number;
+    idIndustry: number;
+    idTipology: number;
+    idConcept: number;
+    idLine: number;
+    idBodyFit: number;
+    idRise: number;
+    detail: string;
+    proyecta: boolean;
+    cost: number;
+    idCountry: number;
+    idSupplier: number;
+    quantity: number;
+    fabricCode: string;
+    idModelingStatus: number;
+    telas: [
+        {
+            idFabric: string;
+            idStatus: number;
+            description: string;
+            consumption: number;
+            weight: string;
+            placement: number;
+            composition: [
+                {
+                    idFiber: number;
+                    percentage: number;
+                }
+            ];
+            colors: [
+                {
+                    idColor: number;
+                    sizeCurve: number[];
+                    idStatus: number;
+                }
+            ];
+            prints: [
+                {
+                    nombre: string;
+                    cantidadColor: string;
+                    sizeCurve: number[];
+                    idStatus: number;
+                }
+            ];
+            entryDate: Date | string;
+            shippingDate: Date | string;
+            warehouseEntryDate: Date | string;
+            idCountryDestination: number;
+            idShipping: number;
+            quantity: number;
+        }
+    ];
+    avios: [
+        {
+            idAvio: number;
+            idStatus: number;
+            idColor: number;
+            quantity: number;
+            idShipping: string;
+            idCountryDestination: string;
+            shippingDate: string;
+            entryDate: string;
+            warehouseEntryDate: string;
+            colors: [
+                {
+                    idColor: number;
+                    idStatus: number;
+                }
+            ];
+        }
+    ];
+    sizeCurveType: number;
+    extendedSize: false;
+    idDesigner: number;
+    idMerchant: number;
+    idExistingProduct: string;
+    name: string;
+    idModeling: number;
+    weight: number;
+    modelingDate: Date | string;
+    idCareLabel: string;
+    measurmentTable: string;
+    idStatusMeasurmentTable: number;
+    idShoeMaterial: number;
+    costInStore: number;
+    pictures: [
+        {
+            pic: string;
+            isMain: number;
+        }
+    ];
+};
