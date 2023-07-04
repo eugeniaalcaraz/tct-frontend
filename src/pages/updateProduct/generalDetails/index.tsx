@@ -49,7 +49,7 @@ export const GeneralDetails = () => {
 
     const rowStructure = [
         [
-            { label: "Nombre", data: "name" },
+            { label: "Nombre", data: productInfo?.name },
             {
                 label: "Temporada",
                 data: getSeasonById(productInfo?.idSeason, allSeasons),

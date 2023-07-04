@@ -32,6 +32,12 @@ interface dashboardState {
         Weight: string;
         Percentage: number;
     }[];
+    composicionPorColor: {
+        idColor: number;
+        colorDescription: string;
+        RGB: string;
+        totalPieces: number;
+    }[];
 }
 
 const initialState: dashboardState = {
@@ -46,6 +52,7 @@ const initialState: dashboardState = {
     muestrasEnviadas: [],
     overall: [],
     resumenDeMaterialidades: [],
+    composicionPorColor: [],
 };
 
 const dashboardSlice = createSlice({

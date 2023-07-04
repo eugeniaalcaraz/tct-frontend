@@ -1,46 +1,63 @@
+import { useAppSelector } from "@/state/app/hooks";
 import React from "react";
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
-const data = [
-    {
-        name: "Black",
-        quantity: 4000,
-    },
-    {
-        name: "White",
-        quantity: 3000,
-    },
-    {
-        name: "Brown",
-        quantity: 2000,
-    },
-    {
-        name: "Gray",
-        quantity: 2780,
-    },
-    {
-        name: "Orange",
-        quantity: 1890,
-    },
-    {
-        name: "Blue",
-        quantity: 2390,
-    },
-    {
-        name: "Purple",
-        quantity: 3490,
-    },
-    {
-        name: "Green",
-        quantity: 3490,
-    },
-    {
-        name: "Yellow",
-        quantity: 3490,
-    },
-];
+// const data = [
+//     {
+//         name: "Black",
+//         quantity: 4000,
+//     },
+//     {
+//         name: "White",
+//         quantity: 3000,
+//     },
+//     {
+//         name: "Brown",
+//         quantity: 2000,
+//     },
+//     {
+//         name: "Gray",
+//         quantity: 2780,
+//     },
+//     {
+//         name: "Orange",
+//         quantity: 1890,
+//     },
+//     {
+//         name: "Blue",
+//         quantity: 2390,
+//     },
+//     {
+//         name: "Purple",
+//         quantity: 3490,
+//     },
+//     {
+//         name: "Green",
+//         quantity: 3490,
+//     },
+//     {
+//         name: "Yellow",
+//         quantity: 3490,
+//     },
+// ];
+
+// composicionPorColor: {
+//     idColor: number;
+//     colorDescription: string;
+//     RGB: string;
+//     totalPieces: number;
+// }[];
 
 const Colors = () => {
+    const { composicionPorColor } = useAppSelector((state) => state.dashboard);
+
+    const data = composicionPorColor?.map(
+        ({ colorDescription, totalPieces }) => ({
+            name: colorDescription,
+            quantity: totalPieces,
+        })
+    );
+
     return (
         <ResponsiveContainer height="80%" width="95%">
             <BarChart width={150} height={40} data={data} layout="vertical">

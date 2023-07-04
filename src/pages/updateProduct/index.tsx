@@ -39,8 +39,8 @@ export const UpdateProduct = () => {
 
     const productInfo = updateProduct?.basicInfo[0];
 
-    const onUpdate = () => {
-        console.log("onSave");
+    const onUpdate = (formData) => {
+        console.log(formData);
     };
 
     const loadProduct = async () => {

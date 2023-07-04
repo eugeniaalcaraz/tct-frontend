@@ -83,12 +83,15 @@ const Layout = () => {
         if (location.pathname === "/") {
             navigate(urlFormat(Pages.Dashboard));
         }
-    }, []);
+    }, [location.pathname]);
 
     useEffect(() => {
         if (dropdownsError) {
             navigate(urlFormat(Pages.ServerError));
-        } else if (location.pathname !== urlFormat(Pages.ServerError)) {
+        } else if (
+            location.pathname !== urlFormat(Pages.ServerError) &&
+            location.pathname !== "/"
+        ) {
             navigate(location.pathname);
         } else {
             navigate(urlFormat(Pages.Dashboard));

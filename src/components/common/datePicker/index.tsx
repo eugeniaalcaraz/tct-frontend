@@ -7,13 +7,14 @@ import { handleSelectChange } from "@/state/features";
 import { useAppDispatch } from "@/state/app/hooks";
 
 type DateProps = {
-    label: string;
+    label?: string;
     type: string;
+    initialValue?: Dayjs | null;
 };
 
-const Date: FC<DateProps> = ({ label, type }) => {
+const Date: FC<DateProps> = ({ label, type, initialValue = null }) => {
     const dispatch = useAppDispatch();
-    const [value, setValue] = useState<Dayjs | null>(null);
+    const [value, setValue] = useState<Dayjs | null>(initialValue);
     const [openCalendar, setOpenCalendar] = useState<boolean>(false);
 
     const handleChange = (e) => {
