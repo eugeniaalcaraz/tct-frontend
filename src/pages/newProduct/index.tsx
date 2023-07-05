@@ -28,7 +28,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { NumberSizeCurve } from "@components/productCards/sizeCurve/numberSizeCurve";
 import { denimSizes, shoesSizes } from "./aux/aux";
-import { setSpecialSizeCurve } from "@/state/features/product";
+import {
+    clearReduxErrors,
+    setSpecialSizeCurve,
+} from "@/state/features/product";
 import dayjs from "dayjs";
 import { tipologyEnum } from "./enum";
 
@@ -41,9 +44,9 @@ const defaultValues = {
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { telas, avios, specialSizeCurve, tipology } = useAppSelector(
-        (state) => state.product
-    );
+    const { telas, avios, specialSizeCurve, tipology, reduxErrors } =
+        useAppSelector((state) => state.product);
+    const [isExisting, setIsExisting] = useState(false);
     const [selectedTipology, setSelectedTipology] = useState(0);
     const resolver = yupResolver(productValidation);
     const methods = useForm({ resolver, defaultValues });
@@ -61,7 +64,6 @@ const NewProduct = () => {
     const onSave = async (formData) => {
         let fotos;
         let medidas;
-        console.log({ formData });
 
         if (formData.fotos.length) {
             const files = Object.values(formData.fotos);
@@ -129,6 +131,7 @@ const NewProduct = () => {
                 sizeCurveType: sizeCurveTypeChooser[formData.idTipology],
                 extendedSize: specialSizeCurve,
                 modelingDate: dayjs().format("YYYY-MM-DD"),
+                sampleDate: dayjs().format("YYYY-MM-DD"),
                 weight: tipology?.find(
                     (tipology) => tipology.Id === formData.idTipology
                 )?.Weight,
@@ -139,6 +142,12 @@ const NewProduct = () => {
 
         setSeed(Math.random());
     };
+
+    useEffect(() => {
+        if (reduxErrors && Object.keys(reduxErrors).length) {
+            dispatch(clearReduxErrors());
+        }
+    }, [productSuccess]);
 
     const product = {
         producto: <ProductCard setSelectedTipology={setSelectedTipology} />,

@@ -6,8 +6,7 @@ export const productValidation = yup
     .object()
     .shape({
         //--------PRODUCT CARD---------------
-        idBrand: yup.string().required(required),
-        idTipology: yup.string().required(required),
+        // idTipology: yup.string().required(required),
         idMerchantBrand: yup.string().required(required),
         idSeason: yup.string().required(required),
         year: yup.string().required(required),
@@ -20,12 +19,6 @@ export const productValidation = yup
         // calidad: yup.string().when("existingQuality", {
         //     is: true,
         //     then: yup.string().required(required),
-        // }),
-
-        // description: yup.string().when("existingQuality", {
-        //     is: true,
-        //     then: yup.string(),
-        //     otherwise: yup.string().required(required),
         // }),
 
         // fabricDescription: yup.string().when("existingQuality", {
@@ -51,7 +44,7 @@ export const productValidation = yup
         //     otherwise: yup.string().required(required),
         // }),
 
-        descripcion: yup
+        detail: yup
             .string()
             .max(
                 1500,
@@ -73,10 +66,10 @@ export const productValidation = yup
             .string()
             .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
             .required(required),
-        margin: yup
-            .string()
-            .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
-            .required(required),
+        // margin: yup
+        //     .string()
+        //     .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
+        //     .required(required),
         precioVenta: yup
             .string()
             .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
@@ -89,6 +82,27 @@ export const productValidation = yup
             .string()
             .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
             .required(required),
+        // destino: yup.string().required(required),
+        // cantidadComboEmbarque: yup.string().required(required),
+        // destino: yup.string().required(required),
+        // ["calidad-0"]: yup.string().required(required),
+        // ["calidad-1"]: yup.string().required(required),
+        // ["calidad-2"]: yup.string().required(required),
+        // ["calidad-3"]: yup.string().required(required),
+        // ["calidad-4"]: yup.string().required(required),
+        // ["placement-0"]: yup.string().required(required),
+        // ["placement-1"]: yup.string().required(required),
+        // ["placement-2"]: yup.string().required(required),
+        // ["placement-3"]: yup.string().required(required),
+        // ["placement-4"]: yup.string().required(required),
+        // ["consumoCalidad-0"]: yup.string().required(required),
+        // ["consumoCalidad-1"]: yup.string().required(required),
+        // ["consumoCalidad-2"]: yup.string().required(required),
+        // ["consumoCalidad-3"]: yup.string().required(required),
+        // ["consumoCalidad-4"]: yup.string().required(required),
+        // embarque: yup.string().required(required),
+        // nombreNuevoFabric: yup.string().required(required),
+        // weight: yup.string().required(required),
     })
     .required(required);
 

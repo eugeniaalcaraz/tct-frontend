@@ -14,6 +14,7 @@ import {
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
+import { SortingConfiguration } from "aws-sdk/clients/kendra";
 
 // tipo viejo de combos
 // fabric: string;
@@ -23,6 +24,7 @@ import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
 
 export interface productState {
     errors: unknown;
+    reduxErrors: object;
     specialSizeCurve: boolean;
     product: Product[] | null;
     filteredData: Product[] | null;
@@ -53,6 +55,7 @@ export interface productState {
 
 const initialState: productState = {
     errors: null,
+    reduxErrors: {},
     specialSizeCurve: false,
     product: null,
     filteredData: null,
@@ -136,6 +139,21 @@ const productSlice = createSlice({
         setErrors(state, action: PayloadAction<unknown>) {
             state.errors = action.payload;
         },
+        setReduxErrors(state, action: PayloadAction<{ idError; msg }>) {
+            state.reduxErrors = {
+                ...(state.reduxErrors as object),
+                [action.payload.idError]: { ...action.payload },
+            };
+        },
+        removeReduxError(state, action: PayloadAction<string>) {
+            delete (state.reduxErrors as object)[action.payload];
+        },
+        clearErrors(state) {
+            state.errors = {};
+        },
+        clearReduxErrors(state) {
+            state.reduxErrors = initialState.reduxErrors;
+        },
         setEdition(state, action: PayloadAction<boolean>) {
             state.edition = action.payload;
         },
@@ -159,5 +177,9 @@ export const {
     addTelasArray,
     setEdition,
     setSpecialSizeCurve,
+    removeReduxError,
+    clearErrors,
+    setReduxErrors,
+    clearReduxErrors,
 } = productSlice.actions;
 export default productSlice.reducer;

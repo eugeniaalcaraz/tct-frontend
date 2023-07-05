@@ -31,22 +31,45 @@ import {
     OptionsType,
     PrintCombo,
 } from "@/types";
-import { addTela, removeCombo } from "@/state/features/product";
-import { Controller } from "react-hook-form";
+import {
+    addTela,
+    clearErrors,
+    clearReduxErrors,
+    removeCombo,
+    removeReduxError,
+    setReduxErrors,
+} from "@/state/features/product";
+import { Controller, useFormContext } from "react-hook-form";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { v4 as uuidv4 } from "uuid";
 import { SyledTextField } from "@components/common/textInput/StyledTextField";
 import dayjs, { OptionType } from "dayjs";
+import {
+    checkErrorMessage,
+    checkIfError,
+} from "@/pages/newProduct/aux/errorValidation";
 
 type FabricProps = {
     fabricNumber: number;
     title?: string;
+    // setIsMaterialExisting: any;
 };
 
-const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
-    const { fabrics, composition, localization, colors, telas, errors } =
-        useAppSelector((state) => state.product);
+const Fabrics: FC<FabricProps> = ({
+    fabricNumber,
+    title,
+    // setIsMaterialExisting,
+}) => {
+    const {
+        fabrics,
+        composition,
+        localization,
+        colors,
+        telas,
+        errors,
+        reduxErrors,
+    } = useAppSelector((state) => state.product);
     const [open, setOpen] = useState<boolean>(false);
     const [existingQuality, setExistingQuality] = useState<boolean>(true);
     const [selectedQuality, setSelectedQuality] = useState<string>("");
@@ -70,6 +93,9 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
         () => ({ ...telas[fabricNumber] }),
         [telas]
     );
+    const {
+        formState: { isSubmitting },
+    } = useFormContext();
 
     const [finalComboObject, setFinalComboObject] =
         useState<FabricComboMaterial>({
@@ -121,11 +147,6 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                 ),
             }));
         }
-    };
-
-    const restorePrintData = () => {
-        // setPrintName("");
-        // setColorAmount(0);
     };
 
     const setLocalComboArray = () => {
@@ -201,17 +222,13 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                 5 * qualitiesCopy.length
             }rem`;
             setQualities(qualitiesCopy);
-            //}
         } else if (percentages === 100) {
             setQualities(qualitiesCopy);
-            //TODO: verificar el tema para mostrar error cuando es mayor a 100%
-            // qualitiesWrapper.current!.style.maxHeight = `${5}rem`;
         } else if (percentages > 100) {
             setErrorComposition(true);
-            // qualitiesWrapper.current!.style.maxHeight = `${
-            //     5 * qualitiesCopy.length + 5
-            // }rem`;
         }
+
+        dispatch(removeReduxError(`composition-${fabricNumber}`));
     };
 
     const adjustQualityWrapperHeight = () => {
@@ -230,8 +247,6 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
     };
 
     const deletePrintCombo = (printCombo: PrintCombo) => {
-        console.log(printCombo);
-
         setFinalComboObject((prevState) => ({
             ...prevState,
             prints: prevState.prints.filter(
@@ -255,33 +270,33 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
         }));
     };
 
-    const checkIfError = (name, error = false) => {
-        if (error) return true;
-        if (name.endsWith(String(qualities.length - 1), 0)) {
-            return false;
-        }
+    // const checkIfError = (name, error = false) => {
+    //     if (error) return true;
+    //     if (name.endsWith(String(qualities.length - 1), 0)) {
+    //         return false;
+    //     }
 
-        if (errors) {
-            return Object.keys(errors).includes(name);
-        }
-        return false;
-    };
+    //     if (errors) {
+    //         return Object.keys(errors).includes(name);
+    //     }
+    //     return false;
+    // };
 
-    const checkErrorMessage = (name) => {
-        if (errors) {
-            const errorMessage =
-                Object.entries(errors).filter((error) => {
-                    if (error[0] === name) {
-                        return error[1];
-                    }
-                }) ?? "";
+    // const checkErrorMessage = (name) => {
+    //     if (errors) {
+    //         const errorMessage =
+    //             Object.entries(errors).filter((error) => {
+    //                 if (error[0] === name) {
+    //                     return error[1];
+    //                 }
+    //             }) ?? "";
 
-            if (errorMessage && errorMessage.length > 0) {
-                return errorMessage[0][1].message;
-            }
-        }
-        return "";
-    };
+    //         if (errorMessage && errorMessage.length > 0) {
+    //             return errorMessage[0][1].message;
+    //         }
+    //     }
+    //     return "";
+    // };
 
     useEffect(() => {
         adjustQualityWrapperHeight();
@@ -347,7 +362,81 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
         }));
         setCompOfSelectedQuality([]);
         setSelectedQuality("");
+        setConsumption("");
+        if (reduxErrors && Object.keys(reduxErrors).length) {
+            dispatch(clearReduxErrors());
+        }
     }, [existingQuality]);
+
+    useEffect(() => {
+        if (isSubmitting) {
+            if (existingQuality) {
+                if (selectedQuality === "") {
+                    dispatch(
+                        setReduxErrors({
+                            idError: `calidad-${fabricNumber}`,
+                            msg: "Requerido",
+                        })
+                    );
+                }
+            } else {
+                if (finalComboObject.description === "") {
+                    dispatch(
+                        setReduxErrors({
+                            idError: `nombreNuevoFabric-${fabricNumber}`,
+                            msg: "Requerido",
+                        })
+                    );
+                }
+                if (finalComboObject.weight === 0) {
+                    dispatch(
+                        setReduxErrors({
+                            idError: `weight-${fabricNumber}`,
+                            msg: "Requerido",
+                        })
+                    );
+                }
+                if (
+                    !finalComboObject.composition.length ||
+                    qualities.reduce((curr, next) => curr + next, 0) === 0
+                ) {
+                    dispatch(
+                        setReduxErrors({
+                            idError: `composition-${fabricNumber}`,
+                            msg: "Requerido",
+                        })
+                    );
+                }
+            }
+            if (finalComboObject.placement === 0) {
+                dispatch(
+                    setReduxErrors({
+                        idError: `placement-${fabricNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (finalComboObject.consumption === 0) {
+                dispatch(
+                    setReduxErrors({
+                        idError: `consumoCalidad-${currentFabricNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (
+                !finalComboObject.colors.length &&
+                !finalComboObject.prints.length
+            ) {
+                dispatch(
+                    setReduxErrors({
+                        idError: `fabricCombo-${fabricNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+        }
+    }, [isSubmitting]);
 
     return (
         <>
@@ -357,7 +446,10 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                     row
                     onChange={(event) => {
                         // onChange(event);
+                        dispatch(clearErrors());
+
                         setExistingQuality((prevState) => !prevState);
+                        // setIsMaterialExisting(existingQuality);
                     }}
                     value={existingQuality}
                 >
@@ -378,6 +470,7 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                     <>
                         <ControlledDropdown
                             label="calidad *"
+                            id={`calidad-${fabricNumber}`}
                             useFormHook={false}
                             options={
                                 fabrics?.map(
@@ -395,9 +488,24 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                                 ) ?? []
                             }
                             name="calidad"
-                            error={checkIfError("calidad")}
-                            helperText={checkErrorMessage("calidad")}
-                            externalOnChange={handleSelectedQuality}
+                            error={checkIfError(
+                                `calidad-${fabricNumber}`,
+                                reduxErrors
+                            )}
+                            helperText={checkErrorMessage(
+                                `calidad-${fabricNumber}`,
+                                reduxErrors
+                            )}
+                            externalOnChange={(e) => {
+                                handleSelectedQuality(e);
+                                if (e.value !== "") {
+                                    dispatch(
+                                        removeReduxError(
+                                            `calidad-${fabricNumber}`
+                                        )
+                                    );
+                                }
+                            }}
                             selectedValue={finalComboObject.idFabric}
                         />
                         {selectedQuality !== "" && (
@@ -427,8 +535,10 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                                 selectedQuality !== "" ? "selectedQuality" : ""
                             }
                                ${
-                                   checkIfError("description") ||
-                                   checkIfError("peso")
+                                   checkIfError(
+                                       `calidad-${fabricNumber}`,
+                                       reduxErrors
+                                   )
                                        ? "error"
                                        : ""
                                }
@@ -458,27 +568,59 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                     <>
                         <Box
                             className={`newQuality ${
-                                checkIfError("description") ||
-                                checkIfError("peso")
+                                checkIfError(
+                                    `nombreNuevoFabric-${fabricNumber}`,
+                                    reduxErrors
+                                )
                                     ? "error"
                                     : ""
                             }`}
                         >
                             <ControlledInput
                                 label="Nombre *"
-                                name="nombreNuevoFabric"
-                                error={checkIfError("fabricDescription")}
-                                helperText={checkErrorMessage(
-                                    "fabricDescription"
+                                name={`nombreNuevoFabric-${fabricNumber}`}
+                                id={`nombreNuevoFabric-${fabricNumber}`}
+                                error={checkIfError(
+                                    `nombreNuevoFabric-${fabricNumber}`,
+                                    reduxErrors
                                 )}
-                                onBlur={handleDescriptionBlur}
+                                helperText={checkErrorMessage(
+                                    `nombreNuevoFabric-${fabricNumber}`,
+                                    reduxErrors
+                                )}
+                                onBlur={(e) => {
+                                    handleDescriptionBlur(e);
+                                    if (e.target.value !== "") {
+                                        dispatch(
+                                            removeReduxError(
+                                                `nombreNuevoFabric-${fabricNumber}`
+                                            )
+                                        );
+                                    }
+                                }}
                             />
                             <ControlledInput
                                 label="peso (gr) *"
                                 name="peso"
-                                error={checkIfError("peso")}
-                                helperText={checkErrorMessage("peso")}
-                                onBlur={handleWeightBlur}
+                                id={`weight-${fabricNumber}`}
+                                error={checkIfError(
+                                    `weight-${fabricNumber}`,
+                                    reduxErrors
+                                )}
+                                helperText={checkErrorMessage(
+                                    `weight-${fabricNumber}`,
+                                    reduxErrors
+                                )}
+                                onBlur={(e) => {
+                                    handleWeightBlur(e);
+                                    if (e.target.value !== "") {
+                                        dispatch(
+                                            removeReduxError(
+                                                `weight-${fabricNumber}`
+                                            )
+                                        );
+                                    }
+                                }}
                             />
                         </Box>
 
@@ -491,11 +633,16 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                                 <Box key={i}>
                                     <ControlledDropdown
                                         label="composición *"
+                                        id={`composicion-${fabricNumber}-${i}`}
                                         options={composition ?? []}
-                                        name={`composicion-${i}`}
-                                        error={checkIfError(`composicion-${i}`)}
+                                        name={`composicion-${fabricNumber}-${i}`}
+                                        error={checkIfError(
+                                            `composition-${fabricNumber}`,
+                                            reduxErrors
+                                        )}
                                         helperText={checkErrorMessage(
-                                            `composicion-${i}`
+                                            `composition-${fabricNumber}`,
+                                            reduxErrors
                                         )}
                                         onBlur={handleCompositionSelect}
                                     />
@@ -507,20 +654,31 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                                         }
                                         id={i + 1}
                                         onBlur={handleQualityDisabled}
-                                        error={checkIfError(`porcentaje-${i}`)}
+                                        error={checkIfError(
+                                            `composition-${fabricNumber}`,
+                                            reduxErrors
+                                        )}
                                         helperText={checkErrorMessage(
-                                            `porcentaje-${i}`
+                                            `composition-${fabricNumber}`,
+                                            reduxErrors
                                         )}
                                     />
                                 </Box>
                             ))}
-                            {errorComposition && (
-                                <h4>
-                                    la suma de porcentajes no puede ser mayor a
-                                    100%
-                                </h4>
-                            )}
                         </Box>
+                        {errorComposition && (
+                            <span className="composition-error">
+                                La suma de porcentajes no puede ser mayor a 100%
+                            </span>
+                        )}
+                        {checkIfError(
+                            `composition-${fabricNumber}`,
+                            reduxErrors
+                        ) && (
+                            <span className="composition-error">
+                                Campos requeridos
+                            </span>
+                        )}
                     </>
                 )}
 
@@ -530,25 +688,58 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                     useFormHook={false}
                     selectedValue={finalComboObject.placement}
                     name="localizacion"
-                    externalOnChange={(e) =>
+                    id={`placement-${fabricNumber}`}
+                    error={checkIfError(
+                        `placement-${fabricNumber}`,
+                        reduxErrors
+                    )}
+                    helperText={checkErrorMessage(
+                        `placement-${fabricNumber}`,
+                        reduxErrors
+                    )}
+                    externalOnChange={(e) => {
+                        console.log(e.value);
+
                         setFinalComboObject((prevObject) => ({
                             ...prevObject,
                             placement: e.value,
-                        }))
-                    }
+                        }));
+                        if (e.value !== "") {
+                            dispatch(
+                                removeReduxError(`placement-${fabricNumber}`)
+                            );
+                        }
+                    }}
                 />
                 <ControlledInput
                     label="Consumo"
                     useFormhook={false}
                     externalValue={consumption}
-                    name={`consumoCalidad${currentFabricNumber}`}
+                    name={`consumoCalidad-${currentFabricNumber}`}
+                    id={`consumoCalidad-${currentFabricNumber}`}
+                    error={checkIfError(
+                        `consumoCalidad-${currentFabricNumber}`,
+                        reduxErrors
+                    )}
+                    helperText={checkErrorMessage(
+                        `consumoCalidad-${currentFabricNumber}`,
+                        reduxErrors
+                    )}
                     externalOnChange={(e) => setConsumption(e.target.value)}
-                    onBlur={() =>
+                    onBlur={(e) => {
                         setFinalComboObject((prevObject) => ({
                             ...prevObject,
                             consumption: Number(consumption),
-                        }))
-                    }
+                        }));
+
+                        if (e.target.value !== "") {
+                            dispatch(
+                                removeReduxError(
+                                    `consumoCalidad-${currentFabricNumber}`
+                                )
+                            );
+                        }
+                    }}
                 />
                 <Button
                     variant="text"
@@ -622,6 +813,11 @@ const Fabrics: FC<FabricProps> = ({ fabricNumber, title }) => {
                         </Button>
                     </Box>
                 </Box>
+                {checkIfError(`fabricCombo-${fabricNumber}`, reduxErrors) && (
+                    <span className="combo-error">
+                        Es necesario ingresar al menos 1 combo
+                    </span>
+                )}
 
                 {!!telas[fabricNumber]?.colors.length && (
                     <Box className="combos">

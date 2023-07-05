@@ -1,5 +1,10 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
-import { addTela, addTelasArray } from "@/state/features/product";
+import {
+    addTela,
+    addTelasArray,
+    removeReduxError,
+    setReduxErrors,
+} from "@/state/features/product";
 import { Dayjs } from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { OptionsType } from "@/types";
@@ -8,6 +13,11 @@ import {
     ControlledDropdown,
     ControlledInput,
 } from "@components/common";
+import { useFormContext } from "react-hook-form";
+import {
+    checkErrorMessage,
+    checkIfError,
+} from "@/pages/newProduct/aux/errorValidation";
 
 type ShipmentComboProps = {
     comboNumber: number;
@@ -18,7 +28,7 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
     comboNumber,
     isForAllCombos,
 }) => {
-    const { countries, supplier, typeOfshipment, telas, errors } =
+    const { countries, typeOfshipment, telas, errors, reduxErrors } =
         useAppSelector((state) => state.product);
     const [selectedDestinationCountry, setselectedDestinationCountry] =
         useState("");
@@ -32,6 +42,9 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
         [telas]
     );
     const dispatch = useAppDispatch();
+    const {
+        formState: { isSubmitting, isValidating },
+    } = useFormContext();
 
     useEffect(() => {
         if (isForAllCombos) {
@@ -105,13 +118,34 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
         }
     };
 
-    const checkError = (valueToEvaluate) => {
-        if (errors) {
-            return valueToEvaluate === "";
-        } else {
-            return false;
+    useEffect(() => {
+        if (isSubmitting) {
+            if (selectedDestinationCountry === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `destino-${comboNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (quantity === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `cantidadComboEmbarque-${comboNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (selectedShipmentType === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `embarqueComboTipo-${comboNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
         }
-    };
+    }, [isSubmitting]);
 
     return (
         <>
@@ -120,12 +154,20 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
 
             <ControlledDropdown
                 label="Destino"
+                id={`destino-${comboNumber}`}
                 useFormHook={false}
-                externalOnChange={(e) => setselectedDestinationCountry(e.value)}
+                externalOnChange={(e) => {
+                    setselectedDestinationCountry(e.value);
+                    if (e.value !== "") {
+                        dispatch(removeReduxError(`destino-${comboNumber}`));
+                    }
+                }}
                 selectedValue={selectedDestinationCountry}
-                // TODO: implementar la validacion en dropdowns que no usan el ract hook form
-                // error={checkError(selectedDestinationCountry)}
-                // helperText={mesgReturner(selectedDestinationCountry)}
+                error={checkIfError(`destino-${comboNumber}`, reduxErrors)}
+                helperText={checkErrorMessage(
+                    `destino-${comboNumber}`,
+                    reduxErrors
+                )}
                 options={
                     countries?.map(
                         ({ Id, Name }): OptionsType => ({
@@ -134,17 +176,34 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                         })
                     ) ?? []
                 }
-                name={`embarque-${comboNumber}`}
+                name={`destino-${comboNumber}`}
             />
             <ControlledInput
                 useFormhook={false}
                 label="Cantidad"
-                name={`cantidadComboEmbarque${comboNumber}`}
-                externalOnChange={(e) => setQuantity(e.target.value)}
+                name={`cantidadComboEmbarque-${comboNumber}`}
+                externalOnChange={(e) => {
+                    setQuantity(e.target.value);
+                }}
+                onBlur={(e) => {
+                    if (e.target.value !== "") {
+                        dispatch(
+                            removeReduxError(
+                                `cantidadComboEmbarque-${comboNumber}`
+                            )
+                        );
+                    }
+                }}
                 externalValue={quantity}
-                // TODO: implementar la validacion en dropdowns que no usan el ract hook form
-                // error={quantity === ""}
-                // helperText={mesgReturner(quantity)}
+                id={"cantidadComboEmbarque"}
+                error={checkIfError(
+                    `cantidadComboEmbarque-${comboNumber}`,
+                    reduxErrors
+                )}
+                helperText={checkErrorMessage(
+                    `cantidadComboEmbarque-${comboNumber}`,
+                    reduxErrors
+                )}
             />
             <ControlledDatePicker
                 name={`fechaEmbarque${comboNumber}`}
@@ -156,9 +215,25 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
             />
             <ControlledDropdown
                 label="Embarque"
+                id={"embarque"}
                 options={typeOfshipment ?? []}
-                name={`embarqueComboTipo${comboNumber}`}
-                externalOnChange={(e) => setSelectedShipmentType(e.value)}
+                name={`embarqueComboTipo-${comboNumber}`}
+                externalOnChange={(e) => {
+                    setSelectedShipmentType(e.value);
+                    if (e.value !== "") {
+                        dispatch(
+                            removeReduxError(`embarqueComboTipo-${comboNumber}`)
+                        );
+                    }
+                }}
+                error={checkIfError(
+                    `embarqueComboTipo-${comboNumber}`,
+                    reduxErrors
+                )}
+                helperText={checkErrorMessage(
+                    `embarqueComboTipo-${comboNumber}`,
+                    reduxErrors
+                )}
                 selectedValue={selectedShipmentType}
                 useFormHook={false}
             />

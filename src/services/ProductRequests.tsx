@@ -166,10 +166,11 @@ const getListingPath = (name) => {
 const getBodyWithExitingQuality = (formData, idMerchant) => {
     const finalObj = {
         ...formData,
+        idSampleStatus: 1,
         idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
         idMerchant: Number(idMerchant),
         idExistingProduct: "0",
-        name: formData.nombre,
+        name: formData.nombreDelProducto,
         quantity: Number(formData.quantity),
         idModeling: 1,
         idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1,
@@ -184,7 +185,7 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
         idSupplier: Number(formData.idSupplier),
     };
 
-    delete finalObj.nombre;
+    delete finalObj.nombreDelProducto;
     delete finalObj.precioVenta;
     delete finalObj.cantidadDeAvios;
     delete finalObj.cantidadDeTelas;
@@ -201,9 +202,10 @@ const getBody = (formData, idMerchant) => {
     const finalObj = {
         ...formData,
         idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
+        idSampleStatus: 1,
         idMerchant: Number(idMerchant),
         idExistingProduct: "0",
-        name: formData.nombre,
+        name: formData.nombreDelProducto,
         quantity: Number(formData.quantity),
         idModeling: 1,
         idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1
@@ -218,7 +220,7 @@ const getBody = (formData, idMerchant) => {
         idSupplier: Number(formData.idSupplier),
     };
 
-    delete finalObj.nombre;
+    delete finalObj.nombreDelProducto;
     delete finalObj.precioVenta;
     delete finalObj.cantidadDeAvios;
     delete finalObj.cantidadDeTelas;

@@ -63,6 +63,19 @@ export const FabricContainer = styled(Box)({
         },
     },
 
+    ".composition-error": {
+        marginTop: "-15px",
+        marginBottom: "10px",
+        width: "100%",
+        color: "#DFB6D2",
+    },
+    ".combo-error": {
+        marginTop: "-25px",
+        marginBottom: "10px",
+        width: "100%",
+        color: "#DFB6D2",
+    },
+
     "&& > .existingQualities": {
         "& > div": {
             "& > .input": {

@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { setErrors } from "@/state/features/product";
 import React, { ReactNode, useEffect } from "react";
 import {
@@ -31,10 +31,11 @@ const Form = <
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const dispatch = useAppDispatch();
+    const { reduxErrors } = useAppSelector((state) => state.product);
 
     const submit = async (data) => {
         try {
-            await onSubmit(data);
+            if (!Object.keys(reduxErrors).length) await onSubmit(data);
         } catch (error) {
             Object.keys(data).map((field) =>
                 methods.setError(field as Path<TFormValues>, {

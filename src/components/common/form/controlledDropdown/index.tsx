@@ -25,11 +25,13 @@ type ControlledDropdownProps = {
     shouldUnregister?: boolean;
     useFormHook?: boolean;
     selectedValue?: any;
+    id?: string;
 };
 
 const ControlledDropdown: FC<ControlledDropdownProps> = ({
     name,
     label,
+    id = "simple-select",
     options,
     multipleSelect = false,
     disabled = false,
@@ -107,8 +109,8 @@ const ControlledDropdown: FC<ControlledDropdownProps> = ({
                         {label}
                     </InputLabel>
                     <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        labelId={id}
+                        id={id}
                         value={selectedValue}
                         multiple={multipleSelect}
                         label={label}
@@ -119,6 +121,7 @@ const ControlledDropdown: FC<ControlledDropdownProps> = ({
                                     name,
                                 });
                         }}
+                        onSubmitCapture={() => console.log("onSubmit", id)}
                         input={<OutlinedInput label={label} />}
                         onBlur={onBlur}
                         error={error}
