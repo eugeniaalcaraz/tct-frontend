@@ -34,8 +34,12 @@ const Form = <
     const { reduxErrors } = useAppSelector((state) => state.product);
 
     const submit = async (data) => {
+        console.log({ length: !Object.keys(reduxErrors).length });
+
         try {
-            if (!Object.keys(reduxErrors).length) await onSubmit(data);
+            if (!Object.keys(reduxErrors).length) {
+                await onSubmit(data);
+            }
         } catch (error) {
             Object.keys(data).map((field) =>
                 methods.setError(field as Path<TFormValues>, {

@@ -37,6 +37,7 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
     const [warehouseEntryDate, setWarehouseEntryDate] = useState("");
     const [entryDate, setEntryDate] = useState("");
     const [quantity, setQuantity] = useState("");
+    const [reduxQuantity, setreduxQuantity] = useState("");
     const telasUpdatableObject = useMemo(
         () => ({ ...telas[comboNumber - 1] }),
         [telas]
@@ -71,8 +72,8 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                         ? shippingDate
                         : telasUpdatableObject.shippingDate,
                 quantity:
-                    quantity !== ""
-                        ? Number(quantity)
+                    reduxQuantity !== ""
+                        ? Number(reduxQuantity)
                         : telasUpdatableObject.quantity,
             }));
 
@@ -91,6 +92,10 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                             selectedShipmentType !== ""
                                 ? Number(selectedShipmentType)
                                 : 0,
+                        quantity:
+                            reduxQuantity !== ""
+                                ? Number(reduxQuantity)
+                                : telasUpdatableObject.quantity,
                         warehouseEntryDate,
                         entryDate,
                         shippingDate,
@@ -104,19 +109,8 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
         warehouseEntryDate,
         entryDate,
         shippingDate,
-        quantity,
+        reduxQuantity,
     ]);
-
-    const mesgReturner = (valueToEvaluate: string) => {
-        if (errors) {
-            if (valueToEvaluate.length) {
-                return "Requerido";
-            }
-            if (!/^[0-9.,\b]+$/.test(valueToEvaluate)) {
-                return "Solo numbero aqui!";
-            }
-        }
-    };
 
     useEffect(() => {
         if (isSubmitting) {
@@ -187,6 +181,7 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 }}
                 onBlur={(e) => {
                     if (e.target.value !== "") {
+                        setreduxQuantity(e.target.value);
                         dispatch(
                             removeReduxError(
                                 `cantidadComboEmbarque-${comboNumber}`

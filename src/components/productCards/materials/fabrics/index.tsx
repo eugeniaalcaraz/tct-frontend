@@ -344,44 +344,6 @@ const Fabrics: FC<FabricProps> = ({
 
     useEffect(() => {
         if (isSubmitting) {
-            if (existingQuality) {
-                if (selectedQuality === "") {
-                    dispatch(
-                        setReduxErrors({
-                            idError: `calidad-${fabricNumber}`,
-                            msg: "Requerido",
-                        })
-                    );
-                }
-            } else {
-                if (finalComboObject.description === "") {
-                    dispatch(
-                        setReduxErrors({
-                            idError: `nombreNuevoFabric-${fabricNumber}`,
-                            msg: "Requerido",
-                        })
-                    );
-                }
-                if (finalComboObject.weight === 0) {
-                    dispatch(
-                        setReduxErrors({
-                            idError: `weight-${fabricNumber}`,
-                            msg: "Requerido",
-                        })
-                    );
-                }
-                if (
-                    !finalComboObject.composition.length ||
-                    qualities.reduce((curr, next) => curr + next, 0) === 0
-                ) {
-                    dispatch(
-                        setReduxErrors({
-                            idError: `composition-${fabricNumber}`,
-                            msg: "Requerido",
-                        })
-                    );
-                }
-            }
             if (finalComboObject.placement === 0) {
                 dispatch(
                     setReduxErrors({
@@ -405,6 +367,44 @@ const Fabrics: FC<FabricProps> = ({
                 dispatch(
                     setReduxErrors({
                         idError: `fabricCombo-${fabricNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (existingQuality) {
+                if (selectedQuality === "") {
+                    dispatch(
+                        setReduxErrors({
+                            idError: `calidad-${fabricNumber}`,
+                            msg: "Requerido",
+                        })
+                    );
+                }
+                return;
+            }
+            if (finalComboObject.description === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `nombreNuevoFabric-${fabricNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (finalComboObject.weight === 0) {
+                dispatch(
+                    setReduxErrors({
+                        idError: `weight-${fabricNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (
+                !finalComboObject.composition.length ||
+                qualities.reduce((curr, next) => curr + next, 0) === 0
+            ) {
+                dispatch(
+                    setReduxErrors({
+                        idError: `composition-${fabricNumber}`,
                         msg: "Requerido",
                     })
                 );
@@ -575,7 +575,7 @@ const Fabrics: FC<FabricProps> = ({
                             />
                             <ControlledInput
                                 label="peso (gr) *"
-                                name="peso"
+                                name={`weight-${fabricNumber}`}
                                 id={`weight-${fabricNumber}`}
                                 error={checkIfError(
                                     `weight-${fabricNumber}`,
@@ -621,8 +621,8 @@ const Fabrics: FC<FabricProps> = ({
                                         onBlur={handleCompositionSelect}
                                     />
                                     <ControlledInput
-                                        label="porcentaje *"
-                                        name={`porcentaje-${i}`}
+                                        label={`Porcentaje *`}
+                                        name={`porcentaje-${fabricNumber}-${i}`}
                                         disabled={
                                             !finalComboObject.composition[i]
                                         }
