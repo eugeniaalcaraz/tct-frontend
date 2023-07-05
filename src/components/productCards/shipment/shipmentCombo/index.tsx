@@ -130,6 +130,14 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                     })
                 );
             }
+            if (/^[0-9.,\b]+$/.test(quantity)) {
+                dispatch(
+                    setReduxErrors({
+                        idError: `cantidadComboEmbarque-${comboNumber}`,
+                        msg: "Solo numeros",
+                    })
+                );
+            }
             if (selectedShipmentType === "") {
                 dispatch(
                     setReduxErrors({

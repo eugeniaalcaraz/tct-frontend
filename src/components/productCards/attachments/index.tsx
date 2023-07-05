@@ -46,6 +46,7 @@ const Attachments = () => {
                     hidden
                     {...imagesField}
                     onChange={handlePreview}
+                    accept="image/*"
                     multiple
                 />
             </Button>

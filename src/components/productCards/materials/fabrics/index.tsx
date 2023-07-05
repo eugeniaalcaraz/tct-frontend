@@ -264,10 +264,19 @@ const Fabrics: FC<FabricProps> = ({
     };
 
     const handleWeightBlur = (e) => {
-        setFinalComboObject((prevState) => ({
-            ...prevState,
-            weight: e.target.value,
-        }));
+        if (/^[0-9.,\b]+$/.test(e.target.value)) {
+            setFinalComboObject((prevState) => ({
+                ...prevState,
+                weight: e.target.value,
+            }));
+        } else {
+            dispatch(
+                setReduxErrors({
+                    idError: `weight-${fabricNumber}`,
+                    msg: "Solo Numeros",
+                })
+            );
+        }
     };
 
     useEffect(() => {
@@ -587,7 +596,7 @@ const Fabrics: FC<FabricProps> = ({
                                 )}
                                 onBlur={(e) => {
                                     handleWeightBlur(e);
-                                    if (e.target.value !== "") {
+                                    if (/^[0-9.,\b]+$/.test(e.target.value)) {
                                         dispatch(
                                             removeReduxError(
                                                 `weight-${fabricNumber}`
@@ -627,13 +636,33 @@ const Fabrics: FC<FabricProps> = ({
                                             !finalComboObject.composition[i]
                                         }
                                         id={i + 1}
-                                        onBlur={handleQualityDisabled}
+                                        onBlur={(e) => {
+                                            if (
+                                                /^[0-9.,\b]+$/.test(
+                                                    e.target.value
+                                                )
+                                            ) {
+                                                dispatch(
+                                                    removeReduxError(
+                                                        `porcentaje-${fabricNumber}-${i}`
+                                                    )
+                                                );
+                                                handleQualityDisabled(e);
+                                            } else {
+                                                dispatch(
+                                                    setReduxErrors({
+                                                        idError: `porcentaje-${fabricNumber}-${i}`,
+                                                        msg: "Solo números",
+                                                    })
+                                                );
+                                            }
+                                        }}
                                         error={checkIfError(
-                                            `composition-${fabricNumber}`,
+                                            `porcentaje-${fabricNumber}-${i}`,
                                             reduxErrors
                                         )}
                                         helperText={checkErrorMessage(
-                                            `composition-${fabricNumber}`,
+                                            `porcentaje-${fabricNumber}-${i}`,
                                             reduxErrors
                                         )}
                                     />
@@ -699,18 +728,27 @@ const Fabrics: FC<FabricProps> = ({
                         `consumoCalidad-${currentFabricNumber}`,
                         reduxErrors
                     )}
-                    externalOnChange={(e) => setConsumption(e.target.value)}
+                    externalOnChange={(e) => {
+                        setConsumption(e.target.value);
+                    }}
                     onBlur={(e) => {
-                        setFinalComboObject((prevObject) => ({
-                            ...prevObject,
-                            consumption: Number(consumption),
-                        }));
-
-                        if (e.target.value !== "") {
+                        if (/^[0-9.,\b]+$/.test(e.target.value)) {
                             dispatch(
                                 removeReduxError(
                                     `consumoCalidad-${currentFabricNumber}`
                                 )
+                            );
+
+                            setFinalComboObject((prevObject) => ({
+                                ...prevObject,
+                                consumption: Number(consumption),
+                            }));
+                        } else {
+                            dispatch(
+                                setReduxErrors({
+                                    idError: `consumoCalidad-${currentFabricNumber}`,
+                                    msg: "Solo números",
+                                })
                             );
                         }
                     }}
