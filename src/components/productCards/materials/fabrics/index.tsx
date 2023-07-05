@@ -270,34 +270,6 @@ const Fabrics: FC<FabricProps> = ({
         }));
     };
 
-    // const checkIfError = (name, error = false) => {
-    //     if (error) return true;
-    //     if (name.endsWith(String(qualities.length - 1), 0)) {
-    //         return false;
-    //     }
-
-    //     if (errors) {
-    //         return Object.keys(errors).includes(name);
-    //     }
-    //     return false;
-    // };
-
-    // const checkErrorMessage = (name) => {
-    //     if (errors) {
-    //         const errorMessage =
-    //             Object.entries(errors).filter((error) => {
-    //                 if (error[0] === name) {
-    //                     return error[1];
-    //                 }
-    //             }) ?? "";
-
-    //         if (errorMessage && errorMessage.length > 0) {
-    //             return errorMessage[0][1].message;
-    //         }
-    //     }
-    //     return "";
-    // };
-
     useEffect(() => {
         adjustQualityWrapperHeight();
     }, [existingQualityWrapper, errors]);
@@ -363,6 +335,8 @@ const Fabrics: FC<FabricProps> = ({
         setCompOfSelectedQuality([]);
         setSelectedQuality("");
         setConsumption("");
+        setErrorComposition(false);
+
         if (reduxErrors && Object.keys(reduxErrors).length) {
             dispatch(clearReduxErrors());
         }
