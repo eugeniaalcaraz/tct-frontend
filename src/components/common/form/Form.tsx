@@ -34,8 +34,6 @@ const Form = <
     const { reduxErrors } = useAppSelector((state) => state.product);
 
     const submit = async (data) => {
-        console.log({ length: !Object.keys(reduxErrors).length });
-
         try {
             if (!Object.keys(reduxErrors).length) {
                 await onSubmit(data);
