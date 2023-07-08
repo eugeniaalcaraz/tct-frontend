@@ -29,7 +29,9 @@ import { useForm } from "react-hook-form";
 import { NumberSizeCurve } from "@components/productCards/sizeCurve/numberSizeCurve";
 import { denimSizes, shoesSizes } from "./aux/aux";
 import {
+    clearAviosCombos,
     clearReduxErrors,
+    clearTelasCombos,
     setSpecialSizeCurve,
 } from "@/state/features/product";
 import dayjs from "dayjs";
@@ -78,12 +80,9 @@ const NewProduct = () => {
         }
 
         if (formData.medidas.length) {
-            console.log({ medidas: formData.medidas });
-
             const files = Object.values(formData.medidas);
             const response = files.map((file) => toBase64(file));
             const excelArr = await Promise.all(response);
-            console.log({ excelArr });
             medidas = excelArr[0];
         } else {
             medidas = "";
@@ -139,15 +138,7 @@ const NewProduct = () => {
             idMerchant,
             existingQuality: formData.existingQuality,
         });
-
-        setSeed(Math.random());
     };
-
-    useEffect(() => {
-        if (reduxErrors && Object.keys(reduxErrors).length) {
-            dispatch(clearReduxErrors());
-        }
-    }, [productSuccess]);
 
     const product = {
         producto: <ProductCard setSelectedTipology={setSelectedTipology} />,
@@ -175,6 +166,15 @@ const NewProduct = () => {
     useEffect(() => {
         if (productSuccess) {
             dispatch(setSpecialSizeCurve(false));
+            console.log({ productSuccess });
+            dispatch(clearTelasCombos());
+            dispatch(clearAviosCombos());
+            setSeed(Math.random());
+            methods.reset();
+        }
+
+        if (reduxErrors && Object.keys(reduxErrors).length) {
+            dispatch(clearReduxErrors());
         }
     }, [productSuccess]);
 

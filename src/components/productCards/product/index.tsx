@@ -29,7 +29,6 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
         rises,
         bodyFit,
         managementUnit,
-        designers,
         errors,
     } = useAppSelector((state) => state.product);
     const { idMerchant } = useAppSelector((state) => state.user);

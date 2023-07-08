@@ -305,13 +305,13 @@ const Fabrics: FC<FabricProps> = ({
                     ...finalComboObject,
                     entryDate:
                         telasUpdatableObject.entryDate ??
-                        dayjs().add(15, "day").format("YYYY-DD-MM"),
+                        dayjs().add(15, "day").format("YYYY-MM-DD"),
                     shippingDate:
                         telasUpdatableObject.shippingDate ??
-                        dayjs().add(15, "day").format("YYYY-DD-MM"),
+                        dayjs().add(15, "day").format("YYYY-MM-DD"),
                     warehouseEntryDate:
                         telasUpdatableObject.warehouseEntryDate ??
-                        dayjs().add(15, "day").format("YYYY-DD-MM"),
+                        dayjs().add(15, "day").format("YYYY-MM-DD"),
                     idCountryDestination:
                         telasUpdatableObject.idCountryDestination ?? 0,
                     idShipping: telasUpdatableObject.idShipping ?? 0,
@@ -688,8 +688,8 @@ const Fabrics: FC<FabricProps> = ({
                 <ControlledDropdown
                     label="Localización en la prenda"
                     options={localization ?? []}
-                    useFormHook={false}
-                    selectedValue={finalComboObject.placement}
+                    // useFormHook={false}
+                    // selectedValue={finalComboObject.placement}
                     name="localizacion"
                     id={`placement-${fabricNumber}`}
                     error={checkIfError(
@@ -700,12 +700,10 @@ const Fabrics: FC<FabricProps> = ({
                         `placement-${fabricNumber}`,
                         reduxErrors
                     )}
-                    externalOnChange={(e) => {
-                        console.log(e.value);
-
+                    onBlur={(e) => {
                         setFinalComboObject((prevObject) => ({
                             ...prevObject,
-                            placement: e.value,
+                            placement: e.target.value,
                         }));
                         if (e.value !== "") {
                             dispatch(
@@ -716,8 +714,8 @@ const Fabrics: FC<FabricProps> = ({
                 />
                 <ControlledInput
                     label="Consumo"
-                    useFormhook={false}
-                    externalValue={consumption}
+                    // useFormhook={false}
+                    // externalValue={consumption}
                     name={`consumoCalidad-${currentFabricNumber}`}
                     id={`consumoCalidad-${currentFabricNumber}`}
                     error={checkIfError(
@@ -728,11 +726,12 @@ const Fabrics: FC<FabricProps> = ({
                         `consumoCalidad-${currentFabricNumber}`,
                         reduxErrors
                     )}
-                    externalOnChange={(e) => {
-                        setConsumption(e.target.value);
-                    }}
+                    // externalOnChange={(e) => {
+                    //     setConsumption(e.target.value);
+                    // }}
                     onBlur={(e) => {
                         if (/^[0-9.,\b]+$/.test(e.target.value)) {
+                            // setConsumption(e.target.value);
                             dispatch(
                                 removeReduxError(
                                     `consumoCalidad-${currentFabricNumber}`
@@ -741,7 +740,7 @@ const Fabrics: FC<FabricProps> = ({
 
                             setFinalComboObject((prevObject) => ({
                                 ...prevObject,
-                                consumption: Number(consumption),
+                                consumption: Number(e.target.value),
                             }));
                         } else {
                             dispatch(

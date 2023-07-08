@@ -169,7 +169,18 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
         idSampleStatus: 1,
         idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
         idMerchant: Number(idMerchant),
+        sampleType: 1,
+        idRise: Number(formData.idRise),
+        idSeason: Number(formData.idSeason),
+        idBodyFit: Number(formData.idBodyFit),
+        idConcept: Number(formData.idConcept),
+        idDepartment: Number(formData.idDepartment),
+        idIndustry: Number(formData.idIndustry),
+        idLine: Number(formData.idLine),
+        idMerchantBrand: Number(formData.idMerchantBrand),
         idExistingProduct: "0",
+        year: Number(formData.year),
+        weight: Number(formData.weight),
         name: formData.nombreDelProducto,
         quantity: Number(formData.quantity),
         idModeling: 1,
@@ -190,25 +201,39 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
     delete finalObj.cantidadDeAvios;
     delete finalObj.cantidadDeTelas;
     delete finalObj.peso;
-    delete finalObj["porcentaje-0"];
-    delete finalObj["composicion-0"];
+    // delete finalObj["porcentaje-0-0"];
+    // delete finalObj["composicion-0"];
     delete finalObj.fotos;
     delete finalObj.medidas;
-    delete finalObj.nombreNuevoFabric;
+    // delete finalObj["nombreNuevoFabric-0"];
+    // delete finalObj["weight-0"];
+    // delete finalObj["composicion-0-0"];
+
     return finalObj;
 };
 
 const getBody = (formData, idMerchant) => {
     const finalObj = {
         ...formData,
-        idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
         idSampleStatus: 1,
+        idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
         idMerchant: Number(idMerchant),
+        sampleType: 1,
+        idRise: Number(formData.idRise),
+        idSeason: Number(formData.idSeason),
+        idBodyFit: Number(formData.idBodyFit),
+        idConcept: Number(formData.idConcept),
+        idDepartment: Number(formData.idDepartment),
+        idIndustry: Number(formData.idIndustry),
+        idLine: Number(formData.idLine),
+        idMerchantBrand: Number(formData.idMerchantBrand),
         idExistingProduct: "0",
+        year: Number(formData.year),
+        weight: Number(formData.weight),
         name: formData.nombreDelProducto,
         quantity: Number(formData.quantity),
         idModeling: 1,
-        idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1
+        idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1,
         measurmentTable: formData.medidas,
         idModelingStatus: 1,
         idStatusMeasurmentTable: 1,
@@ -225,11 +250,13 @@ const getBody = (formData, idMerchant) => {
     delete finalObj.cantidadDeAvios;
     delete finalObj.cantidadDeTelas;
     delete finalObj.peso;
-    delete finalObj["porcentaje-0"];
-    delete finalObj["composicion-0"];
+    // delete finalObj["porcentaje-0-0"];
+    // delete finalObj["composicion-0"];
     delete finalObj.fotos;
     delete finalObj.medidas;
-    delete finalObj.nombreNuevoFabric;
+    // delete finalObj["nombreNuevoFabric-0"];
+    // delete finalObj["weight-0"];
+    // delete finalObj["composicion-0-0"];
 
     return finalObj;
 };

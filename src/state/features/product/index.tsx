@@ -117,8 +117,11 @@ const productSlice = createSlice({
             );
             state[fabricCombos[selectedComboNumber]].splice(index, 1);
         },
-        clearCombos(state) {
+        clearTelasCombos(state) {
             state.telas = [];
+        },
+        clearAviosCombos(state) {
+            state.avios = [];
         },
         handleTrimCombos(
             state,
@@ -168,7 +171,8 @@ export const {
     setFilterData,
     handleProductData,
     addTela,
-    clearCombos,
+    clearTelasCombos,
+    clearAviosCombos,
     handleTrimCombos,
     changeTelasLength,
     changeAviosLength,

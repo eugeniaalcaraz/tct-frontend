@@ -34,7 +34,6 @@ const Attachments = () => {
         if (filesSelected.length > 0) {
             mmt ? setMMtPreview(filesSelected) : setFilesURLs(filesSelected);
         }
-        console.log({ attachments, filesSelected });
     };
 
     return (
