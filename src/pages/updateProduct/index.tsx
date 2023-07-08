@@ -1,17 +1,8 @@
-import {
-    Box,
-    Stack,
-    Table,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    TableBody,
-} from "@mui/material";
+import { Stack } from "@mui/material";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import { Form } from "@components/common";
-import { Container, Content, StyledTableRow } from "./UpdateProductStyles";
+import { Container, Content } from "./UpdateProductStyles";
 import { useForm } from "react-hook-form";
 import { GeneralDetails } from "./generalDetails";
 import { CostAndMargin } from "./costAndMargins";
