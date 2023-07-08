@@ -690,7 +690,7 @@ const Fabrics: FC<FabricProps> = ({
                     options={localization ?? []}
                     // useFormHook={false}
                     // selectedValue={finalComboObject.placement}
-                    name="localizacion"
+                    name={`placement-${fabricNumber}`}
                     id={`placement-${fabricNumber}`}
                     error={checkIfError(
                         `placement-${fabricNumber}`,
