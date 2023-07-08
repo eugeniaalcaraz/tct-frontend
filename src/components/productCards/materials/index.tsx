@@ -13,6 +13,7 @@ import { changeAviosLength, changeTelasLength } from "@/state/features/product";
 
 type MaterialsProps = {
     isShoe: boolean;
+    // setIsMaterialExisting:any
 };
 
 const Materials: FC<MaterialsProps> = ({ isShoe }) => {

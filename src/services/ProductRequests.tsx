@@ -173,14 +173,15 @@ const getListingPath = (name) => {
 const getBodyWithExitingQuality = (formData, idMerchant) => {
     const finalObj = {
         ...formData,
-        idDesigner: 1, //TODO: sacar estos datos desde el ui
+        idSampleStatus: 1,
+        idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
         idMerchant: Number(idMerchant),
         idExistingProduct: "0",
-        name: formData.nombre,
+        name: formData.nombreDelProducto,
         quantity: Number(formData.quantity),
         idModeling: 1,
         idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1,
-        measurmentTable: "blobtext", //TODO: sacar estos datos desde el ui,
+        measurmentTable: formData.medidas,
         idModelingStatus: 1,
         idStatusMeasurmentTable: 1,
         idShoeMaterial: 0,
@@ -191,7 +192,7 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
         idSupplier: Number(formData.idSupplier),
     };
 
-    delete finalObj.nombre;
+    delete finalObj.nombreDelProducto;
     delete finalObj.precioVenta;
     delete finalObj.cantidadDeAvios;
     delete finalObj.cantidadDeTelas;
@@ -199,6 +200,7 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
     delete finalObj["porcentaje-0"];
     delete finalObj["composicion-0"];
     delete finalObj.fotos;
+    delete finalObj.medidas;
     delete finalObj.nombreNuevoFabric;
     return finalObj;
 };
@@ -206,14 +208,15 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
 const getBody = (formData, idMerchant) => {
     const finalObj = {
         ...formData,
-        idDesigner: 1, //TODO: sacar estos datos desde el ui
+        idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
+        idSampleStatus: 1,
         idMerchant: Number(idMerchant),
         idExistingProduct: "0",
-        name: formData.nombre,
+        name: formData.nombreDelProducto,
         quantity: Number(formData.quantity),
         idModeling: 1,
         idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1
-        measurmentTable: "blobtext", //TODO: sacar estos datos desde el ui,
+        measurmentTable: formData.medidas,
         idModelingStatus: 1,
         idStatusMeasurmentTable: 1,
         idShoeMaterial: 0,
@@ -224,15 +227,15 @@ const getBody = (formData, idMerchant) => {
         idSupplier: Number(formData.idSupplier),
     };
 
-    delete finalObj.nombre;
+    delete finalObj.nombreDelProducto;
     delete finalObj.precioVenta;
     delete finalObj.cantidadDeAvios;
     delete finalObj.cantidadDeTelas;
     delete finalObj.peso;
     delete finalObj["porcentaje-0"];
     delete finalObj["composicion-0"];
-
     delete finalObj.fotos;
+    delete finalObj.medidas;
     delete finalObj.nombreNuevoFabric;
 
     return finalObj;

@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import {
     ControlledDropdown,
@@ -9,15 +9,24 @@ import { Button, Box } from "@mui/material";
 import { FabricContainer } from "../MaterialsStyles";
 
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
-import { handleTrimCombos } from "@/state/features/product";
+import {
+    handleTrimCombos,
+    removeReduxError,
+    setReduxErrors,
+} from "@/state/features/product";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import {
+    checkIfError,
+    checkErrorMessage,
+} from "@/pages/newProduct/aux/errorValidation";
+import { useFormContext } from "react-hook-form";
 type TrimsProps = {
     trimNumber: number;
 };
 
 const Trims: FC<TrimsProps> = ({ trimNumber }) => {
-    const { trims, avios, colors, errors } = useAppSelector(
+    const { trims, avios, colors, reduxErrors } = useAppSelector(
         (state) => state.product
     );
     const [open, setOpen] = useState<boolean>(false);
@@ -26,6 +35,9 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
     const [quantity, setQuantity] = useState("");
     const [idAvio, setIdAvio] = useState("");
     const dispatch = useAppDispatch();
+    const {
+        formState: { isSubmitting },
+    } = useFormContext();
 
     const openOptions = () => {
         setOpen((prevState) => !prevState);
@@ -49,59 +61,89 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                 },
             })
         );
+        dispatch(removeReduxError(`comboAvio-${trimNumber}`));
         setTimeout(() => {
             setOpen(false);
         }, 500);
     };
 
-    const checkIfError = (name) => {
-        if (errors) {
-            return Object.keys(errors).includes(name);
-        }
-        return false;
-    };
+    useEffect(() => {
+        if (isSubmitting) {
+            if (idAvio === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `tipoAvio-${trimNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
 
-    const checkErrorMessage = (name) => {
-        if (name.startsWith("composicion", 0)) {
-            name = "composicion";
-        }
-        if (name.startsWith("porcentaje", 0)) {
-            name = "porcentaje";
-        }
-        if (errors) {
-            const errorMessage =
-                Object.entries(errors).filter((error) => {
-                    if (error[0] === name) {
-                        return error[1];
-                    }
-                }) ?? "";
-
-            if (errorMessage && errorMessage.length > 0) {
-                return errorMessage[0][1].message;
+            if (quantity === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `cantidadAvio-${trimNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (selectedIdColor === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `comboAvio-${trimNumber}`,
+                        msg: "Combo Requerido",
+                    })
+                );
             }
         }
-        return "";
-    };
+    }, [isSubmitting]);
 
     return (
-        <FabricContainer className={checkIfError("cantidad") ? "error" : ""}>
+        <FabricContainer
+            className={
+                checkIfError(`tipoAvio-${trimNumber}`, reduxErrors)
+                    ? "error"
+                    : ""
+            }
+        >
             <h3>Avíos</h3>
             <ControlledDropdown
                 label="Tipo"
                 options={trims ?? []}
                 name={`tipoAvio${trimNumber}`}
+                error={checkIfError(`tipoAvio-${trimNumber}`, reduxErrors)}
+                helperText={checkErrorMessage(
+                    `tipoAvio-${trimNumber}`,
+                    reduxErrors
+                )}
                 useFormHook={false}
-                externalOnChange={(e) => setIdAvio(e.value)}
+                externalOnChange={(e) => {
+                    setIdAvio(e.value);
+                    if (e.value !== "") {
+                        dispatch(removeReduxError(`tipoAvio-${trimNumber}`));
+                    }
+                }}
                 selectedValue={idAvio}
             />
             <ControlledInput
                 label="Cantidad"
-                name={`cantidad${trimNumber}`}
-                error={checkIfError("cantidad")}
-                helperText={checkErrorMessage("cantidad")}
+                name={`cantidadAvio-${trimNumber}`}
+                error={checkIfError(`cantidadAvio-${trimNumber}`, reduxErrors)}
+                helperText={checkErrorMessage(
+                    `cantidadAvio-${trimNumber}`,
+                    reduxErrors
+                )}
                 useFormhook={false}
-                externalOnChange={(e) => setQuantity(e.target.value)}
+                externalOnChange={(e) => {
+                    setQuantity(e.target.value);
+                }}
                 externalValue={quantity}
+                onBlur={(e) => {
+                    if (e.target.value !== "") {
+                        dispatch(
+                            removeReduxError(`cantidadAvio-${trimNumber}`)
+                        );
+                    }
+                }}
             />
 
             <Button
@@ -162,6 +204,11 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                         ></Box>
                     </Box>
                 </Box>
+            )}
+            {checkIfError(`comboAvio-${trimNumber}`, reduxErrors) && (
+                <span className="combo-error">
+                    Es necesario ingresar al menos 1 combo
+                </span>
             )}
         </FabricContainer>
     );

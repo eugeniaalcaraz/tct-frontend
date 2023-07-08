@@ -1,5 +1,10 @@
 import React, { FC, useEffect, useMemo, useState } from "react";
-import { addTela, addTelasArray } from "@/state/features/product";
+import {
+    addTela,
+    addTelasArray,
+    removeReduxError,
+    setReduxErrors,
+} from "@/state/features/product";
 import { Dayjs } from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { OptionsType } from "@/types";
@@ -8,6 +13,11 @@ import {
     ControlledDropdown,
     ControlledInput,
 } from "@components/common";
+import { useFormContext } from "react-hook-form";
+import {
+    checkErrorMessage,
+    checkIfError,
+} from "@/pages/newProduct/aux/errorValidation";
 
 type ShipmentComboProps = {
     comboNumber: number;
@@ -18,9 +28,8 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
     comboNumber,
     isForAllCombos,
 }) => {
-    const { countries, supplier, typeOfshipment, telas } = useAppSelector(
-        (state) => state.product
-    );
+    const { countries, typeOfshipment, telas, errors, reduxErrors } =
+        useAppSelector((state) => state.product);
     const [selectedDestinationCountry, setselectedDestinationCountry] =
         useState("");
     const [selectedShipmentType, setSelectedShipmentType] = useState("");
@@ -28,11 +37,15 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
     const [warehouseEntryDate, setWarehouseEntryDate] = useState("");
     const [entryDate, setEntryDate] = useState("");
     const [quantity, setQuantity] = useState("");
+    const [reduxQuantity, setreduxQuantity] = useState("");
     const telasUpdatableObject = useMemo(
         () => ({ ...telas[comboNumber - 1] }),
         [telas]
     );
     const dispatch = useAppDispatch();
+    const {
+        formState: { isSubmitting, isValidating },
+    } = useFormContext();
 
     useEffect(() => {
         if (isForAllCombos) {
@@ -59,8 +72,8 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                         ? shippingDate
                         : telasUpdatableObject.shippingDate,
                 quantity:
-                    quantity !== ""
-                        ? Number(quantity)
+                    reduxQuantity !== ""
+                        ? Number(reduxQuantity)
                         : telasUpdatableObject.quantity,
             }));
 
@@ -79,6 +92,10 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                             selectedShipmentType !== ""
                                 ? Number(selectedShipmentType)
                                 : 0,
+                        quantity:
+                            reduxQuantity !== ""
+                                ? Number(reduxQuantity)
+                                : telasUpdatableObject.quantity,
                         warehouseEntryDate,
                         entryDate,
                         shippingDate,
@@ -92,8 +109,45 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
         warehouseEntryDate,
         entryDate,
         shippingDate,
-        quantity,
+        reduxQuantity,
     ]);
+
+    useEffect(() => {
+        if (isSubmitting) {
+            if (selectedDestinationCountry === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `destino-${comboNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (quantity === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `cantidadComboEmbarque-${comboNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (/^[0-9.,\b]+$/.test(quantity)) {
+                dispatch(
+                    setReduxErrors({
+                        idError: `cantidadComboEmbarque-${comboNumber}`,
+                        msg: "Solo numeros",
+                    })
+                );
+            }
+            if (selectedShipmentType === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `embarqueComboTipo-${comboNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+        }
+    }, [isSubmitting]);
 
     return (
         <>
@@ -102,9 +156,20 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
 
             <ControlledDropdown
                 label="Destino"
+                id={`destino-${comboNumber}`}
                 useFormHook={false}
-                externalOnChange={(e) => setselectedDestinationCountry(e.value)}
+                externalOnChange={(e) => {
+                    setselectedDestinationCountry(e.value);
+                    if (e.value !== "") {
+                        dispatch(removeReduxError(`destino-${comboNumber}`));
+                    }
+                }}
                 selectedValue={selectedDestinationCountry}
+                error={checkIfError(`destino-${comboNumber}`, reduxErrors)}
+                helperText={checkErrorMessage(
+                    `destino-${comboNumber}`,
+                    reduxErrors
+                )}
                 options={
                     countries?.map(
                         ({ Id, Name }): OptionsType => ({
@@ -113,14 +178,35 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                         })
                     ) ?? []
                 }
-                name={`embarque-${comboNumber}`}
+                name={`destino-${comboNumber}`}
             />
             <ControlledInput
                 useFormhook={false}
                 label="Cantidad"
-                name={`cantidadComboEmbarque${comboNumber}`}
-                externalOnChange={(e) => setQuantity(e.target.value)}
+                name={`cantidadComboEmbarque-${comboNumber}`}
+                externalOnChange={(e) => {
+                    setQuantity(e.target.value);
+                }}
+                onBlur={(e) => {
+                    if (e.target.value !== "") {
+                        setreduxQuantity(e.target.value);
+                        dispatch(
+                            removeReduxError(
+                                `cantidadComboEmbarque-${comboNumber}`
+                            )
+                        );
+                    }
+                }}
                 externalValue={quantity}
+                id={"cantidadComboEmbarque"}
+                error={checkIfError(
+                    `cantidadComboEmbarque-${comboNumber}`,
+                    reduxErrors
+                )}
+                helperText={checkErrorMessage(
+                    `cantidadComboEmbarque-${comboNumber}`,
+                    reduxErrors
+                )}
             />
             <ControlledDatePicker
                 name={`fechaEmbarque${comboNumber}`}
@@ -132,9 +218,25 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
             />
             <ControlledDropdown
                 label="Embarque"
+                id={"embarque"}
                 options={typeOfshipment ?? []}
-                name={`embarqueComboTipo${comboNumber}`}
-                externalOnChange={(e) => setSelectedShipmentType(e.value)}
+                name={`embarqueComboTipo-${comboNumber}`}
+                externalOnChange={(e) => {
+                    setSelectedShipmentType(e.value);
+                    if (e.value !== "") {
+                        dispatch(
+                            removeReduxError(`embarqueComboTipo-${comboNumber}`)
+                        );
+                    }
+                }}
+                error={checkIfError(
+                    `embarqueComboTipo-${comboNumber}`,
+                    reduxErrors
+                )}
+                helperText={checkErrorMessage(
+                    `embarqueComboTipo-${comboNumber}`,
+                    reduxErrors
+                )}
                 selectedValue={selectedShipmentType}
                 useFormHook={false}
             />

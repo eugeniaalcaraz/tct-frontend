@@ -8,8 +8,7 @@ import { ControlledCheckbox } from "@components/common/form/controlledCheckbox";
 import dayjs from "dayjs";
 import _ from "lodash";
 import { productReducer, initialProductState } from "./hooks/hooks";
-import { SyledTextField } from "@components/common/textInput/StyledTextField";
-import { Description } from "@mui/icons-material";
+
 import { useMutation } from "@tanstack/react-query";
 import {
     getMerchantIndustryDropdownValue,
@@ -290,7 +289,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
             <div>
                 <ControlledInput
                     label="Nombre del producto *"
-                    name="nombre"
+                    name="nombreDelProducto"
                     error={checkIfError("nombreDelProducto")}
                     helperText={checkErrorMessage("nombreDelProducto")}
                 />

@@ -34,6 +34,7 @@ const Attachments = () => {
         if (filesSelected.length > 0) {
             mmt ? setMMtPreview(filesSelected) : setFilesURLs(filesSelected);
         }
+        console.log({ attachments, filesSelected });
     };
 
     return (
@@ -45,6 +46,7 @@ const Attachments = () => {
                     hidden
                     {...imagesField}
                     onChange={handlePreview}
+                    accept="image/*"
                     multiple
                 />
             </Button>
@@ -55,6 +57,7 @@ const Attachments = () => {
                     hidden
                     {...measurementsField}
                     onChange={(e) => handlePreview(e, true)}
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                     multiple
                 />
             </Button>

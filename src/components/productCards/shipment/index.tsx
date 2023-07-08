@@ -1,22 +1,17 @@
 import React, { useState } from "react";
 import { v4 as uuid } from "uuid";
-import {
-    ControlledDatePicker,
-    ControlledDropdown,
-    ControlledInput,
-} from "@components/common";
-import { Button, Box, Tooltip } from "@mui/material";
+import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ShipmentStyles";
 import { useAppSelector } from "@/state/app/hooks";
 import { OptionsType } from "@/types";
-import { ControlledCheckbox } from "@components/common/form/controlledCheckbox";
 import { ShipmentCombo } from "./shipmentCombo";
 
 const Shipment = () => {
-    const { countries, supplier, typeOfshipment, errors, telas } =
-        useAppSelector((state) => state.product);
+    const { countries, supplier, errors, telas } = useAppSelector(
+        (state) => state.product
+    );
 
-    const [allCombosShareShipment, setAllCombosShareShipment] = useState(true);
+    const [allCombosShareShipment] = useState(true);
 
     const checkIfError = (name) => {
         if (errors) {
@@ -54,6 +49,8 @@ const Shipment = () => {
                     ) ?? []
                 }
                 name="idCountry"
+                error={checkIfError("idCountry")}
+                helperText={checkErrorMessage("idCountry")}
             />
             <ControlledDropdown
                 label="Proveedor"
@@ -66,18 +63,20 @@ const Shipment = () => {
                     ) ?? []
                 }
                 name="idSupplier"
+                error={checkIfError("idSupplier")}
+                helperText={checkErrorMessage("idSupplier")}
             />
             <ControlledInput
                 label="Cantidad Total"
                 name="quantity"
-                error={checkIfError("cantidadEmbarque")}
-                helperText={checkErrorMessage("cantidadEmbarque")}
+                error={checkIfError("quantity")}
+                helperText={checkErrorMessage("quantity")}
             />
             <ControlledInput
-                label="Codigo de fabirca"
+                label="Codigo de fabrica"
                 name="fabricCode"
-                error={checkIfError("cantidadEmbarque")}
-                helperText={checkErrorMessage("cantidadEmbarque")}
+                error={checkIfError("fabricCode")}
+                helperText={checkErrorMessage("fabricCode")}
             />
             <div className="checkboxContainer">
                 {/* TODO: queda para implementar despues<ControlledCheckbox
