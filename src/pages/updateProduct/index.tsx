@@ -33,9 +33,14 @@ import { setData } from "@/state/features/updatedProduct";
 export const UpdateProduct = () => {
     const methods = useForm();
     const { updateProduct } = useAppSelector((state) => state.product);
-    const { sampleType, idSampleStatus, sampleDate } = useAppSelector(
-        (state) => state.updatedProduct
-    );
+    const {
+        sampleType,
+        idSampleStatus,
+        sampleDate,
+        idMerchantBrand,
+        idSeason,
+        year,
+    } = useAppSelector((state) => state.updatedProduct);
     const { mutateAsync, isLoading } = useMutation(getProductById);
 
     const { id } = useParams();
@@ -143,9 +148,9 @@ export const UpdateProduct = () => {
                         isMain: 1,
                     },
                 ],
-                entryDate: fabrics[0].entryDate,
-                shippingDate: fabrics[0].shippinDate,
-                warehouseEntryDate: fabrics[0].warehouseEntryDate,
+                entryDate: fabrics && fabrics[0].entryDate,
+                shippingDate: fabrics && fabrics[0].shippinDate,
+                warehouseEntryDate: fabrics && fabrics[0].warehouseEntryDate,
             })
         );
     };
@@ -170,7 +175,12 @@ export const UpdateProduct = () => {
                             alignItems: "center",
                         }}
                     >
-                        <h1>01S2404001 - {sampleType}</h1>
+                        <h1>
+                            {idMerchantBrand}
+                            {idSeason}
+                            {year}
+                            {id} - {sampleType}
+                        </h1>
                         <StateOptions
                             status={getStatus(idSampleStatus)}
                             id={{ index: 0, item: "sample" }}

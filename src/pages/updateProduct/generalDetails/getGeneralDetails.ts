@@ -39,7 +39,10 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
                 name: "warehouseEntryDate",
                 date:true
             },
-            { label: "", data: "", name:"", },
+            { label: "Fecha tienda",
+            data: dayjs(data['entryDate']).format("YYYY-MM-DD"),
+            name: "entryDate",
+            date:true },
         ],
         [{ label: "", data: "", name:"" }],
         [

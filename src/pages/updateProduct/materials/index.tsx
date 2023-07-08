@@ -3,43 +3,55 @@ import {
     Table,
     TableCell,
     TableBody,
-    TextField,
     Stack,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { StyledTableRow } from "../UpdateProductStyles";
 import { ComboItem } from "../comboItem";
-import { StatusLabel } from "../stateLabel";
 import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
-import { getNameById, getStatus } from "@/utils";
+import { getFabricById, getNameById, getStatus } from "@/utils";
 import dayjs from "dayjs";
+import { UpdateInput, UpdateDropdown } from "../updateDropdowns";
 
 export const Materials = () => {
-    const { edition, updateProduct, localization, fabrics, colors } =
-        useAppSelector((state) => state.product);
+    const { edition, localization, fabrics, colors } = useAppSelector(
+        (state) => state.product
+    );
 
-    const fabricInfo = updateProduct?.fabrics;
+    const { telas } = useAppSelector((state) => state.updatedProduct);
 
     const rowStructure = [
         [
-            { label: "Calidad", data: "description" },
+            {
+                label: "Calidad",
+                data: "idFabric",
+                name: "idFabric",
+                select: true,
+            },
             {
                 label: "Composición",
                 data: "composition",
+                name: "composition",
+                select: false,
             },
         ],
         [
-            { label: "Peso", data: "weight" },
-            { label: "Consumo", data: "consumption" },
+            { label: "Peso", data: "weight", name: "weight", select: false },
+            {
+                label: "Consumo",
+                data: "consumption",
+                name: "consumption",
+                select: false,
+            },
         ],
     ];
 
     return (
         <section>
             <h3>MATERIALES</h3>
-            {fabricInfo?.map((fabric, i) => (
+            {telas?.map((fabric, i) => (
                 <div key={uuid()} style={{ margin: "40px 0" }}>
                     <div>
                         <div>
@@ -66,38 +78,52 @@ export const Materials = () => {
                             <TableBody>
                                 {rowStructure?.map((row) => (
                                     <StyledTableRow key={uuid()}>
-                                        {row.map(({ label, data }) => (
-                                            <TableCell key={uuid()}>
-                                                {label}
-                                                {label !== "" && ": "}
-                                                {edition && label !== "" ? (
-                                                    <TextField
-                                                        id="outlined-read-only-input"
-                                                        defaultValue={
-                                                            label === "Calidad"
-                                                                ? getNameById(
-                                                                      fabric[
-                                                                          data
-                                                                      ],
-                                                                      fabrics
-                                                                  )
-                                                                : String(
-                                                                      fabric[
-                                                                          data
-                                                                      ]
-                                                                  )
-                                                        }
-                                                        variant="standard"
-                                                        size="small"
-                                                        sx={{
-                                                            width: "calc(100% - 15rem)",
-                                                        }}
-                                                    />
-                                                ) : (
-                                                    <>{String(fabric[data])}</>
-                                                )}
-                                            </TableCell>
-                                        ))}
+                                        {row.map(
+                                            ({ label, data, name, select }) => (
+                                                <TableCell key={uuid()}>
+                                                    {label}
+                                                    {label !== "" && ": "}
+                                                    {edition &&
+                                                    label !== "" &&
+                                                    name !== "composition" ? (
+                                                        select ? (
+                                                            <UpdateDropdown
+                                                                value={
+                                                                    fabric[name]
+                                                                }
+                                                                options={
+                                                                    fabrics?.map(
+                                                                        ({
+                                                                            IdFabric,
+                                                                            Description,
+                                                                        }) => ({
+                                                                            Id: String(
+                                                                                IdFabric
+                                                                            ),
+                                                                            Description,
+                                                                        })
+                                                                    ) ?? []
+                                                                }
+                                                                name={name}
+                                                            />
+                                                        ) : (
+                                                            <UpdateInput
+                                                                value={
+                                                                    fabric[data]
+                                                                }
+                                                                name={name}
+                                                            />
+                                                        )
+                                                    ) : (
+                                                        <>
+                                                            {String(
+                                                                fabric[data]
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </TableCell>
+                                            )
+                                        )}
                                     </StyledTableRow>
                                 ))}
                             </TableBody>

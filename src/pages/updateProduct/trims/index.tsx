@@ -12,26 +12,29 @@ import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
 import { getNameById, getStatus } from "@/utils";
-import dayjs from "dayjs";
+import { UpdateDropdown, UpdateInput } from "../updateDropdowns";
 
 export const Trims = () => {
-    const { edition, updateProduct, trims, colors } = useAppSelector(
-        (state) => state.product
-    );
+    const { edition, trims, colors } = useAppSelector((state) => state.product);
 
-    const trimsCombo = updateProduct?.avios;
+    const { avios } = useAppSelector((state) => state.updatedProduct);
 
     const rowStructure = [
         [
-            { label: "Tipo", data: "" },
-            { label: "Cantidad", data: "quantity" },
+            { label: "Tipo", data: "idAvio", name: "idAvio", select: true },
+            {
+                label: "Cantidad",
+                data: "quantity",
+                name: "quantity",
+                select: false,
+            },
         ],
     ];
 
     return (
         <section>
             <h3 style={{ marginBottom: "1.5rem" }}>AVÍOS</h3>
-            {trimsCombo?.map((avio, i) => (
+            {avios?.map((avio, i) => (
                 <>
                     <StateOptions
                         status={getStatus(avio?.idStatus)}
@@ -42,32 +45,34 @@ export const Trims = () => {
                         <Table>
                             {rowStructure.map((row) => (
                                 <StyledTableRow key={uuid()}>
-                                    {row.map(({ label, data }) => (
-                                        <TableCell key={uuid()}>
-                                            {label}
-                                            {label !== "" && ": "}
-                                            {edition && label !== "" ? (
-                                                <TextField
-                                                    id="outlined-read-only-input"
-                                                    defaultValue={
-                                                        label === "Tipo"
-                                                            ? getNameById(
-                                                                  avio?.idAvio,
-                                                                  trims
-                                                              )
-                                                            : avio[data]
-                                                    }
-                                                    variant="standard"
-                                                    size="small"
-                                                    sx={{
-                                                        width: "calc(100% - 15rem)",
-                                                    }}
-                                                />
-                                            ) : (
-                                                <>{avio[data]}</>
-                                            )}
-                                        </TableCell>
-                                    ))}
+                                    {row.map(
+                                        ({ label, data, select, name }) => (
+                                            <TableCell key={uuid()}>
+                                                {label}
+                                                {label !== "" && ": "}
+                                                {edition && label !== "" ? (
+                                                    select ? (
+                                                        <UpdateDropdown
+                                                            value={avio[name]}
+                                                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                            // @ts-ignore
+                                                            options={
+                                                                trims ?? []
+                                                            }
+                                                            name={name}
+                                                        />
+                                                    ) : (
+                                                        <UpdateInput
+                                                            value={avio[data]}
+                                                            name={name}
+                                                        />
+                                                    )
+                                                ) : (
+                                                    <>{avio[data]}</>
+                                                )}
+                                            </TableCell>
+                                        )
+                                    )}
                                 </StyledTableRow>
                             ))}
                         </Table>
