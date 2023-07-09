@@ -28,21 +28,11 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { ScreenLoader } from "@components/common";
 import dayjs from "dayjs";
+import { StatusLabel } from "@/pages/updateProduct/stateLabel";
 
 const Row = (props: { row }) => {
     const { row } = props;
-    const {
-        allSeasons,
-        supplier,
-        managementUnit,
-        tipology,
-        fabrics,
-        brands,
-        industries,
-        concepts,
-        lines,
-        bodyFit,
-    } = useAppSelector((state) => state.product);
+    const { allSeasons } = useAppSelector((state) => state.product);
     const [open, setOpen] = useState(false);
     const [photo, setPhoto] = useState(convertImage);
     const [approval, setApproval] = useState<Approvals[] | null>([]);
@@ -55,7 +45,6 @@ const Row = (props: { row }) => {
     const handleOpen = async (e) => {
         e.stopPropagation();
         if (!open) {
-            setApproval(await mutateAsync(row.idProduct));
             setOpen(true);
         } else {
             setOpen(false);
@@ -239,42 +228,78 @@ const Row = (props: { row }) => {
                                     <TableRow>
                                         <TableCell></TableCell>
                                         <TableCell>Estado</TableCell>
-                                        <TableCell align="right">
-                                            Fecha
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            Responsable
-                                        </TableCell>
+                                        <TableCell>Fecha</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {approval &&
-                                        approval.length > 0 &&
-                                        approval.map((approvalRow) => (
-                                            <Fragment key={uuid()}>
-                                                <TableRow key={uuid()}>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                    >
-                                                        {getApprovalName(
-                                                            approvalRow?.Tipo
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {approvalRow?.Estado}
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        {approvalRow?.Fecha}
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        {
-                                                            approvalRow?.Responsable
-                                                        }
-                                                    </TableCell>
-                                                </TableRow>
-                                            </Fragment>
-                                        ))}
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">
+                                            Muestra
+                                        </TableCell>
+                                        <TableCell>
+                                            <StatusLabel
+                                                status={row?.statusSample.toLowerCase()}
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            {row?.statusSampleDate
+                                                ? dayjs(
+                                                      row?.statusSampleDate
+                                                  ).format("YYYY-MM-DD")
+                                                : "-"}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">
+                                            Calidad
+                                        </TableCell>
+                                        <TableCell>
+                                            <StatusLabel
+                                                status={row?.statusFabric.toLowerCase()}
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            {row?.statusFabricDate
+                                                ? dayjs(
+                                                      row.statusFabricDate
+                                                  ).format("YYYY-MM-DD")
+                                                : "-"}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow key={uuid()}>
+                                        <TableCell component="th" scope="row">
+                                            Avios
+                                        </TableCell>
+                                        <TableCell>
+                                            <StatusLabel
+                                                status={row?.statusAvio.toLowerCase()}
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            {row?.statusAvioDate
+                                                ? dayjs(
+                                                      row.statusAvioDate
+                                                  ).format("YYYY-MM-DD")
+                                                : "-"}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">
+                                            Modelaje
+                                        </TableCell>
+                                        <TableCell>
+                                            <StatusLabel
+                                                status={row?.statusModeling.toLowerCase()}
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            {row?.statusModelingDate
+                                                ? dayjs(
+                                                      row.statusModelingDate
+                                                  ).format("YYYY-MM-DD")
+                                                : "-"}
+                                        </TableCell>
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </Box>
