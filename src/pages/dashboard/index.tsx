@@ -117,11 +117,12 @@ const Dashboard = () => {
         Number(temporada) !== 0 && getCardData(temporada);
     }, [temporada]);
 
-    useEffect(() => {
-        if (cardsError) {
-            navigate(urlFormat(Pages.ServerError));
-        }
-    }, [cardsError]);
+    // useEffect(() => {
+    //     if (cardsError) {
+    //         console.log("error", cardsError);
+    //         navigate(urlFormat(Pages.ServerError));
+    //     }
+    // }, [cardsError]);
 
     return (
         <>

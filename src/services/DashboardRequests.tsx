@@ -38,10 +38,12 @@ const getQuery = (card) => {
             return "getSeasonMargin";
         // case "muestrasEnviadas":
         //     return "getTopSixSentSamples";
-        // case "composicionPorColor":
-        //     return "getPiecesByColor";
+        case "composicionPorColor":
+            return "getPiecesByColor";
         case "resumenDeMaterialidades":
             return "getMaterialsSummary";
+        case "overall":
+            return "SKUandPieces";
         default:
             return -1;
     }

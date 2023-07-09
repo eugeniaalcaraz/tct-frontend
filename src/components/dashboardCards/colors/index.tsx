@@ -52,10 +52,11 @@ const Colors = () => {
     const { composicionPorColor } = useAppSelector((state) => state.dashboard);
 
     const data = composicionPorColor?.map(
-        ({ colorDescription, totalPieces }) => ({
-            name: colorDescription,
-            quantity: totalPieces,
-        })
+        ({ colorDescription, totalPieces }) =>
+            ({
+                name: colorDescription,
+                quantity: totalPieces,
+            } ?? [])
     );
 
     return (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -10,8 +10,10 @@ import {
 } from "@mui/material";
 import { v4 as uuid } from "uuid";
 import { OverallHeaders } from "@/types";
+import { useAppSelector } from "@/state/app/hooks";
 
 const Overall = () => {
+    const { overall } = useAppSelector((state) => state.dashboard);
     const headerValues = Object.entries(OverallHeaders);
 
     const headers = headerValues.map(([, value]) => value);
@@ -32,6 +34,10 @@ const Overall = () => {
         createData("Cupcake", 305, 3.7, 67),
         createData("Gingerbread", 356, 16.0, 49),
     ];
+
+    useEffect(() => {
+        console.log(overall);
+    }, [overall]);
 
     return (
         <TableContainer>
