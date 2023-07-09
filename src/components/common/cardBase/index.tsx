@@ -1,7 +1,6 @@
 import React, { FC, ReactNode } from "react";
-import { Typography, Tooltip } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Container, HeaderContainer } from "./CardBaseStyles";
-import { useIconsContext } from "@components/hooks";
 
 type CardProps = {
     header: string;
@@ -9,7 +8,6 @@ type CardProps = {
 };
 
 const CardBase: FC<CardProps> = ({ header, content }) => {
-    const { icons } = useIconsContext();
     return (
         <Container elevation={2} sx={{ height: "inherit" }}>
             <HeaderContainer>

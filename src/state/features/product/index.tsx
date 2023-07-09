@@ -14,8 +14,7 @@ import {
     UpdateProduct,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fabricCombos, trimsCombos } from "./aux/auxFuncion";
-import { SortingConfiguration } from "aws-sdk/clients/kendra";
+import { fabricCombos } from "./aux/auxFuncion";
 
 // tipo viejo de combos
 // fabric: string;
