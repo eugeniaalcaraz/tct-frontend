@@ -100,7 +100,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
             },
             {
                 label: "unidad de gestion",
-                name: "idDepartment",
+                name: "idManagmentUnit",
                 options: managementUnit ?? [],
             },
             {
@@ -197,7 +197,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                 reduxDispatch(changeTelasLength(1));
             }
         }
-        if (e.name === "idDepartment") {
+        if (e.name === "idManagmentUnit") {
             dispatch({ type: "setSelectedManagementUnit", payload: e.value });
         }
         if (e.name === "idIndustry") {
