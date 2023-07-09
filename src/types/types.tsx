@@ -343,6 +343,8 @@ export type Fabrics = {
         sizeCurve: number[];
     }[];
     composition: [];
+    description: string;
+    weight: string;
 };
 
 export type PendingApprovals = {
@@ -476,4 +478,22 @@ export type UpdatedProductData = {
             isMain: number;
         }
     ];
+};
+
+export type OverallType = {
+    idIndustry: number;
+    industryDescription: string;
+    quantity: number;
+    cost: number;
+    comboColorCount: number;
+    comboPrintCount: number;
+    tipologies: OverallTipologies[];
+};
+
+export type OverallTipologies = {
+    Code: string;
+    Description: string;
+    Id: number;
+    IdIndustry: number;
+    Weight: string;
 };

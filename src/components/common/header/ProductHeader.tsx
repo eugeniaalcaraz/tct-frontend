@@ -4,11 +4,24 @@ import { FilterButton } from "./HeaderStyles";
 import { useIconsContext } from "@components/hooks";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { setEdition } from "@/state/features/product";
+import { Loader } from "../loader";
 
 const ProductHeader = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const { edition } = useAppSelector((state) => state.product);
     const { icons } = useIconsContext();
     const dispatch = useAppDispatch();
+
+    const handleClick = async () => {
+        setIsLoading(true);
+        if (!edition) {
+            dispatch(setEdition(true));
+        } else {
+            //console.log(await UpdateProduct());
+            dispatch(setEdition(false));
+        }
+        setIsLoading(false);
+    };
 
     return (
         <NewProductContainer>
@@ -17,7 +30,6 @@ const ProductHeader = () => {
                 type={"button"}
                 color="primary"
                 style={{ minWidth: "fit-content" }}
-                //TODO onClick={() => !editMode && setEditMode(true)}
             >
                 {icons["download"]}
             </FilterButton>
@@ -27,9 +39,9 @@ const ProductHeader = () => {
                 type={edition ? "submit" : "button"}
                 color="primary"
                 form="product-form"
-                onClick={() => dispatch(setEdition(!edition))}
+                onClick={handleClick}
             >
-                {edition ? "Guardar" : "Editar"}
+                {isLoading ? <Loader /> : edition ? "Guardar" : "Editar"}
             </FilterButton>
         </NewProductContainer>
     );

@@ -76,9 +76,9 @@ export const UpdateProduct = () => {
                 telas: fabrics?.map((fabric) => ({
                     idFabric: fabric?.idFabric,
                     idStatus: fabric?.idStatus,
-                    description: "", //fabric?.description,
+                    description: fabric?.description,
                     consumption: fabric?.consumption,
-                    weight: "", //fabric?.weight,
+                    weight: fabric?.weight,
                     placement: fabric?.idPlacement,
                     composition: [
                         {

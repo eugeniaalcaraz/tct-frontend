@@ -3,6 +3,7 @@ import {
     ProductionStatusType,
     SkuType,
     PendingApprovals,
+    OverallType,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -26,7 +27,7 @@ interface dashboardState {
         ProductNumber: number;
     }[];
     muestrasEnviadas: { name: string }[];
-    overall: [];
+    overall: OverallType[];
     resumenDeMaterialidades: {
         Description: string;
         Weight: string;

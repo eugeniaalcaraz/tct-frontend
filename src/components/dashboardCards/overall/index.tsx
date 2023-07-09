@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -16,24 +16,22 @@ const Overall = () => {
     const { overall } = useAppSelector((state) => state.dashboard);
     const headerValues = Object.entries(OverallHeaders);
 
+    const initialValue = 0;
+    const totalCost = overall?.reduce(
+        (accumulator, { cost }) => accumulator + Number(cost),
+        initialValue
+    );
+    const totalPcs = overall?.reduce(
+        (accumulator, { quantity }) => accumulator + Number(quantity),
+        initialValue
+    );
+    const totalSKUS = overall?.reduce(
+        (accumulator, { comboColorCount, comboPrintCount }) =>
+            accumulator + Number(comboColorCount) + Number(comboPrintCount),
+        initialValue
+    );
+
     const headers = headerValues.map(([, value]) => value);
-
-    function createData(
-        name: string,
-        calories: number,
-        fat: number,
-        carbs: number
-    ) {
-        return { name, calories, fat, carbs };
-    }
-
-    const rows = [
-        createData("Frozen yoghurt", 159, 6.0, 24),
-        createData("Ice cream sandwich", 237, 9.0, 37),
-        createData("Eclair", 262, 16.0, 24),
-        createData("Cupcake", 305, 3.7, 67),
-        createData("Gingerbread", 356, 16.0, 49),
-    ];
 
     useEffect(() => {
         console.log(overall);
@@ -54,98 +52,82 @@ const Overall = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <TableRow
-                            key={uuid()}
-                            sx={{
-                                "& td, & th": {
-                                    border: 0,
-                                },
-                                "&:first-of-type td, &:first-of-type th": {
-                                    fontWeight: 600,
-                                },
-                            }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row.name}
-                            </TableCell>
-                            <TableCell>{row.calories}</TableCell>
-                            <TableCell>{row.fat}</TableCell>
-                            <TableCell>{row.carbs}</TableCell>
-                        </TableRow>
-                    ))}
-                    <TableRow sx={{ height: "2rem" }} />
-                    {rows.map((row) => (
-                        <TableRow
-                            key={uuid()}
-                            sx={{
-                                "& td, & th": {
-                                    border: 0,
-                                },
-                                "&:first-of-type td, &:first-of-type th": {
-                                    fontWeight: 600,
-                                },
-                            }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row.name}
-                            </TableCell>
-                            <TableCell>{row.calories}</TableCell>
-                            <TableCell>{row.fat}</TableCell>
-                            <TableCell>{row.carbs}</TableCell>
-                        </TableRow>
-                    ))}
-                    <TableRow sx={{ height: "2rem" }} />
-                    {rows.map((row) => (
-                        <TableRow
-                            key={uuid()}
-                            sx={{
-                                "& td, & th": {
-                                    border: 0,
-                                },
-                                "&:first-of-type td, &:first-of-type th": {
-                                    fontWeight: 600,
-                                },
-                            }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row.name}
-                            </TableCell>
-                            <TableCell>{row.calories}</TableCell>
-                            <TableCell>{row.fat}</TableCell>
-                            <TableCell>{row.carbs}</TableCell>
-                        </TableRow>
-                    ))}
-                    <TableRow sx={{ height: "2rem" }} />
-                    {rows.map((row) => (
-                        <TableRow
-                            key={uuid()}
-                            sx={{
-                                "& td, & th": {
-                                    border: 0,
-                                },
-                                "&:first-of-type td, &:first-of-type th": {
-                                    fontWeight: 600,
-                                },
-                            }}
-                        >
-                            <TableCell component="th" scope="row">
-                                {row.name}
-                            </TableCell>
-                            <TableCell>{row.calories}</TableCell>
-                            <TableCell>{row.fat}</TableCell>
-                            <TableCell>{row.carbs}</TableCell>
-                        </TableRow>
-                    ))}
+                    {overall?.map(
+                        ({
+                            industryDescription,
+                            quantity,
+                            cost,
+                            comboColorCount,
+                            comboPrintCount,
+                            tipologies,
+                        }) => (
+                            <Fragment key={uuid()}>
+                                <TableRow
+                                    sx={{
+                                        "& td, & th": {
+                                            border: 0,
+                                        },
+                                        "&:first-of-type td, &:first-of-type th":
+                                            {
+                                                fontWeight: 600,
+                                            },
+                                    }}
+                                >
+                                    <TableCell component="th" scope="row">
+                                        {industryDescription}
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">
+                                        $ {cost}
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {quantity}
+                                    </TableCell>
+                                    <TableCell component="th" scope="row">
+                                        {Number(comboPrintCount) +
+                                            Number(comboColorCount)}
+                                    </TableCell>
+                                </TableRow>
+
+                                {tipologies?.map(({ Description }) => (
+                                    <TableRow
+                                        key={uuid()}
+                                        sx={{
+                                            "& td, & th": {
+                                                border: 0,
+                                            },
+                                            "&:first-of-type td, &:first-of-type th":
+                                                {
+                                                    fontWeight: 600,
+                                                },
+                                        }}
+                                    >
+                                        <TableCell>{Description}</TableCell>
+                                        <TableCell>$ {cost}</TableCell>
+                                        <TableCell>{quantity}</TableCell>
+                                        <TableCell>
+                                            {Number(comboPrintCount) +
+                                                Number(comboColorCount)}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </Fragment>
+                        )
+                    )}
                 </TableBody>
             </Table>
-            <Typography
-                variant="body1"
-                sx={{ fontSize: "1.2rem", fontWeight: 600, margin: "1.5rem" }}
-            >
-                Total: {"183"} SKU - {"10.140"} piezas - ${"16.000.000"} costo
-                de mercadería
-            </Typography>
+            {totalSKUS && totalPcs && totalCost && (
+                <Typography
+                    variant="body1"
+                    sx={{
+                        fontSize: "1.2rem",
+                        fontWeight: 600,
+                        margin: "1.5rem",
+                    }}
+                >
+                    Total: {totalSKUS} SKU - {totalPcs} piezas - ${totalCost}{" "}
+                    costo de mercadería
+                </Typography>
+            )}
         </TableContainer>
     );
 };
