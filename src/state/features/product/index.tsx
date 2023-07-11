@@ -23,6 +23,7 @@ import { SortingConfiguration } from "aws-sdk/clients/kendra";
 //         // uuid: string;
 
 export interface productState {
+    mutationSuccess: boolean;
     errors: unknown;
     reduxErrors: object;
     specialSizeCurve: boolean;
@@ -54,6 +55,7 @@ export interface productState {
 }
 
 const initialState: productState = {
+    mutationSuccess: false,
     errors: null,
     reduxErrors: {},
     specialSizeCurve: false,
@@ -163,6 +165,9 @@ const productSlice = createSlice({
         setSpecialSizeCurve(state, action: PayloadAction<boolean>) {
             state.specialSizeCurve = action.payload;
         },
+        setMutationState(state, action: PayloadAction<boolean>) {
+            state.mutationSuccess = action.payload;
+        },
     },
 });
 
@@ -185,5 +190,6 @@ export const {
     clearErrors,
     setReduxErrors,
     clearReduxErrors,
+    setMutationState,
 } = productSlice.actions;
 export default productSlice.reducer;

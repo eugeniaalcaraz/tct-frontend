@@ -23,7 +23,7 @@ const sizes = [
 
 const SizeCurve = () => {
     const [addSize, setAddSize] = useState<boolean>(false);
-    const { telas } = useAppSelector((state) => state.product);
+    const { telas, mutationSuccess } = useAppSelector((state) => state.product);
     const dispatch = useAppDispatch();
 
     const [selectedSizes, setSelectedSizes] = useState<OptionsType[]>([
@@ -128,6 +128,25 @@ const SizeCurve = () => {
 
         dispatch(addTelasArray(updatedTelasArray));
     }, [updatedSizeValues]);
+
+    useEffect(() => {
+        if (mutationSuccess) {
+            setUpdatedSizeValues([
+                { Id: "U", value: "" },
+                { Id: "XXS", value: "" },
+                { Id: "XS", value: "" },
+                { Id: "S", value: "" },
+                { Id: "M", value: "" },
+                { Id: "L", value: "" },
+                { Id: "XL", value: "" },
+                { Id: "XXL", value: "" },
+                { Id: "3XL", value: "" },
+                { Id: "4XL", value: "" },
+                { Id: "5XL", value: "" },
+                { Id: "6XL", value: "" },
+            ]);
+        }
+    }, [mutationSuccess]);
 
     return (
         <Container>
