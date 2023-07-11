@@ -99,7 +99,7 @@ export const Trims = () => {
                         sx={{
                             padding: "20px 0",
                             flexWrap: "wrap",
-                            alignItems: "center",
+                            alignItems: "end",
                         }}
                     >
                         {avio?.colors?.map((combo, index) => (
@@ -127,12 +127,14 @@ export const Trims = () => {
                         ))}
                         {edition && (
                             <Button
-                                variant="contained"
+                                variant="outlined"
                                 type="button"
-                                color="primary"
-                                sx={{ height: "fit-content" }}
+                                color="secondary"
+                                sx={{
+                                    height: "fit-content",
+                                }}
                             >
-                                + COMBO
+                                + COLOR
                             </Button>
                         )}
                     </Stack>

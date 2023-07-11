@@ -210,14 +210,28 @@ export const Materials = () => {
                                 )
                         )}
                         {edition && (
-                            <Button
-                                variant="contained"
-                                type="button"
-                                color="primary"
-                                sx={{ height: "fit-content" }}
-                            >
-                                + COMBO
-                            </Button>
+                            <>
+                                <Button
+                                    variant="outlined"
+                                    type="button"
+                                    color="secondary"
+                                    sx={{
+                                        height: "fit-content",
+                                    }}
+                                >
+                                    + COLOR
+                                </Button>
+                                <Button
+                                    variant="outlined"
+                                    type="button"
+                                    color="secondary"
+                                    sx={{
+                                        height: "fit-content",
+                                    }}
+                                >
+                                    + ESTAMPA
+                                </Button>
+                            </>
                         )}
                     </Stack>
                 </div>

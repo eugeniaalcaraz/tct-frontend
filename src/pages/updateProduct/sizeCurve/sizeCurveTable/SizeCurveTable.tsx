@@ -10,7 +10,7 @@ import {
     Typography,
 } from "@mui/material";
 import { v4 as uuid } from "uuid";
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { setData } from "@/state/features/updatedProduct";
 import { useIconsContext } from "@components/hooks";
@@ -56,7 +56,8 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
     );
     const summary = curve.reduce(
         (accumulator, currentValue) =>
-            accumulator + (quantityOfCombo / curveSumary) * currentValue,
+            accumulator +
+            Math.round((quantityOfCombo / curveSumary) * currentValue),
         initialValue
     );
 
@@ -144,9 +145,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                 {curve.map((size) =>
                     size > 0 ? (
                         <TableCell key={uuid()} align="center">
-                            {((quantityOfCombo / curveSumary) * size).toFixed(
-                                0
-                            )}
+                            {Math.round((quantityOfCombo / curveSumary) * size)}
                         </TableCell>
                     ) : (
                         <TableCell key={uuid()}></TableCell>
@@ -161,10 +160,6 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
         newCurve[position] = Number(e.target.value);
         dispatch(setData({ curve: newCurve }));
     };
-
-    useEffect(() => {
-        console.log(summary, quantityOfCombo, curveSumary);
-    }, [summary, quantityOfCombo, curveSumary]);
 
     return (
         <TableContainer sx={{ maxWidth: "70%" }}>
@@ -211,7 +206,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                                     title={
                                         <Typography variant="body2">{`La cantidad y la sumatoria de la curva no coinciden, sugerimos revisar.`}</Typography>
                                     }
-                                    placement="left"
+                                    placement="right"
                                     arrow
                                 >
                                     <div

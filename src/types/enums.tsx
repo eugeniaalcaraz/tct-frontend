@@ -26,6 +26,9 @@ export enum ProdStatusOptions {
 
 export enum ModalTypes {
     NewProductError = "NewProductError",
+    NewFabricColor = "NewFabricColor",
+    NewFabricPrint = "NewFabricPrint",
+    NewTrimColor = "NewTrimColor",
 }
 
 export enum ApprovalElements {
