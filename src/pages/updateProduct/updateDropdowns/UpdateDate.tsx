@@ -49,7 +49,7 @@ const UpdateDate: FC<DateProps> = ({ name, initialValue = null }) => {
                         {...params}
                         onClick={() => setOpenCalendar(true)}
                         size="small"
-                        variant="standard"
+                        sx={{ width: "15rem" }}
                     />
                 )}
             />

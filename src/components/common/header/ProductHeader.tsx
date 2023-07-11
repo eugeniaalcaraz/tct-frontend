@@ -5,10 +5,12 @@ import { useIconsContext } from "@components/hooks";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { setEdition } from "@/state/features/product";
 import { Loader } from "../loader";
+import { updateProduct } from "@/services/UpdateProduct";
 
 const ProductHeader = () => {
     const [isLoading, setIsLoading] = useState(false);
     const { edition } = useAppSelector((state) => state.product);
+    const updatedData = useAppSelector((state) => state.updatedProduct);
     const { icons } = useIconsContext();
     const dispatch = useAppDispatch();
 
@@ -17,7 +19,7 @@ const ProductHeader = () => {
         if (!edition) {
             dispatch(setEdition(true));
         } else {
-            //console.log(await UpdateProduct());
+            console.log(await updateProduct(updatedData));
             dispatch(setEdition(false));
         }
         setIsLoading(false);

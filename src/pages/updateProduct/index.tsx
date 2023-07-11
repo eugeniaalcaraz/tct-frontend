@@ -52,6 +52,7 @@ export const UpdateProduct = () => {
     const loadProductState = () => {
         dispatch(
             setData({
+                idProduct: id,
                 idSampleStatus: productInfo?.idSampleStatus,
                 sampleDate: dayjs(productInfo?.sampleDate).format("YYYY-MM-DD"),
                 idMerchantBrand: 1,

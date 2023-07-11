@@ -6,9 +6,10 @@ import { setData } from "@/state/features/updatedProduct";
 type UpdateProps = {
     name?: string;
     value: string | number;
+    width?: string;
 };
 
-const UpdateInput: FC<UpdateProps> = ({ name, value }) => {
+const UpdateInput: FC<UpdateProps> = ({ name, value, width = "15rem" }) => {
     const dispatch = useAppDispatch();
 
     const handleChange = (e, state) => {
@@ -17,12 +18,11 @@ const UpdateInput: FC<UpdateProps> = ({ name, value }) => {
 
     return (
         <TextField
-            onChange={(e) => handleChange(e, name)}
+            onBlur={(e) => handleChange(e, name)}
             defaultValue={value}
-            variant="standard"
             size="small"
             sx={{
-                width: "calc(100% - 15rem)",
+                width,
             }}
         />
     );

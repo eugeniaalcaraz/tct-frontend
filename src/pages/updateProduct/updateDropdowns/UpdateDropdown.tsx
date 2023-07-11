@@ -19,10 +19,9 @@ const UpdateDropdown: FC<UpdateProps> = ({ value, name, options }) => {
 
     return (
         <Select
-            variant="standard"
             size="small"
             sx={{
-                width: "calc(100% - 15rem)",
+                width: "15rem",
             }}
             value={value}
             onChange={(e) => handleChange(e, name)}

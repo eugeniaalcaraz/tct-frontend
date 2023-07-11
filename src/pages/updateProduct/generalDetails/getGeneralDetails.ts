@@ -60,9 +60,6 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
                 options: industries,
                 name: "idIndustry",
             },
-            { label: "", data: "", name:"" },
-        ],
-        [
             {
                 label: "Tipología",
                 data: getNameById(data['idTipology'], tipology),
@@ -70,8 +67,6 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
                 options: tipology,
                 name: "idTipology",
             },
-            { label: "Peso", data: data['weight'], name: "weight" },
-            { label: "", data: "", name:"" },
         ],
         [
             {
@@ -88,7 +83,8 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
                 options: lines,
                 name: "idLine",
             },
-            { label: "", data: "", name:"" },
+            { label: "Peso", data: data['weight'], name: "weight" },
+            
         ],
         [
             {

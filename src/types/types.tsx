@@ -382,6 +382,7 @@ export type Approvals = {
 };
 
 export type UpdatedProductData = {
+    idProduct: string;
     idSampleStatus: number;
     sampleDate: Date | string;
     idMerchantBrand: number;

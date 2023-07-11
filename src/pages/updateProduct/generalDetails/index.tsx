@@ -7,7 +7,6 @@ import {
     TableContainer,
     TableRow,
     TableBody,
-    TextField,
     Button,
 } from "@mui/material";
 import { v4 as uuid } from "uuid";
@@ -15,7 +14,12 @@ import { StyledTableRow } from "../UpdateProductStyles";
 import { useAppSelector } from "@/state/app/hooks";
 import { useIconsContext } from "@components/hooks";
 
-import { UpdateDropdown, UpdateInput, UpdateDate } from "../updateDropdowns";
+import {
+    UpdateDropdown,
+    UpdateInput,
+    UpdateDate,
+    UpdateRadio,
+} from "../updateDropdowns";
 import { getBottomRows, getGeneralDetails } from "./getGeneralDetails";
 
 export const GeneralDetails = () => {
@@ -57,7 +61,6 @@ export const GeneralDetails = () => {
                         backgroundColor: "#DAD9D9",
                         width: "350px",
                         maxWidth: "350px",
-                        //height: "330px",
                         borderRadius: "10px",
                         display: "flex",
                         justifyContent: "center",
@@ -90,9 +93,26 @@ export const GeneralDetails = () => {
                                             <StyledTableRow key={uuid()}>
                                                 {row.map((row) => (
                                                     <TableCell key={uuid()}>
-                                                        {row?.label}
-                                                        {row?.label !== "" &&
-                                                            ": "}
+                                                        {edition ? (
+                                                            <span
+                                                                style={{
+                                                                    display:
+                                                                        "inline-block",
+                                                                    margin: "0.6rem 0.6rem 0 0",
+                                                                }}
+                                                            >
+                                                                {row?.label}
+                                                                {row?.label !==
+                                                                    "" && ": "}
+                                                            </span>
+                                                        ) : (
+                                                            <>
+                                                                {row?.label}
+                                                                {row?.label !==
+                                                                    "" && ": "}
+                                                            </>
+                                                        )}
+
                                                         {edition &&
                                                         row?.label !== "" ? (
                                                             row?.date ? (
@@ -152,18 +172,38 @@ export const GeneralDetails = () => {
                 <TableContainer>
                     <Table>
                         <TableBody>
-                            {bottomRows.map(({ label, data }) => (
+                            {bottomRows.map(({ label, data, name }) => (
                                 <StyledTableRow key={uuid()}>
                                     <TableCell>
-                                        {label}
-                                        {": "}
                                         {edition ? (
-                                            <TextField
-                                                id="outlined-read-only-input"
-                                                defaultValue={data}
-                                                variant="standard"
-                                                size="small"
-                                            />
+                                            <span
+                                                style={{
+                                                    display: "inline-block",
+                                                    margin: "0.6rem 0.6rem 0 0",
+                                                }}
+                                            >
+                                                {label}
+                                                {label !== "" && ": "}
+                                            </span>
+                                        ) : (
+                                            <>
+                                                {label}
+                                                {label !== "" && ": "}
+                                            </>
+                                        )}
+                                        {edition ? (
+                                            name === "detail" ? (
+                                                <UpdateInput
+                                                    width="calc(100% - 10rem)"
+                                                    value={data}
+                                                    name={name}
+                                                />
+                                            ) : (
+                                                <UpdateRadio
+                                                    value={data}
+                                                    name={name}
+                                                />
+                                            )
                                         ) : (
                                             <>{data}</>
                                         )}

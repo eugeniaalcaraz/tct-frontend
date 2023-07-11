@@ -43,6 +43,7 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
         borderBottom: "0.5px solid",
         borderColor: theme.palette.secondary.main,
         backgroundColor: "#E8E8E8",
+        height: "6.4rem",
     },
 
     "& >  th > img": {

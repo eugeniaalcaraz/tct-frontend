@@ -56,9 +56,9 @@ const Shipments = () => {
     const loadHighlightedDays = () => {
         const upcomingShipments = embarques?.map(
             ({ ShippingDate, WarehouseDate, EntryDate }) => ({
-                shipment: dayjs(ShippingDate).date(),
-                wharehouse: dayjs(WarehouseDate).date(),
-                entry: dayjs(EntryDate).date(),
+                shipment: ShippingDate && dayjs(ShippingDate).date(),
+                wharehouse: WarehouseDate && dayjs(WarehouseDate).date(),
+                entry: EntryDate && dayjs(EntryDate).date(),
             })
         );
         setHighlightedDays(upcomingShipments);

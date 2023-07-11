@@ -29,13 +29,8 @@ export const CostAndMargin = () => {
         ],
         [
             { label: "Margen", data: "calculo de margen", name: "" },
-            { label: "Markup", data: "", name: "" },
-            { label: "", data: "", name: "" },
-        ],
-        [
             { label: "Precio Santander($)", data: "", name: "" },
             { label: "Margen Santander($)", data: "", name: "" },
-            { label: "", data: "", name: "" },
         ],
     ];
 
@@ -45,13 +40,27 @@ export const CostAndMargin = () => {
             <TableContainer>
                 <Table>
                     <TableBody>
-                        {rowStructure.map((row) => (
+                        {rowStructure.map((row, i) => (
                             <StyledTableRow key={uuid()}>
                                 {row.map(({ label, data, name }) => (
                                     <TableCell key={uuid()}>
-                                        {label}
-                                        {label !== "" && ": "}
-                                        {edition && label !== "" ? (
+                                        {edition ? (
+                                            <span
+                                                style={{
+                                                    display: "inline-block",
+                                                    margin: "0.6rem 0.6rem 0 0",
+                                                }}
+                                            >
+                                                {label}
+                                                {label !== "" && ": "}
+                                            </span>
+                                        ) : (
+                                            <>
+                                                {label}
+                                                {label !== "" && ": "}
+                                            </>
+                                        )}
+                                        {edition && label !== "" && i === 0 ? (
                                             <UpdateInput
                                                 value={data}
                                                 name={name}

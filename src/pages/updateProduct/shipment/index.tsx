@@ -70,8 +70,22 @@ export const Shipment = () => {
                                         options,
                                     }) => (
                                         <TableCell key={uuid()}>
-                                            {label}
-                                            {label !== "" && ": "}
+                                            {edition ? (
+                                                <span
+                                                    style={{
+                                                        display: "inline-block",
+                                                        margin: "0.6rem 0.6rem 0 0",
+                                                    }}
+                                                >
+                                                    {label}
+                                                    {label !== "" && ": "}
+                                                </span>
+                                            ) : (
+                                                <>
+                                                    {label}
+                                                    {label !== "" && ": "}
+                                                </>
+                                            )}
                                             {edition && label !== "" ? (
                                                 select ? (
                                                     <UpdateDropdown
