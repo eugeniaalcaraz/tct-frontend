@@ -143,6 +143,14 @@ export const UpdateProduct = () => {
                 entryDate: fabrics && fabrics[0].entryDate,
                 shippingDate: fabrics && fabrics[0].shippinDate,
                 warehouseEntryDate: fabrics && fabrics[0].warehouseEntryDate,
+                curve:
+                    (fabrics && fabrics[0]?.comboColors[0]?.sizeCurve) ||
+                    (fabrics && fabrics[0]?.comboPrints[0]?.sizeCurve) ||
+                    productInfo?.sizeCurveType === 2
+                        ? Array.from(Array(8), () => 0)
+                        : productInfo?.sizeCurveType == 1
+                        ? Array.from(Array(12), () => 0)
+                        : Array.from(Array(6), () => 0),
             })
         );
     };

@@ -10,6 +10,7 @@ import {
     Upload,
     Down,
     Up,
+    Alert,
 } from "@/assets/icons";
 
 type IconProps = {
@@ -31,6 +32,7 @@ const icons: iconObject = {
     upload: <Upload />,
     down: <Down />,
     up: <Up />,
+    alert: <Alert />,
 };
 
 const Icon: FC<IconProps> = ({ name }) => <>{icons[name]}</>;

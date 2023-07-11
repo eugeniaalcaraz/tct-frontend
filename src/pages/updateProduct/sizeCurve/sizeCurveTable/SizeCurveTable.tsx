@@ -5,9 +5,15 @@ import {
     TableRow,
     TableCell,
     TableBody,
+    TextField,
+    Tooltip,
+    Typography,
 } from "@mui/material";
 import { v4 as uuid } from "uuid";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
+import { setData } from "@/state/features/updatedProduct";
+import { useIconsContext } from "@components/hooks";
 
 type SizeCurveTableProps = {
     combo: number;
@@ -40,9 +46,17 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
     type,
     quantityOfCombo,
 }) => {
+    const { edition } = useAppSelector((state) => state.product);
+    const dispatch = useAppDispatch();
+    const { icons } = useIconsContext();
     const initialValue = 0;
     const curveSumary = curve.reduce(
         (accumulator, currentValue) => accumulator + currentValue,
+        initialValue
+    );
+    const summary = curve.reduce(
+        (accumulator, currentValue) =>
+            accumulator + (quantityOfCombo / curveSumary) * currentValue,
         initialValue
     );
 
@@ -52,12 +66,18 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                 return (
                     <>
                         {clothes.map(({ Description }, index) =>
-                            curve[index] > 0 ? (
-                                <TableCell key={uuid()}>
+                            edition ? (
+                                curve[index] > 0 ? (
+                                    <TableCell key={uuid()} align="center">
+                                        {Description}
+                                    </TableCell>
+                                ) : (
+                                    <></>
+                                )
+                            ) : (
+                                <TableCell key={uuid()} align="center">
                                     {Description}
                                 </TableCell>
-                            ) : (
-                                <></>
                             )
                         )}
                     </>
@@ -66,7 +86,9 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                 return (
                     <>
                         {denim.map((size) => (
-                            <TableCell key={uuid()}>{size}</TableCell>
+                            <TableCell key={uuid()} align="center">
+                                {size}
+                            </TableCell>
                         ))}
                     </>
                 );
@@ -74,11 +96,46 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                 return (
                     <>
                         {shoes.map((size) => (
-                            <TableCell key={uuid()}>{size}</TableCell>
+                            <TableCell key={uuid()} align="center">
+                                {size}
+                            </TableCell>
                         ))}
                     </>
                 );
         }
+    };
+
+    const getFields = () => {
+        let sizes: { Id: string; Description: string }[] | string[] = [];
+
+        switch (type) {
+            case 1:
+                sizes = clothes;
+                break;
+            case 2:
+                sizes = denim;
+                break;
+            case 3:
+                sizes = shoes;
+                break;
+        }
+
+        return (
+            <>
+                {sizes.map((_, index) => (
+                    <TableCell key={uuid()} align="center">
+                        <TextField
+                            onBlur={(e) => handleChange(e, index)}
+                            defaultValue={curve[index] ?? 0}
+                            size="small"
+                            sx={{
+                                width: 40,
+                            }}
+                        />
+                    </TableCell>
+                ))}
+            </>
+        );
     };
 
     const getQuantityPerSize = () => {
@@ -86,16 +143,28 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
             <>
                 {curve.map((size) =>
                     size > 0 ? (
-                        <TableCell key={uuid()}>
-                            {(quantityOfCombo / curveSumary) * size}
+                        <TableCell key={uuid()} align="center">
+                            {((quantityOfCombo / curveSumary) * size).toFixed(
+                                0
+                            )}
                         </TableCell>
                     ) : (
-                        <></>
+                        <TableCell key={uuid()}></TableCell>
                     )
                 )}
             </>
         );
     };
+
+    const handleChange = (e, position) => {
+        const newCurve = curve.slice();
+        newCurve[position] = Number(e.target.value);
+        dispatch(setData({ curve: newCurve }));
+    };
+
+    useEffect(() => {
+        console.log(summary, quantityOfCombo, curveSumary);
+    }, [summary, quantityOfCombo, curveSumary]);
 
     return (
         <TableContainer sx={{ maxWidth: "70%" }}>
@@ -113,13 +182,17 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                         <TableCell component="th" scope="row">
                             Curva:
                         </TableCell>
-                        {curve.map((size) =>
-                            size > 0 ? (
-                                <TableCell key={uuid()}>{size}</TableCell>
-                            ) : (
-                                <></>
-                            )
-                        )}
+                        {edition
+                            ? getFields()
+                            : curve.map((size) =>
+                                  size > 0 ? (
+                                      <TableCell key={uuid()} align="center">
+                                          {size}
+                                      </TableCell>
+                                  ) : (
+                                      <TableCell key={uuid()}></TableCell>
+                                  )
+                              )}
                     </TableRow>
                     <TableRow>
                         <TableCell component="th" scope="row">
@@ -131,7 +204,28 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                         <TableCell component="th" scope="row">
                             Sumatoria:
                         </TableCell>
-                        <TableCell>{quantityOfCombo}</TableCell>
+                        <TableCell>
+                            {quantityOfCombo}{" "}
+                            {edition && summary !== quantityOfCombo && (
+                                <Tooltip
+                                    title={
+                                        <Typography variant="body2">{`La cantidad y la sumatoria de la curva no coinciden, sugerimos revisar.`}</Typography>
+                                    }
+                                    placement="left"
+                                    arrow
+                                >
+                                    <div
+                                        style={{
+                                            display: "inline-block",
+                                            verticalAlign: "inherit",
+                                            marginLeft: "1rem",
+                                        }}
+                                    >
+                                        {icons["alert"]}
+                                    </div>
+                                </Tooltip>
+                            )}
+                        </TableCell>
                         <TableCell></TableCell>
                         <TableCell></TableCell>
                         <TableCell></TableCell>
@@ -142,3 +236,16 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
         </TableContainer>
     );
 };
+
+/*
+ <Tooltip
+                        title="Promedio basado
+                    en estado de los productos
+                    y dias restantes para 
+                    el embarque de los mismos"
+                        placement="left"
+                        arrow
+                    >
+                        <div>{icons["info"]}</div>
+                    </Tooltip>
+*/

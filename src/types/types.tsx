@@ -479,6 +479,7 @@ export type UpdatedProductData = {
             isMain: number;
         }
     ];
+    curve: number[];
 };
 
 export type OverallType = {

@@ -6,6 +6,7 @@ import {
     TableCell,
     Stack,
     TextField,
+    Button,
 } from "@mui/material";
 import { ComboItem } from "../comboItem";
 import { v4 as uuid } from "uuid";
@@ -95,7 +96,11 @@ export const Trims = () => {
                     <Stack
                         direction={"row"}
                         gap={"15px"}
-                        sx={{ padding: "20px 0", flexWrap: "wrap" }}
+                        sx={{
+                            padding: "20px 0",
+                            flexWrap: "wrap",
+                            alignItems: "center",
+                        }}
                     >
                         {avio?.colors?.map((combo, index) => (
                             <div
@@ -120,6 +125,16 @@ export const Trims = () => {
                                 />
                             </div>
                         ))}
+                        {edition && (
+                            <Button
+                                variant="contained"
+                                type="button"
+                                color="primary"
+                                sx={{ height: "fit-content" }}
+                            >
+                                + COMBO
+                            </Button>
+                        )}
                     </Stack>
                     <Stack />
                 </>

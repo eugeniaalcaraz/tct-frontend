@@ -4,6 +4,7 @@ import {
     TableCell,
     TableBody,
     Stack,
+    Button,
 } from "@mui/material";
 import React from "react";
 import { StyledTableRow } from "../UpdateProductStyles";
@@ -149,7 +150,11 @@ export const Materials = () => {
                     <Stack
                         direction={"row"}
                         gap={"15px"}
-                        sx={{ padding: "20px 0", flexWrap: "wrap" }}
+                        sx={{
+                            padding: "20px 0",
+                            flexWrap: "wrap",
+                            alignItems: "end",
+                        }}
                     >
                         {fabric?.comboColors?.map((combo, index) => (
                             <div
@@ -203,6 +208,16 @@ export const Materials = () => {
                                         />
                                     </div>
                                 )
+                        )}
+                        {edition && (
+                            <Button
+                                variant="contained"
+                                type="button"
+                                color="primary"
+                                sx={{ height: "fit-content" }}
+                            >
+                                + COMBO
+                            </Button>
                         )}
                     </Stack>
                 </div>

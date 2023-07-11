@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface updatedProductState {
+    idProduct: string | number;
     idSampleStatus: number;
     sampleType: string;
     sampleDate: Date | string;
@@ -47,9 +48,11 @@ export interface updatedProductState {
     entryDate: Date | string;
     shippingDate: Date | string;
     warehouseEntryDate: Date | string;
+    curve: number[];
 }
 
 const initialState: updatedProductState = {
+    idProduct: "",
     idSampleStatus: 1,
     sampleType: "",
     sampleDate: "2023-07-28",
@@ -150,6 +153,7 @@ const initialState: updatedProductState = {
     entryDate: "2023-07-28",
     shippingDate: "2023-07-29",
     warehouseEntryDate: "2023-07-16",
+    curve: [],
 };
 
 const updatedProductSlice = createSlice({
@@ -159,8 +163,13 @@ const updatedProductSlice = createSlice({
         setData(state, action: PayloadAction<Partial<updatedProductState>>) {
             return { ...state, ...action.payload };
         },
+        setTrimColors(state, action: PayloadAction<any>) {
+            const { parentIndex, colors } = action.payload;
+            console.log(colors);
+            state.avios[parentIndex].colors = colors;
+        },
     },
 });
 
-export const { setData } = updatedProductSlice.actions;
+export const { setData, setTrimColors } = updatedProductSlice.actions;
 export default updatedProductSlice.reducer;

@@ -12,6 +12,7 @@ import {
     Upload,
     Down,
     Up,
+    Alert,
 } from "@/assets/icons";
 
 interface IconsProps {
@@ -39,6 +40,7 @@ export const IconsProvider = ({ children }: IconsProviderProps) => {
             upload: <Upload />,
             down: <Down />,
             up: <Up />,
+            alert: <Alert />,
         }),
         []
     );

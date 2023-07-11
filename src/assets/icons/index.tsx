@@ -9,3 +9,4 @@ export * from "./Download";
 export * from "./Upload";
 export * from "./Down";
 export * from "./Up";
+export * from "./Alert";

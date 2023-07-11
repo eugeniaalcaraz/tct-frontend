@@ -5,6 +5,7 @@ import { useAppSelector } from "@/state/app/hooks";
 
 export const SizeCurve = () => {
     const updateData = useAppSelector((state) => state.updatedProduct);
+    const { curve } = useAppSelector((state) => state.updatedProduct);
 
     const fabrics = updateData?.telas;
 
@@ -14,11 +15,7 @@ export const SizeCurve = () => {
                 <SizeCurveTable
                     key={uuid()}
                     combo={index + 1}
-                    curve={
-                        fabric?.colors[0]?.sizeCurve ||
-                        fabric?.prints[0]?.sizeCurve ||
-                        []
-                    }
+                    curve={curve}
                     type={updateData?.sizeCurveType}
                     quantityOfCombo={updateData?.quantity}
                 />
