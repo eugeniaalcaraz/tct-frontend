@@ -69,6 +69,7 @@ const Fabrics: FC<FabricProps> = ({
         telas,
         errors,
         reduxErrors,
+        mutationSuccess,
     } = useAppSelector((state) => state.product);
     const [open, setOpen] = useState<boolean>(false);
     const [existingQuality, setExistingQuality] = useState<boolean>(true);
@@ -420,6 +421,24 @@ const Fabrics: FC<FabricProps> = ({
             }
         }
     }, [isSubmitting]);
+
+    useEffect(() => {
+        if (mutationSuccess) {
+            setFinalComboObject({
+                idFabric: "",
+                idStatus: 1,
+                description: "",
+                consumption: 0,
+                weight: 0,
+                placement: 0,
+                composition: [],
+                colors: [],
+                prints: [],
+            });
+            setCompOfSelectedQuality([]);
+            setSelectedQuality("");
+        }
+    }, [mutationSuccess]);
 
     return (
         <>

@@ -30,6 +30,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
         bodyFit,
         managementUnit,
         errors,
+        mutationSuccess,
     } = useAppSelector((state) => state.product);
     const { idMerchant } = useAppSelector((state) => state.user);
     const reduxDispatch = useAppDispatch();
@@ -68,6 +69,16 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
             ),
         [tipology]
     );
+
+    const weightValue = useMemo(() => {
+        if (mutationSuccess) {
+            return "";
+        } else {
+            return tipology.find(
+                (tipology) => tipology.Id === state.selectedTipology
+            )?.Weight;
+        }
+    }, [state.selectedTipology, mutationSuccess]);
 
     const generalPropsDropdowns = useMemo(
         () => [
@@ -239,6 +250,12 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
         }
     }, [state.selectedIndustry]);
 
+    useEffect(() => {
+        if (mutationSuccess) {
+            dispatch({ type: "resetStates" });
+        }
+    }, [mutationSuccess]);
+
     return (
         <Container>
             {generalPropsDropdowns.map(({ name, label, options }) => {
@@ -262,11 +279,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                     name="peso"
                     useFormhook={false}
                     disabled={true}
-                    externalValue={
-                        tipology.find(
-                            (tipology) => tipology.Id === state.selectedTipology
-                        )?.Weight
-                    }
+                    externalValue={weightValue}
                 />
             </div>
             {specificPropsDropdowns.map(({ name, label, options, disable }) => {
@@ -315,6 +328,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                 multiline
                 rows={4}
                 name="detail"
+                id="detail"
                 error={checkIfError("descripcion")}
                 helperText={checkErrorMessage("descripcion")}
             />

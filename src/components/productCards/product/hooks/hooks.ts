@@ -73,6 +73,8 @@ export function productReducer(state, action) {
                 ...state,
                 selectedIndustry: action.payload,
             };
+        case "resetStates":
+            return initialProductState;
         default:
             console.error("no type of action found");
     }
