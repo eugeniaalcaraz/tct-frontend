@@ -182,7 +182,7 @@ export const UpdateProduct = () => {
                             {id} - {sampleType}
                         </h1>
                         <StateOptions
-                            status={getStatus(idSampleStatus)}
+                            status={getStatus(Number(idSampleStatus))}
                             id={{ index: 0, item: "sample" }}
                         />
                         <div>{dayjs(sampleDate).format("YYYY-MM-DD")}</div>

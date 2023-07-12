@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyledTableRow } from "../UpdateProductStyles";
 import {
     TableContainer,
@@ -14,11 +14,16 @@ import { useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
 import { getNameById, getStatus } from "@/utils";
 import { UpdateDropdown, UpdateInput } from "../updateDropdowns";
+import { ModalTypes } from "@/types";
+import NewCombo from "@components/common/modal/NewCombo";
+import { useModal } from "@components/hooks";
 
 export const Trims = () => {
+    const [parentIndex, setParentIndex] = useState(-1);
     const { edition, trims, colors } = useAppSelector((state) => state.product);
-
     const { avios } = useAppSelector((state) => state.updatedProduct);
+    const { modalType } = useAppSelector((state) => state.modal);
+    const { openModal } = useModal();
 
     const rowStructure = [
         [
@@ -32,13 +37,18 @@ export const Trims = () => {
         ],
     ];
 
+    const handleNewCombo = (modalType, index) => {
+        openModal(modalType);
+        setParentIndex(index);
+    };
+
     return (
         <section>
             <h3 style={{ marginBottom: "1.5rem" }}>AVÍOS</h3>
             {avios?.map((avio, i) => (
                 <>
                     <StateOptions
-                        status={getStatus(avio?.idStatus)}
+                        status={getStatus(Number(avio?.idStatus))}
                         id={{ index: i, item: "trims" }}
                     />
 
@@ -100,6 +110,7 @@ export const Trims = () => {
                             padding: "20px 0",
                             flexWrap: "wrap",
                             alignItems: "end",
+                            height: "12rem",
                         }}
                     >
                         {avio?.colors?.map((combo, index) => (
@@ -116,7 +127,7 @@ export const Trims = () => {
                                 <ComboItem
                                     combo={index + 1}
                                     color={getNameById(combo?.idcolor, colors)}
-                                    status={getStatus(combo?.idstatus)}
+                                    status={getStatus(Number(combo?.idstatus))}
                                     id={{
                                         index,
                                         parentIndex: i,
@@ -133,6 +144,9 @@ export const Trims = () => {
                                 sx={{
                                     height: "fit-content",
                                 }}
+                                onClick={() =>
+                                    handleNewCombo(ModalTypes.NewTrimColor, i)
+                                }
                             >
                                 + COLOR
                             </Button>
@@ -141,6 +155,9 @@ export const Trims = () => {
                     <Stack />
                 </>
             ))}
+            {modalType === ModalTypes.NewTrimColor && (
+                <NewCombo parentIndex={parentIndex} />
+            )}
         </section>
     );
 };

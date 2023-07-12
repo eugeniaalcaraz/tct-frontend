@@ -5,15 +5,16 @@ import { Container } from "./ModalStyles";
 import { CardBase } from "../cardBase";
 import { Box } from "@mui/material";
 
-import { useIconsContext } from "@components/hooks";
+import { useIconsContext, useModal } from "@components/hooks";
 
 type ModalProps = {
     header?: string;
     content: string | ReactNode;
-    loading: boolean;
+    loading?: boolean;
 };
 
-const Modal: FC<ModalProps> = ({ header = "", content, loading }) => {
+const Modal: FC<ModalProps> = ({ header = "", content }) => {
+    const { closeModal } = useModal();
     const modalContainer: HTMLElement =
         document.getElementById("modal-container")!;
     const { icons } = useIconsContext();
@@ -22,9 +23,14 @@ const Modal: FC<ModalProps> = ({ header = "", content, loading }) => {
         <>
             {ReactDom.createPortal(
                 <Container>
-                    <Box className={`overlay ${loading && "open"}`} />
-                    <Box className={`modal ${loading && "open"}`}>
-                        <span className="iconWrapper">{icons["close"]}</span>
+                    <Box className="overlay open" />
+                    <Box className="modal open">
+                        <span
+                            onClick={() => closeModal()}
+                            className="iconWrapper"
+                        >
+                            {icons["close"]}
+                        </span>
                         <CardBase header={header} content={content} />
                     </Box>
                 </Container>,

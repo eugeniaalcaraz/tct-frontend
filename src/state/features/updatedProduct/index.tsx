@@ -165,11 +165,28 @@ const updatedProductSlice = createSlice({
         },
         setTrimColors(state, action: PayloadAction<any>) {
             const { parentIndex, colors } = action.payload;
-            console.log(colors);
             state.avios[parentIndex].colors = colors;
+        },
+        setNewTrimColor(state, action: PayloadAction<any>) {
+            const { parentIndex, color } = action.payload;
+            state.avios[parentIndex].colors.push(color);
+        },
+        setNewFabricColor(state, action: PayloadAction<any>) {
+            const { parentIndex, color } = action.payload;
+            state.telas[parentIndex].colors.push(color);
+        },
+        setNewFabricPrint(state, action: PayloadAction<any>) {
+            const { parentIndex, print } = action.payload;
+            state.telas[parentIndex].prints.push(print);
         },
     },
 });
 
-export const { setData, setTrimColors } = updatedProductSlice.actions;
+export const {
+    setData,
+    setTrimColors,
+    setNewTrimColor,
+    setNewFabricColor,
+    setNewFabricPrint,
+} = updatedProductSlice.actions;
 export default updatedProductSlice.reducer;

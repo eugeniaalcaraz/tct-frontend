@@ -493,9 +493,11 @@ export type OverallType = {
 };
 
 export type OverallTipologies = {
-    Code: string;
-    Description: string;
-    Id: number;
-    IdIndustry: number;
-    Weight: string;
+    idTipology: string;
+    idIndustry: string;
+    tipologyDescription: string;
+    quantity: number;
+    cost: number;
+    comboColorCount: number;
+    comboPrintCount: number;
 };

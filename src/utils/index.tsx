@@ -9,3 +9,4 @@ export * from "./filterUrlFormat";
 export * from "./getApprovalName";
 export * from "./exportToExcel";
 export * from "./getNameById";
+export * from "./formatNumber";

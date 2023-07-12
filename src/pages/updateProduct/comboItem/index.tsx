@@ -44,7 +44,7 @@ export const ComboItem: FC<ComboItemProps> = ({
             <Stack
                 sx={{
                     alignItems: "flex-start",
-                    width: "145px",
+                    width: name ? "230px" : "145px",
                     justifyContent: "center",
                 }}
             >
@@ -63,8 +63,11 @@ export const ComboItem: FC<ComboItemProps> = ({
                 >
                     <div className="colorBox" style={{ background: color }} />
                     {name && (
-                        <div>
-                            {name} - {colorCount}
+                        <div
+                            style={{ display: "flex", flexDirection: "column" }}
+                        >
+                            <span>{name}</span>
+                            <span>{colorCount} colores</span>
                         </div>
                     )}
                     <Stack gap={"8px"} style={{ alignItems: "center" }}>

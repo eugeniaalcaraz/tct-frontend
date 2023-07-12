@@ -1,6 +1,7 @@
 import { useAppSelector } from "@/state/app/hooks";
 import React from "react";
 import { Container, Values } from "./MarginStyles";
+import { formatNumber } from "@/utils";
 
 const Margin = () => {
     const { margen } = useAppSelector((state) => state.dashboard);
@@ -12,13 +13,13 @@ const Margin = () => {
                     <p>{margen.Margin} %</p>
                     <Values>
                         <p>USD</p>
-                        <p>PVP: ${margen?.PVP}</p>
-                        <p>Costo: ${margen?.Cost}</p>
+                        <p>PVP: ${formatNumber(margen?.PVP)}</p>
+                        <p>Costo: ${formatNumber(margen?.Cost)}</p>
                     </Values>
                     <Values>
                         <p>PESOS</p>
-                        <p>PVP: ${margen?.PVP * 40}</p>
-                        <p>Costo: ${margen?.Cost * 40}</p>
+                        <p>PVP: ${formatNumber(margen?.PVP * 40)}</p>
+                        <p>Costo: ${formatNumber(margen?.Cost * 40)}</p>
                     </Values>
                 </>
             )}

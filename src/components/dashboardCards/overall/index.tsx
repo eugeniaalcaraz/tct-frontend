@@ -11,6 +11,7 @@ import {
 import { v4 as uuid } from "uuid";
 import { OverallHeaders } from "@/types";
 import { useAppSelector } from "@/state/app/hooks";
+import { formatNumber } from "@/utils";
 
 const Overall = () => {
     const { overall } = useAppSelector((state) => state.dashboard);
@@ -77,39 +78,57 @@ const Overall = () => {
                                         {industryDescription}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        $ {cost}
+                                        $ {formatNumber(cost)}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {quantity}
+                                        {formatNumber(quantity)}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {Number(comboPrintCount) +
-                                            Number(comboColorCount)}
+                                        {formatNumber(
+                                            Number(comboPrintCount) +
+                                                Number(comboColorCount)
+                                        )}
                                     </TableCell>
                                 </TableRow>
 
-                                {tipologies?.map(({ Description }) => (
-                                    <TableRow
-                                        key={uuid()}
-                                        sx={{
-                                            "& td, & th": {
-                                                border: 0,
-                                            },
-                                            "&:first-of-type td, &:first-of-type th":
-                                                {
-                                                    fontWeight: 600,
+                                {tipologies?.map(
+                                    ({
+                                        tipologyDescription,
+                                        cost,
+                                        quantity,
+                                        comboPrintCount,
+                                        comboColorCount,
+                                    }) => (
+                                        <TableRow
+                                            key={uuid()}
+                                            sx={{
+                                                "& td, & th": {
+                                                    border: 0,
                                                 },
-                                        }}
-                                    >
-                                        <TableCell>{Description}</TableCell>
-                                        <TableCell>$ {cost}</TableCell>
-                                        <TableCell>{quantity}</TableCell>
-                                        <TableCell>
-                                            {Number(comboPrintCount) +
-                                                Number(comboColorCount)}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
+                                                "&:first-of-type td, &:first-of-type th":
+                                                    {
+                                                        fontWeight: 600,
+                                                    },
+                                            }}
+                                        >
+                                            <TableCell>
+                                                {tipologyDescription}
+                                            </TableCell>
+                                            <TableCell>
+                                                $ {formatNumber(cost)}
+                                            </TableCell>
+                                            <TableCell>
+                                                {formatNumber(quantity)}
+                                            </TableCell>
+                                            <TableCell>
+                                                {formatNumber(
+                                                    Number(comboPrintCount) +
+                                                        Number(comboColorCount)
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                )}
                             </Fragment>
                         )
                     )}
@@ -124,7 +143,8 @@ const Overall = () => {
                         margin: "1.5rem",
                     }}
                 >
-                    Total: {totalSKUS} SKU - {totalPcs} piezas - ${totalCost}{" "}
+                    Total: {formatNumber(totalSKUS)} SKU -{" "}
+                    {formatNumber(totalPcs)} piezas - ${formatNumber(totalCost)}{" "}
                     costo de mercadería
                 </Typography>
             )}
