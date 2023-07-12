@@ -10,7 +10,7 @@ import React, { useState } from "react";
 import { StyledTableRow } from "../UpdateProductStyles";
 import { ComboItem } from "../comboItem";
 import { v4 as uuid } from "uuid";
-import { useAppSelector } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
 import { getFabricById, getNameById, getStatus } from "@/utils";
 import dayjs from "dayjs";
@@ -18,6 +18,10 @@ import { UpdateInput, UpdateDropdown } from "../updateDropdowns";
 import { ModalTypes } from "@/types";
 import { useModal } from "@components/hooks";
 import NewCombo from "@components/common/modal/NewCombo";
+import {
+    setFabricColors,
+    setFabricPrints,
+} from "@/state/features/updatedProduct";
 
 export const Materials = () => {
     const [fabricIndex, setFabricIndex] = useState(-1);
@@ -27,6 +31,7 @@ export const Materials = () => {
     const { telas } = useAppSelector((state) => state.updatedProduct);
     const { modalType } = useAppSelector((state) => state.modal);
     const { openModal } = useModal();
+    const dispatch = useAppDispatch();
 
     const rowStructure = [
         [
@@ -57,6 +62,18 @@ export const Materials = () => {
     const handleNewCombo = (modalType, fabricIndex) => {
         openModal(modalType);
         setFabricIndex(fabricIndex);
+    };
+
+    const handleDeleteColor = (index, parentIndex) => {
+        const newColorsArray = [...telas[parentIndex].colors];
+        newColorsArray?.splice(index, 1);
+        dispatch(setFabricColors({ parentIndex, colors: newColorsArray }));
+    };
+
+    const handleDeletePrint = (index, parentIndex) => {
+        const newPrintsArray = [...telas[parentIndex].prints];
+        newPrintsArray?.splice(index, 1);
+        dispatch(setFabricPrints({ parentIndex, prints: newPrintsArray }));
     };
 
     return (
@@ -165,13 +182,13 @@ export const Materials = () => {
                             flexWrap: "wrap",
                             alignItems: "end",
                             height: "12rem",
+                            borderBottom: "0.1px solid #D9D9D9",
                         }}
                     >
                         {fabric?.colors?.map((combo, index) => (
                             <div
                                 key={uuid()}
                                 style={{
-                                    marginRight: "5rem",
                                     padding: "0 2rem",
                                     alignItems: "center",
                                     display: "flex",
@@ -187,14 +204,44 @@ export const Materials = () => {
                                         parentIndex: i,
                                         item: "fabricColor",
                                     }}
+                                    deleteAction={() =>
+                                        handleDeleteColor(index, i)
+                                    }
                                 />
                             </div>
                         ))}
+                        {edition && (
+                            <Button
+                                variant="outlined"
+                                type="button"
+                                color="secondary"
+                                sx={{
+                                    height: "fit-content",
+                                    marginLeft: "2rem",
+                                }}
+                                onClick={() =>
+                                    handleNewCombo(ModalTypes.NewFabricColor, i)
+                                }
+                            >
+                                + COLOR
+                            </Button>
+                        )}
+                    </Stack>
+                    <Stack
+                        direction={"row"}
+                        gap={"15px"}
+                        sx={{
+                            padding: "20px 0",
+                            flexWrap: "wrap",
+                            alignItems: "end",
+                            height: "12rem",
+                            borderBottom: "0.1px solid #D9D9D9",
+                        }}
+                    >
                         {fabric?.prints?.map((print, index) => (
                             <div
                                 key={uuid()}
                                 style={{
-                                    marginRight: "5rem",
                                     padding: "0 2rem",
                                     alignItems: "center",
                                     display: "flex",
@@ -202,7 +249,7 @@ export const Materials = () => {
                                 }}
                             >
                                 <ComboItem
-                                    combo={fabric?.colors?.length + index + 1}
+                                    combo={index + 1}
                                     name={print?.nombre}
                                     colorCount={print?.cantidadColor}
                                     status={getStatus(Number(print?.idStatus))}
@@ -211,44 +258,27 @@ export const Materials = () => {
                                         parentIndex: i,
                                         item: "fabricPrint",
                                     }}
+                                    deleteAction={() =>
+                                        handleDeletePrint(index, i)
+                                    }
                                 />
                             </div>
                         ))}
                         {edition && (
-                            <>
-                                <Button
-                                    variant="outlined"
-                                    type="button"
-                                    color="secondary"
-                                    sx={{
-                                        height: "fit-content",
-                                    }}
-                                    onClick={() =>
-                                        handleNewCombo(
-                                            ModalTypes.NewFabricColor,
-                                            i
-                                        )
-                                    }
-                                >
-                                    + COLOR
-                                </Button>
-                                <Button
-                                    variant="outlined"
-                                    type="button"
-                                    color="secondary"
-                                    sx={{
-                                        height: "fit-content",
-                                    }}
-                                    onClick={() =>
-                                        handleNewCombo(
-                                            ModalTypes.NewFabricPrint,
-                                            i
-                                        )
-                                    }
-                                >
-                                    + ESTAMPA
-                                </Button>
-                            </>
+                            <Button
+                                variant="outlined"
+                                type="button"
+                                color="secondary"
+                                sx={{
+                                    height: "fit-content",
+                                    marginLeft: "2rem",
+                                }}
+                                onClick={() =>
+                                    handleNewCombo(ModalTypes.NewFabricPrint, i)
+                                }
+                            >
+                                + ESTAMPA
+                            </Button>
                         )}
                     </Stack>
                 </div>

@@ -10,13 +10,14 @@ import {
 } from "@mui/material";
 import { ComboItem } from "../comboItem";
 import { v4 as uuid } from "uuid";
-import { useAppSelector } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
 import { getNameById, getStatus } from "@/utils";
 import { UpdateDropdown, UpdateInput } from "../updateDropdowns";
 import { ModalTypes } from "@/types";
 import NewCombo from "@components/common/modal/NewCombo";
 import { useModal } from "@components/hooks";
+import { setTrimColors } from "@/state/features/updatedProduct";
 
 export const Trims = () => {
     const [parentIndex, setParentIndex] = useState(-1);
@@ -24,6 +25,7 @@ export const Trims = () => {
     const { avios } = useAppSelector((state) => state.updatedProduct);
     const { modalType } = useAppSelector((state) => state.modal);
     const { openModal } = useModal();
+    const dispatch = useAppDispatch();
 
     const rowStructure = [
         [
@@ -40,6 +42,12 @@ export const Trims = () => {
     const handleNewCombo = (modalType, index) => {
         openModal(modalType);
         setParentIndex(index);
+    };
+
+    const handleDeleteColor = (index, parentIndex) => {
+        const newColors = [...avios[parentIndex].colors];
+        newColors?.splice(index, 1);
+        dispatch(setTrimColors({ parentIndex, colors: newColors }));
     };
 
     return (
@@ -117,7 +125,6 @@ export const Trims = () => {
                             <div
                                 key={uuid()}
                                 style={{
-                                    marginRight: "5rem",
                                     padding: "0 2rem",
                                     alignItems: "center",
                                     display: "flex",
@@ -133,6 +140,9 @@ export const Trims = () => {
                                         parentIndex: i,
                                         item: "trimColor",
                                     }}
+                                    deleteAction={() =>
+                                        handleDeleteColor(index, i)
+                                    }
                                 />
                             </div>
                         ))}
@@ -143,6 +153,7 @@ export const Trims = () => {
                                 color="secondary"
                                 sx={{
                                     height: "fit-content",
+                                    marginLeft: "2rem",
                                 }}
                                 onClick={() =>
                                     handleNewCombo(ModalTypes.NewTrimColor, i)

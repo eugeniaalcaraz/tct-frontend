@@ -167,6 +167,14 @@ const updatedProductSlice = createSlice({
             const { parentIndex, colors } = action.payload;
             state.avios[parentIndex].colors = colors;
         },
+        setFabricColors(state, action: PayloadAction<any>) {
+            const { parentIndex, colors } = action.payload;
+            state.telas[parentIndex].colors = colors;
+        },
+        setFabricPrints(state, action: PayloadAction<any>) {
+            const { parentIndex, prints } = action.payload;
+            state.telas[parentIndex].prints = prints;
+        },
         setNewTrimColor(state, action: PayloadAction<any>) {
             const { parentIndex, color } = action.payload;
             state.avios[parentIndex].colors.push(color);
@@ -185,6 +193,8 @@ const updatedProductSlice = createSlice({
 export const {
     setData,
     setTrimColors,
+    setFabricColors,
+    setFabricPrints,
     setNewTrimColor,
     setNewFabricColor,
     setNewFabricPrint,

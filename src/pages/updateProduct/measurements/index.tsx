@@ -3,15 +3,19 @@ import { Button } from "@mui/material";
 import { useAppSelector } from "@/state/app/hooks";
 import { useIconsContext } from "@components/hooks";
 import StateOptions from "../stateLabel/StateOptions";
+import { getStatus } from "@/utils";
 
 const Measurements = () => {
     const { edition } = useAppSelector((state) => state.product);
+    const { idModelingStatus } = useAppSelector(
+        (state) => state.updatedProduct
+    );
     const { icons } = useIconsContext();
     return (
         <section>
             <h3 style={{ marginBottom: "1.5rem" }}>TABLA DE MEDIDAS</h3>
             <StateOptions
-                status={"aprobado"}
+                status={getStatus(Number(idModelingStatus))}
                 id={{ index: 0, item: "measurements" }}
             />
             <div

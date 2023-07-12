@@ -16,6 +16,7 @@ type ComboItemProps = {
     colorCount?: number;
     date?: Date | string;
     id: { index: number; parentIndex: number; item: string };
+    deleteAction?: (...args) => void;
 };
 
 export const ComboItem: FC<ComboItemProps> = ({
@@ -26,18 +27,11 @@ export const ComboItem: FC<ComboItemProps> = ({
     colorCount,
     date,
     id,
+    deleteAction,
 }) => {
     const { edition } = useAppSelector((state) => state.product);
     const { avios } = useAppSelector((state) => state.updatedProduct);
     const dispatch = useAppDispatch();
-
-    const handleDelete = () => {
-        const { index, parentIndex } = id;
-        const newColorsArray = avios[parentIndex]?.colors?.slice(index + 1);
-        console.log(avios[parentIndex]?.colors);
-        console.log(newColorsArray);
-        dispatch(setTrimColors({ parentIndex, colors: newColorsArray }));
-    };
 
     return (
         <StyledComboItem>
@@ -49,9 +43,9 @@ export const ComboItem: FC<ComboItemProps> = ({
                 }}
             >
                 <div className="title">
-                    Combo {combo}{" "}
+                    {name ? "Estampa" : "Color"} {combo}{" "}
                     {edition && (
-                        <IconButton aria-label="delete" onClick={handleDelete}>
+                        <IconButton aria-label="delete" onClick={deleteAction}>
                             <DeleteIcon />
                         </IconButton>
                     )}

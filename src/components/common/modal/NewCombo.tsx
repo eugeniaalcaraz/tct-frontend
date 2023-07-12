@@ -130,6 +130,7 @@ const NewCombo: FC<NewComboProps> = ({ parentIndex }) => {
                                                 colorAmount: e.target.value,
                                             })
                                         }
+                                        type="number"
                                         size="small"
                                         sx={{
                                             width: "48%",
