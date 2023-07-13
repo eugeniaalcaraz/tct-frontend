@@ -29,6 +29,7 @@ const StateOptions: FC<StateOptionsProps> = ({ status, id, updateAction }) => {
             style={{
                 cursor: "pointer",
                 position: "relative",
+                width: "fit-content",
             }}
             onClick={() => setOpenList((prevState) => !prevState)}
         >
@@ -40,7 +41,6 @@ const StateOptions: FC<StateOptionsProps> = ({ status, id, updateAction }) => {
                     position: "absolute",
                     top: 35,
                     left: -10,
-                    background: "red",
                     zIndex: 20,
                     backgroundColor: "#E8E8E8",
                     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.075)",

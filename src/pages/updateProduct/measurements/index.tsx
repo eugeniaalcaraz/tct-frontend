@@ -37,10 +37,12 @@ const Measurements = () => {
     return (
         <section>
             <h3 style={{ marginBottom: "1.5rem" }}>TABLA DE MEDIDAS</h3>
-            <StateOptions
-                status={getStatus(Number(idModelingStatus))}
-                id={{ index: 0, item: "measurements" }}
-            />
+            <span style={{ width: "fit-content" }}>
+                <StateOptions
+                    status={getStatus(Number(idModelingStatus))}
+                    id={{ index: 0, item: "measurements" }}
+                />
+            </span>
             <div
                 className="item"
                 style={{
@@ -55,15 +57,52 @@ const Measurements = () => {
                 }}
             >
                 {edition ? (
-                    <Button
-                        variant="outlined"
-                        component="label"
-                        className="files"
+                    <div
+                        style={{
+                            position: "relative",
+                            width: "100%",
+                            height: "100%",
+                        }}
                     >
-                        <span style={{ marginRight: "1rem" }}>Modificar</span>{" "}
-                        {icons["upload"]}
-                        <input type="file" hidden onChange={handleMmt} />
-                    </Button>
+                        <img
+                            style={{
+                                height: "100%",
+                                width: "100%",
+                                objectFit: "cover",
+                                filter: "blur(2px) grayscale(20%) opacity(20%)",
+                            }}
+                            alt={`Tabla de medidas de producto ${updateData?.idProduct}`}
+                            src={table}
+                        />
+                        <span
+                            style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                            }}
+                        >
+                            <Button
+                                variant="outlined"
+                                component="label"
+                                className="files"
+                                sx={{
+                                    background: "#DAD9D9",
+                                    "&:hover": { background: "#DAD9D9" },
+                                }}
+                            >
+                                <span style={{ marginRight: "1rem" }}>
+                                    Modificar
+                                </span>{" "}
+                                {icons["upload"]}
+                                <input
+                                    type="file"
+                                    hidden
+                                    onChange={handleMmt}
+                                />
+                            </Button>
+                        </span>
+                    </div>
                 ) : (
                     <img
                         style={{
