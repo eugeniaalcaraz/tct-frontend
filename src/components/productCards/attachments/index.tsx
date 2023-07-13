@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Button, Box } from "@mui/material";
 import { Container } from "./AttachmentsStyles";
 import { pluralize } from "@/utils";
 import filePreview from "@/assets/images/filePreview.png";
+import { useAppSelector } from "@/state/app/hooks";
 
 const Attachments = () => {
+    const { mutationSuccess } = useAppSelector((state) => state.product);
     const [filesURLs, setFilesURLs] = useState<string[]>([]);
     const [mmtPreview, setMMtPreview] = useState<string[]>([]);
     const { register } = useFormContext();
@@ -34,8 +36,14 @@ const Attachments = () => {
         if (filesSelected.length > 0) {
             mmt ? setMMtPreview(filesSelected) : setFilesURLs(filesSelected);
         }
-        console.log({ attachments, filesSelected });
     };
+
+    useEffect(() => {
+        if (mutationSuccess) {
+            setFilesURLs([]);
+            setMMtPreview([]);
+        }
+    }, [mutationSuccess]);
 
     return (
         <Container>

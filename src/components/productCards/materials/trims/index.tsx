@@ -50,7 +50,6 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                 trimCombo: {
                     idAvio: Number(idAvio),
                     idStatus: 1,
-                    idColor: trimColor,
                     quantity: Number(quantity),
                     idShipping: "",
                     idCountryDestination: "",
@@ -109,20 +108,22 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
             <ControlledDropdown
                 label="Tipo"
                 options={trims ?? []}
-                name={`tipoAvio${trimNumber}`}
+                name={`tipoAvio-${trimNumber}`}
                 error={checkIfError(`tipoAvio-${trimNumber}`, reduxErrors)}
                 helperText={checkErrorMessage(
                     `tipoAvio-${trimNumber}`,
                     reduxErrors
                 )}
-                useFormHook={false}
-                externalOnChange={(e) => {
-                    setIdAvio(e.value);
-                    if (e.value !== "") {
+                // useFormHook={false}
+                onBlur={(e) => {
+                    console.log(e.target.value);
+
+                    if (e.target.value !== "") {
+                        setIdAvio(e.target.value);
                         dispatch(removeReduxError(`tipoAvio-${trimNumber}`));
                     }
                 }}
-                selectedValue={idAvio}
+                // selectedValue={idAvio}
             />
             <ControlledInput
                 label="Cantidad"
@@ -132,16 +133,17 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                     `cantidadAvio-${trimNumber}`,
                     reduxErrors
                 )}
-                useFormhook={false}
-                externalOnChange={(e) => {
-                    setQuantity(e.target.value);
-                }}
+                // useFormhook={false}
+                // externaonlOnChange={(e) => {
+                //     setQuantity(e.target.value);
+                // }}
                 externalValue={quantity}
                 onBlur={(e) => {
                     if (e.target.value !== "") {
                         dispatch(
                             removeReduxError(`cantidadAvio-${trimNumber}`)
                         );
+                        setQuantity(e.target.value);
                     }
                 }}
             />
@@ -177,7 +179,7 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                 </Button>
             </Box>
 
-            {avios[trimNumber]?.idColor && (
+            {avios[trimNumber]?.colors && (
                 <Box className="combos">
                     <Box className="combo">
                         <div className="upper-container">
@@ -197,7 +199,7 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                                     colors?.find(
                                         (color) =>
                                             Number(color.Id) ===
-                                            avios[trimNumber]?.idColor
+                                            avios[trimNumber].colors[0].idColor
                                     )?.RGB
                                 }`,
                             }}

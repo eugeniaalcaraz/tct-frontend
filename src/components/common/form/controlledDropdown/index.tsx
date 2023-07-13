@@ -121,7 +121,6 @@ const ControlledDropdown: FC<ControlledDropdownProps> = ({
                                     name,
                                 });
                         }}
-                        onSubmitCapture={() => console.log("onSubmit", id)}
                         input={<OutlinedInput label={label} />}
                         onBlur={onBlur}
                         error={error}

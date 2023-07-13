@@ -12,7 +12,7 @@ type NumberSizeCurveProps = {
 };
 
 export const NumberSizeCurve: FC<NumberSizeCurveProps> = ({ sizes }) => {
-    const { telas } = useAppSelector((state) => state.product);
+    const { telas, mutationSuccess } = useAppSelector((state) => state.product);
     const dispatch = useAppDispatch();
 
     const [updatedSizeValues, setUpdatedSizeValues] = useState(() =>
@@ -83,6 +83,12 @@ export const NumberSizeCurve: FC<NumberSizeCurveProps> = ({ sizes }) => {
 
         dispatch(addTelasArray(updatedTelasArray));
     }, [updatedSizeValues]);
+
+    useEffect(() => {
+        if (mutationSuccess) {
+            setUpdatedSizeValues(sizes.map(({ Id }) => ({ Id, value: "" })));
+        }
+    }, [mutationSuccess]);
 
     return (
         <Container>

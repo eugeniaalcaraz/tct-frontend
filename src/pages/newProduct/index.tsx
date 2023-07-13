@@ -29,7 +29,10 @@ import { useForm } from "react-hook-form";
 import { NumberSizeCurve } from "@components/productCards/sizeCurve/numberSizeCurve";
 import { denimSizes, shoesSizes } from "./aux/aux";
 import {
+    clearAviosCombos,
     clearReduxErrors,
+    clearTelasCombos,
+    setMutationState,
     setSpecialSizeCurve,
 } from "@/state/features/product";
 import dayjs from "dayjs";
@@ -44,7 +47,7 @@ const defaultValues = {
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { telas, avios, specialSizeCurve, tipology, reduxErrors } =
+    const { telas, avios, specialSizeCurve, tipology, reduxErrors, errors } =
         useAppSelector((state) => state.product);
     const [isExisting, setIsExisting] = useState(false);
     const [selectedTipology, setSelectedTipology] = useState(0);
@@ -65,6 +68,7 @@ const NewProduct = () => {
         let fotos;
         let medidas;
 
+        dispatch(setMutationState(false));
         if (formData.fotos.length) {
             const files = Object.values(formData.fotos);
             const response = files.map((file) => toBase64(file));
@@ -78,12 +82,9 @@ const NewProduct = () => {
         }
 
         if (formData.medidas.length) {
-            console.log({ medidas: formData.medidas });
-
             const files = Object.values(formData.medidas);
             const response = files.map((file) => toBase64(file));
             const excelArr = await Promise.all(response);
-            console.log({ excelArr });
             medidas = excelArr[0];
         } else {
             medidas = "";
@@ -139,15 +140,7 @@ const NewProduct = () => {
             idMerchant,
             existingQuality: formData.existingQuality,
         });
-
-        setSeed(Math.random());
     };
-
-    useEffect(() => {
-        if (reduxErrors && Object.keys(reduxErrors).length) {
-            dispatch(clearReduxErrors());
-        }
-    }, [productSuccess]);
 
     const product = {
         producto: <ProductCard setSelectedTipology={setSelectedTipology} />,
@@ -175,8 +168,26 @@ const NewProduct = () => {
     useEffect(() => {
         if (productSuccess) {
             dispatch(setSpecialSizeCurve(false));
+            dispatch(setMutationState(true));
+            console.log({ productSuccess });
+            dispatch(clearTelasCombos());
+            dispatch(clearAviosCombos());
+            setSeed(Math.random());
+            methods.reset();
+        }
+
+        if (reduxErrors && Object.keys(reduxErrors).length) {
+            dispatch(clearReduxErrors());
         }
     }, [productSuccess]);
+
+    // TODO: cheaquear que hace algo raro cuando tenes errores de hook forms, ui se comprorta rara, posible solucion es esta
+    // useEffect(() => {
+    //     console.log({ isDirty: methods.formState.isDirty });
+    //     if (errors && Object.keys(errors).length) {
+    //         methods.reset();
+    //     }
+    // }, [methods.formState.isDirty]);
 
     return (
         <>

@@ -6,11 +6,11 @@ export const productValidation = yup
     .object()
     .shape({
         //--------PRODUCT CARD---------------
-        // idTipology: yup.string().required(required),
+        idTipology: yup.string().required(required),
         idMerchantBrand: yup.string().required(required),
         idSeason: yup.string().required(required),
         year: yup.string().required(required),
-        idDepartment: yup.string().required(required),
+        idManagmentUnit: yup.string().required(required),
         idIndustry: yup.string().required(required),
         idConcept: yup.string().required(required),
         idLine: yup.string().required(required),

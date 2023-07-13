@@ -23,6 +23,7 @@ import { fabricCombos } from "./aux/auxFuncion";
 //         // uuid: string;
 
 export interface productState {
+    mutationSuccess: boolean;
     errors: unknown;
     reduxErrors: object;
     specialSizeCurve: boolean;
@@ -55,6 +56,7 @@ export interface productState {
 }
 
 const initialState: productState = {
+    mutationSuccess: false,
     errors: null,
     reduxErrors: {},
     specialSizeCurve: false,
@@ -119,8 +121,11 @@ const productSlice = createSlice({
             );
             state[fabricCombos[selectedComboNumber]].splice(index, 1);
         },
-        clearCombos(state) {
+        clearTelasCombos(state) {
             state.telas = [];
+        },
+        clearAviosCombos(state) {
+            state.avios = [];
         },
         handleTrimCombos(
             state,
@@ -165,6 +170,9 @@ const productSlice = createSlice({
         setUpdateProduct(state, action: PayloadAction<UpdateProduct>) {
             state.updateProduct = action.payload;
         },
+        setMutationState(state, action: PayloadAction<boolean>) {
+            state.mutationSuccess = action.payload;
+        },
     },
 });
 
@@ -173,7 +181,8 @@ export const {
     setFilterData,
     handleProductData,
     addTela,
-    clearCombos,
+    clearTelasCombos,
+    clearAviosCombos,
     handleTrimCombos,
     changeTelasLength,
     changeAviosLength,
@@ -187,5 +196,6 @@ export const {
     clearErrors,
     setReduxErrors,
     clearReduxErrors,
+    setMutationState,
 } = productSlice.actions;
 export default productSlice.reducer;

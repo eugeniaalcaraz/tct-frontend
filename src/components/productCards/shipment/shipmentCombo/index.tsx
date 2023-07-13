@@ -28,8 +28,14 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
     comboNumber,
     isForAllCombos,
 }) => {
-    const { countries, typeOfshipment, telas, errors, reduxErrors } =
-        useAppSelector((state) => state.product);
+    const {
+        countries,
+        typeOfshipment,
+        telas,
+        errors,
+        reduxErrors,
+        mutationSuccess,
+    } = useAppSelector((state) => state.product);
     const [selectedDestinationCountry, setselectedDestinationCountry] =
         useState("");
     const [selectedShipmentType, setSelectedShipmentType] = useState("");
@@ -148,6 +154,15 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
             }
         }
     }, [isSubmitting]);
+
+    useEffect(() => {
+        if (mutationSuccess) {
+            console.log("IS SUBMITTED", mutationSuccess);
+            setQuantity("");
+            setSelectedShipmentType("");
+            setselectedDestinationCountry("");
+        }
+    }, [mutationSuccess]);
 
     return (
         <>

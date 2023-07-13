@@ -238,7 +238,6 @@ export type Product = {
 
 export type Avios = {
     idAvio: number;
-    idColor: number;
     idStatus: number;
     quantity: number;
     shippingDate: string;
