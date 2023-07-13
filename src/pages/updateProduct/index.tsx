@@ -13,13 +13,13 @@ import { SizeCurve } from "./sizeCurve";
 import { Measurements } from "./measurements";
 import StateOptions from "./stateLabel/StateOptions";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
-import { getStatus } from "@/utils";
+import { getSampleType, getStatus, getStatusId } from "@/utils";
 import { useParams } from "react-router-dom";
 import { setUpdateProduct } from "@/state/features/product";
 import { getProductById } from "@/services/ProductRequests";
 import { useMutation } from "@tanstack/react-query";
 import { ScreenLoader } from "@components/common";
-import { setData } from "@/state/features/updatedProduct";
+import { setData, updateSampleStatus } from "@/state/features/updatedProduct";
 
 export const UpdateProduct = () => {
     const methods = useForm();
@@ -155,6 +155,11 @@ export const UpdateProduct = () => {
         );
     };
 
+    const handleSampleUpdate = (stateInfo) => {
+        const { status } = stateInfo;
+        dispatch(updateSampleStatus(getStatusId(status)));
+    };
+
     useEffect(() => {
         if (updateProduct === undefined || updateProduct === null) {
             loadProduct();
@@ -179,11 +184,12 @@ export const UpdateProduct = () => {
                             {idMerchantBrand}
                             {idSeason}
                             {year}
-                            {id} - {sampleType}
+                            {id} - {getSampleType(sampleType)}
                         </h1>
                         <StateOptions
                             status={getStatus(Number(idSampleStatus))}
                             id={{ index: 0, item: "sample" }}
+                            updateAction={handleSampleUpdate}
                         />
                         <div>{dayjs(sampleDate).format("YYYY-MM-DD")}</div>
                     </Stack>

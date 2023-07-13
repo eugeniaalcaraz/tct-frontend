@@ -17,6 +17,7 @@ type ComboItemProps = {
     date?: Date | string;
     id: { index: number; parentIndex: number; item: string };
     deleteAction?: (...args) => void;
+    updateAction?: (...args) => void;
 };
 
 export const ComboItem: FC<ComboItemProps> = ({
@@ -28,6 +29,7 @@ export const ComboItem: FC<ComboItemProps> = ({
     date,
     id,
     deleteAction,
+    updateAction,
 }) => {
     const { edition } = useAppSelector((state) => state.product);
     const { avios } = useAppSelector((state) => state.updatedProduct);
@@ -65,7 +67,11 @@ export const ComboItem: FC<ComboItemProps> = ({
                         </div>
                     )}
                     <Stack gap={"8px"} style={{ alignItems: "center" }}>
-                        <StateOptions id={id} status={status} />
+                        <StateOptions
+                            id={id}
+                            status={status}
+                            updateAction={updateAction}
+                        />
                         {date && <div>{dayjs(date).format("YYYY-MM-DD")}</div>}
                     </Stack>
                 </Stack>

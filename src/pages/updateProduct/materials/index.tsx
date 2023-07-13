@@ -12,7 +12,7 @@ import { ComboItem } from "../comboItem";
 import { v4 as uuid } from "uuid";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
-import { getFabricById, getNameById, getStatus } from "@/utils";
+import { getFabricById, getNameById, getStatus, getStatusId } from "@/utils";
 import dayjs from "dayjs";
 import { UpdateInput, UpdateDropdown } from "../updateDropdowns";
 import { ModalTypes } from "@/types";
@@ -21,6 +21,9 @@ import NewCombo from "@components/common/modal/NewCombo";
 import {
     setFabricColors,
     setFabricPrints,
+    updateFabricColorStatus,
+    updateFabricPrintStatus,
+    updateFabricStatus,
 } from "@/state/features/updatedProduct";
 
 export const Materials = () => {
@@ -76,6 +79,33 @@ export const Materials = () => {
         dispatch(setFabricPrints({ parentIndex, prints: newPrintsArray }));
     };
 
+    const handleFabricStatus = (stateInfo) => {
+        const { index, status } = stateInfo;
+        dispatch(updateFabricStatus({ index, status: getStatusId(status) }));
+    };
+
+    const handleColorStatus = (stateInfo) => {
+        const { index, parentIndex, status } = stateInfo;
+        dispatch(
+            updateFabricColorStatus({
+                index,
+                parentIndex,
+                status: getStatusId(status),
+            })
+        );
+    };
+
+    const handlePrintStatus = (stateInfo) => {
+        const { index, parentIndex, status } = stateInfo;
+        dispatch(
+            updateFabricPrintStatus({
+                index,
+                parentIndex,
+                status: getStatusId(status),
+            })
+        );
+    };
+
     return (
         <section>
             <h3>MATERIALES</h3>
@@ -97,6 +127,7 @@ export const Materials = () => {
                             <StateOptions
                                 status={getStatus(Number(fabric?.idStatus))}
                                 id={{ index: i, item: "fabric" }}
+                                updateAction={handleFabricStatus}
                             />
                             <div>{dayjs().format("YYYY-MM-DD")}</div>
                         </Stack>
@@ -199,6 +230,7 @@ export const Materials = () => {
                                     combo={index + 1}
                                     color={getNameById(combo?.idColor, colors)}
                                     status={getStatus(Number(combo?.idStatus))}
+                                    updateAction={handleColorStatus}
                                     id={{
                                         index,
                                         parentIndex: i,
@@ -253,6 +285,7 @@ export const Materials = () => {
                                     name={print?.nombre}
                                     colorCount={print?.cantidadColor}
                                     status={getStatus(Number(print?.idStatus))}
+                                    updateAction={handlePrintStatus}
                                     id={{
                                         index,
                                         parentIndex: i,

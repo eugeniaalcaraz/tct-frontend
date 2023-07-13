@@ -12,12 +12,16 @@ import { ComboItem } from "../comboItem";
 import { v4 as uuid } from "uuid";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
-import { getNameById, getStatus } from "@/utils";
+import { getNameById, getStatus, getStatusId } from "@/utils";
 import { UpdateDropdown, UpdateInput } from "../updateDropdowns";
 import { ModalTypes } from "@/types";
 import NewCombo from "@components/common/modal/NewCombo";
 import { useModal } from "@components/hooks";
-import { setTrimColors } from "@/state/features/updatedProduct";
+import {
+    setTrimColors,
+    updateTrimColorStatus,
+    updateTrimStatus,
+} from "@/state/features/updatedProduct";
 
 export const Trims = () => {
     const [parentIndex, setParentIndex] = useState(-1);
@@ -50,6 +54,26 @@ export const Trims = () => {
         dispatch(setTrimColors({ parentIndex, colors: newColors }));
     };
 
+    const handleColorStatus = (stateInfo) => {
+        const { index, parentIndex, status } = stateInfo;
+        dispatch(
+            updateTrimColorStatus({
+                index,
+                parentIndex,
+                status: getStatusId(status),
+            })
+        );
+    };
+    const handleTrimStatus = (stateInfo) => {
+        const { index, status } = stateInfo;
+        dispatch(
+            updateTrimStatus({
+                index,
+                status: getStatusId(status),
+            })
+        );
+    };
+
     return (
         <section>
             <h3 style={{ marginBottom: "1.5rem" }}>AVÍOS</h3>
@@ -58,6 +82,7 @@ export const Trims = () => {
                     <StateOptions
                         status={getStatus(Number(avio?.idStatus))}
                         id={{ index: i, item: "trims" }}
+                        updateAction={handleTrimStatus}
                     />
 
                     <TableContainer>
@@ -135,6 +160,7 @@ export const Trims = () => {
                                     combo={index + 1}
                                     color={getNameById(combo?.idcolor, colors)}
                                     status={getStatus(Number(combo?.idstatus))}
+                                    updateAction={handleColorStatus}
                                     id={{
                                         index,
                                         parentIndex: i,

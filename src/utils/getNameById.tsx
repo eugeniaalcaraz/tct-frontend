@@ -53,3 +53,16 @@ export const getStatusId = (status) => {
             return 5;
     }
 };
+
+export const getSampleType = (id) => {
+    switch (id) {
+        case 1:
+            return "Aprobación";
+        case 2:
+            return "Pre Producción";
+        case 3:
+            return "Producción";
+        default:
+            return "-";
+    }
+};

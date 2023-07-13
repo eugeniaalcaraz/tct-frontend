@@ -1,21 +1,28 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { StatusLabel } from ".";
 
 type StateOptionsProps = {
     status: string;
     id: { index: number; parentIndex?: number; item: string };
+    updateAction?: (...args) => void;
 };
 
 const states = ["pendiente", "enviado", "aprobado", "reprobado", "recibido"];
 
-const StateOptions: FC<StateOptionsProps> = ({ status, id }) => {
+const StateOptions: FC<StateOptionsProps> = ({ status, id, updateAction }) => {
     const [chipStatus, setChipStatus] = useState(status);
     const [openList, setOpenList] = useState(false);
+    const { index, parentIndex } = id;
 
     const handleChipStatus = (clickedStatus) => {
+        updateAction &&
+            updateAction({ index, parentIndex, status: clickedStatus });
         setChipStatus(clickedStatus);
-        console.log(id);
     };
+
+    useEffect(() => {
+        setChipStatus(status);
+    }, [status]);
 
     return (
         <div

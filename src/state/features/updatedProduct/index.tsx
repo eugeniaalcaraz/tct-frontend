@@ -187,6 +187,32 @@ const updatedProductSlice = createSlice({
             const { parentIndex, print } = action.payload;
             state.telas[parentIndex].prints.push(print);
         },
+        updateSampleStatus(state, action: PayloadAction<number>) {
+            state.idSampleStatus = action.payload;
+        },
+        updateModelingStatus(state, action: PayloadAction<number>) {
+            state.idModelingStatus = action.payload;
+        },
+        updateFabricStatus(state, action: PayloadAction<any>) {
+            const { index, status } = action.payload;
+            state.telas[index].idStatus = status;
+        },
+        updateFabricColorStatus(state, action: PayloadAction<any>) {
+            const { parentIndex, index, status } = action.payload;
+            state.telas[parentIndex].colors[index].idStatus = status;
+        },
+        updateFabricPrintStatus(state, action: PayloadAction<any>) {
+            const { parentIndex, index, status } = action.payload;
+            state.telas[parentIndex].prints[index].idStatus = status;
+        },
+        updateTrimColorStatus(state, action: PayloadAction<any>) {
+            const { parentIndex, index, status } = action.payload;
+            state.avios[parentIndex].colors[index].idStatus = status;
+        },
+        updateTrimStatus(state, action: PayloadAction<any>) {
+            const { index, status } = action.payload;
+            state.avios[index].idStatus = status;
+        },
     },
 });
 
@@ -198,5 +224,12 @@ export const {
     setNewTrimColor,
     setNewFabricColor,
     setNewFabricPrint,
+    updateSampleStatus,
+    updateModelingStatus,
+    updateFabricStatus,
+    updateFabricColorStatus,
+    updateFabricPrintStatus,
+    updateTrimColorStatus,
+    updateTrimStatus,
 } = updatedProductSlice.actions;
 export default updatedProductSlice.reducer;
