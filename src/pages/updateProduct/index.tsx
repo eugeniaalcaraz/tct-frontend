@@ -31,6 +31,7 @@ export const UpdateProduct = () => {
         idMerchantBrand,
         idSeason,
         year,
+        productNumber,
     } = useAppSelector((state) => state.updatedProduct);
     const { mutateAsync, isLoading } = useMutation(getProductById);
 
@@ -54,6 +55,7 @@ export const UpdateProduct = () => {
             setData({
                 idProduct: id,
                 idManagmentUnit: productInfo?.idManagmentUnit,
+                productNumber: productInfo?.productNumber,
                 idSampleStatus: productInfo?.idSampleStatus,
                 sampleDate: dayjs(productInfo?.sampleDate).format("YYYY-MM-DD"),
                 idMerchantBrand: 1,
@@ -185,7 +187,7 @@ export const UpdateProduct = () => {
                             {idMerchantBrand}
                             {idSeason}
                             {year}
-                            {id} - {getSampleType(sampleType)}
+                            {productNumber} - {getSampleType(sampleType)}
                         </h1>
                         <StateOptions
                             status={getStatus(Number(idSampleStatus))}

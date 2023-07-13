@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 export interface updatedProductState {
     idProduct: string | number;
     idManagmentUnit: string | number;
+    productNumber: number;
     idSampleStatus: number;
     sampleType: string;
     sampleDate: Date | string;
@@ -56,6 +57,7 @@ export interface updatedProductState {
 const initialState: updatedProductState = {
     idProduct: "",
     idManagmentUnit: 1,
+    productNumber: 0,
     idSampleStatus: 1,
     sampleType: "",
     sampleDate: "2023-07-28",
