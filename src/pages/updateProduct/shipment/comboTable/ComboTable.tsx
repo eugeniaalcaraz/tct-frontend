@@ -53,10 +53,6 @@ export const ComboTable: FC<ComboTableProps> = ({ number, combo }) => {
         ],
     ];
 
-    useEffect(() => {
-        combo;
-    }, [combo]);
-
     return (
         <div>
             <div style={{ fontWeight: "400", lineHeight: "19px" }}>

@@ -61,10 +61,6 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
         initialValue
     );
 
-    useEffect(() => {
-        console.log(curve);
-    }, [curve]);
-
     const getSizes = () => {
         switch (type) {
             case 2:

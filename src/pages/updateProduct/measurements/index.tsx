@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@mui/material";
 import { useAppSelector } from "@/state/app/hooks";
 import { useIconsContext } from "@components/hooks";
@@ -6,11 +6,33 @@ import StateOptions from "../stateLabel/StateOptions";
 import { getStatus } from "@/utils";
 
 const Measurements = () => {
+    const [table, setTable] = useState("");
     const { edition } = useAppSelector((state) => state.product);
+    const updateData = useAppSelector((state) => state.updatedProduct);
     const { idModelingStatus } = useAppSelector(
         (state) => state.updatedProduct
     );
     const { icons } = useIconsContext();
+
+    const handleMmt = async (e) => {
+        let attachments: DataTransfer = new DataTransfer();
+
+        if (e.dataTransfer) {
+            attachments = e.dataTransfer.files;
+        } else if (e.target) {
+            attachments = e.target.files;
+        }
+        const filesSelected = [];
+        for (let i = 0; i < Object.keys(attachments).length; i++) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            filesSelected.push(URL.createObjectURL(attachments[i]));
+        }
+        console.log(filesSelected);
+        setTable(filesSelected[0]);
+        //dispatch(setPicture(filesSelected[0]));
+    };
+
     return (
         <section>
             <h3 style={{ marginBottom: "1.5rem" }}>TABLA DE MEDIDAS</h3>
@@ -39,14 +61,18 @@ const Measurements = () => {
                     >
                         <span style={{ marginRight: "1rem" }}>Modificar</span>{" "}
                         {icons["upload"]}
-                        <input
-                            type="file"
-                            hidden
-                            // onChange={handlePreview}
-                        />
+                        <input type="file" hidden onChange={handleMmt} />
                     </Button>
                 ) : (
-                    <>Table</>
+                    <img
+                        style={{
+                            height: "100%",
+                            width: "100%",
+                            objectFit: "cover",
+                        }}
+                        alt={`Tabla de medidas de producto ${updateData?.idProduct}`}
+                        src={table}
+                    />
                 )}
             </div>
         </section>

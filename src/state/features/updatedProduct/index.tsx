@@ -220,6 +220,9 @@ const updatedProductSlice = createSlice({
             const { index, status } = action.payload;
             state.avios[index].idStatus = status;
         },
+        setPicture(state, action: PayloadAction<any>) {
+            state.pictures[0].pic = action.payload;
+        },
     },
 });
 
@@ -238,5 +241,6 @@ export const {
     updateFabricPrintStatus,
     updateTrimColorStatus,
     updateTrimStatus,
+    setPicture,
 } = updatedProductSlice.actions;
 export default updatedProductSlice.reducer;

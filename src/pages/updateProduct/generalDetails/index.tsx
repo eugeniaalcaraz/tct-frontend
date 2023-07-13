@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { v4 as uuid } from "uuid";
 import { StyledTableRow } from "../UpdateProductStyles";
-import { useAppSelector } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { useIconsContext } from "@components/hooks";
 
 import {
@@ -21,6 +21,8 @@ import {
     UpdateRadio,
 } from "../updateDropdowns";
 import { getBottomRows, getGeneralDetails } from "./getGeneralDetails";
+import { toBase64 } from "@/utils/toBase64";
+import { setPicture } from "@/state/features/updatedProduct";
 
 export const GeneralDetails = () => {
     const {
@@ -52,6 +54,7 @@ export const GeneralDetails = () => {
     );
 
     const { icons } = useIconsContext();
+    const dispatch = useAppDispatch();
 
     const handleRowStructure = () => {
         setRowStructure(
@@ -70,6 +73,24 @@ export const GeneralDetails = () => {
     };
 
     const bottomRows = getBottomRows(updateData);
+
+    const handleFoto = async (e) => {
+        let attachments: DataTransfer = new DataTransfer();
+
+        if (e.dataTransfer) {
+            attachments = e.dataTransfer.files;
+        } else if (e.target) {
+            attachments = e.target.files;
+        }
+        const filesSelected = [];
+        for (let i = 0; i < Object.keys(attachments).length; i++) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            filesSelected.push(URL.createObjectURL(attachments[i]));
+        }
+
+        dispatch(setPicture(filesSelected[0]));
+    };
 
     useEffect(() => {
         handleRowStructure();
@@ -100,7 +121,7 @@ export const GeneralDetails = () => {
                                 Modificar
                             </span>{" "}
                             {icons["upload"]}
-                            <input type="file" hidden />
+                            <input type="file" hidden onChange={handleFoto} />
                         </Button>
                     ) : (
                         <img
