@@ -80,7 +80,16 @@ export const GeneralDetails = () => {
                             <input type="file" hidden />
                         </Button>
                     ) : (
-                        <>Imagen</>
+                        <img
+                            style={{
+                                height: "100%",
+                                width: "350px",
+                                maxWidth: "350px",
+                                objectFit: "cover",
+                            }}
+                            alt={`Foto de producto ${updateData?.idProduct}`}
+                            src={updateData?.pictures[0]?.pic}
+                        />
                     )}
                 </div>
                 <div className="item">

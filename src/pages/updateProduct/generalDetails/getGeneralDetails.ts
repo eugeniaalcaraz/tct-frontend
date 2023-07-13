@@ -48,10 +48,10 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
         [
             {
                 label: "Unidad de gestión",
-                data: getNameById(data['idDepartment'], managementUnit),
+                data: getNameById(data['idManagmentUnit'], managementUnit),
                 select: true,
                 options: managementUnit,
-                name: "idDepartment",
+                name: "idManagmentUnit",
             },
             {
                 label: "Rubro",

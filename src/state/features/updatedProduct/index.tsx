@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
 
 export interface updatedProductState {
     idProduct: string | number;
+    idManagmentUnit: string | number;
     idSampleStatus: number;
     sampleType: string;
     sampleDate: Date | string;
@@ -53,6 +55,7 @@ export interface updatedProductState {
 
 const initialState: updatedProductState = {
     idProduct: "",
+    idManagmentUnit: 1,
     idSampleStatus: 1,
     sampleType: "",
     sampleDate: "2023-07-28",
@@ -189,9 +192,11 @@ const updatedProductSlice = createSlice({
         },
         updateSampleStatus(state, action: PayloadAction<number>) {
             state.idSampleStatus = action.payload;
+            state.sampleDate = dayjs().format("YYYY-MM-DD");
         },
         updateModelingStatus(state, action: PayloadAction<number>) {
             state.idModelingStatus = action.payload;
+            state.modelingDate = dayjs().format("YYYY-MM-DD");
         },
         updateFabricStatus(state, action: PayloadAction<any>) {
             const { index, status } = action.payload;

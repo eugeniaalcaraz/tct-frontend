@@ -383,6 +383,7 @@ export type Approvals = {
 
 export type UpdatedProductData = {
     idProduct: string;
+    idManagmentUnit: string | number;
     idSampleStatus: number;
     sampleDate: Date | string;
     idMerchantBrand: number;

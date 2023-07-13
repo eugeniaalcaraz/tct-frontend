@@ -53,6 +53,7 @@ export const UpdateProduct = () => {
         dispatch(
             setData({
                 idProduct: id,
+                idManagmentUnit: productInfo?.idManagmentUnit,
                 idSampleStatus: productInfo?.idSampleStatus,
                 sampleDate: dayjs(productInfo?.sampleDate).format("YYYY-MM-DD"),
                 idMerchantBrand: 1,
@@ -115,9 +116,9 @@ export const UpdateProduct = () => {
                     shippingDate: trim?.shippinDate,
                     entryDate: trim?.entryDate,
                     warehouseEntryDate: trim?.warehouseEntryDate,
-                    colors: trim.colors.map((color) => ({
-                        idColor: color.idcolor,
-                        idStatus: color.idstatus,
+                    colors: trim?.colors?.map((color) => ({
+                        idColor: color?.idcolor,
+                        idStatus: color?.idstatus,
                     })),
                 })),
                 sizeCurveType: productInfo?.sizeCurveType,
@@ -140,9 +141,9 @@ export const UpdateProduct = () => {
                         isMain: 1,
                     },
                 ],
-                entryDate: fabrics && fabrics[0].entryDate,
-                shippingDate: fabrics && fabrics[0].shippinDate,
-                warehouseEntryDate: fabrics && fabrics[0].warehouseEntryDate,
+                entryDate: fabrics && fabrics[0]?.entryDate,
+                shippingDate: fabrics && fabrics[0]?.shippinDate,
+                warehouseEntryDate: fabrics && fabrics[0]?.warehouseEntryDate,
                 curve:
                     (fabrics && fabrics[0]?.comboColors[0]?.sizeCurve) ||
                     (fabrics && fabrics[0]?.comboPrints[0]?.sizeCurve) ||

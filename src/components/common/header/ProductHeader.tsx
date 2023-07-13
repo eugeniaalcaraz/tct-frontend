@@ -19,7 +19,7 @@ const ProductHeader = () => {
         if (!edition) {
             dispatch(setEdition(true));
         } else {
-            //console.log(await updateProduct(updatedData));
+            console.log(await updateProduct(updatedData));
             dispatch(setEdition(false));
         }
         setIsLoading(false);
