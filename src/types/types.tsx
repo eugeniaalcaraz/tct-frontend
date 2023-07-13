@@ -320,7 +320,7 @@ export type Fabrics = {
     idCountryDestination: number;
     idFabric: number;
     idPlacement: number;
-    idShipping: number;
+    idshipping: number;
     idStatus: number;
     quantity: number;
     shippinDate: Date | string;

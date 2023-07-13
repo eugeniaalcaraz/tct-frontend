@@ -223,6 +223,25 @@ const updatedProductSlice = createSlice({
         setPicture(state, action: PayloadAction<any>) {
             state.pictures[0].pic = action.payload;
         },
+        setMmtTable(state, action: PayloadAction<any>) {
+            state.measurmentTable = action.payload;
+        },
+        saveCurves(state, action: PayloadAction<any>) {
+            state.telas.forEach(({ colors }) =>
+                colors.forEach((color) => (color.sizeCurve = action.payload))
+            );
+            state.telas.forEach(({ prints }) =>
+                prints.forEach((print) => (print.sizeCurve = action.payload))
+            );
+        },
+        setDestinationCountry(state, action: PayloadAction<any>) {
+            state.telas.forEach(
+                (tela) => (tela.idCountryDestination = action.payload)
+            );
+        },
+        setShipmentType(state, action: PayloadAction<any>) {
+            state.telas.forEach((tela) => (tela.idShipping = action.payload));
+        },
     },
 });
 
@@ -242,5 +261,9 @@ export const {
     updateTrimColorStatus,
     updateTrimStatus,
     setPicture,
+    saveCurves,
+    setDestinationCountry,
+    setShipmentType,
+    setMmtTable,
 } = updatedProductSlice.actions;
 export default updatedProductSlice.reducer;

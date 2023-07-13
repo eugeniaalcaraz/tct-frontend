@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
-import { useAppSelector } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { useIconsContext } from "@components/hooks";
 import StateOptions from "../stateLabel/StateOptions";
 import { getStatus } from "@/utils";
+import { setMmtTable } from "@/state/features/updatedProduct";
 
 const Measurements = () => {
     const [table, setTable] = useState("");
@@ -13,6 +14,7 @@ const Measurements = () => {
         (state) => state.updatedProduct
     );
     const { icons } = useIconsContext();
+    const dispatch = useAppDispatch();
 
     const handleMmt = async (e) => {
         let attachments: DataTransfer = new DataTransfer();
@@ -28,9 +30,8 @@ const Measurements = () => {
             // @ts-ignore
             filesSelected.push(URL.createObjectURL(attachments[i]));
         }
-        console.log(filesSelected);
         setTable(filesSelected[0]);
-        //dispatch(setPicture(filesSelected[0]));
+        dispatch(setMmtTable(filesSelected[0]));
     };
 
     return (

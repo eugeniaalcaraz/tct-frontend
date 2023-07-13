@@ -57,7 +57,16 @@ export const ComboItem: FC<ComboItemProps> = ({
                     gap={"16px"}
                     sx={{ alignItems: "center" }}
                 >
-                    <div className="colorBox" style={{ background: color }} />
+                    <div
+                        className="colorBox"
+                        style={{
+                            background:
+                                color === "-" || !color
+                                    ? "url('https://img.freepik.com/premium-vector/cut-out-seamless-pattern-editable-vector-file_718966-328.jpg')"
+                                    : color,
+                            backgroundSize: "85px",
+                        }}
+                    />
                     {name && (
                         <div
                             style={{ display: "flex", flexDirection: "column" }}

@@ -11,6 +11,7 @@ type UpdateProps = {
 
 const UpdateInput: FC<UpdateProps> = ({ name, value, width = "15rem" }) => {
     const dispatch = useAppDispatch();
+    //const [inputValue, setInputValue] = useState(value);
 
     const handleChange = (e, state) => {
         dispatch(setData({ [state]: e.target.value }));

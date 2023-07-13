@@ -13,6 +13,7 @@ export const SizeCurve = () => {
 
     return (
         <>
+            <h3>CURVA DE TALLES</h3>
             {fabrics?.map((fabric, index) => (
                 <SizeCurveTable
                     key={uuid()}

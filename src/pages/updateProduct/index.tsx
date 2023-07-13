@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { MenuItem, Select, Stack } from "@mui/material";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import { Form } from "@components/common";
@@ -32,7 +32,7 @@ import { setData, updateSampleStatus } from "@/state/features/updatedProduct";
 export const UpdateProduct = () => {
     const methods = useForm();
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { updateProduct } = useAppSelector((state) => state.product);
+    const { updateProduct, edition } = useAppSelector((state) => state.product);
     const {
         sampleType,
         idSampleStatus,
@@ -210,6 +210,10 @@ export const UpdateProduct = () => {
         updateIndustriesAndTipologies();
     }, [idIndustry, idDepartment]);
 
+    useEffect(() => {
+        console.log(sampleType);
+    }, [sampleType]);
+
     return (
         <>
             <Container>
@@ -220,13 +224,43 @@ export const UpdateProduct = () => {
                         style={{
                             borderBottom: "#314C95 2px solid",
                             alignItems: "center",
+                            height: "54px",
                         }}
                     >
                         <h1>
                             {idMerchantBrand}
                             {idSeason}
                             {year}
-                            {productNumber} - {getSampleType(sampleType)}
+                            {productNumber} -{" "}
+                            {edition ? (
+                                <Select
+                                    size="small"
+                                    sx={{
+                                        width: "fit-content",
+                                        fontSize: "32px",
+                                        fontWeight: 700,
+                                        lineHeight: "44px",
+                                        textAlign: "left",
+                                    }}
+                                    variant="standard"
+                                    value={sampleType}
+                                    onChange={(e) =>
+                                        dispatch(
+                                            setData({
+                                                sampleType: e.target.value,
+                                            })
+                                        )
+                                    }
+                                >
+                                    <MenuItem value={1}>Aprobación</MenuItem>
+                                    <MenuItem value={2}>
+                                        Pre Producción
+                                    </MenuItem>
+                                    <MenuItem value={3}>Producción</MenuItem>
+                                </Select>
+                            ) : (
+                                getSampleType(sampleType)
+                            )}
                         </h1>
                         <StateOptions
                             status={getStatus(Number(idSampleStatus))}

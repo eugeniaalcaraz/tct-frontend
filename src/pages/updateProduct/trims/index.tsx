@@ -13,7 +13,7 @@ import { ComboItem } from "../comboItem";
 import { v4 as uuid } from "uuid";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
-import { getNameById, getStatus, getStatusId } from "@/utils";
+import { getColorRGB, getNameById, getStatus, getStatusId } from "@/utils";
 import { UpdateDropdown, UpdateInput } from "../updateDropdowns";
 import { ModalTypes } from "@/types";
 import NewCombo from "@components/common/modal/NewCombo";
@@ -135,7 +135,16 @@ export const Trims = () => {
                                                             />
                                                         )
                                                     ) : (
-                                                        <>{avio[data]}</>
+                                                        <>
+                                                            {data === "quantity"
+                                                                ? avio[data]
+                                                                : getNameById(
+                                                                      avio[
+                                                                          data
+                                                                      ],
+                                                                      trims
+                                                                  )}
+                                                        </>
                                                     )}
                                                 </TableCell>
                                             )
@@ -167,7 +176,7 @@ export const Trims = () => {
                             >
                                 <ComboItem
                                     combo={index + 1}
-                                    color={getNameById(combo?.idcolor, colors)}
+                                    color={getColorRGB(combo?.idColor, colors)}
                                     status={getStatus(Number(combo?.idstatus))}
                                     updateAction={handleColorStatus}
                                     id={{

@@ -24,6 +24,11 @@ export const getNameById = (id, category) => {
     return item?.Description ?? "-";
 };
 
+export const getColorRGB = (id, category) => {
+    const item = category?.find((item) => Number(item.Id) === Number(id));
+    return item?.RGB ?? "-";
+};
+
 export const getCountryById = (id, category) => {
     const item = category?.find((item) => Number(item.Id) === Number(id));
     return item?.Name ?? "-";

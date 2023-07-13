@@ -17,6 +17,7 @@ import {
     getNameById,
     getStatus,
     getStatusId,
+    getColorRGB,
 } from "@/utils";
 import dayjs from "dayjs";
 import { UpdateInput, UpdateDropdown } from "../updateDropdowns";
@@ -33,9 +34,8 @@ import {
 
 export const Materials = () => {
     const [fabricIndex, setFabricIndex] = useState(-1);
-    const { edition, localization, fabrics, colors } = useAppSelector(
-        (state) => state.product
-    );
+    const { edition, localization, fabrics, colors, composition } =
+        useAppSelector((state) => state.product);
     const { telas } = useAppSelector((state) => state.updatedProduct);
     const { modalType } = useAppSelector((state) => state.modal);
     const { openModal } = useModal();
@@ -200,9 +200,26 @@ export const Materials = () => {
                                                         )
                                                     ) : (
                                                         <>
-                                                            {String(
-                                                                fabric[data]
-                                                            )}
+                                                            {name ===
+                                                            "composition"
+                                                                ? fabric[
+                                                                      data
+                                                                  ].map(
+                                                                      ({
+                                                                          idFiber,
+                                                                          percentage,
+                                                                      }) => {
+                                                                          return `%${percentage} ${getNameById(
+                                                                              idFiber,
+                                                                              composition
+                                                                          )}`;
+                                                                      }
+                                                                  )
+                                                                : String(
+                                                                      fabric[
+                                                                          data
+                                                                      ]
+                                                                  )}
                                                         </>
                                                     )}
                                                 </TableCell>
@@ -236,7 +253,7 @@ export const Materials = () => {
                             >
                                 <ComboItem
                                     combo={index + 1}
-                                    color={getNameById(combo?.idColor, colors)}
+                                    color={getColorRGB(combo?.idColor, colors)}
                                     status={getStatus(Number(combo?.idStatus))}
                                     updateAction={handleColorStatus}
                                     id={{

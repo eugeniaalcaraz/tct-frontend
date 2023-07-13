@@ -10,11 +10,15 @@ import { StyledTableRow } from "../UpdateProductStyles";
 import { ComboTable } from "./comboTable/ComboTable";
 import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
-import { getCountryById, getSupplierById } from "@/utils";
+import {
+    getCountryById,
+    getSupplierById,
+    getTypeOfShipmentById,
+} from "@/utils";
 import { UpdateDropdown, UpdateInput } from "../updateDropdowns";
 
 export const Shipment = () => {
-    const { edition, countries, supplier } = useAppSelector(
+    const { edition, countries, supplier, typeOfshipment } = useAppSelector(
         (state) => state.product
     );
     const updateData = useAppSelector((state) => state.updatedProduct);
@@ -29,10 +33,35 @@ export const Shipment = () => {
                 name: "idCountry",
                 select: true,
                 options: countries?.map(({ Id, Name }) => ({
-                    Id: Id,
+                    Id: String(Id),
                     Description: Name,
                 })),
             },
+            {
+                label: "Destino",
+                data: getCountryById(
+                    comboInfo[0]?.idCountryDestination,
+                    countries
+                ),
+                name: "idCountryDestination",
+                options: countries?.map(({ Id, Name }) => ({
+                    Id: String(Id),
+                    Description: Name,
+                })),
+                select: true,
+            },
+            {
+                label: "Embarque",
+                data: getTypeOfShipmentById(
+                    comboInfo[0]?.idShipping,
+                    typeOfshipment
+                ),
+                name: "idShipping",
+                options: typeOfshipment,
+                select: true,
+            },
+        ],
+        [
             {
                 label: "Cantidad Total",
                 data: updateData?.quantity,
@@ -40,8 +69,6 @@ export const Shipment = () => {
                 select: false,
                 options: [],
             },
-        ],
-        [
             {
                 label: "Proveedor",
                 data: getSupplierById(updateData?.idSupplier, supplier),
@@ -101,8 +128,19 @@ export const Shipment = () => {
                                                     select ? (
                                                         <UpdateDropdown
                                                             value={
-                                                                updateData[name]
+                                                                name ===
+                                                                    "idShipping" ||
+                                                                name ===
+                                                                    "idCountryDestination"
+                                                                    ? comboInfo[0][
+                                                                          name
+                                                                      ]
+                                                                    : updateData[
+                                                                          name
+                                                                      ]
                                                             }
+                                                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                            // @ts-ignore
                                                             options={options}
                                                             name={name}
                                                         />
@@ -124,11 +162,11 @@ export const Shipment = () => {
                     </Table>
                 </TableContainer>
             </div>
-            <Stack rowGap={"40px"}>
+            {/* <Stack rowGap={"40px"}>
                 {comboInfo?.map((combo, index) => (
                     <ComboTable key={uuid()} number={index + 1} combo={combo} />
                 ))}
-            </Stack>
+            </Stack> */}
         </section>
     );
 };

@@ -39,38 +39,34 @@ export const GeneralDetails = () => {
 
     const updateData = useAppSelector((state) => state.updatedProduct);
     const { idDepartment } = useAppSelector((state) => state.updatedProduct);
-    const [rowStructure, setRowStructure] = useState(
-        getGeneralDetails(
-            updateData,
-            allSeasons,
-            managementUnit,
-            tipologiesByIndustry,
-            industriesByUnit,
-            concepts,
-            lines,
-            bodyFit,
-            rises
-        )
-    );
+    // const [rowStructure, setRowStructure] = useState(
+    //     getGeneralDetails(
+    //         updateData,
+    //         allSeasons,
+    //         managementUnit,
+    //         tipologiesByIndustry,
+    //         industriesByUnit,
+    //         concepts,
+    //         lines,
+    //         bodyFit,
+    //         rises
+    //     )
+    // );
 
     const { icons } = useIconsContext();
     const dispatch = useAppDispatch();
 
-    const handleRowStructure = () => {
-        setRowStructure(
-            getGeneralDetails(
-                updateData,
-                allSeasons,
-                managementUnit,
-                tipologiesByIndustry,
-                industriesByUnit,
-                concepts,
-                lines,
-                bodyFit,
-                rises
-            )
-        );
-    };
+    const rowStructure = getGeneralDetails(
+        updateData,
+        allSeasons,
+        managementUnit,
+        tipologiesByIndustry,
+        industriesByUnit,
+        concepts,
+        lines,
+        bodyFit,
+        rises
+    );
 
     const bottomRows = getBottomRows(updateData);
 
@@ -92,9 +88,9 @@ export const GeneralDetails = () => {
         dispatch(setPicture(filesSelected[0]));
     };
 
-    useEffect(() => {
-        handleRowStructure();
-    }, [tipologiesByIndustry, industriesByUnit, idDepartment]);
+    // useEffect(() => {
+    //     handleRowStructure();
+    // }, [tipologiesByIndustry, industriesByUnit, idDepartment, updateData]);
 
     return (
         <section>
@@ -112,17 +108,53 @@ export const GeneralDetails = () => {
                     }}
                 >
                     {edition ? (
-                        <Button
-                            variant="outlined"
-                            component="label"
-                            className="files"
+                        <div
+                            style={{
+                                position: "relative",
+                                height: "100%",
+                                width: "100%",
+                            }}
                         >
-                            <span style={{ marginRight: "1rem" }}>
-                                Modificar
-                            </span>{" "}
-                            {icons["upload"]}
-                            <input type="file" hidden onChange={handleFoto} />
-                        </Button>
+                            <img
+                                style={{
+                                    height: "100%",
+                                    width: "350px",
+                                    maxWidth: "350px",
+                                    objectFit: "cover",
+                                    filter: "blur(2px) grayscale(20%) opacity(20%)",
+                                }}
+                                alt={`Foto de producto ${updateData?.idProduct}`}
+                                src={updateData?.pictures[0]?.pic}
+                            />
+                            <span
+                                style={{
+                                    position: "absolute",
+                                    top: "50%",
+                                    left: "50%",
+                                    transform: "translate(-50%, -50%)",
+                                }}
+                            >
+                                <Button
+                                    variant="outlined"
+                                    component="label"
+                                    className="files"
+                                    sx={{
+                                        background: "#DAD9D9",
+                                        "&:hover": { background: "#DAD9D9" },
+                                    }}
+                                >
+                                    <span style={{ marginRight: "1rem" }}>
+                                        Modificar
+                                    </span>{" "}
+                                    {icons["upload"]}
+                                    <input
+                                        type="file"
+                                        hidden
+                                        onChange={handleFoto}
+                                    />
+                                </Button>
+                            </span>
+                        </div>
                     ) : (
                         <img
                             style={{

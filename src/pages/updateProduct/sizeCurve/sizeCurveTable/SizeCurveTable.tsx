@@ -12,7 +12,7 @@ import {
 import { v4 as uuid } from "uuid";
 import React, { FC, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
-import { setData } from "@/state/features/updatedProduct";
+import { saveCurves, setData } from "@/state/features/updatedProduct";
 import { useIconsContext } from "@components/hooks";
 
 type SizeCurveTableProps = {
@@ -167,6 +167,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
         const newCurve = curve.slice();
         newCurve[position] = Number(e.target.value);
         dispatch(setData({ curve: newCurve }));
+        dispatch(saveCurves(curve));
     };
 
     return (
@@ -237,7 +238,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                                         style={{
                                             display: "inline-block",
                                             verticalAlign: "inherit",
-                                            marginLeft: "1rem",
+                                            // marginLeft: "0.5rem",
                                         }}
                                     >
                                         {icons["alert"]}
@@ -255,16 +256,3 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
         </TableContainer>
     );
 };
-
-/*
- <Tooltip
-                        title="Promedio basado
-                    en estado de los productos
-                    y dias restantes para 
-                    el embarque de los mismos"
-                        placement="left"
-                        arrow
-                    >
-                        <div>{icons["info"]}</div>
-                    </Tooltip>
-*/

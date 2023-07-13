@@ -2,7 +2,11 @@ import React, { FC } from "react";
 import { v4 as uuid } from "uuid";
 import { MenuItem, Select } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
-import { setData } from "@/state/features/updatedProduct";
+import {
+    setData,
+    setDestinationCountry,
+    setShipmentType,
+} from "@/state/features/updatedProduct";
 import {
     setIndustriesByUnit,
     setTipologiesByIndustry,
@@ -47,6 +51,10 @@ const UpdateDropdown: FC<UpdateProps> = ({
                     })
                 )
             );
+        } else if (name === "idCountryDestination") {
+            dispatch(setDestinationCountry(e.target.value));
+        } else if (name === "idShipping") {
+            dispatch(setShipmentType(e.target.value));
         }
     };
 
@@ -60,7 +68,6 @@ const UpdateDropdown: FC<UpdateProps> = ({
             onChange={(e) => handleChange(e, name)}
             disabled={disabled}
         >
-            <MenuItem value={""}>No option selected</MenuItem>
             {options?.map((option) => (
                 <MenuItem key={uuid()} value={option?.Id}>
                     {option?.Description}
