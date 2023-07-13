@@ -161,8 +161,8 @@ const getQuery = (card) => {
 
 const getListingPath = (name) => {
     switch (name) {
-        case "status":
-            return "getStatus";
+        // case "status":
+        //     return "getStatus";
         case "allSeasons":
             return "getSeasons";
         default:

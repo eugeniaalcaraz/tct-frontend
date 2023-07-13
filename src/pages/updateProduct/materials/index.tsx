@@ -12,7 +12,12 @@ import { ComboItem } from "../comboItem";
 import { v4 as uuid } from "uuid";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import StateOptions from "../stateLabel/StateOptions";
-import { getFabricById, getNameById, getStatus, getStatusId } from "@/utils";
+import {
+    getTypeOfShipmentById,
+    getNameById,
+    getStatus,
+    getStatusId,
+} from "@/utils";
 import dayjs from "dayjs";
 import { UpdateInput, UpdateDropdown } from "../updateDropdowns";
 import { ModalTypes } from "@/types";
@@ -113,7 +118,10 @@ export const Materials = () => {
                 <div key={uuid()} style={{ margin: "40px 0" }}>
                     <div>
                         <div>
-                            {getNameById(fabric?.idPlacement, localization)}
+                            {getTypeOfShipmentById(
+                                fabric?.placement,
+                                localization
+                            )}
                         </div>
                         <Stack
                             direction={"row"}

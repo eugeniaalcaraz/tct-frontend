@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import {
     Stack,
@@ -27,8 +27,8 @@ export const GeneralDetails = () => {
         edition,
         allSeasons,
         managementUnit,
-        tipology,
-        industries,
+        tipologiesByIndustry,
+        industriesByUnit,
         concepts,
         lines,
         bodyFit,
@@ -36,21 +36,44 @@ export const GeneralDetails = () => {
     } = useAppSelector((state) => state.product);
 
     const updateData = useAppSelector((state) => state.updatedProduct);
-
-    const { icons } = useIconsContext();
-    const rowStructure = getGeneralDetails(
-        updateData,
-        allSeasons,
-        managementUnit,
-        tipology,
-        industries,
-        concepts,
-        lines,
-        bodyFit,
-        rises
+    const { idDepartment } = useAppSelector((state) => state.updatedProduct);
+    const [rowStructure, setRowStructure] = useState(
+        getGeneralDetails(
+            updateData,
+            allSeasons,
+            managementUnit,
+            tipologiesByIndustry,
+            industriesByUnit,
+            concepts,
+            lines,
+            bodyFit,
+            rises
+        )
     );
 
+    const { icons } = useIconsContext();
+
+    const handleRowStructure = () => {
+        setRowStructure(
+            getGeneralDetails(
+                updateData,
+                allSeasons,
+                managementUnit,
+                tipologiesByIndustry,
+                industriesByUnit,
+                concepts,
+                lines,
+                bodyFit,
+                rises
+            )
+        );
+    };
+
     const bottomRows = getBottomRows(updateData);
+
+    useEffect(() => {
+        handleRowStructure();
+    }, [tipologiesByIndustry, industriesByUnit, idDepartment]);
 
     return (
         <section>
@@ -97,7 +120,7 @@ export const GeneralDetails = () => {
                         <Table>
                             <TableBody>
                                 {rowStructure.map((row) => (
-                                    <>
+                                    <Fragment key={uuid()}>
                                         {row[0].label !== "" ? (
                                             <StyledTableRow key={uuid()}>
                                                 {row.map((row) => (
@@ -136,16 +159,22 @@ export const GeneralDetails = () => {
                                                             ) : row?.select ? (
                                                                 <UpdateDropdown
                                                                     value={
-                                                                        updateData[
-                                                                            row
-                                                                                .name
-                                                                        ]
+                                                                        row?.data ===
+                                                                        "-"
+                                                                            ? ""
+                                                                            : updateData[
+                                                                                  row
+                                                                                      .name
+                                                                              ]
                                                                     }
                                                                     options={
                                                                         row.options
                                                                     }
                                                                     name={
                                                                         row.name
+                                                                    }
+                                                                    disabled={
+                                                                        row.disabled
                                                                     }
                                                                 />
                                                             ) : (
@@ -170,7 +199,7 @@ export const GeneralDetails = () => {
                                                 <TableCell />
                                             </TableRow>
                                         )}
-                                    </>
+                                    </Fragment>
                                 ))}
                             </TableBody>
                         </Table>

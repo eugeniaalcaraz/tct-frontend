@@ -1,10 +1,16 @@
-import { TableContainer, Table, TableCell, Stack } from "@mui/material";
+import {
+    TableContainer,
+    Table,
+    TableCell,
+    Stack,
+    TableBody,
+} from "@mui/material";
 import React from "react";
 import { StyledTableRow } from "../UpdateProductStyles";
 import { ComboTable } from "./comboTable/ComboTable";
 import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
-import { getNameById, getSupplierById } from "@/utils";
+import { getCountryById, getSupplierById } from "@/utils";
 import { UpdateDropdown, UpdateInput } from "../updateDropdowns";
 
 export const Shipment = () => {
@@ -19,10 +25,13 @@ export const Shipment = () => {
         [
             {
                 label: "Origen",
-                data: getNameById(updateData?.idCountry, countries),
+                data: getCountryById(updateData?.idCountry, countries),
                 name: "idCountry",
                 select: true,
-                options: countries,
+                options: countries?.map(({ Id, Name }) => ({
+                    Id: Id,
+                    Description: Name,
+                })),
             },
             {
                 label: "Cantidad Total",
@@ -59,54 +68,59 @@ export const Shipment = () => {
             <div style={{ marginBottom: "50px" }}>
                 <TableContainer>
                     <Table>
-                        {rowStructure.map((row) => (
-                            <StyledTableRow key={uuid()}>
-                                {row.map(
-                                    ({
-                                        label,
-                                        data,
-                                        name,
-                                        select,
-                                        options,
-                                    }) => (
-                                        <TableCell key={uuid()}>
-                                            {edition ? (
-                                                <span
-                                                    style={{
-                                                        display: "inline-block",
-                                                        margin: "0.6rem 0.6rem 0 0",
-                                                    }}
-                                                >
-                                                    {label}
-                                                    {label !== "" && ": "}
-                                                </span>
-                                            ) : (
-                                                <>
-                                                    {label}
-                                                    {label !== "" && ": "}
-                                                </>
-                                            )}
-                                            {edition && label !== "" ? (
-                                                select ? (
-                                                    <UpdateDropdown
-                                                        value={updateData[name]}
-                                                        options={options}
-                                                        name={name}
-                                                    />
+                        <TableBody>
+                            {rowStructure.map((row) => (
+                                <StyledTableRow key={uuid()}>
+                                    {row.map(
+                                        ({
+                                            label,
+                                            data,
+                                            name,
+                                            select,
+                                            options,
+                                        }) => (
+                                            <TableCell key={uuid()}>
+                                                {edition ? (
+                                                    <span
+                                                        style={{
+                                                            display:
+                                                                "inline-block",
+                                                            margin: "0.6rem 0.6rem 0 0",
+                                                        }}
+                                                    >
+                                                        {label}
+                                                        {label !== "" && ": "}
+                                                    </span>
                                                 ) : (
-                                                    <UpdateInput
-                                                        value={updateData[data]}
-                                                        name={name}
-                                                    />
-                                                )
-                                            ) : (
-                                                <>{data}</>
-                                            )}
-                                        </TableCell>
-                                    )
-                                )}
-                            </StyledTableRow>
-                        ))}
+                                                    <>
+                                                        {label}
+                                                        {label !== "" && ": "}
+                                                    </>
+                                                )}
+                                                {edition && label !== "" ? (
+                                                    select ? (
+                                                        <UpdateDropdown
+                                                            value={
+                                                                updateData[name]
+                                                            }
+                                                            options={options}
+                                                            name={name}
+                                                        />
+                                                    ) : (
+                                                        <UpdateInput
+                                                            value={data}
+                                                            name={name}
+                                                        />
+                                                    )
+                                                ) : (
+                                                    <>{data}</>
+                                                )}
+                                            </TableCell>
+                                        )
+                                    )}
+                                </StyledTableRow>
+                            ))}
+                        </TableBody>
                     </Table>
                 </TableContainer>
             </div>

@@ -15,14 +15,23 @@ import StateOptions from "./stateLabel/StateOptions";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { getSampleType, getStatus, getStatusId } from "@/utils";
 import { useParams } from "react-router-dom";
-import { setUpdateProduct } from "@/state/features/product";
-import { getProductById } from "@/services/ProductRequests";
+import {
+    setIndustriesByUnit,
+    setTipologiesByIndustry,
+    setUpdateProduct,
+} from "@/state/features/product";
+import {
+    getMerchantIndustryDropdownValue,
+    getMerchantTypologyDropdownValue,
+    getProductById,
+} from "@/services/ProductRequests";
 import { useMutation } from "@tanstack/react-query";
 import { ScreenLoader } from "@components/common";
 import { setData, updateSampleStatus } from "@/state/features/updatedProduct";
 
 export const UpdateProduct = () => {
     const methods = useForm();
+    const { idMerchant } = useAppSelector((state) => state.user);
     const { updateProduct } = useAppSelector((state) => state.product);
     const {
         sampleType,
@@ -32,6 +41,8 @@ export const UpdateProduct = () => {
         idSeason,
         year,
         productNumber,
+        idIndustry,
+        idDepartment,
     } = useAppSelector((state) => state.updatedProduct);
     const { mutateAsync, isLoading } = useMutation(getProductById);
 
@@ -48,6 +59,24 @@ export const UpdateProduct = () => {
 
     const loadProduct = async () => {
         dispatch(setUpdateProduct(await mutateAsync(id)));
+    };
+
+    const updateIndustriesAndTipologies = async () => {
+        dispatch(
+            setIndustriesByUnit(
+                await getMerchantIndustryDropdownValue({
+                    idManagementUnit: idDepartment,
+                    idMerchant,
+                })
+            )
+        );
+        dispatch(
+            setTipologiesByIndustry(
+                await getMerchantTypologyDropdownValue({
+                    idIndustry,
+                })
+            )
+        );
     };
 
     const loadProductState = () => {
@@ -105,7 +134,7 @@ export const UpdateProduct = () => {
                     shippingDate: fabric?.shippinDate,
                     warehouseEntryDate: fabric?.warehouseEntryDate,
                     idCountryDestination: fabric?.idCountryDestination,
-                    idShipping: fabric?.idShipping,
+                    idShipping: fabric?.idshipping,
                     quantity: fabric?.quantity,
                 })),
                 avios: trims?.map((trim) => ({
@@ -170,6 +199,10 @@ export const UpdateProduct = () => {
             loadProductState();
         }
     }, [updateProduct]);
+
+    useEffect(() => {
+        updateIndustriesAndTipologies();
+    }, [idIndustry, idDepartment]);
 
     return (
         <>

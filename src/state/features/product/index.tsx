@@ -53,6 +53,8 @@ export interface productState {
     edition: boolean;
     industries: OptionsType[];
     updateProduct: UpdateProduct | null;
+    industriesByUnit: OptionsType[];
+    tipologiesByIndustry: OptionsType[];
 }
 
 const initialState: productState = {
@@ -86,6 +88,8 @@ const initialState: productState = {
     edition: false,
     industries: [],
     updateProduct: null,
+    industriesByUnit: [],
+    tipologiesByIndustry: [],
 };
 
 const productSlice = createSlice({
@@ -173,6 +177,12 @@ const productSlice = createSlice({
         setMutationState(state, action: PayloadAction<boolean>) {
             state.mutationSuccess = action.payload;
         },
+        setIndustriesByUnit(state, action: PayloadAction<OptionsType[]>) {
+            state.industriesByUnit = action.payload;
+        },
+        setTipologiesByIndustry(state, action: PayloadAction<OptionsType[]>) {
+            state.tipologiesByIndustry = action.payload;
+        },
     },
 });
 
@@ -197,5 +207,7 @@ export const {
     setReduxErrors,
     clearReduxErrors,
     setMutationState,
+    setIndustriesByUnit,
+    setTipologiesByIndustry,
 } = productSlice.actions;
 export default productSlice.reducer;

@@ -24,6 +24,16 @@ export const getNameById = (id, category) => {
     return item?.Description ?? "-";
 };
 
+export const getCountryById = (id, category) => {
+    const item = category?.find((item) => Number(item.Id) === Number(id));
+    return item?.Name ?? "-";
+};
+
+export const getTypeOfShipmentById = (id, category) => {
+    const item = category?.find((item) => Number(item.Id) === Number(id));
+    return item?.Description ?? "-";
+};
+
 export const getStatus = (id) => {
     switch (id) {
         case 1:

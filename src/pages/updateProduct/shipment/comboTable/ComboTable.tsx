@@ -5,12 +5,12 @@ import {
     TableCell,
     TextField,
 } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { StyledTableRow } from "../../UpdateProductStyles";
 import { useAppSelector } from "@/state/app/hooks";
 import { v4 as uuid } from "uuid";
 import { Fabrics } from "@/types";
-import { getNameById } from "@/utils";
+import { getNameById, getCountryById, getTypeOfShipmentById } from "@/utils";
 import dayjs from "dayjs";
 import { UpdateDropdown, UpdateInput } from "../../updateDropdowns";
 
@@ -28,14 +28,17 @@ export const ComboTable: FC<ComboTableProps> = ({ number, combo }) => {
         [
             {
                 label: "Destino",
-                data: getNameById(combo?.idCountryDestination, countries),
+                data: getCountryById(combo?.idCountryDestination, countries),
                 name: "idCountryDestination",
-                options: countries,
+                options: countries?.map(({ Id, Name }) => ({
+                    Id: String(Id),
+                    Description: Name,
+                })),
                 select: true,
             },
             {
                 label: "Embarque",
-                data: getNameById(combo?.idShipping, typeOfshipment),
+                data: getTypeOfShipmentById(combo?.idShipping, typeOfshipment),
                 name: "idShipping",
                 options: typeOfshipment,
                 select: true,
@@ -48,22 +51,11 @@ export const ComboTable: FC<ComboTableProps> = ({ number, combo }) => {
                 options: [],
             },
         ],
-        // [
-        //     {
-        //         label: "Fecha de embarque",
-        //         data: dayjs(combo?.shippinDate).format("YYYY-MM-DD"),
-        //         name:"shippinDate"
-        //     },
-        //     {
-        //         label: "Ingreso Depósito",
-        //         data: dayjs(combo?.warehouseEntryDate).format("YYYY-MM-DD"),
-        //     },
-        //     {
-        //         label: "Ingreso Tienda",
-        //         data: dayjs(combo?.entryDate).format("YYYY-MM-DD"),
-        //     },
-        //],
     ];
+
+    useEffect(() => {
+        combo;
+    }, [combo]);
 
     return (
         <div>
@@ -107,12 +99,12 @@ export const ComboTable: FC<ComboTableProps> = ({ number, combo }) => {
                                                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                                                         // @ts-ignore
                                                         options={options}
-                                                        name={`${combo}-${name}`}
+                                                        name={name}
                                                     />
                                                 ) : (
                                                     <UpdateInput
-                                                        value={combo[data]}
-                                                        name={`${combo}-${name}`}
+                                                        value={data}
+                                                        name={name}
                                                     />
                                                 )
                                             ) : (

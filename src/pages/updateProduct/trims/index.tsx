@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { StyledTableRow } from "../UpdateProductStyles";
 import {
     TableContainer,
@@ -7,6 +7,7 @@ import {
     Stack,
     TextField,
     Button,
+    TableBody,
 } from "@mui/material";
 import { ComboItem } from "../comboItem";
 import { v4 as uuid } from "uuid";
@@ -78,7 +79,7 @@ export const Trims = () => {
         <section>
             <h3 style={{ marginBottom: "1.5rem" }}>AVÍOS</h3>
             {avios?.map((avio, i) => (
-                <>
+                <Fragment key={uuid()}>
                     <StateOptions
                         status={getStatus(Number(avio?.idStatus))}
                         id={{ index: i, item: "trims" }}
@@ -87,53 +88,61 @@ export const Trims = () => {
 
                     <TableContainer>
                         <Table>
-                            {rowStructure.map((row) => (
-                                <StyledTableRow key={uuid()}>
-                                    {row.map(
-                                        ({ label, data, select, name }) => (
-                                            <TableCell key={uuid()}>
-                                                {edition ? (
-                                                    <span
-                                                        style={{
-                                                            display:
-                                                                "inline-block",
-                                                            margin: "0.6rem 0.6rem 0 0",
-                                                        }}
-                                                    >
-                                                        {label}
-                                                        {label !== "" && ": "}
-                                                    </span>
-                                                ) : (
-                                                    <>
-                                                        {label}
-                                                        {label !== "" && ": "}
-                                                    </>
-                                                )}
-                                                {edition && label !== "" ? (
-                                                    select ? (
-                                                        <UpdateDropdown
-                                                            value={avio[name]}
-                                                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                                            // @ts-ignore
-                                                            options={
-                                                                trims ?? []
-                                                            }
-                                                            name={name}
-                                                        />
+                            <TableBody>
+                                {rowStructure.map((row) => (
+                                    <StyledTableRow key={uuid()}>
+                                        {row.map(
+                                            ({ label, data, select, name }) => (
+                                                <TableCell key={uuid()}>
+                                                    {edition ? (
+                                                        <span
+                                                            style={{
+                                                                display:
+                                                                    "inline-block",
+                                                                margin: "0.6rem 0.6rem 0 0",
+                                                            }}
+                                                        >
+                                                            {label}
+                                                            {label !== "" &&
+                                                                ": "}
+                                                        </span>
                                                     ) : (
-                                                        <UpdateInput
-                                                            value={avio[data]}
-                                                            name={name}
-                                                        />
-                                                    )
-                                                ) : (
-                                                    <>{avio[data]}</>
-                                                )}
-                                            </TableCell>
-                                        )
-                                    )}
-                                </StyledTableRow>
-                            ))}
+                                                        <>
+                                                            {label}
+                                                            {label !== "" &&
+                                                                ": "}
+                                                        </>
+                                                    )}
+                                                    {edition && label !== "" ? (
+                                                        select ? (
+                                                            <UpdateDropdown
+                                                                value={
+                                                                    avio[name]
+                                                                }
+                                                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                                                // @ts-ignore
+                                                                options={
+                                                                    trims ?? []
+                                                                }
+                                                                name={name}
+                                                            />
+                                                        ) : (
+                                                            <UpdateInput
+                                                                value={
+                                                                    avio[data]
+                                                                }
+                                                                name={name}
+                                                            />
+                                                        )
+                                                    ) : (
+                                                        <>{avio[data]}</>
+                                                    )}
+                                                </TableCell>
+                                            )
+                                        )}
+                                    </StyledTableRow>
+                                ))}
+                            </TableBody>
                         </Table>
                     </TableContainer>
                     <Stack
@@ -190,7 +199,7 @@ export const Trims = () => {
                         )}
                     </Stack>
                     <Stack />
-                </>
+                </Fragment>
             ))}
             {modalType === ModalTypes.NewTrimColor && (
                 <NewCombo parentIndex={parentIndex} />

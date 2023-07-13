@@ -48,10 +48,10 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
         [
             {
                 label: "Unidad de gestión",
-                data: getNameById(data['idManagmentUnit'], managementUnit),
+                data: managementUnit?.find((item)=>item.Id === Number(data['idDepartment']))?.Description,//getNameById(data['idManagmentUnit'], managementUnit) ,
                 select: true,
                 options: managementUnit,
-                name: "idManagmentUnit",
+                name: "idDepartment",
             },
             {
                 label: "Rubro",
@@ -100,6 +100,7 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
                 select: true,
                 options: rises,
                 name: "idRise",
+                disabled: data['idDepartment'] !== "2"
             },
             { label: "", data: "", name:"" },
         ],
