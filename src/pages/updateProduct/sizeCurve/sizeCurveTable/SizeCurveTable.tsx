@@ -10,7 +10,7 @@ import {
     Typography,
 } from "@mui/material";
 import { v4 as uuid } from "uuid";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { setData } from "@/state/features/updatedProduct";
 import { useIconsContext } from "@components/hooks";
@@ -61,13 +61,17 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
         initialValue
     );
 
+    useEffect(() => {
+        console.log(curve);
+    }, [curve]);
+
     const getSizes = () => {
         switch (type) {
-            case 1:
+            case 2:
                 return (
                     <>
                         {clothes.map(({ Description }, index) =>
-                            edition ? (
+                            !edition ? (
                                 curve[index] > 0 ? (
                                     <TableCell key={uuid()} align="center">
                                         {Description}
@@ -83,7 +87,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                         )}
                     </>
                 );
-            case 2:
+            case 3:
                 return (
                     <>
                         {denim.map((size) => (
@@ -110,13 +114,13 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
         let sizes: { Id: string; Description: string }[] | string[] = [];
 
         switch (type) {
-            case 1:
+            case 2:
                 sizes = clothes;
                 break;
-            case 2:
+            case 3:
                 sizes = denim;
                 break;
-            case 3:
+            case 1:
                 sizes = shoes;
                 break;
         }
@@ -143,12 +147,20 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
         return (
             <>
                 {curve.map((size) =>
-                    size > 0 ? (
+                    !edition ? (
+                        size > 0 ? (
+                            <TableCell key={uuid()} align="center">
+                                {Math.round(
+                                    (quantityOfCombo / curveSumary) * size
+                                )}
+                            </TableCell>
+                        ) : (
+                            <></>
+                        )
+                    ) : (
                         <TableCell key={uuid()} align="center">
                             {Math.round((quantityOfCombo / curveSumary) * size)}
                         </TableCell>
-                    ) : (
-                        <TableCell key={uuid()}></TableCell>
                     )
                 )}
             </>
@@ -166,7 +178,11 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell component="th" scope="row">
+                        <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ width: "90px" }}
+                        >
                             TALLES
                         </TableCell>
                         {getSizes()}
@@ -174,7 +190,11 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                 </TableHead>
                 <TableBody>
                     <TableRow>
-                        <TableCell component="th" scope="row">
+                        <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ width: "90px" }}
+                        >
                             Curva:
                         </TableCell>
                         {edition
@@ -185,21 +205,29 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                                           {size}
                                       </TableCell>
                                   ) : (
-                                      <TableCell key={uuid()}></TableCell>
+                                      <></>
                                   )
                               )}
                     </TableRow>
                     <TableRow>
-                        <TableCell component="th" scope="row">
+                        <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ width: "90px" }}
+                        >
                             Cantidad:
                         </TableCell>
                         {getQuantityPerSize()}
                     </TableRow>
                     <TableRow>
-                        <TableCell component="th" scope="row">
+                        <TableCell
+                            component="th"
+                            scope="row"
+                            sx={{ width: "90px" }}
+                        >
                             Sumatoria:
                         </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                             {quantityOfCombo}{" "}
                             {edition && summary !== quantityOfCombo && (
                                 <Tooltip

@@ -7,6 +7,8 @@ export const SizeCurve = () => {
     const updateData = useAppSelector((state) => state.updatedProduct);
     const { curve } = useAppSelector((state) => state.updatedProduct);
 
+    const adjustedCurve = curve.slice(0, curve.length - 1);
+
     const fabrics = updateData?.telas;
 
     return (
@@ -15,7 +17,7 @@ export const SizeCurve = () => {
                 <SizeCurveTable
                     key={uuid()}
                     combo={index + 1}
-                    curve={curve}
+                    curve={adjustedCurve}
                     type={updateData?.sizeCurveType}
                     quantityOfCombo={updateData?.quantity}
                 />
