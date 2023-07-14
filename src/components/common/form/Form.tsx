@@ -34,6 +34,11 @@ const Form = <
     const { reduxErrors } = useAppSelector((state) => state.product);
 
     const submit = async (data) => {
+        console.log({
+            lengthError: !Object.keys(reduxErrors).length,
+            reduxErrors,
+        });
+
         try {
             if (!Object.keys(reduxErrors).length) {
                 await onSubmit(data);
@@ -50,7 +55,7 @@ const Form = <
 
     useEffect(() => {
         if (methods.formState.errors) {
-            dispatch(setErrors(methods.formState.errors));
+            dispatch(setErrors({ ...methods.formState.errors }));
         }
     }, [methods.formState.errors, methods.formState.touchedFields]);
 

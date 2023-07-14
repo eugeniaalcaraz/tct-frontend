@@ -50,10 +50,12 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
     );
     const dispatch = useAppDispatch();
     const {
-        formState: { isSubmitting, isValidating },
+        formState: { isSubmitting },
     } = useFormContext();
 
     useEffect(() => {
+        console.log("estoy submiitendo en shipment combo");
+
         if (isForAllCombos) {
             const updatedTelas = telas.map((tela) => ({
                 ...tela,
@@ -136,7 +138,9 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                     })
                 );
             }
-            if (/^[0-9.,\b]+$/.test(quantity)) {
+            if (!/^[0-9.,\b]+$/.test(quantity)) {
+                console.log({ quantity, test: /^[0-9.,\b]+$/.test(quantity) });
+
                 dispatch(
                     setReduxErrors({
                         idError: `cantidadComboEmbarque-${comboNumber}`,
@@ -204,6 +208,8 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 }}
                 onBlur={(e) => {
                     if (e.target.value !== "") {
+                        console.log(e.target.value);
+
                         setreduxQuantity(e.target.value);
                         dispatch(
                             removeReduxError(

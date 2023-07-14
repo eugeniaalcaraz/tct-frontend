@@ -151,6 +151,8 @@ const Fabrics: FC<FabricProps> = ({
     };
 
     const setLocalComboArray = () => {
+        dispatch(removeReduxError(`fabricCombo-${fabricNumber}`));
+
         if (option === "solido" && solidColorName !== 0) {
             const tempSolidColorObj: ColorCombo = {
                 idColor: solidColorName,

@@ -181,14 +181,6 @@ const NewProduct = () => {
         }
     }, [productSuccess]);
 
-    // TODO: cheaquear que hace algo raro cuando tenes errores de hook forms, ui se comprorta rara, posible solucion es esta
-    // useEffect(() => {
-    //     console.log({ isDirty: methods.formState.isDirty });
-    //     if (errors && Object.keys(errors).length) {
-    //         methods.reset();
-    //     }
-    // }, [methods.formState.isDirty]);
-
     return (
         <>
             <Container>
