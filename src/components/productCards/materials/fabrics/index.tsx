@@ -632,7 +632,8 @@ const Fabrics: FC<FabricProps> = ({
                             sx={{ transition: "all 0.8s ease" }}
                         >
                             {qualities.map((quality, i) => (
-                                <Box key={uuid()}>
+                                // <Box key={uuid()}>
+                                <Box key={i}>
                                     <ControlledDropdown
                                         label="composición *"
                                         id={`composicion-${fabricNumber}-${i}`}
@@ -882,7 +883,7 @@ const Fabrics: FC<FabricProps> = ({
                 {!!telas[fabricNumber]?.prints.length && (
                     <Box className="combos">
                         {telas[fabricNumber].prints.map((selectedPrint, i) => (
-                            <Box key={uuid()} className="combo combo-print">
+                            <Box key={i} className="combo combo-print">
                                 <div className="upper-container">
                                     Estampado {i + 1}
                                     <IconButton

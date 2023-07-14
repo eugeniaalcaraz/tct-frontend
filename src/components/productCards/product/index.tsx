@@ -262,7 +262,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
             {generalPropsDropdowns.map(({ name, label, options }) => {
                 return (
                     <ControlledDropdown
-                        key={uuid()}
+                        key={name}
                         label={label}
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore
@@ -286,7 +286,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
             {specificPropsDropdowns.map(({ name, label, options, disable }) => {
                 return (
                     <ControlledDropdown
-                        key={uuid()}
+                        key={name}
                         label={label}
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         // @ts-ignore

@@ -11,7 +11,7 @@ const Shipment = () => {
         (state) => state.product
     );
 
-    const [allCombosShareShipment] = useState(true);
+    const [allCombosShareShipment, setAllCombosShareShipment] = useState(true);
 
     const checkIfError = (name) => {
         if (errors) {
@@ -91,7 +91,7 @@ const Shipment = () => {
             {(allCombosShareShipment ? Array.from(Array(1).keys()) : telas).map(
                 (value, index) => (
                     <ShipmentCombo
-                        key={uuid()}
+                        key={index}
                         comboNumber={index + 1}
                         isForAllCombos={allCombosShareShipment}
                     />
