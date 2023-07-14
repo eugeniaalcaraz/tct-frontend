@@ -137,13 +137,13 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                 // externaonlOnChange={(e) => {
                 //     setQuantity(e.target.value);
                 // }}
-                externalValue={quantity}
+                // externalValue={quantity}
                 onBlur={(e) => {
+                    setQuantity(e.target.value);
                     if (e.target.value !== "") {
                         dispatch(
                             removeReduxError(`cantidadAvio-${trimNumber}`)
                         );
-                        setQuantity(e.target.value);
                     }
                 }}
             />

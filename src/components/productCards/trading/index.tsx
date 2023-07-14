@@ -9,7 +9,9 @@ type TradingProps = {
 };
 
 const Trading: FC<TradingProps> = ({ formMethods }) => {
-    const { errors } = useAppSelector((state) => state.product);
+    const { errors, mutationSuccess } = useAppSelector(
+        (state) => state.product
+    );
 
     const [buying, setBuying] = useState<number>(0);
     const [selling, setSelling] = useState<number>(0);
@@ -74,6 +76,16 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
         setMargin(0);
         // formMethods.reset({ margin: "", cost: "", precioVenta: "" });
     }, [pvpChecked]);
+
+    useEffect(() => {
+        if (mutationSuccess) {
+            setSelling(0);
+
+            setBuying(0);
+            setFinalPrice(0);
+            setMargin(0);
+        }
+    }, [mutationSuccess]);
 
     return (
         <Container
