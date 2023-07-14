@@ -82,8 +82,10 @@ const ProductTable = () => {
     };
 
     const loadTableData = () => {
-        if (filteredData && filteredData.length > 0) {
-            setTableData(filteredData);
+        if (filteredData) {
+            filteredData.length > 0
+                ? setTableData(filteredData)
+                : setTableData([]);
         } else if (product) {
             setTableData(product);
         } else {

@@ -33,12 +33,12 @@ const ProductsHeader = () => {
 
     const filterByValue = async (query: string) => {
         if (query === "") {
-            dispatch(setFilterData([]));
+            dispatch(setFilterData(null));
         } else {
             if (product) {
                 const filteredData = product.filter((p) =>
                     Object.keys(p).some(() =>
-                        String(p["idProduct"]).includes(query)
+                        String(p["productNumber"]).includes(query)
                     )
                 );
                 dispatch(setFilterData(filteredData));

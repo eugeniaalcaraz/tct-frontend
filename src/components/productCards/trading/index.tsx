@@ -92,7 +92,7 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
                 <span>PVP</span>
             </div>
             <ControlledInput
-                label="Costo(USD)"
+                label="Costo($)"
                 name="cost"
                 onBlur={(e) => setBuying(Number(e.target.value))}
                 error={checkIfError("cost")}
@@ -108,7 +108,7 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
                 />
             ) : (
                 <ControlledInput
-                    label="Venta(USD)"
+                    label="Venta($)"
                     name="precioVenta"
                     onBlur={(e) => setSelling(Number(e.target.value))}
                     error={checkIfError("precioVenta")}
@@ -118,7 +118,7 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
 
             <div className="pvp-container">
                 {pvpChecked ? (
-                    <span>{`PVP(USD): ${selling.toFixed(2)}`}</span>
+                    <span>{`PVP($): ${selling.toFixed(2)}`}</span>
                 ) : (
                     <span>Margen % {margin.toFixed(2)}</span>
                 )}

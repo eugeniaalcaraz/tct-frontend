@@ -155,7 +155,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                         )
                     ) : (
                         <TableCell key={uuid()} align="center">
-                            {Math.round((quantityOfCombo / curveSumary) * size)}
+                            0
                         </TableCell>
                     )
                 )}
@@ -164,6 +164,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
     };
 
     const handleChange = (e, position) => {
+        console.log(curve);
         const newCurve = curve.slice();
         newCurve[position] = Number(e.target.value);
         dispatch(setData({ curve: newCurve }));

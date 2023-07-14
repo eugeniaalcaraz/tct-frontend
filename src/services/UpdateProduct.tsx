@@ -85,10 +85,11 @@ export const updateProduct = async ({
         idShoeMaterial: Number(idStatusMeasurmentTable),
         costInStore: Number(costInStore),
         sampleType: Number(sampleType),
-        idManagmentUnit: Number(idManagmentUnit),
+        idManagmentUnit: Number(idDepartment),
+        idCollection: 1,
         pictures,
     };
-    console.log(body);
+
     try {
         const response = await postJsonRequest(path, body);
         return response;

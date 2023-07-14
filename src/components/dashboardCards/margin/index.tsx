@@ -11,15 +11,15 @@ const Margin = () => {
             {margen && (
                 <>
                     <p>{margen.Margin} %</p>
-                    <Values>
+                    {/* <Values>
                         <p>USD</p>
                         <p>PVP: ${formatNumber(margen?.PVP)}</p>
                         <p>Costo: ${formatNumber(margen?.Cost)}</p>
-                    </Values>
+                    </Values> */}
                     <Values>
                         <p>PESOS</p>
-                        <p>PVP: ${formatNumber(margen?.PVP * 40)}</p>
-                        <p>Costo: ${formatNumber(margen?.Cost * 40)}</p>
+                        <p>PVP: ${formatNumber(margen?.PVP)}</p>
+                        <p>Costo: ${formatNumber(margen?.Cost)}</p>
                     </Values>
                 </>
             )}

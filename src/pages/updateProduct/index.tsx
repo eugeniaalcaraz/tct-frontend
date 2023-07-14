@@ -210,10 +210,6 @@ export const UpdateProduct = () => {
         updateIndustriesAndTipologies();
     }, [idIndustry, idDepartment]);
 
-    useEffect(() => {
-        console.log(sampleType);
-    }, [sampleType]);
-
     return (
         <>
             <Container>

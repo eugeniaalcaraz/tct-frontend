@@ -19,17 +19,22 @@ export const CostAndMargin = () => {
 
     const rowStructure = [
         [
-            { label: "Costo(USD)", data: cost, name: "cost" },
+            { label: "Costo($)", data: cost, name: "cost" },
             {
-                label: "Precio Venta(USD)",
+                label: "Precio Venta($)",
                 data: costInStore,
                 name: "costInStore",
             },
-            { label: "Precio Tienda($)", data: costInStore * 40, name: "" },
+            //{ label: "Precio Tienda($)", data: costInStore * 40, name: "" },
+            { label: "", data: "", name: "" },
         ],
         [
             { label: "Margen", data: "calculo de margen", name: "" },
-            { label: "Precio Santander($)", data: "", name: "" },
+            {
+                label: "Precio Santander($)",
+                data: costInStore * 0.85,
+                name: "",
+            },
             { label: "Margen Santander($)", data: "", name: "" },
         ],
     ];

@@ -34,10 +34,6 @@ const Overall = () => {
 
     const headers = headerValues.map(([, value]) => value);
 
-    useEffect(() => {
-        console.log(overall);
-    }, [overall]);
-
     return (
         <TableContainer>
             <Table
