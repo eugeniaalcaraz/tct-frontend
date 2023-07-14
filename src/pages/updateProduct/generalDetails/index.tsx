@@ -23,6 +23,7 @@ import {
 import { getBottomRows, getGeneralDetails } from "./getGeneralDetails";
 import { toBase64 } from "@/utils/toBase64";
 import { setPicture } from "@/state/features/updatedProduct";
+import styles from "./GeneralDetails.module.css";
 
 export const GeneralDetails = () => {
     const {
@@ -94,19 +95,8 @@ export const GeneralDetails = () => {
 
     return (
         <section>
-            <Stack direction={"row"} gap={2}>
-                <div
-                    className="item"
-                    style={{
-                        backgroundColor: "#DAD9D9",
-                        width: "350px",
-                        maxWidth: "350px",
-                        borderRadius: "10px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
+            <Stack direction={"row"} gap={2} className={styles.container}>
+                <div className={`item ${styles.foto}`}>
                     {edition ? (
                         <div
                             style={{
@@ -116,13 +106,7 @@ export const GeneralDetails = () => {
                             }}
                         >
                             <img
-                                style={{
-                                    height: "100%",
-                                    width: "350px",
-                                    maxWidth: "350px",
-                                    objectFit: "cover",
-                                    filter: "blur(2px) grayscale(20%) opacity(20%)",
-                                }}
+                                className={styles.editionPic}
                                 alt={`Foto de producto ${updateData?.idProduct}`}
                                 src={updateData?.pictures[0]?.pic}
                             />
@@ -157,12 +141,7 @@ export const GeneralDetails = () => {
                         </div>
                     ) : (
                         <img
-                            style={{
-                                height: "100%",
-                                width: "350px",
-                                maxWidth: "350px",
-                                objectFit: "cover",
-                            }}
+                            className={styles.pic}
                             alt={`Foto de producto ${updateData?.idProduct}`}
                             src={updateData?.pictures[0]?.pic}
                         />

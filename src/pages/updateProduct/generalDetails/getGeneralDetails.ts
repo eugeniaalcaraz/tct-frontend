@@ -29,18 +29,18 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
         [
             {
                 label: "Fecha de embarque",
-                data: dayjs(data['shippingDate']).format("YYYY-MM-DD"),
+                data: data['shippingDate'] === "" ? "-" : dayjs(data['shippingDate']).format("YYYY-MM-DD"),
                 name: "shippingDate",
                 date:true
             },
             {
                 label: "Fecha depósito",
-                data: dayjs(data['warehouseEntryDate']).format("YYYY-MM-DD"),
+                data: data['warehouseEntryDate'] === "" ? "-" : dayjs(data['warehouseEntryDate']).format("YYYY-MM-DD"),
                 name: "warehouseEntryDate",
                 date:true
             },
             { label: "Fecha tienda",
-            data: dayjs(data['entryDate']).format("YYYY-MM-DD"),
+            data: data['entryDate'] === "" ? "-" : dayjs(data['entryDate']).format("YYYY-MM-DD"),
             name: "entryDate",
             date:true },
         ],

@@ -24,6 +24,10 @@ export const Container = styled(Box)({
         cursor: "pointer",
         zIndex: 11,
     },
+
+    "@media print": {
+        display: "none",
+    },
 }) as typeof Box;
 
 export const FilterButton = styled(Button)({

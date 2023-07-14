@@ -10,7 +10,7 @@ import {
     Typography,
 } from "@mui/material";
 import { v4 as uuid } from "uuid";
-import React, { FC, useEffect } from "react";
+import React, { FC, Fragment } from "react";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { saveCurves, setData } from "@/state/features/updatedProduct";
 import { useIconsContext } from "@components/hooks";
@@ -66,21 +66,23 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
             case 2:
                 return (
                     <>
-                        {clothes.map(({ Description }, index) =>
-                            !edition ? (
-                                curve[index] > 0 ? (
+                        {clothes.map(({ Description }, index) => (
+                            <Fragment key={uuid()}>
+                                {!edition ? (
+                                    curve[index] > 0 ? (
+                                        <TableCell key={uuid()} align="center">
+                                            {Description}
+                                        </TableCell>
+                                    ) : (
+                                        <></>
+                                    )
+                                ) : (
                                     <TableCell key={uuid()} align="center">
                                         {Description}
                                     </TableCell>
-                                ) : (
-                                    <></>
-                                )
-                            ) : (
-                                <TableCell key={uuid()} align="center">
-                                    {Description}
-                                </TableCell>
-                            )
-                        )}
+                                )}
+                            </Fragment>
+                        ))}
                     </>
                 );
             case 3:
@@ -142,23 +144,25 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
     const getQuantityPerSize = () => {
         return (
             <>
-                {curve.map((size) =>
-                    !edition ? (
-                        size > 0 ? (
-                            <TableCell key={uuid()} align="center">
-                                {Math.round(
-                                    (quantityOfCombo / curveSumary) * size
-                                )}
-                            </TableCell>
+                {curve.map((size) => (
+                    <Fragment key={uuid()}>
+                        {!edition ? (
+                            size > 0 ? (
+                                <TableCell key={uuid()} align="center">
+                                    {Math.round(
+                                        (quantityOfCombo / curveSumary) * size
+                                    )}
+                                </TableCell>
+                            ) : (
+                                <></>
+                            )
                         ) : (
-                            <></>
-                        )
-                    ) : (
-                        <TableCell key={uuid()} align="center">
-                            0
-                        </TableCell>
-                    )
-                )}
+                            <TableCell key={uuid()} align="center">
+                                0
+                            </TableCell>
+                        )}
+                    </Fragment>
+                ))}
             </>
         );
     };
@@ -197,15 +201,20 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                         </TableCell>
                         {edition
                             ? getFields()
-                            : curve.map((size) =>
-                                  size > 0 ? (
-                                      <TableCell key={uuid()} align="center">
-                                          {size}
-                                      </TableCell>
-                                  ) : (
-                                      <></>
-                                  )
-                              )}
+                            : curve.map((size) => (
+                                  <Fragment key={uuid()}>
+                                      {size > 0 ? (
+                                          <TableCell
+                                              key={uuid()}
+                                              align="center"
+                                          >
+                                              {size}
+                                          </TableCell>
+                                      ) : (
+                                          <></>
+                                      )}
+                                  </Fragment>
+                              ))}
                     </TableRow>
                     <TableRow>
                         <TableCell

@@ -1,6 +1,7 @@
 import { useIconsContext } from "@components/hooks";
 import { Box } from "@mui/material";
 import React, { FC } from "react";
+import styles from "./StateLabel.module.css";
 
 type StatusLableProps = {
     status: string;
@@ -49,12 +50,15 @@ export const StatusLabel: FC<StatusLableProps> = ({
                 "& > span > svg > path": {
                     fill: textColorSelector[status],
                 },
+                "@media print": {
+                    "-webkit-print-color-adjust": "exact",
+                },
             }}
             onClick={() => setChipStatus && setChipStatus(status)}
         >
             <span>{status}</span>
             {dropdown && (
-                <span style={{ display: "flex" }}>
+                <span className={styles.icon}>
                     {icons[openList ? "up" : "down"]}
                 </span>
             )}

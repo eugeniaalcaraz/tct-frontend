@@ -7,6 +7,7 @@ import StateOptions from "../stateLabel/StateOptions";
 import dayjs from "dayjs";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { setData, setTrimColors } from "@/state/features/updatedProduct";
+import styles from "./ComboItem.module.css";
 
 type ComboItemProps = {
     combo: number;
@@ -58,7 +59,7 @@ export const ComboItem: FC<ComboItemProps> = ({
                     sx={{ alignItems: "center" }}
                 >
                     <div
-                        className="colorBox"
+                        className={`colorBox ${styles.colorBox}`}
                         style={{
                             background:
                                 color === "-" || !color

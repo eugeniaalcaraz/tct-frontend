@@ -19,22 +19,29 @@ const ProductHeader = () => {
         if (!edition) {
             dispatch(setEdition(true));
         } else {
-            console.log(await updateProduct(updatedData));
+            //console.log(await updateProduct(updatedData));
             dispatch(setEdition(false));
         }
         setIsLoading(false);
     };
 
+    const handlePrint = () => {
+        window.print();
+    };
+
     return (
         <NewProductContainer>
-            <FilterButton
-                variant="outlined"
-                type={"button"}
-                color="primary"
-                style={{ minWidth: "fit-content" }}
-            >
-                {icons["download"]}
-            </FilterButton>
+            {!edition && (
+                <FilterButton
+                    variant="outlined"
+                    type={"button"}
+                    color="primary"
+                    style={{ minWidth: "fit-content" }}
+                    onClick={handlePrint}
+                >
+                    {icons["download"]}
+                </FilterButton>
+            )}
 
             <FilterButton
                 variant="contained"

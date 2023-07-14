@@ -1,0 +1,63 @@
+
+.foto{
+    background: #DAD9D9;
+    width: 350px;
+    max-width: 350px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.pic{
+ 
+        height: 100%;
+        width: 350px;
+        max-width: 350px;
+        object-fit: cover;
+   
+}
+
+.editionPic{
+height: 100%;
+width: 350px;
+max-width: 350px;
+object-fit: cover;
+filter: blur(2px) grayscale(20%) opacity(20%)   
+}
+
+
+
+@media print{
+    .container {
+        width:100%;
+        display:flex;
+    }
+    
+    .foto{
+        width: 250px;
+        max-width: 250px;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .pic{
+ 
+        height: 100%;
+        width: 250px;
+        max-width: 250px;
+        object-fit: cover;
+        -webkit-print-color-adjust: exact;
+   
+    }
+
+    .editionPic{
+    height: 100%;
+    width:250px;
+    max-width: 250px;
+    object-fit: cover;
+    -webkit-print-color-adjust: exact;
+    
+    }
+
+
+}

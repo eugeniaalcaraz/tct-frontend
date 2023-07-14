@@ -5,6 +5,7 @@ import { useIconsContext } from "@components/hooks";
 import StateOptions from "../stateLabel/StateOptions";
 import { getStatus } from "@/utils";
 import { setMmtTable } from "@/state/features/updatedProduct";
+import styles from "./Measurements.module.css";
 
 const Measurements = () => {
     const [table, setTable] = useState("");
@@ -44,7 +45,7 @@ const Measurements = () => {
                 />
             </span>
             <div
-                className="item"
+                className={`item ${styles.tableWrapper}`}
                 style={{
                     backgroundColor: "#DAD9D9",
                     maxWidth: "100%",
@@ -65,6 +66,7 @@ const Measurements = () => {
                         }}
                     >
                         <img
+                            className={styles.tablePreview}
                             style={{
                                 height: "100%",
                                 width: "100%",
@@ -105,6 +107,7 @@ const Measurements = () => {
                     </div>
                 ) : (
                     <img
+                        className={styles.table}
                         style={{
                             height: "100%",
                             width: "100%",

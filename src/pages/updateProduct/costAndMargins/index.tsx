@@ -10,6 +10,7 @@ import { StyledTableRow } from "../UpdateProductStyles";
 import { useAppSelector } from "@/state/app/hooks";
 import { v4 as uuid } from "uuid";
 import { UpdateInput } from "../updateDropdowns";
+import styles from "./CostAndMargins.module.css";
 
 export const CostAndMargin = () => {
     const { edition } = useAppSelector((state) => state.product);
@@ -40,7 +41,7 @@ export const CostAndMargin = () => {
     ];
 
     return (
-        <section>
+        <section className={styles.section}>
             <h3>COSTO Y MARGEN</h3>
             <TableContainer>
                 <Table>

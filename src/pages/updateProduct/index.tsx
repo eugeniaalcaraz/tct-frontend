@@ -263,7 +263,11 @@ export const UpdateProduct = () => {
                             id={{ index: 0, item: "sample" }}
                             updateAction={handleSampleUpdate}
                         />
-                        <div>{dayjs(sampleDate).format("YYYY-MM-DD")}</div>
+                        <div>
+                            {sampleDate === ""
+                                ? "-"
+                                : dayjs(sampleDate).format("YYYY-MM-DD")}
+                        </div>
                     </Stack>
                     <Form
                         methods={methods}
