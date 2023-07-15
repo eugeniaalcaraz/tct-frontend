@@ -60,7 +60,7 @@ export interface productState {
 const initialState: productState = {
     mutationSuccess: false,
     errors: null,
-    reduxErrors: {},
+    reduxErrors: { initialError: { idError: "initialError", msg: "initial" } },
     specialSizeCurve: false,
     product: null,
     filteredData: null,
@@ -157,6 +157,9 @@ const productSlice = createSlice({
             };
         },
         removeReduxError(state, action: PayloadAction<string>) {
+            if (Object.keys(state.reduxErrors).length > 1)
+                delete state.reduxErrors["initialError"];
+
             delete (state.reduxErrors as object)[action.payload];
         },
         clearErrors(state) {

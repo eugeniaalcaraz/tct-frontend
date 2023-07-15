@@ -33,6 +33,7 @@ import {
     clearReduxErrors,
     clearTelasCombos,
     setMutationState,
+    setReduxErrors,
     setSpecialSizeCurve,
 } from "@/state/features/product";
 import dayjs from "dayjs";
@@ -189,6 +190,9 @@ const NewProduct = () => {
             dispatch(clearTelasCombos());
             dispatch(clearAviosCombos());
             setSeed(Math.random());
+            dispatch(
+                setReduxErrors({ idError: "initialError", msg: "initial" })
+            );
             methods.reset(defaultValues, { keepDefaultValues: true });
         }
 
