@@ -39,7 +39,23 @@ import dayjs from "dayjs";
 import { tipologyEnum } from "./enum";
 
 const defaultValues = {
-    idRise: 0,
+    idMerchantBrand: "",
+    idRise: "",
+    idBodyFit: "",
+    idConcept: "",
+    idCountry: "",
+    idIndustry: "",
+    idLine: "",
+    idManagmentUnit: "",
+    idSeason: "",
+    idShoeMaterial: "",
+    idSupplier: "",
+    idTipology: "",
+    cost: "",
+    quantity: "",
+    costInStore: "",
+    nombreDelProducto: "",
+    precioVenta: "",
     cantidadDeTelas: 1,
     cantidadDeAvios: 1,
     proyecta: false,
@@ -64,7 +80,7 @@ const NewProduct = () => {
 
     const [seed, setSeed] = useState(1);
 
-    const onSave = async (formData) => {
+    const onSave = async (formData, e) => {
         let fotos;
         let medidas;
 
@@ -173,7 +189,7 @@ const NewProduct = () => {
             dispatch(clearTelasCombos());
             dispatch(clearAviosCombos());
             setSeed(Math.random());
-            methods.reset();
+            methods.reset(defaultValues, { keepDefaultValues: true });
         }
 
         if (reduxErrors && Object.keys(reduxErrors).length) {

@@ -15,35 +15,10 @@ export const productValidation = yup
         idConcept: yup.string().required(required),
         idLine: yup.string().required(required),
         idBodyFit: yup.string().required(required),
-        idRise: yup.string().required(required),
-        // calidad: yup.string().when("existingQuality", {
-        //     is: true,
-        //     then: yup.string().required(required),
-        // }),
-
-        // fabricDescription: yup.string().when("existingQuality", {
-        //     is: true,
-        //     then: yup.string(),
-        //     otherwise: yup.string().required(required),
-        // }),
-        // peso: yup.string().when("existingQuality", {
-        //     is: true,
-        //     then: yup.string(),
-        //     otherwise: yup.string().required(required),
-        // }),
-
-        // ["composicion-0"]: yup.string().when("existingQuality", {
-        //     is: true,
-        //     then: yup.string(),
-        //     otherwise: yup.string().required(required),
-        // }),
-
-        // ["porcentaje-0"]: yup.string().when("existingQuality", {
-        //     is: true,
-        //     then: yup.string(),
-        //     otherwise: yup.string().required(required),
-        // }),
-
+        idRise: yup.string().when("idTipology", {
+            is: (idTipology) => idTipology === "3",
+            then: yup.string().required(required),
+        }),
         detail: yup
             .string()
             .max(
@@ -57,10 +32,6 @@ export const productValidation = yup
                 "Mmm parece que tu nombre es muy largo, prueba con menos caracteres"
             )
             .required(required),
-        // anio: yup
-        //     .string()
-        //     .max(2, "maximo 2 numeros")
-        //     .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!"),
         //------TRADING CARD-------
         cost: yup
             .string()
@@ -82,27 +53,6 @@ export const productValidation = yup
             .string()
             .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
             .required(required),
-        // destino: yup.string().required(required),
-        // cantidadComboEmbarque: yup.string().required(required),
-        // destino: yup.string().required(required),
-        // ["calidad-0"]: yup.string().required(required),
-        // ["calidad-1"]: yup.string().required(required),
-        // ["calidad-2"]: yup.string().required(required),
-        // ["calidad-3"]: yup.string().required(required),
-        // ["calidad-4"]: yup.string().required(required),
-        // ["placement-0"]: yup.string().required(required),
-        // ["placement-1"]: yup.string().required(required),
-        // ["placement-2"]: yup.string().required(required),
-        // ["placement-3"]: yup.string().required(required),
-        // ["placement-4"]: yup.string().required(required),
-        // ["consumoCalidad-0"]: yup.string().required(required),
-        // ["consumoCalidad-1"]: yup.string().required(required),
-        // ["consumoCalidad-2"]: yup.string().required(required),
-        // ["consumoCalidad-3"]: yup.string().required(required),
-        // ["consumoCalidad-4"]: yup.string().required(required),
-        // embarque: yup.string().required(required),
-        // nombreNuevoFabric: yup.string().required(required),
-        // weight: yup.string().required(required),
     })
     .required(required);
 
