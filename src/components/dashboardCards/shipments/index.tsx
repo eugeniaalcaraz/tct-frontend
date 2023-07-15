@@ -22,7 +22,7 @@ const Shipments = () => {
     const requestAbortController = useRef<AbortController | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [highlightedDays, setHighlightedDays] = useState<
-        { shipment: number; wharehouse: number; entry: number }[]
+        { shipment: number | ""; wharehouse: number | ""; entry: number | "" }[]
     >([]);
     const [value, setValue] = useState<Dayjs | null>(dayjs());
     const [orderNumbers, setOrderNumbers] = useState<number[]>([]);

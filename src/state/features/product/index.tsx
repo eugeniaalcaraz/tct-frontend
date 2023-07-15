@@ -99,7 +99,7 @@ const productSlice = createSlice({
         setData(state, action: PayloadAction<Product[]>) {
             state.product = action.payload;
         },
-        setFilterData(state, action: PayloadAction<Product[]>) {
+        setFilterData(state, action: PayloadAction<Product[] | null>) {
             state.filteredData = action.payload;
         },
         handleProductData(state, action: PayloadAction<Partial<productState>>) {
