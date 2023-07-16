@@ -10,6 +10,7 @@ type ControlledDatePickerProps = {
     label: string;
     useFormHook?: boolean;
     externalOnChange?: any;
+    disabled?: boolean;
 };
 
 const ControlledDatePicker: FC<ControlledDatePickerProps> = ({
@@ -17,6 +18,7 @@ const ControlledDatePicker: FC<ControlledDatePickerProps> = ({
     label,
     useFormHook = true,
     externalOnChange,
+    disabled = false,
 }) => {
     const [value, setValue] = useState<Dayjs | null>(dayjs().add(15, "day"));
     const [openCalendar, setOpenCalendar] = useState<boolean>(false);
@@ -26,6 +28,7 @@ const ControlledDatePicker: FC<ControlledDatePickerProps> = ({
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                     label={label}
+                    disabled={disabled}
                     onChange={(event) => {
                         externalOnChange(event);
                         setValue(event as Dayjs);
@@ -54,6 +57,7 @@ const ControlledDatePicker: FC<ControlledDatePickerProps> = ({
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         label={label}
+                        disabled={disabled}
                         onChange={(event) => {
                             onChange(event);
                             setValue(event);

@@ -99,6 +99,7 @@ export const NumberSizeCurve: FC<NumberSizeCurveProps> = ({ sizes }) => {
                         <span key={Id}>
                             <ControlledInput
                                 useFormhook={false}
+                                disabled={!telas.length}
                                 externalOnChange={(e) =>
                                     inputOnChange({
                                         valueToUpdate: e.target.value,
