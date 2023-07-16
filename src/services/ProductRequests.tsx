@@ -173,7 +173,7 @@ const getListingPath = (name) => {
 const getBodyWithExitingQuality = (formData, idMerchant) => {
     const finalObj = {
         ...formData,
-        idSampleStatus: 1,
+        idSampleStatus: 5,
         idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
         idMerchant: Number(idMerchant),
         sampleType: 1,
@@ -190,11 +190,11 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
         weight: Number(formData.weight),
         name: formData.nombreDelProducto,
         quantity: Number(formData.quantity),
-        idModeling: 1,
+        idModeling: 5,
         idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1,
         measurmentTable: formData.medidas,
-        idModelingStatus: 1,
-        idStatusMeasurmentTable: 1,
+        idModelingStatus: 5,
+        idStatusMeasurmentTable: 5,
         idShoeMaterial: Number(formData.idShoeMaterial ?? 0),
         idCountry: Number(formData.idCountry),
         cost: Number(formData.cost),
@@ -223,10 +223,10 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
 const getBody = (formData, idMerchant) => {
     const finalObj = {
         ...formData,
-        idSampleStatus: 1,
+        idSampleStatus: 5,
         idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
         idMerchant: Number(idMerchant),
-        sampleType: 1,
+        sampleType: 5,
         idRise: Number(formData.idRise),
         idSeason: Number(formData.idSeason),
         idBodyFit: Number(formData.idBodyFit),
@@ -240,11 +240,11 @@ const getBody = (formData, idMerchant) => {
         weight: Number(formData.weight),
         name: formData.nombreDelProducto,
         quantity: Number(formData.quantity),
-        idModeling: 1,
+        idModeling: 5,
         idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1,
         measurmentTable: formData.medidas,
-        idModelingStatus: 1,
-        idStatusMeasurmentTable: 1,
+        idModelingStatus: 5,
+        idStatusMeasurmentTable: 5,
         idShoeMaterial: Number(formData.idShoeMaterial ?? 0),
         idCountry: Number(formData.idCountry),
         cost: Number(formData.cost),

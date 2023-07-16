@@ -24,7 +24,7 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
                 ),
                 name: "idSeason",
             },
-            { label: "Año", data: data['year'], name: "year" },
+            { label: "", data: "", name: "" },
         ],
         [
             {
@@ -48,10 +48,10 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
         [
             {
                 label: "Unidad de gestión",
-                data: managementUnit?.find((item)=>item.Id === Number(data['idDepartment']))?.Description,//getNameById(data['idManagmentUnit'], managementUnit) ,
+                data: managementUnit?.find((item)=>item.Id === Number(data['idManagmentUnit']))?.Description,//getNameById(data['idManagmentUnit'], managementUnit) ,
                 select: true,
                 options: managementUnit,
-                name: "idDepartment",
+                name: "idManagmentUnit",
             },
             {
                 label: "Rubro",
@@ -100,7 +100,7 @@ export const getGeneralDetails = (data, allSeasons, managementUnit,
                 select: true,
                 options: rises,
                 name: "idRise",
-                disabled: data['idDepartment'] !== "2"
+                disabled: data['idManagmentUnit'] !== "2"
             },
             { label: "", data: "", name:"" },
         ],
