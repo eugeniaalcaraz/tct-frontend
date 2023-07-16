@@ -67,13 +67,13 @@ export const FabricContainer = styled(Box)({
         marginTop: "-15px",
         marginBottom: "10px",
         width: "100%",
-        color: "#DFB6D2",
+        color: "##BC392B",
     },
     ".combo-error": {
         marginTop: "-25px",
         marginBottom: "10px",
         width: "100%",
-        color: "#DFB6D2",
+        color: "##BC392B",
     },
 
     "&& > .existingQualities": {
