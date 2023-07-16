@@ -87,7 +87,8 @@ const Layout = () => {
 
     useEffect(() => {
         if (dropdownsError) {
-            navigate(urlFormat(Pages.ServerError));
+            //navigate(urlFormat(Pages.ServerError));
+            console.log(dropdownsError);
         } else if (
             location.pathname !== urlFormat(Pages.ServerError) &&
             location.pathname !== "/"

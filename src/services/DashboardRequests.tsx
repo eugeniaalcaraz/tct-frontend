@@ -28,8 +28,8 @@ export const getCalendarValue = async (idMerchant, idSeason, month, year) => {
 
 const getQuery = (card) => {
     switch (card) {
-        // case "balance":
-        //     return "getBalanceData";
+        case "balance":
+            return "getBalanceData";
         case "estadoDeProduccion":
             return "getProductsStatus";
         case "aprobacionesPendientes":

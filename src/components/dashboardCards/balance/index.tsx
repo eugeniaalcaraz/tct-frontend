@@ -5,11 +5,13 @@ import { Container, State } from "./BalanceStyles";
 const Balance = () => {
     const { balance } = useAppSelector((state) => state.dashboard);
 
+    const balanceStates = ["Crítico", "Atención", "Aceptable"];
+
     return (
         <Container>
-            {balance?.map(({ Type, Percetage }) => (
+            {balanceStates?.map((Type) => (
                 <State key={Type} className={Type}>
-                    <p>{`${Percetage} % ${Type}`}</p>
+                    {/* <p>{`${Percetage} % ${Type}`}</p> */}
                 </State>
             ))}
         </Container>

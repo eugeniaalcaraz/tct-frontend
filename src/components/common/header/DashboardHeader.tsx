@@ -29,7 +29,7 @@ const DashboardHeader = () => {
             dispatch(
                 handleDashboardData({
                     name: "temporada",
-                    value: allSeasons[0].IdSeason,
+                    value: allSeasons[0]?.IdSeason,
                 })
             );
         }

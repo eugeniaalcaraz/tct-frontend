@@ -126,9 +126,9 @@ const ProductTable = () => {
 
     useEffect(() => loadTableData(), [product, filteredData]);
 
-    useEffect(() => {
-        productsError && navigate(urlFormat(Pages.ServerError));
-    }, [productsError]);
+    // useEffect(() => {
+    //     productsError && navigate(urlFormat(Pages.ServerError));
+    // }, [productsError]);
 
     return (
         <Container>
