@@ -38,7 +38,7 @@ export const ComboTable: FC<ComboTableProps> = ({ number, combo }) => {
             },
             {
                 label: "Embarque",
-                data: getTypeOfShipmentById(combo?.idshipping, typeOfshipment),
+                data: getTypeOfShipmentById(combo?.idShipping, typeOfshipment),
                 name: "idShipping",
                 options: typeOfshipment,
                 select: true,

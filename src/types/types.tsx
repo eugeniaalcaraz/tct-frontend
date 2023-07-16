@@ -34,9 +34,24 @@ export type FabricOptionType = {
     Composition: { Description: string; Percentage: number }[];
 };
 
+// export type BalanceType = {
+//     Type: BalanceOptions;
+//     Percetage: number;
+// };
+
 export type BalanceType = {
-    Type: BalanceOptions;
-    Percetage: number;
+    avioInCritical: number;
+    aviosInAttention: number;
+    aviosInOk: number;
+    fabricInCritical: number;
+    fabricInAttention: number;
+    fabricInOk: number;
+    colorInCritical: number;
+    colorInAttention: number;
+    colorInOk: number;
+    sampleInCritical: number;
+    sampleInAttention: number;
+    sampleInOk: number;
 };
 
 export type ProductionStatusType = {

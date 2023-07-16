@@ -20,9 +20,9 @@ export const State = styled(Box)(({ theme, className }) => ({
     borderRadius: "3px",
     backgroundColor:
         className === "Crítico"
-            ? theme.palette.error.light
-            : className === "Atención"
             ? theme.palette.warning.main
+            : className === "Atención"
+            ? theme.palette.error.light
             : theme.palette.primary.light,
     "&& > p": {
         fontSize: "1.3rem",
