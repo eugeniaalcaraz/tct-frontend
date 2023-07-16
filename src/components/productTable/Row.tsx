@@ -17,7 +17,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { StyledTableRow } from "./TableStyles";
 import { Pages } from "@/types";
 import { getProductById } from "@/services/ProductRequests";
-import { getCodeById, getSeasonById, urlFormat } from "@/utils";
+import { getCodeById, getCodeByName, getSeasonById, urlFormat } from "@/utils";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { setUpdateProduct } from "@/state/features/product";
 import { useNavigate } from "react-router-dom";
@@ -79,7 +79,7 @@ const Row = (props: { row }) => {
                     />
                 </TableCell>
                 <TableCell>
-                    {getCodeById(row?.idMerchantBrand, brands)}
+                    {getCodeByName(row?.brand, brands)}
                     {getCodeById(row?.idSeason, seasons)}
                     {row?.productNumber}
                 </TableCell>

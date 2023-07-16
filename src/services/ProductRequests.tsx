@@ -226,7 +226,7 @@ const getBody = (formData, idMerchant) => {
         idSampleStatus: 5,
         idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
         idMerchant: Number(idMerchant),
-        sampleType: 5,
+        sampleType: 1,
         idRise: Number(formData.idRise),
         idSeason: Number(formData.idSeason),
         idBodyFit: Number(formData.idBodyFit),

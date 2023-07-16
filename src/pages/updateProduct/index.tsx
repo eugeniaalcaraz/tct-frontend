@@ -13,7 +13,7 @@ import { SizeCurve } from "./sizeCurve";
 import { Measurements } from "./measurements";
 import StateOptions from "./stateLabel/StateOptions";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
-import { getSampleType, getStatus, getStatusId } from "@/utils";
+import { getCodeById, getSampleType, getStatus, getStatusId } from "@/utils";
 import { useParams } from "react-router-dom";
 import {
     setIndustriesByUnit,
@@ -32,7 +32,9 @@ import { setData, updateSampleStatus } from "@/state/features/updatedProduct";
 export const UpdateProduct = () => {
     const methods = useForm();
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { updateProduct, edition } = useAppSelector((state) => state.product);
+    const { updateProduct, edition, brands, seasons } = useAppSelector(
+        (state) => state.product
+    );
     const {
         sampleType,
         idSampleStatus,
@@ -87,7 +89,7 @@ export const UpdateProduct = () => {
                 productNumber: productInfo?.productNumber,
                 idSampleStatus: productInfo?.idSampleStatus,
                 sampleDate: dayjs(productInfo?.sampleDate).format("YYYY-MM-DD"),
-                idMerchantBrand: 1,
+                idMerchantBrand: productInfo?.idMerchantBrand,
                 idSeason: productInfo?.idSeason,
                 year: productInfo?.year,
                 idDepartment: 1,
@@ -224,9 +226,8 @@ export const UpdateProduct = () => {
                         }}
                     >
                         <h1>
-                            {idMerchantBrand}
-                            {idSeason}
-                            {year}
+                            {getCodeById(idMerchantBrand, brands)}
+                            {getCodeById(idSeason, seasons)}
                             {productNumber} -{" "}
                             {edition ? (
                                 <Select

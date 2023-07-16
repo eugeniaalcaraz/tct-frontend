@@ -44,6 +44,11 @@ export const getCodeById = (id, category) => {
     return item?.Code ?? "-";
 };
 
+export const getCodeByName = (name, category) => {
+    const item = category?.find((item) => String(item.Name) === String(name));
+    return item?.Code ?? "-";
+};
+
 export const getStatus = (id) => {
     switch (id) {
         case 1:
