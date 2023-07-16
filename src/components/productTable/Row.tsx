@@ -146,7 +146,7 @@ const Row = (props: { row }) => {
                                         </TableCell>
                                         <TableCell>
                                             <StatusLabel
-                                                status={row?.statusSample.toLowerCase()}
+                                                status={row?.statusSample?.toLowerCase()}
                                             />
                                         </TableCell>
                                         <TableCell>
@@ -163,7 +163,7 @@ const Row = (props: { row }) => {
                                         </TableCell>
                                         <TableCell>
                                             <StatusLabel
-                                                status={row?.statusFabric.toLowerCase()}
+                                                status={row?.statusFabric?.toLowerCase()}
                                             />
                                         </TableCell>
                                         <TableCell>
@@ -180,7 +180,7 @@ const Row = (props: { row }) => {
                                         </TableCell>
                                         <TableCell>
                                             <StatusLabel
-                                                status={row?.statusAvio.toLowerCase()}
+                                                status={row?.statusAvio?.toLowerCase()}
                                             />
                                         </TableCell>
                                         <TableCell>
@@ -197,7 +197,7 @@ const Row = (props: { row }) => {
                                         </TableCell>
                                         <TableCell>
                                             <StatusLabel
-                                                status={row?.statusModeling.toLowerCase()}
+                                                status={row?.statusModeling?.toLowerCase()}
                                             />
                                         </TableCell>
                                         <TableCell>

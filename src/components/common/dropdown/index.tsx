@@ -51,7 +51,7 @@ const Dropdown: FC<DropdownProps> = ({
               )
             : dispatch(
                   handleDashboardData({
-                      name: state.toLowerCase(),
+                      name: state?.toLowerCase(),
                       value: value,
                   })
               );
