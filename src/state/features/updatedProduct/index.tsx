@@ -214,6 +214,25 @@ const updatedProductSlice = createSlice({
         setShipmentType(state, action: PayloadAction<any>) {
             state.telas.forEach((tela) => (tela.idShipping = action.payload));
         },
+        setShippingDates(state, action: PayloadAction<string>) {
+            state.shippingDate = action.payload;
+            state.telas.forEach((tela) => (tela.shippingDate = action.payload));
+            state.avios.forEach((avio) => (avio.shippingDate = action.payload));
+        },
+        setWarehouseDate(state, action: PayloadAction<string>) {
+            state.warehouseEntryDate = action.payload;
+            state.telas.forEach(
+                (tela) => (tela.warehouseEntryDate = action.payload)
+            );
+            state.avios.forEach(
+                (avio) => (avio.warehouseEntryDate = action.payload)
+            );
+        },
+        setEntryDate(state, action: PayloadAction<string>) {
+            state.entryDate = action.payload;
+            state.telas.forEach((tela) => (tela.entryDate = action.payload));
+            state.avios.forEach((avio) => (avio.entryDate = action.payload));
+        },
     },
 });
 
@@ -237,5 +256,8 @@ export const {
     setDestinationCountry,
     setShipmentType,
     setMmtTable,
+    setShippingDates,
+    setWarehouseDate,
+    setEntryDate,
 } = updatedProductSlice.actions;
 export default updatedProductSlice.reducer;

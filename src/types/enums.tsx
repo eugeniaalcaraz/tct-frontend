@@ -56,7 +56,7 @@ export enum ProductHeaders {
     TotalQuanity = "Cantidad Total",
     Margin = "Márgen",
     Buying = "Compra",
-    Selling = "PVP (USD)",
+    //Selling = "PVP (USD)",
     SellingUy = "PVP ($)",
     DepositDate = "Ingreso a Depósito",
     StoreDate = "Ingreso a Tienda",

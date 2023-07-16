@@ -16,6 +16,7 @@ import {
 } from "@/services/ProductRequests";
 import { OptionsType, TipologyOptions } from "@/types";
 import { changeTelasLength, handleProductData } from "@/state/features/product";
+import { getCodeById } from "@/utils";
 
 type ProductCardType = {
     setSelectedTipology: any;
@@ -32,6 +33,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
         managementUnit,
         errors,
         mutationSuccess,
+        tipology: tipologiesByIndustry,
     } = useAppSelector((state) => state.product);
     const { idMerchant } = useAppSelector((state) => state.user);
     const reduxDispatch = useAppDispatch();
@@ -101,15 +103,15 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                         Description: season.Name,
                     })) ?? [],
             },
-            {
-                label: "Año *",
-                name: "year",
-                options:
-                    yearsDropdownArr?.map((year) => ({
-                        Id: year,
-                        Description: year,
-                    })) ?? [],
-            },
+            // {
+            //     label: "Año *",
+            //     name: "year",
+            //     options:
+            //         yearsDropdownArr?.map((year) => ({
+            //             Id: year,
+            //             Description: year,
+            //         })) ?? [],
+            // },
             {
                 label: "unidad de gestion",
                 name: "idManagmentUnit",
@@ -119,11 +121,13 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                 label: "rubro *",
                 name: "idIndustry",
                 options: rubros,
+                disabled: rubros.length === 0,
             },
             {
                 label: "tipologia *",
                 name: "idTipology",
-                options: tipology ?? [],
+                options: tipology,
+                disabled: tipology.length === 0,
             },
         ],
         [seasons, tipology, managementUnit, rubros, yearsDropdownArr]
@@ -193,27 +197,45 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
     };
 
     const dropdownOnSelect = (e) => {
+        //TODO get CODE by id
         if (e.name === "idMerchantBrand") {
-            dispatch({ type: "setSelectedBrand", payload: e.value });
+            dispatch({
+                type: "setSelectedBrand",
+                payload: getCodeById(e.value, brands),
+            });
+
+            // dispatch({ type: "setSelectedYear", payload: 1 });
         }
         if (e.name === "idSeason") {
-            dispatch({ type: "setSelectedSeason", payload: e.value });
+            dispatch({
+                type: "setSelectedSeason",
+                payload: getCodeById(e.value, seasons),
+            });
         }
-        if (e.name === "year") {
-            dispatch({ type: "setSelectedYear", payload: e.value });
-        }
+        // if (e.name === "year") {
+        //     dispatch({ type: "setSelectedYear", payload: getCodeById(e.value, ) });
+        // }
         if (e.name === "idTipology") {
-            setSelectedTipology(e.value);
-            dispatch({ type: "setSelectedTipology", payload: e.value });
+            setSelectedTipology(getCodeById(e.value, tipologiesByIndustry));
+            dispatch({
+                type: "setSelectedTipology",
+                payload: getCodeById(e.value, tipologiesByIndustry),
+            });
             if (e.value !== idShoes) {
                 reduxDispatch(changeTelasLength(1));
             }
         }
         if (e.name === "idManagmentUnit") {
-            dispatch({ type: "setSelectedManagementUnit", payload: e.value });
+            dispatch({
+                type: "setSelectedManagementUnit",
+                payload: e.value,
+            });
         }
         if (e.name === "idIndustry") {
-            dispatch({ type: "setSelectedIndustry", payload: e.value });
+            dispatch({
+                type: "setSelectedIndustry",
+                payload: e.value,
+            });
         }
     };
 
@@ -259,7 +281,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
 
     return (
         <Container>
-            {generalPropsDropdowns.map(({ name, label, options }) => {
+            {generalPropsDropdowns.map(({ name, label, options, disabled }) => {
                 return (
                     <ControlledDropdown
                         key={name}
@@ -271,6 +293,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                         error={checkIfError(name)}
                         helperText={checkErrorMessage(name)}
                         externalOnChange={dropdownOnSelect}
+                        disabled={disabled}
                     />
                 );
             })}
@@ -307,7 +330,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                 />
             </div>
 
-            <div>
+            {/* <div>
                 <ControlledInput
                     label="Numero"
                     useFormhook={false}
@@ -322,7 +345,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                         })
                     }
                 />
-            </div>
+            </div> */}
 
             <ControlledInput
                 label="Descripción"

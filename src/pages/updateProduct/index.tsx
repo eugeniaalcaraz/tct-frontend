@@ -134,7 +134,7 @@ export const UpdateProduct = () => {
                     shippingDate: fabric?.shippinDate,
                     warehouseEntryDate: fabric?.warehouseEntryDate,
                     idCountryDestination: fabric?.idCountryDestination,
-                    idShipping: fabric?.idshipping,
+                    idShipping: fabric?.idShipping,
                     quantity: fabric?.quantity,
                 })),
                 avios: trims?.map((trim) => ({

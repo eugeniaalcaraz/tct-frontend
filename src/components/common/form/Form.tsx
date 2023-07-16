@@ -34,23 +34,24 @@ const Form = <
     const { reduxErrors } = useAppSelector((state) => state.product);
 
     const submit = async (data) => {
-        console.log({
-            lengthError: !Object.keys(reduxErrors).length,
-            reduxErrors,
-        });
+        await onSubmit(data);
+        // console.log({
+        //     lengthError: !Object.keys(reduxErrors).length,
+        //     reduxErrors,
+        // });
 
-        try {
-            if (!Object.keys(reduxErrors).length) {
-                await onSubmit(data);
-            }
-        } catch (error) {
-            Object.keys(data).map((field) =>
-                methods.setError(field as Path<TFormValues>, {
-                    type: "server",
-                    message: (error as Error).message,
-                })
-            );
-        }
+        // try {
+        //     if (!Object.keys(reduxErrors).length) {
+        //         await onSubmit(data);
+        //     }
+        // } catch (error) {
+        //     Object.keys(data).map((field) =>
+        //         methods.setError(field as Path<TFormValues>, {
+        //             type: "server",
+        //             message: (error as Error).message,
+        //         })
+        //     );
+        // }
     };
 
     useEffect(() => {

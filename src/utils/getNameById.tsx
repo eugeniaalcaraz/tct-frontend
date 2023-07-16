@@ -39,6 +39,11 @@ export const getTypeOfShipmentById = (id, category) => {
     return item?.Description ?? "-";
 };
 
+export const getCodeById = (id, category) => {
+    const item = category?.find((item) => Number(item.Id) === Number(id));
+    return item?.Code ?? "-";
+};
+
 export const getStatus = (id) => {
     switch (id) {
         case 1:

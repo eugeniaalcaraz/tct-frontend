@@ -201,6 +201,7 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
         costInStore: Number(formData.precioVenta),
         pictures: formData.fotos, // formData.fotos
         idSupplier: Number(formData.idSupplier),
+        sizeCurveType: Number(formData.sizeCurveType),
     };
 
     delete finalObj.nombreDelProducto;
@@ -250,6 +251,7 @@ const getBody = (formData, idMerchant) => {
         costInStore: Number(formData.precioVenta),
         pictures: formData.fotos, // formData.fotos
         idSupplier: Number(formData.idSupplier),
+        sizeCurveType: Number(formData.sizeCurveType),
     };
 
     delete finalObj.nombreDelProducto;

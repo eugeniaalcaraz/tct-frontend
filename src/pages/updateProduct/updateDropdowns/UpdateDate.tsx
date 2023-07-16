@@ -1,10 +1,14 @@
-import React, { FC, useEffect, useState, useCallback } from "react";
+import React, { FC, useState } from "react";
 import { TextField } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
-import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
-import { setData } from "@/state/features/updatedProduct";
+import { useAppDispatch } from "@/state/app/hooks";
+import {
+    setEntryDate,
+    setShippingDates,
+    setWarehouseDate,
+} from "@/state/features/updatedProduct";
 
 type DateProps = {
     name: string;
@@ -17,24 +21,23 @@ const UpdateDate: FC<DateProps> = ({ name, initialValue = null }) => {
     const [openCalendar, setOpenCalendar] = useState<boolean>(false);
 
     const handleChange = (e) => {
-        dispatch(
-            setData({
-                [name]: dayjs(e).format("YYYY-MM-DD"),
-            })
-        ),
-            // setValue(dayjs(e).format("YYYY-MM-DD"));
-            setOpenCalendar(false);
-    };
+        const newDate = dayjs(e).format("YYYY-MM-DD");
+        switch (name) {
+            case "shippingDate":
+                dispatch(setShippingDates(newDate));
+                break;
+            case "warehouseEntryDate":
+                dispatch(setWarehouseDate(newDate));
+                break;
+            case "entryDate":
+                dispatch(setEntryDate(newDate));
+                break;
+            default:
+                return;
+        }
 
-    // const setChange = useCallback(
-    //     () =>
-    //         dispatch(
-    //             setData({
-    //                 [name]: (dayjs(e).format("YYYY-MM-DD")),
-    //             })
-    //         ),
-    //     [value]
-    // );
+        setOpenCalendar(false);
+    };
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -134,7 +134,7 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
                 ) : (
                     <span>Margen % {margin.toFixed(2)}</span>
                 )}
-                <span>{`Precio Tienda: ${finalPrice.toFixed(2)}`}</span>
+                {/* <span>{`Precio Tienda: ${finalPrice.toFixed(2)}`}</span> */}
             </div>
         </Container>
     );

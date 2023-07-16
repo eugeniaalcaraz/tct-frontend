@@ -244,6 +244,7 @@ export const ShipmentCombo: FC<ShipmentComboProps> = ({
                 name={`embarqueComboTipo-${comboNumber}`}
                 externalOnChange={(e) => {
                     setSelectedShipmentType(e.value);
+                    console.log(e.value);
                     if (e.value !== "") {
                         dispatch(
                             removeReduxError(`embarqueComboTipo-${comboNumber}`)

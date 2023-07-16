@@ -9,7 +9,7 @@ export const productValidation = yup
         idTipology: yup.string().required(required),
         idMerchantBrand: yup.string().required(required),
         idSeason: yup.string().required(required),
-        year: yup.string().required(required),
+        //year: yup.string().required(required),
         idManagmentUnit: yup.string().required(required),
         idIndustry: yup.string().required(required),
         idConcept: yup.string().required(required),

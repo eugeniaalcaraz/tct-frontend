@@ -101,7 +101,7 @@ const Row = (props: { row }) => {
                 <TableCell>Margen</TableCell>
                 <TableCell>{row?.cost}</TableCell>
                 <TableCell>{row?.costInStore}</TableCell>
-                <TableCell>Venta $</TableCell>
+                {/* <TableCell>Venta $</TableCell> */}
                 <TableCell>
                     {dayjs(row?.warehouseEntryDate).format("YYYY-MM-DD")}
                 </TableCell>
