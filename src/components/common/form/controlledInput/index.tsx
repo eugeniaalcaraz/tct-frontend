@@ -41,6 +41,7 @@ const ControlledInput: FC<ControlledProps> = ({
         return (
             <Controller
                 shouldUnregister
+                defaultValue={""}
                 name={name}
                 render={({ field: { onChange, value } }) => (
                     <SyledTextField

@@ -33,13 +33,30 @@ import {
     clearReduxErrors,
     clearTelasCombos,
     setMutationState,
+    setReduxErrors,
     setSpecialSizeCurve,
 } from "@/state/features/product";
 import dayjs from "dayjs";
 import { tipologyEnum } from "./enum";
 
 const defaultValues = {
-    idRise: 0,
+    idMerchantBrand: "",
+    idRise: "",
+    idBodyFit: "",
+    idConcept: "",
+    idCountry: "",
+    idIndustry: "",
+    idLine: "",
+    idManagmentUnit: "",
+    idSeason: "",
+    idShoeMaterial: "",
+    idSupplier: "",
+    idTipology: "",
+    cost: "",
+    quantity: "",
+    costInStore: "",
+    nombreDelProducto: "",
+    precioVenta: "",
     cantidadDeTelas: 1,
     cantidadDeAvios: 1,
     proyecta: false,
@@ -64,7 +81,7 @@ const NewProduct = () => {
 
     const [seed, setSeed] = useState(1);
 
-    const onSave = async (formData) => {
+    const onSave = async (formData, e) => {
         let fotos;
         let medidas;
 
@@ -173,21 +190,16 @@ const NewProduct = () => {
             dispatch(clearTelasCombos());
             dispatch(clearAviosCombos());
             setSeed(Math.random());
-            methods.reset();
+            dispatch(
+                setReduxErrors({ idError: "initialError", msg: "initial" })
+            );
+            methods.reset(defaultValues, { keepDefaultValues: true });
         }
 
         if (reduxErrors && Object.keys(reduxErrors).length) {
             dispatch(clearReduxErrors());
         }
     }, [productSuccess]);
-
-    // TODO: cheaquear que hace algo raro cuando tenes errores de hook forms, ui se comprorta rara, posible solucion es esta
-    // useEffect(() => {
-    //     console.log({ isDirty: methods.formState.isDirty });
-    //     if (errors && Object.keys(errors).length) {
-    //         methods.reset();
-    //     }
-    // }, [methods.formState.isDirty]);
 
     return (
         <>
