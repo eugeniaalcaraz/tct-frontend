@@ -68,7 +68,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
         () =>
             tipology.find(
                 (tipology) =>
-                    (tipology.Description as string).includes("Zapato") ?? 0
+                    (tipology.Description as string).includes("Shoes") ?? 0
             ),
         [tipology]
     );
@@ -161,7 +161,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                     state.selectedTipology !==
                     tipology.find((tipo) =>
                         (tipo.Description as string).includes("Jean")
-                    )?.Id,
+                    )?.Code,
             },
         ],
         [concepts, lines, bodyFit, rises, state.selectedTipology]
