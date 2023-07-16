@@ -1,5 +1,5 @@
 export enum tipologyEnum {
-    REMERA = 1,
-    ZAPATO,
-    DENIM,
+    CLOTHES = "Clothes",
+    SHOES = "Shoes",
+    DENIM = "Denim",
 }

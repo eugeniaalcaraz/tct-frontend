@@ -48,7 +48,7 @@ export const productValidation = yup
         //--------SHIPMENT CARD-------------------
         idCountry: yup.string().required(required),
         idSupplier: yup.string().required(required),
-        fabricCode: yup.string().required(required),
+        // fabricCode: yup.string().required(required),
         quantity: yup
             .string()
             .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
