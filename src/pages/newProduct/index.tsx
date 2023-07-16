@@ -64,10 +64,17 @@ const defaultValues = {
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { telas, avios, specialSizeCurve, tipology, reduxErrors, errors } =
-        useAppSelector((state) => state.product);
+    const {
+        telas,
+        avios,
+        specialSizeCurve,
+        tipology,
+        reduxErrors,
+        errors,
+        managementUnit,
+    } = useAppSelector((state) => state.product);
     const [isExisting, setIsExisting] = useState(false);
-    const [selectedTipology, setSelectedTipology] = useState(0);
+    const [selectedManagmentUnit, setSelectedManagementUnit] = useState(0);
     const resolver = yupResolver(productValidation);
     const methods = useForm({ resolver, defaultValues });
     const dispatch = useAppDispatch();
@@ -138,7 +145,6 @@ const NewProduct = () => {
             1: 2,
             3: 3,
         };
-        console.log(formData);
 
         createProdAsync({
             formData: {
@@ -161,33 +167,53 @@ const NewProduct = () => {
     };
 
     const product = {
-        producto: <ProductCard setSelectedTipology={setSelectedTipology} />,
+        producto: (
+            <ProductCard setSelectedManagmentUnit={setSelectedManagementUnit} />
+        ),
         adjuntos: <Attachments />,
         compraYVenta: <Trading formMethods={methods} />,
         embarque: <Shipment />,
         materiales: (
-            <Materials isShoe={selectedTipology === tipologyEnum.ZAPATO} />
+            <Materials
+                isShoe={
+                    selectedManagmentUnit ===
+                    (managementUnit?.find((managementUnitObj) =>
+                        (managementUnitObj.Description as string).includes(
+                            tipologyEnum.SHOES
+                        )
+                    )?.Id ?? 1000)
+                }
+            />
         ),
-        curvaDeTalles:
-            selectedTipology === tipologyEnum.ZAPATO ||
-            selectedTipology === tipologyEnum.DENIM ? (
-                <NumberSizeCurve
-                    sizes={
-                        selectedTipology === tipologyEnum.ZAPATO
-                            ? shoesSizes
-                            : denimSizes
-                    }
-                />
-            ) : (
-                <SizeCurve />
-            ),
+        curvaDeTalles: !(
+            selectedManagmentUnit ===
+            (managementUnit?.find((managementUnitObj) =>
+                (managementUnitObj.Description as string).includes(
+                    tipologyEnum.CLOTHES
+                )
+            )?.Id ?? 1000)
+        ) ? (
+            <NumberSizeCurve
+                sizes={
+                    selectedManagmentUnit ===
+                    (managementUnit?.find((managementUnitObj) =>
+                        (managementUnitObj.Description as string).includes(
+                            tipologyEnum.SHOES
+                        )
+                    )?.Id ?? 1000)
+                        ? shoesSizes
+                        : denimSizes
+                }
+            />
+        ) : (
+            <SizeCurve />
+        ),
     };
 
     useEffect(() => {
         if (productSuccess) {
             dispatch(setSpecialSizeCurve(false));
             dispatch(setMutationState(true));
-            console.log({ productSuccess });
             dispatch(clearTelasCombos());
             dispatch(clearAviosCombos());
             setSeed(Math.random());

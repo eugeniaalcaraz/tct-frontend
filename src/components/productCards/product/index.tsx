@@ -19,10 +19,10 @@ import { changeTelasLength, handleProductData } from "@/state/features/product";
 import { getCodeById } from "@/utils";
 
 type ProductCardType = {
-    setSelectedTipology: any;
+    setSelectedManagmentUnit: any;
 };
 
-const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
+const ProductCard: FC<ProductCardType> = ({ setSelectedManagmentUnit }) => {
     const {
         seasons,
         brands,
@@ -40,12 +40,8 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
 
     //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
     const [state, dispatch] = useReducer(productReducer, initialProductState);
-    const [rubros, setRubros] = useState<OptionsType[]>([
-        { Id: "", Description: "" },
-    ]);
-    const [tipology, setTipology] = useState<TipologyOptions[]>([
-        { Id: "", Description: "", Code: "", Weight: "" },
-    ]);
+    const [rubros, setRubros] = useState<OptionsType[]>([]);
+    const [tipology, setTipology] = useState<TipologyOptions[]>([]);
 
     const yearsDropdownArr = useMemo(() => {
         const currentYear = Number(dayjs().format("YY"));
@@ -66,11 +62,13 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
 
     const idShoes = useMemo(
         () =>
-            tipology.find(
-                (tipology) =>
-                    (tipology.Description as string).includes("Shoes") ?? 0
+            managementUnit?.find(
+                (managementUnitObj) =>
+                    (managementUnitObj.Description as string).includes(
+                        "Shoes"
+                    ) ?? 0
             ),
-        [tipology]
+        [managementUnit]
     );
 
     const weightValue = useMemo(() => {
@@ -93,6 +91,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                         Id: brand.Id,
                         Description: brand.Name,
                     })) ?? [],
+                disabled: false,
             },
             {
                 label: "temporada *",
@@ -102,6 +101,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                         Id: season.Id,
                         Description: season.Name,
                     })) ?? [],
+                disabled: false,
             },
             // {
             //     label: "Año *",
@@ -116,21 +116,29 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                 label: "unidad de gestion",
                 name: "idManagmentUnit",
                 options: managementUnit ?? [],
+                disabled: false,
             },
             {
                 label: "rubro *",
                 name: "idIndustry",
                 options: rubros,
-                disabled: rubros.length === 0,
+                disabled: !rubros.length,
             },
             {
                 label: "tipologia *",
                 name: "idTipology",
                 options: tipology,
-                disabled: tipology.length === 0,
+                disabled: !tipology.length,
             },
         ],
-        [seasons, tipology, managementUnit, rubros, yearsDropdownArr]
+        [
+            seasons,
+            tipology,
+            managementUnit,
+            rubros,
+            yearsDropdownArr,
+            state.selectedManagementUnit,
+        ]
     );
 
     const specificPropsDropdowns = useMemo(
@@ -158,13 +166,20 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
                 name: "idRise",
                 options: rises ?? [],
                 disable:
-                    state.selectedTipology !==
-                    tipology.find((tipo) =>
-                        (tipo.Description as string).includes("Jean")
-                    )?.Code,
+                    state.selectedManagementUnit !==
+                    managementUnit?.find((unit) =>
+                        (unit.Description as string).includes("Denim")
+                    )?.Id,
             },
         ],
-        [concepts, lines, bodyFit, rises, state.selectedTipology]
+        [
+            concepts,
+            lines,
+            bodyFit,
+            rises,
+            state.selectedManagementUnit,
+            managementUnit,
+        ]
     );
 
     const checkIfError = (name) => {
@@ -216,16 +231,17 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedTipology }) => {
         //     dispatch({ type: "setSelectedYear", payload: getCodeById(e.value, ) });
         // }
         if (e.name === "idTipology") {
-            setSelectedTipology(getCodeById(e.value, tipologiesByIndustry));
             dispatch({
                 type: "setSelectedTipology",
                 payload: getCodeById(e.value, tipologiesByIndustry),
             });
+        }
+        if (e.name === "idManagmentUnit") {
+            setSelectedManagmentUnit(e.value);
             if (e.value !== idShoes) {
                 reduxDispatch(changeTelasLength(1));
             }
-        }
-        if (e.name === "idManagmentUnit") {
+
             dispatch({
                 type: "setSelectedManagementUnit",
                 payload: e.value,
