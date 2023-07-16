@@ -85,7 +85,7 @@ export const updateProduct = async ({
         idShoeMaterial: Number(idStatusMeasurmentTable),
         costInStore: Number(costInStore),
         sampleType: Number(sampleType),
-        idManagmentUnit: Number(idDepartment),
+        idManagmentUnit: Number(idManagmentUnit),
         idCollection: 1,
         pictures,
     };

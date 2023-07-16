@@ -42,7 +42,7 @@ export const UpdateProduct = () => {
         year,
         productNumber,
         idIndustry,
-        idDepartment,
+        idManagmentUnit,
     } = useAppSelector((state) => state.updatedProduct);
     const { mutateAsync, isLoading } = useMutation(getProductById);
 
@@ -65,7 +65,7 @@ export const UpdateProduct = () => {
         dispatch(
             setIndustriesByUnit(
                 await getMerchantIndustryDropdownValue({
-                    idManagementUnit: idDepartment,
+                    idManagementUnit: idManagmentUnit,
                     idMerchant,
                 })
             )
@@ -208,7 +208,7 @@ export const UpdateProduct = () => {
 
     useEffect(() => {
         updateIndustriesAndTipologies();
-    }, [idIndustry, idDepartment]);
+    }, [idIndustry, idManagmentUnit]);
 
     return (
         <>

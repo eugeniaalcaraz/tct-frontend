@@ -34,7 +34,7 @@ const UpdateDropdown: FC<UpdateProps> = ({
 
     const handleChange = async (e, state) => {
         dispatch(setData({ [state]: e.target.value }));
-        if (name === "idManagementUnit") {
+        if (name === "idManagmentUnit") {
             dispatch(
                 setIndustriesByUnit(
                     await getMerchantIndustryDropdownValue({

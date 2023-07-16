@@ -17,7 +17,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { StyledTableRow } from "./TableStyles";
 import { Pages } from "@/types";
 import { getProductById } from "@/services/ProductRequests";
-import { getSeasonById, urlFormat } from "@/utils";
+import { getCodeById, getSeasonById, urlFormat } from "@/utils";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { setUpdateProduct } from "@/state/features/product";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,9 @@ import { StatusLabel } from "@/pages/updateProduct/stateLabel";
 
 const Row = (props: { row }) => {
     const { row } = props;
-    const { allSeasons } = useAppSelector((state) => state.product);
+    const { allSeasons, seasons, brands } = useAppSelector(
+        (state) => state.product
+    );
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -77,14 +79,13 @@ const Row = (props: { row }) => {
                     />
                 </TableCell>
                 <TableCell>
-                    {row?.idMerchantBrand}
-                    {row?.idSeason}
-                    {row?.year}
+                    {getCodeById(row?.idMerchantBrand, brands)}
+                    {getCodeById(row?.idSeason, seasons)}
                     {row?.productNumber}
                 </TableCell>
                 <TableCell>{row?.name}</TableCell>
                 <TableCell>
-                    {getSeasonById(row?.idSeason, allSeasons)} {row?.year}
+                    {getSeasonById(row?.idSeason, allSeasons)}
                 </TableCell>
                 <TableCell>{row?.supplier}</TableCell>
                 <TableCell>
@@ -146,7 +147,10 @@ const Row = (props: { row }) => {
                                         </TableCell>
                                         <TableCell>
                                             <StatusLabel
-                                                status={row?.statusSample?.toLowerCase()}
+                                                status={
+                                                    row?.statusSample?.toLowerCase() ??
+                                                    "-"
+                                                }
                                             />
                                         </TableCell>
                                         <TableCell>
@@ -163,7 +167,10 @@ const Row = (props: { row }) => {
                                         </TableCell>
                                         <TableCell>
                                             <StatusLabel
-                                                status={row?.statusFabric?.toLowerCase()}
+                                                status={
+                                                    row?.statusFabric?.toLowerCase() ??
+                                                    "-"
+                                                }
                                             />
                                         </TableCell>
                                         <TableCell>
@@ -180,7 +187,10 @@ const Row = (props: { row }) => {
                                         </TableCell>
                                         <TableCell>
                                             <StatusLabel
-                                                status={row?.statusAvio?.toLowerCase()}
+                                                status={
+                                                    row?.statusAvio?.toLowerCase() ??
+                                                    "-"
+                                                }
                                             />
                                         </TableCell>
                                         <TableCell>
@@ -197,7 +207,10 @@ const Row = (props: { row }) => {
                                         </TableCell>
                                         <TableCell>
                                             <StatusLabel
-                                                status={row?.statusModeling?.toLowerCase()}
+                                                status={
+                                                    row?.statusModeling?.toLowerCase() ??
+                                                    "-"
+                                                }
                                             />
                                         </TableCell>
                                         <TableCell>

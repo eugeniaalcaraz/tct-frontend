@@ -18,6 +18,7 @@ import {
     getStatus,
     getStatusId,
     getColorRGB,
+    getFabricById,
 } from "@/utils";
 import dayjs from "dayjs";
 import { UpdateInput, UpdateDropdown } from "../updateDropdowns";
@@ -214,6 +215,14 @@ export const Materials = () => {
                                                                               composition
                                                                           )}`;
                                                                       }
+                                                                  ) ?? "-"
+                                                                : name ===
+                                                                  "idFabric"
+                                                                ? getFabricById(
+                                                                      fabric[
+                                                                          data
+                                                                      ],
+                                                                      fabrics
                                                                   )
                                                                 : String(
                                                                       fabric[
