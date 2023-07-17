@@ -120,6 +120,10 @@ const Shipments = () => {
         return () => requestAbortController.current?.abort();
     }, [embarques]);
 
+    useEffect(() => {
+        console.log(embarques);
+    }, [embarques]);
+
     return (
         <Container>
             <LocalizationProvider dateAdapter={AdapterDayjs}>

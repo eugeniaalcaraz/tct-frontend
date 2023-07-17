@@ -49,10 +49,10 @@ const RadialChart: FC<RadialChartProps> = ({ data }) => (
                         <Cell
                             fill={
                                 d.value <= 45
-                                    ? "#E28B4A"
+                                    ? "#DFB6D2"
                                     : d.value >= 80
-                                    ? "#CFD779"
-                                    : "#DFB6D2"
+                                    ? "#E28B4A"
+                                    : "#CFD779"
                             }
                             key={uuid()}
                         />

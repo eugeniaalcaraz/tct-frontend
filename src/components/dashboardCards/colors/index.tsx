@@ -62,12 +62,13 @@ const Colors = () => {
     return (
         <>
             {composicionPorColor.length && (
-                <ResponsiveContainer height="80%" width="95%">
+                <ResponsiveContainer height="80%" width="70%">
                     <BarChart
                         width={150}
                         height={40}
                         data={data}
                         layout="vertical"
+                        margin={{ left: 30 }}
                     >
                         <YAxis
                             yAxisId={0}
@@ -76,7 +77,7 @@ const Colors = () => {
                             fontSize="1.4rem"
                             tickLine={false}
                             axisLine={false}
-                            tickMargin={10}
+                            tickMargin={5}
                         />
                         <YAxis
                             yAxisId={1}

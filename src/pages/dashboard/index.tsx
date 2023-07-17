@@ -111,11 +111,12 @@ const Dashboard = () => {
                         idMerchant,
                         idSeason,
                     }),
-                    embarques: await getCardsAsync({
-                        card: "embarques",
+                    embarques: await getCalendarValue(
                         idMerchant,
-                        idSeason,
-                    }),
+                        temporada,
+                        date.month() + 1,
+                        date.year()
+                    ),
                     overall: await getCardsAsync({
                         card: "overall",
                         idMerchant,
