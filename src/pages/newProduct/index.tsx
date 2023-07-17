@@ -153,7 +153,7 @@ const NewProduct = () => {
                 medidas,
                 telas,
                 avios,
-                sizeCurveType: sizeCurveTypeChooser[formData.idTipology],
+                sizeCurveType: sizeCurveTypeChooser[formData.idManagementUnit],
                 extendedSize: specialSizeCurve,
                 modelingDate: dayjs().format("YYYY-MM-DD"),
                 sampleDate: dayjs().format("YYYY-MM-DD"),
