@@ -101,7 +101,7 @@ export type Brands = {
 };
 
 export type CompositionFabricCombo = {
-    idFiber: number;
+    idFiber?: number;
     percentage: number;
 };
 

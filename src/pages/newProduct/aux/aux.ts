@@ -39,6 +39,33 @@ enum tableSizeCurveType {
     DENIM,
 }
 
+export const defaultValues = {
+    idMerchantBrand: "",
+    idRise: "",
+    idBodyFit: "",
+    idConcept: "",
+    idCountry: "",
+    idIndustry: "",
+    idLine: "",
+    idManagmentUnit: "",
+    idSeason: "",
+    idShoeMaterial: "",
+    idSupplier: "",
+    idTipology: "",
+    cost: "",
+    quantity: "",
+    costInStore: "",
+    nombreDelProducto: "",
+    precioVenta: "",
+    cantidadDeTelas: 1,
+    cantidadDeAvios: 1,
+    proyecta: false,
+    fabricCode: "",
+    ["placement-0"]: "",
+    ["tipoAvio-0"]: "",
+    ["cantidadAvio-0"]: "",
+};
+
 export const sizeCurveTableTypeChooser = (idManagementUnit: number) => {
     switch (idManagementUnit) {
         case 1:

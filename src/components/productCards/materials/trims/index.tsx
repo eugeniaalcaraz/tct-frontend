@@ -26,9 +26,8 @@ type TrimsProps = {
 };
 
 const Trims: FC<TrimsProps> = ({ trimNumber }) => {
-    const { trims, avios, colors, reduxErrors } = useAppSelector(
-        (state) => state.product
-    );
+    const { trims, avios, colors, reduxErrors, mutationSuccess } =
+        useAppSelector((state) => state.product);
     const [open, setOpen] = useState<boolean>(false);
     const [selectedIdColor, setSelectedIdColor] = useState("");
     const [trimColor, setTrimColor] = useState<number>(0);
@@ -96,6 +95,14 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
         }
     }, [isSubmitting]);
 
+    useEffect(() => {
+        if (mutationSuccess) {
+            setIdAvio("");
+            setQuantity("");
+            setSelectedIdColor("");
+        }
+    }, [mutationSuccess]);
+
     return (
         <FabricContainer
             className={
@@ -114,7 +121,6 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                     `tipoAvio-${trimNumber}`,
                     reduxErrors
                 )}
-                // useFormHook={false}
                 onBlur={(e) => {
                     console.log(e.target.value);
 
@@ -123,7 +129,6 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                         dispatch(removeReduxError(`tipoAvio-${trimNumber}`));
                     }
                 }}
-                // selectedValue={idAvio}
             />
             <ControlledInput
                 label="Cantidad"
@@ -133,11 +138,6 @@ const Trims: FC<TrimsProps> = ({ trimNumber }) => {
                     `cantidadAvio-${trimNumber}`,
                     reduxErrors
                 )}
-                // useFormhook={false}
-                // externaonlOnChange={(e) => {
-                //     setQuantity(e.target.value);
-                // }}
-                // externalValue={quantity}
                 onBlur={(e) => {
                     setQuantity(e.target.value);
                     if (e.target.value !== "") {

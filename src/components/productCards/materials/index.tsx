@@ -20,7 +20,9 @@ const Materials: FC<MaterialsProps> = ({ isShoe }) => {
     const [numberOfFabricsSelected, setNumberOfFabricsSelected] = useState(1);
     const [numberOfTrimsSelected, setNumberOfTrimsSelected] = useState(1);
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { telas, avios } = useAppSelector((state) => state.product);
+    const { telas, avios, mutationSuccess } = useAppSelector(
+        (state) => state.product
+    );
 
     const [shoesOptions, setShoesOptions] = useState<OptionsType[]>([]);
     const dispatch = useAppDispatch();
@@ -75,6 +77,13 @@ const Materials: FC<MaterialsProps> = ({ isShoe }) => {
             setShoesOptions(response);
         });
     }, []);
+
+    useEffect(() => {
+        if (mutationSuccess) {
+            setNumberOfFabricsSelected(1);
+            setNumberOfTrimsSelected(1);
+        }
+    }, [mutationSuccess]);
 
     return (
         <Container>

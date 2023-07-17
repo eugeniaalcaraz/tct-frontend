@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { productValidation } from "./productValidation";
 import {
@@ -27,7 +27,12 @@ import { toBase64 } from "@/utils/toBase64";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { NumberSizeCurve } from "@components/productCards/sizeCurve/numberSizeCurve";
-import { denimSizes, shoesSizes, sizeCurveTableTypeChooser } from "./aux/aux";
+import {
+    defaultValues,
+    denimSizes,
+    shoesSizes,
+    sizeCurveTableTypeChooser,
+} from "./aux/aux";
 import {
     clearAviosCombos,
     clearReduxErrors,
@@ -37,30 +42,7 @@ import {
     setSpecialSizeCurve,
 } from "@/state/features/product";
 import dayjs from "dayjs";
-import { tipologyEnum } from "./enum";
-
-const defaultValues = {
-    idMerchantBrand: "",
-    idRise: "",
-    idBodyFit: "",
-    idConcept: "",
-    idCountry: "",
-    idIndustry: "",
-    idLine: "",
-    idManagmentUnit: "",
-    idSeason: "",
-    idShoeMaterial: "",
-    idSupplier: "",
-    idTipology: "",
-    cost: "",
-    quantity: "",
-    costInStore: "",
-    nombreDelProducto: "",
-    precioVenta: "",
-    cantidadDeTelas: 1,
-    cantidadDeAvios: 1,
-    proyecta: false,
-};
+import { managementUnitEnum } from "./enum";
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
@@ -78,6 +60,26 @@ const NewProduct = () => {
     const resolver = yupResolver(productValidation);
     const methods = useForm({ resolver, defaultValues });
     const dispatch = useAppDispatch();
+    const isShoeSelected = useMemo(
+        () =>
+            selectedManagmentUnit ===
+            (managementUnit?.find((managementUnitObj) =>
+                (managementUnitObj.Description as string).includes(
+                    managementUnitEnum.SHOES
+                )
+            )?.Id ?? 10000),
+        [selectedManagmentUnit, managementUnit]
+    );
+    const isDenimSelected = useMemo(
+        () =>
+            selectedManagmentUnit ===
+            (managementUnit?.find((managementUnitObj) =>
+                (managementUnitObj.Description as string).includes(
+                    managementUnitEnum.DENIM
+                )
+            )?.Id ?? 10000),
+        [selectedManagmentUnit, managementUnit]
+    );
 
     const {
         mutateAsync: createProdAsync,
@@ -175,42 +177,20 @@ const NewProduct = () => {
         adjuntos: <Attachments />,
         compraYVenta: <Trading formMethods={methods} />,
         embarque: <Shipment />,
-        materiales: (
-            <Materials
-                isShoe={
-                    selectedManagmentUnit ===
-                    (managementUnit?.find((managementUnitObj) =>
-                        (managementUnitObj.Description as string).includes(
-                            tipologyEnum.SHOES
-                        )
-                    )?.Id ?? 1000)
-                }
-            />
-        ),
-        curvaDeTalles: !(
-            selectedManagmentUnit ===
-            (managementUnit?.find((managementUnitObj) =>
-                (managementUnitObj.Description as string).includes(
-                    tipologyEnum.CLOTHES
-                )
-            )?.Id ?? 1000)
-        ) ? (
-            <NumberSizeCurve
-                sizes={
-                    selectedManagmentUnit ===
-                    (managementUnit?.find((managementUnitObj) =>
-                        (managementUnitObj.Description as string).includes(
-                            tipologyEnum.SHOES
-                        )
-                    )?.Id ?? 1000)
-                        ? shoesSizes
-                        : denimSizes
-                }
-            />
-        ) : (
-            <SizeCurve />
-        ),
+        materiales: <Materials isShoe={isShoeSelected} />,
+        curvaDeTalles:
+            isDenimSelected || isShoeSelected ? (
+                <NumberSizeCurve
+                    sizes={isShoeSelected ? shoesSizes : denimSizes}
+                />
+            ) : (
+                <SizeCurve />
+            ),
     };
+
+    useEffect(() => {
+        console.log({ isDenimSelected, isShoeSelected });
+    }, [selectedManagmentUnit]);
 
     useEffect(() => {
         if (productSuccess) {

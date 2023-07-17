@@ -133,7 +133,6 @@ const Fabrics: FC<FabricProps> = ({
             // @ts-ignore
             setCompOfSelectedQuality(selectedFabric?.Composition);
 
-            //TODO: revisar tema de composition, el tipo no es el mismo
             setFinalComboObject((prevState) => ({
                 ...prevState,
                 weight: Number(selectedFabric.Weight),
@@ -141,7 +140,7 @@ const Fabrics: FC<FabricProps> = ({
                 description: selectedFabric.Description,
                 composition: selectedFabric.Composition.map(
                     ({ Description, Percentage }) => ({
-                        idFiber: 0,
+                        // idFiber: 0,
                         percentage: Percentage,
                         descripcion: Description,
                     })
