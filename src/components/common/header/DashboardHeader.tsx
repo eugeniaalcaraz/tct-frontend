@@ -24,7 +24,7 @@ const DashboardHeader = () => {
         );
     }, [allSeasons]);
 
-    const handleSelectedSeason = () => {
+    const handleSelectedSeason = useCallback(() => {
         if (allSeasons) {
             dispatch(
                 handleDashboardData({
@@ -33,7 +33,7 @@ const DashboardHeader = () => {
                 })
             );
         }
-    };
+    }, [allSeasons, temporada]);
 
     useEffect(() => {
         allSeasons === null && handleSeasons();

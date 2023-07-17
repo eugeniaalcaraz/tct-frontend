@@ -101,7 +101,7 @@ const Fabrics: FC<FabricProps> = ({
     const [finalComboObject, setFinalComboObject] =
         useState<FabricComboMaterial>({
             idFabric: "",
-            idStatus: 1,
+            idStatus: 5,
             description: "",
             consumption: 0,
             weight: 0,
@@ -157,7 +157,7 @@ const Fabrics: FC<FabricProps> = ({
             const tempSolidColorObj: ColorCombo = {
                 idColor: solidColorName,
                 sizeCurve: [],
-                idStatus: 1,
+                idStatus: 5,
             };
 
             setlocalColorList((prevState) =>
@@ -178,7 +178,7 @@ const Fabrics: FC<FabricProps> = ({
                 nombre: printName,
                 cantidadColor: colorAmount,
                 sizeCurve: [],
-                idStatus: 1,
+                idStatus: 5,
             };
 
             setFinalComboObject((prevState) => ({
@@ -428,7 +428,7 @@ const Fabrics: FC<FabricProps> = ({
         if (mutationSuccess) {
             setFinalComboObject({
                 idFabric: "",
-                idStatus: 1,
+                idStatus: 5,
                 description: "",
                 consumption: 0,
                 weight: 0,

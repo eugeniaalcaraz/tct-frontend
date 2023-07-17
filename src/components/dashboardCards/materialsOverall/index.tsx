@@ -15,7 +15,13 @@ const MaterialsOverall = () => {
 
     const slicedData = data.slice(0, 6);
 
-    return <PieWithLabels data={slicedData} />;
+    return (
+        <>
+            {resumenDeMaterialidades.length && (
+                <PieWithLabels data={slicedData} />
+            )}
+        </>
+    );
 };
 
 export { MaterialsOverall };

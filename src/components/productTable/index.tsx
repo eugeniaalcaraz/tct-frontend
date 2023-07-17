@@ -46,6 +46,7 @@ const ProductTable = () => {
         deposito,
         store,
         nombre,
+        proveedor,
     } = useAppSelector((state) => state.filters);
     const filters = useAppSelector((state) => state.filters);
     const dispatch = useAppDispatch();
@@ -110,6 +111,7 @@ const ProductTable = () => {
         deposito,
         store,
         nombre,
+        proveedor,
     ]);
 
     useEffect(() => {

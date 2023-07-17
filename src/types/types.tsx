@@ -270,7 +270,7 @@ export type UpdateProduct = {
     comboFabricColors: [ComboFabrics[]];
     comboFabricPrints: [ComboFabrics[]];
     fabrics: Fabrics[];
-    productPictures: string;
+    productPicture: string;
 };
 
 export type Trims = {

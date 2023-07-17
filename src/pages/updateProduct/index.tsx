@@ -170,7 +170,7 @@ export const UpdateProduct = () => {
                 costInStore: productInfo?.costInStore,
                 pictures: [
                     {
-                        pic: productInfo?.productPicture,
+                        pic: updateProduct?.productPicture ?? "-",
                         isMain: 1,
                     },
                 ],

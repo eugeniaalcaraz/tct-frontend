@@ -25,7 +25,7 @@ import { Container } from "./DashboardStyles";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
-import { handleDashboardData } from "@/state/features";
+import { handleDashboardData, setCards } from "@/state/features";
 import { getCalendarValue, getCardValue } from "@/services";
 
 import { useMutation } from "@tanstack/react-query";
@@ -58,7 +58,18 @@ const originalLayouts = getFromLS("layouts") || initialLayouts;
 
 const Dashboard = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { temporada } = useAppSelector((state) => state.dashboard);
+    const {
+        temporada,
+        balance,
+        estadoDeProduccion,
+        aprobacionesPendientes,
+        margen,
+        overall,
+        embarques,
+        resumenDeMaterialidades,
+        composicionPorColor,
+    } = useAppSelector((state) => state.dashboard);
+
     const dispatch = useAppDispatch();
     const date = dayjs();
     const {
@@ -77,34 +88,64 @@ const Dashboard = () => {
     );
 
     const getCardData = useCallback(
-        (season) => {
-            Object.keys(dashboard)?.map((card) =>
-                callCardsValues(card, season)
+        async (idSeason) => {
+            dispatch(
+                setCards({
+                    balance: await getCardsAsync({
+                        card: "balance",
+                        idMerchant,
+                        idSeason,
+                    }),
+                    estadoDeProduccion: await getCardsAsync({
+                        card: "estadoDeProduccion",
+                        idMerchant,
+                        idSeason,
+                    }),
+                    aprobacionesPendientes: await getCardsAsync({
+                        card: "aprobacionesPendientes",
+                        idMerchant,
+                        idSeason,
+                    }),
+                    margen: await getCardsAsync({
+                        card: "margen",
+                        idMerchant,
+                        idSeason,
+                    }),
+                    embarques: await getCardsAsync({
+                        card: "embarques",
+                        idMerchant,
+                        idSeason,
+                    }),
+                    overall: await getCardsAsync({
+                        card: "overall",
+                        idMerchant,
+                        idSeason,
+                    }),
+                    resumenDeMaterialidades: await getCardsAsync({
+                        card: "resumenDeMaterialidades",
+                        idMerchant,
+                        idSeason,
+                    }),
+                    composicionPorColor: await getCardsAsync({
+                        card: "composicionPorColor",
+                        idMerchant,
+                        idSeason,
+                    }),
+                })
             );
         },
-        [dashboard]
+        [
+            temporada,
+            balance,
+            estadoDeProduccion,
+            aprobacionesPendientes,
+            margen,
+            overall,
+            //embarques,
+            resumenDeMaterialidades,
+            composicionPorColor,
+        ]
     );
-
-    const callCardsValues = async (card, season) => {
-        dispatch(
-            handleDashboardData({
-                name: card,
-                value:
-                    card !== "embarques"
-                        ? await getCardsAsync({
-                              card,
-                              idMerchant,
-                              idSeason: season,
-                          })
-                        : await getCalendarValue(
-                              idMerchant,
-                              1,
-                              date.month() + 1,
-                              date.year()
-                          ),
-            })
-        );
-    };
 
     const onLayoutChange = (layout, layouts) => {
         saveToLS("layouts", layouts);

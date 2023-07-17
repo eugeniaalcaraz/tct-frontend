@@ -86,7 +86,11 @@ const Balance = () => {
                     arrow
                 >
                     <State className={Type}>
-                        <p>{`${Math.round((value * 100) / 400)} % ${Type}`}</p>
+                        {!isNaN(Math.round((value * 100) / 400)) && (
+                            <p>{`${Math.round(
+                                (value * 100) / 400
+                            )} % ${Type}`}</p>
+                        )}
                     </State>
                 </Tooltip>
             ))}

@@ -65,8 +65,7 @@ const Attachments = () => {
                     hidden
                     {...measurementsField}
                     onChange={(e) => handlePreview(e, true)}
-                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                    multiple
+                    accept="image/*"
                 />
             </Button>
             <Box className="preview">
@@ -88,9 +87,7 @@ const Attachments = () => {
                         <img key={file} src={file} alt="Selected file" />
                     ))}
                 {mmtPreview.length > 0 &&
-                    mmtPreview.map((file) => (
-                        <img key={file} src={filePreview} />
-                    ))}
+                    mmtPreview.map((file) => <img key={file} src={file} />)}
             </Box>
 
             <span

@@ -11,14 +11,14 @@ import { StaticDatePicker } from "@mui/x-date-pickers";
 import { CalendarPickerSkeleton } from "@mui/x-date-pickers/CalendarPickerSkeleton";
 import { Container, DayContainer } from "./ShipmentStyles";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
-import { handleDashboardData } from "@/state/features";
+import { handleDashboardData, setCards } from "@/state/features";
 import { getCalendarValue } from "@/services";
 import { pluralize } from "@/utils";
 
 const Shipments = () => {
     dayjs.locale(es);
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { embarques } = useAppSelector((state) => state.dashboard);
+    const { embarques, temporada } = useAppSelector((state) => state.dashboard);
     const requestAbortController = useRef<AbortController | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [highlightedDays, setHighlightedDays] = useState<
@@ -37,13 +37,11 @@ const Shipments = () => {
         }
 
         setIsLoading(true);
-
         dispatch(
-            handleDashboardData({
-                name: "embarques",
-                value: await getCalendarValue(
+            setCards({
+                embarques: await getCalendarValue(
                     idMerchant,
-                    1,
+                    temporada,
                     date.month() + 1,
                     date.year()
                 ),

@@ -63,8 +63,11 @@ const dashboardSlice = createSlice({
         handleDashboardData(state, action: PayloadAction<PayloadData>) {
             state[action.payload.name] = action.payload.value;
         },
+        setCards(state, action: PayloadAction<Partial<any>>) {
+            return { ...state, ...action.payload };
+        },
     },
 });
 
-export const { handleDashboardData } = dashboardSlice.actions;
+export const { handleDashboardData, setCards } = dashboardSlice.actions;
 export default dashboardSlice.reducer;
