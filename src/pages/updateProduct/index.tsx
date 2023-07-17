@@ -160,13 +160,15 @@ export const UpdateProduct = () => {
                 idMerchant: productInfo?.idMerchant,
                 idExistingProduct: "1",
                 name: productInfo?.name,
-                idModeling: productInfo?.idModeling,
+                idModeling: productInfo?.idModeling ?? 5,
                 weight: productInfo?.weight,
                 modelingDate: productInfo?.modelingDate,
                 idCareLabel: "1",
-                measurmentTable: productInfo?.measurementTable,
-                idStatusMeasurmentTable: productInfo?.idStatusMeasurmentTable,
-                idShoeMaterial: productInfo?.idShoeMaterial,
+                // measurmentTable: productInfo?.measurmentTable,
+                measurmentTable: "",
+                idStatusMeasurmentTable:
+                    productInfo?.idStatusMeasurementTable ?? 5,
+                idShoeMaterial: productInfo?.idShoeMaterial ?? "",
                 costInStore: productInfo?.costInStore,
                 pictures: [
                     {

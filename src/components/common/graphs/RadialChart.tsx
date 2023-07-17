@@ -44,7 +44,7 @@ const RadialChart: FC<RadialChartProps> = ({ data }) => {
                     tick={false}
                 />
 
-                <RadialBar background dataKey="value">
+                <RadialBar background dataKey="value" isAnimationActive={false}>
                     {data?.map((d, index) => {
                         return (
                             <Cell

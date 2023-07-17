@@ -114,7 +114,7 @@ const Measurements = () => {
                             objectFit: "cover",
                         }}
                         alt={`Tabla de medidas de producto ${updateData?.idProduct}`}
-                        src={table}
+                        src={updateData?.measurmentTable}
                     />
                 )}
             </div>

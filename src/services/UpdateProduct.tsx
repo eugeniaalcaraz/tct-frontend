@@ -47,7 +47,7 @@ export const updateProduct = async ({
     const path = `/dataSheet/updateProduct`;
 
     const body = {
-        idProduct,
+        idProduct: Number(idProduct),
         idSampleStatus: Number(idSampleStatus),
         sampleDate,
         idMerchantBrand: Number(idMerchantBrand),
@@ -74,13 +74,13 @@ export const updateProduct = async ({
         extendedSize,
         idDesigner: Number(idDesigner),
         idMerchant: Number(idMerchant),
-        idExistingProduct: "1",
+        idExistingProduct: "0",
         name,
         idModeling: Number(idModeling),
         weight: Number(weight),
         modelingDate,
         idCareLabel: "1",
-        measurmentTable: "blobtext",
+        measurmentTable,
         idStatusMeasurmentTable: Number(idStatusMeasurmentTable),
         idShoeMaterial: Number(idStatusMeasurmentTable),
         costInStore: Number(costInStore),

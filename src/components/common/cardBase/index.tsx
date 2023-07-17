@@ -14,18 +14,6 @@ const CardBase: FC<CardProps> = ({ header, content }) => {
                 <Typography variant="h2">
                     {header !== "Overall" ? header : ""}
                 </Typography>
-                {/* {header.toLowerCase() === "balance" && (
-                    <Tooltip
-                        title="Promedio basado
-                    en estado de los productos
-                    y dias restantes para 
-                    el embarque de los mismos"
-                        placement="left"
-                        arrow
-                    >
-                        <div>{icons["info"]}</div>
-                    </Tooltip>
-                )} */}
             </HeaderContainer>
             {content}
         </Container>

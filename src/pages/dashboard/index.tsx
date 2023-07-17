@@ -87,60 +87,6 @@ const Dashboard = () => {
         JSON.parse(JSON.stringify(originalLayouts))
     );
 
-    // const getCardData = useCallback(
-    //     async (idSeason) => {
-    //         dispatch(
-    //             setCards({
-    //                 balance: await getCardsAsync({
-    //                     card: "balance",
-    //                     idMerchant,
-    //                     idSeason,
-    //                 }),
-    //                 // estadoDeProduccion: await getCardsAsync({
-    //                 //     card: "estadoDeProduccion",
-    //                 //     idMerchant,
-    //                 //     idSeason,
-    //                 // }),
-    //                 aprobacionesPendientes: await getCardsAsync({
-    //                     card: "aprobacionesPendientes",
-    //                     idMerchant,
-    //                     idSeason,
-    //                 }),
-    //                 margen: await getCardsAsync({
-    //                     card: "margen",
-    //                     idMerchant,
-    //                     idSeason,
-    //                 }),
-    //                 overall: await getCardsAsync({
-    //                     card: "overall",
-    //                     idMerchant,
-    //                     idSeason,
-    //                 }),
-    //                 resumenDeMaterialidades: await getCardsAsync({
-    //                     card: "resumenDeMaterialidades",
-    //                     idMerchant,
-    //                     idSeason,
-    //                 }),
-    //                 composicionPorColor: await getCardsAsync({
-    //                     card: "composicionPorColor",
-    //                     idMerchant,
-    //                     idSeason,
-    //                 }),
-    //             })
-    //         );
-    //     },
-    //     [
-    //         temporada,
-    //         balance,
-    //         //estadoDeProduccion,
-    //         aprobacionesPendientes,
-    //         margen,
-    //         overall,
-    //         resumenDeMaterialidades,
-    //         composicionPorColor,
-    //     ]
-    // );
-
     const onLayoutChange = (layout, layouts) => {
         saveToLS("layouts", layouts);
     };
