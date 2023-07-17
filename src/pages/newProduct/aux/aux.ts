@@ -26,3 +26,29 @@ export const shoesSizes = [
     { Id: "39", Description: "39" },
     { Id: "40", Description: "40" },
 ];
+
+// const sizeCurveTypeChooser = {
+//     2: 1,
+//     1: 2,
+//     3: 3,
+// };
+
+enum tableSizeCurveType {
+    SHOE = 1,
+    CLOTHES,
+    DENIM,
+}
+
+export const sizeCurveTableTypeChooser = (idManagementUnit: number) => {
+    switch (idManagementUnit) {
+        case 1:
+            return tableSizeCurveType.CLOTHES;
+        case 2:
+            return tableSizeCurveType.SHOE;
+        case 3:
+            return tableSizeCurveType.DENIM;
+
+        default:
+            return tableSizeCurveType.CLOTHES;
+    }
+};

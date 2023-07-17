@@ -27,7 +27,7 @@ import { toBase64 } from "@/utils/toBase64";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { NumberSizeCurve } from "@components/productCards/sizeCurve/numberSizeCurve";
-import { denimSizes, shoesSizes } from "./aux/aux";
+import { denimSizes, shoesSizes, sizeCurveTableTypeChooser } from "./aux/aux";
 import {
     clearAviosCombos,
     clearReduxErrors,
@@ -140,11 +140,11 @@ const NewProduct = () => {
         //     denim: 3
         //   };
 
-        const sizeCurveTypeChooser = {
-            2: 1,
-            1: 2,
-            3: 3,
-        };
+        // const sizeCurveTypeChooser = {
+        //     2: 1,
+        //     1: 2,
+        //     3: 3,
+        // };
 
         createProdAsync({
             formData: {
@@ -153,7 +153,9 @@ const NewProduct = () => {
                 medidas,
                 telas,
                 avios,
-                sizeCurveType: sizeCurveTypeChooser[formData.idManagementUnit],
+                sizeCurveType: sizeCurveTableTypeChooser(
+                    Number(formData.idManagementUnit)
+                ),
                 extendedSize: specialSizeCurve,
                 modelingDate: dayjs().format("YYYY-MM-DD"),
                 sampleDate: dayjs().format("YYYY-MM-DD"),
