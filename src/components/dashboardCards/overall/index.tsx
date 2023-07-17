@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState, useCallback } from "react";
 import {
     Table,
     TableBody,
@@ -9,12 +9,15 @@ import {
     Typography,
 } from "@mui/material";
 import { v4 as uuid } from "uuid";
-import { OverallHeaders } from "@/types";
+import { OverallHeaders, OverallType } from "@/types";
 import { useAppSelector } from "@/state/app/hooks";
 import { formatNumber } from "@/utils";
+import { getCardValue } from "@/services";
 
 const Overall = () => {
-    const { overall } = useAppSelector((state) => state.dashboard);
+    const { idMerchant } = useAppSelector((state) => state.user);
+    const { temporada } = useAppSelector((state) => state.dashboard);
+    const [overall, setOverall] = useState<OverallType[]>([]);
     const headerValues = Object.entries(OverallHeaders);
 
     const initialValue = 0;
@@ -34,8 +37,29 @@ const Overall = () => {
 
     const headers = headerValues.map(([, value]) => value);
 
+    const loadData = useCallback(async () => {
+        setOverall(
+            await getCardValue({
+                card: "overall",
+                idMerchant,
+                idSeason: temporada,
+            })
+        );
+    }, [overall]);
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
     return (
-        <TableContainer>
+        <TableContainer
+            sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+            }}
+        >
             <Table
                 sx={{ minWidth: 650 }}
                 size="small"
@@ -61,6 +85,9 @@ const Overall = () => {
                             <Fragment key={uuid()}>
                                 <TableRow
                                     sx={{
+                                        height: "5.5rem",
+                                        verticalAlign: "bottom",
+                                        fontWeight: 600,
                                         "& td, & th": {
                                             border: 0,
                                         },
@@ -68,6 +95,10 @@ const Overall = () => {
                                             {
                                                 fontWeight: 600,
                                             },
+                                        "& th": {
+                                            fontWeight: 700,
+                                            fontSize: "1.3rem",
+                                        },
                                     }}
                                 >
                                     <TableCell component="th" scope="row">

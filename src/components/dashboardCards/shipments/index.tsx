@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { v4 as uuid } from "uuid";
 import es from "dayjs/locale/es";
@@ -18,7 +18,7 @@ import { pluralize } from "@/utils";
 const Shipments = () => {
     dayjs.locale(es);
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { embarques, temporada } = useAppSelector((state) => state.dashboard);
+    const { temporada } = useAppSelector((state) => state.dashboard);
     const requestAbortController = useRef<AbortController | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [highlightedDays, setHighlightedDays] = useState<
@@ -28,8 +28,7 @@ const Shipments = () => {
     const [orderNumbers, setOrderNumbers] = useState<number[]>([]);
     const [whareouseOrders, setWhareouseOrders] = useState<number[]>([]);
     const [storeOrders, setStoreOrders] = useState<number[]>([]);
-
-    const dispatch = useAppDispatch();
+    const [embarques, setEmbarques] = useState([]);
 
     const handleMonthChange = async (date: Dayjs) => {
         if (requestAbortController.current) {
@@ -37,19 +36,23 @@ const Shipments = () => {
         }
 
         setIsLoading(true);
-        dispatch(
-            setCards({
-                embarques: await getCalendarValue(
+        loadEmbarques(date);
+        setHighlightedDays([]);
+        setIsLoading(false);
+    };
+
+    const loadEmbarques = useCallback(
+        async (date) =>
+            setEmbarques(
+                await getCalendarValue(
                     idMerchant,
                     temporada,
                     date.month() + 1,
                     date.year()
-                ),
-            })
-        );
-        setHighlightedDays([]);
-        setIsLoading(false);
-    };
+                )
+            ),
+        [embarques]
+    );
 
     const loadHighlightedDays = () => {
         const upcomingShipments = embarques?.map(
@@ -61,6 +64,10 @@ const Shipments = () => {
         );
         setHighlightedDays(upcomingShipments);
     };
+
+    useEffect(() => {
+        loadEmbarques(dayjs());
+    }, []);
 
     const getShipmentsOfDay = (day, viewMore = false, type = "shipment") => {
         const orders =
@@ -118,10 +125,6 @@ const Shipments = () => {
     useEffect(() => {
         embarques?.length > 0 && loadHighlightedDays();
         return () => requestAbortController.current?.abort();
-    }, [embarques]);
-
-    useEffect(() => {
-        console.log(embarques);
     }, [embarques]);
 
     return (

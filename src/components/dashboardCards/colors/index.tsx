@@ -1,5 +1,6 @@
+import { getCardValue } from "@/services";
 import { useAppSelector } from "@/state/app/hooks";
-import React from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis } from "recharts";
 
 // const data = [
@@ -49,20 +50,54 @@ import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis } from "recharts";
 // }[];
 
 const Colors = () => {
-    const { composicionPorColor } = useAppSelector((state) => state.dashboard);
+    const { idMerchant } = useAppSelector((state) => state.user);
+    const { temporada } = useAppSelector((state) => state.dashboard);
+    const [composicionPorColor, setComposicion] = useState<
+        {
+            idColor: number;
+            colorDescription: string;
+            RGB: string;
+            totalPieces: number;
+        }[]
+    >([]);
+    const [data, setData] = useState<{ name: string; quantity: number }[]>([]);
 
-    const data = composicionPorColor?.map(
-        ({ colorDescription, totalPieces }) =>
-            ({
-                name: colorDescription,
-                quantity: totalPieces,
-            } ?? [])
+    const loadData = useCallback(async () => {
+        setComposicion(
+            await getCardValue({
+                card: "composicionPorColor",
+                idMerchant,
+                idSeason: temporada,
+            })
+        );
+    }, [composicionPorColor, temporada]);
+
+    const setValues = useCallback(
+        () =>
+            setData(
+                composicionPorColor?.map(
+                    ({ colorDescription, totalPieces }) =>
+                        ({
+                            name: colorDescription,
+                            quantity: totalPieces,
+                        } ?? [])
+                )
+            ),
+        [composicionPorColor]
     );
+
+    useEffect(() => {
+        loadData();
+    }, []);
+
+    useEffect(() => {
+        setValues();
+    }, [composicionPorColor]);
 
     return (
         <>
             {composicionPorColor.length && (
-                <ResponsiveContainer height="80%" width="70%">
+                <ResponsiveContainer height="80%" width="85%">
                     <BarChart
                         width={150}
                         height={40}
@@ -98,7 +133,7 @@ const Colors = () => {
                             tickLine={false}
                             axisLine={false}
                             hide
-                            domain={[0, "dataMax + 800"]}
+                            domain={[0, "dataMax + 15"]}
                         />
                         <Bar
                             dataKey="quantity"

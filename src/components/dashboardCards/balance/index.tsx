@@ -1,10 +1,37 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useAppSelector } from "@/state/app/hooks";
 import { Container, State } from "./BalanceStyles";
 import { Tooltip, Typography } from "@mui/material";
+import { BalanceType } from "@/types";
+import { getCardValue } from "@/services";
 
 const Balance = () => {
-    const { balance } = useAppSelector((state) => state.dashboard);
+    const { idMerchant } = useAppSelector((state) => state.user);
+    const { temporada } = useAppSelector((state) => state.dashboard);
+    const [balance, setBalance] = useState<BalanceType>({
+        avioInCritical: 0,
+        aviosInAttention: 0,
+        aviosInOk: 0,
+        fabricInCritical: 0,
+        fabricInAttention: 0,
+        fabricInOk: 0,
+        colorInCritical: 0,
+        colorInAttention: 0,
+        colorInOk: 0,
+        sampleInCritical: 0,
+        sampleInAttention: 0,
+        sampleInOk: 0,
+    });
+
+    const loadData = useCallback(async () => {
+        setBalance(
+            await getCardValue({
+                card: "balance",
+                idMerchant,
+                idSeason: temporada,
+            })
+        );
+    }, [balance, temporada]);
 
     const {
         avioInCritical,
@@ -60,6 +87,10 @@ const Balance = () => {
             values: [aviosInOk, fabricInOk, colorInOk, sampleInOk],
         },
     ];
+
+    useEffect(() => {
+        loadData();
+    }, []);
 
     return (
         <Container>

@@ -168,7 +168,6 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
     };
 
     const handleChange = (e, position) => {
-        console.log(curve);
         const newCurve = curve.slice();
         newCurve[position] = Number(e.target.value);
         dispatch(setData({ curve: newCurve }));

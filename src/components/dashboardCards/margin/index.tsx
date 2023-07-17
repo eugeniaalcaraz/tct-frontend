@@ -1,10 +1,31 @@
 import { useAppSelector } from "@/state/app/hooks";
-import React from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Container, Values } from "./MarginStyles";
 import { formatNumber } from "@/utils";
+import { getCardValue } from "@/services";
 
 const Margin = () => {
-    const { margen } = useAppSelector((state) => state.dashboard);
+    const { idMerchant } = useAppSelector((state) => state.user);
+    const { temporada } = useAppSelector((state) => state.dashboard);
+    const [margen, setMargen] = useState<{
+        PVP: number;
+        Cost: number;
+        Margin: string;
+    } | null>(null);
+
+    const loadData = useCallback(async () => {
+        setMargen(
+            await getCardValue({
+                card: "margen",
+                idMerchant,
+                idSeason: temporada,
+            })
+        );
+    }, [margen, temporada]);
+
+    useEffect(() => {
+        loadData();
+    }, []);
 
     return (
         <Container>

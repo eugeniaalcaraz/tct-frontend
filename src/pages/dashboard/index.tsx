@@ -26,7 +26,7 @@ import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
 import { handleDashboardData, setCards } from "@/state/features";
-import { getCalendarValue, getCardValue } from "@/services";
+import { getCardValue } from "@/services";
 
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -87,66 +87,59 @@ const Dashboard = () => {
         JSON.parse(JSON.stringify(originalLayouts))
     );
 
-    const getCardData = useCallback(
-        async (idSeason) => {
-            dispatch(
-                setCards({
-                    balance: await getCardsAsync({
-                        card: "balance",
-                        idMerchant,
-                        idSeason,
-                    }),
-                    estadoDeProduccion: await getCardsAsync({
-                        card: "estadoDeProduccion",
-                        idMerchant,
-                        idSeason,
-                    }),
-                    aprobacionesPendientes: await getCardsAsync({
-                        card: "aprobacionesPendientes",
-                        idMerchant,
-                        idSeason,
-                    }),
-                    margen: await getCardsAsync({
-                        card: "margen",
-                        idMerchant,
-                        idSeason,
-                    }),
-                    embarques: await getCalendarValue(
-                        idMerchant,
-                        temporada,
-                        date.month() + 1,
-                        date.year()
-                    ),
-                    overall: await getCardsAsync({
-                        card: "overall",
-                        idMerchant,
-                        idSeason,
-                    }),
-                    resumenDeMaterialidades: await getCardsAsync({
-                        card: "resumenDeMaterialidades",
-                        idMerchant,
-                        idSeason,
-                    }),
-                    composicionPorColor: await getCardsAsync({
-                        card: "composicionPorColor",
-                        idMerchant,
-                        idSeason,
-                    }),
-                })
-            );
-        },
-        [
-            temporada,
-            balance,
-            estadoDeProduccion,
-            aprobacionesPendientes,
-            margen,
-            overall,
-            //embarques,
-            resumenDeMaterialidades,
-            composicionPorColor,
-        ]
-    );
+    // const getCardData = useCallback(
+    //     async (idSeason) => {
+    //         dispatch(
+    //             setCards({
+    //                 balance: await getCardsAsync({
+    //                     card: "balance",
+    //                     idMerchant,
+    //                     idSeason,
+    //                 }),
+    //                 // estadoDeProduccion: await getCardsAsync({
+    //                 //     card: "estadoDeProduccion",
+    //                 //     idMerchant,
+    //                 //     idSeason,
+    //                 // }),
+    //                 aprobacionesPendientes: await getCardsAsync({
+    //                     card: "aprobacionesPendientes",
+    //                     idMerchant,
+    //                     idSeason,
+    //                 }),
+    //                 margen: await getCardsAsync({
+    //                     card: "margen",
+    //                     idMerchant,
+    //                     idSeason,
+    //                 }),
+    //                 overall: await getCardsAsync({
+    //                     card: "overall",
+    //                     idMerchant,
+    //                     idSeason,
+    //                 }),
+    //                 resumenDeMaterialidades: await getCardsAsync({
+    //                     card: "resumenDeMaterialidades",
+    //                     idMerchant,
+    //                     idSeason,
+    //                 }),
+    //                 composicionPorColor: await getCardsAsync({
+    //                     card: "composicionPorColor",
+    //                     idMerchant,
+    //                     idSeason,
+    //                 }),
+    //             })
+    //         );
+    //     },
+    //     [
+    //         temporada,
+    //         balance,
+    //         //estadoDeProduccion,
+    //         aprobacionesPendientes,
+    //         margen,
+    //         overall,
+    //         resumenDeMaterialidades,
+    //         composicionPorColor,
+    //     ]
+    // );
 
     const onLayoutChange = (layout, layouts) => {
         saveToLS("layouts", layouts);
@@ -155,9 +148,9 @@ const Dashboard = () => {
         setBreakpoint(breakpoint);
     };
 
-    useEffect(() => {
-        Number(temporada) !== 0 && getCardData(temporada);
-    }, [temporada]);
+    // useEffect(() => {
+    //     Number(temporada) !== 0 && getCardData(temporada);
+    // }, [temporada]);
 
     // useEffect(() => {
     //     if (cardsError) {
