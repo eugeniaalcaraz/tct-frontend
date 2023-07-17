@@ -25,7 +25,6 @@ import { FabricContainer } from "../MaterialsStyles";
 import { useAppSelector, useAppDispatch } from "@/state/app/hooks";
 import {
     ColorCombo,
-    FabricCombo,
     FabricComboMaterial,
     FabricOptionType,
     OptionsType,
@@ -35,7 +34,6 @@ import {
     addTela,
     clearErrors,
     clearReduxErrors,
-    removeCombo,
     removeReduxError,
     setReduxErrors,
 } from "@/state/features/product";
@@ -438,6 +436,7 @@ const Fabrics: FC<FabricProps> = ({
             });
             setCompOfSelectedQuality([]);
             setSelectedQuality("");
+            setQualities([0]);
         }
     }, [mutationSuccess]);
 
