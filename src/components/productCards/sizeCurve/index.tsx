@@ -157,7 +157,12 @@ const SizeCurve = () => {
                         <span key={Id} className={isIncludded(Id)}>
                             <ControlledInput
                                 useFormhook={false}
-                                disabled={!telas.length}
+                                disabled={
+                                    !(
+                                        telas[0]?.colors.length ||
+                                        telas[0]?.prints.length
+                                    ) ?? false
+                                }
                                 externalOnChange={(e) => {
                                     inputOnChange({
                                         valueToUpdate: e.target.value,

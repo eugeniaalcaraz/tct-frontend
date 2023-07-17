@@ -90,6 +90,10 @@ export const NumberSizeCurve: FC<NumberSizeCurveProps> = ({ sizes }) => {
         }
     }, [mutationSuccess]);
 
+    useEffect(() => {
+        setUpdatedSizeValues(sizes.map(({ Id }) => ({ Id, value: "" })));
+    }, [sizes]);
+
     return (
         <Container>
             <span className="label">Piezas por talle</span>
@@ -99,7 +103,12 @@ export const NumberSizeCurve: FC<NumberSizeCurveProps> = ({ sizes }) => {
                         <span key={Id}>
                             <ControlledInput
                                 useFormhook={false}
-                                disabled={!telas.length}
+                                disabled={
+                                    !(
+                                        telas[0]?.colors.length ||
+                                        telas[0]?.prints.length
+                                    ) ?? false
+                                }
                                 externalOnChange={(e) =>
                                     inputOnChange({
                                         valueToUpdate: e.target.value,
