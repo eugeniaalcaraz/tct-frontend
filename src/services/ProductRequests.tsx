@@ -185,6 +185,7 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
         idIndustry: Number(formData.idIndustry),
         idLine: Number(formData.idLine),
         idMerchantBrand: Number(formData.idMerchantBrand),
+        idTipology: Number(formData.idTipology),
         idExistingProduct: "0",
         year: Number(formData.year ?? 0),
         weight: Number(formData.weight ?? 0),
@@ -209,8 +210,21 @@ const getBodyWithExitingQuality = (formData, idMerchant) => {
     delete finalObj.cantidadDeAvios;
     delete finalObj.cantidadDeTelas;
     delete finalObj.peso;
-    // delete finalObj["porcentaje-0-0"];
-    // delete finalObj["composicion-0"];
+    delete finalObj["porcentaje-0-0"];
+    delete finalObj["composicion-0"];
+    delete finalObj["placement-0"];
+    delete finalObj["placement-1"];
+    delete finalObj["placement-2"];
+    delete finalObj["placement-3"];
+    delete finalObj["placement-4"];
+    delete finalObj["consumoCalidad-0"];
+    delete finalObj["consumoCalidad-1"];
+    delete finalObj["consumoCalidad-2"];
+    delete finalObj["consumoCalidad-3"];
+    delete finalObj["consumoCalidad-4"];
+    delete finalObj["consumoCalidad-5"];
+    delete finalObj["cantidadAvio-0"];
+    delete finalObj["tipoAvio-0"];
     delete finalObj.fotos;
     delete finalObj.medidas;
     // delete finalObj["nombreNuevoFabric-0"];
@@ -235,6 +249,7 @@ const getBody = (formData, idMerchant) => {
         idIndustry: Number(formData.idIndustry),
         idLine: Number(formData.idLine),
         idMerchantBrand: Number(formData.idMerchantBrand),
+        idTipology: Number(formData.idTipology),
         idExistingProduct: "0",
         year: Number(formData.year ?? 0),
         weight: Number(formData.weight ?? 0),
@@ -259,8 +274,21 @@ const getBody = (formData, idMerchant) => {
     delete finalObj.cantidadDeAvios;
     delete finalObj.cantidadDeTelas;
     delete finalObj.peso;
-    // delete finalObj["porcentaje-0-0"];
-    // delete finalObj["composicion-0"];
+    delete finalObj["porcentaje-0-0"];
+    delete finalObj["composicion-0"];
+    delete finalObj["placement-0"];
+    delete finalObj["placement-1"];
+    delete finalObj["placement-2"];
+    delete finalObj["placement-3"];
+    delete finalObj["placement-4"];
+    delete finalObj["consumoCalidad-0"];
+    delete finalObj["consumoCalidad-1"];
+    delete finalObj["consumoCalidad-2"];
+    delete finalObj["consumoCalidad-3"];
+    delete finalObj["consumoCalidad-4"];
+    delete finalObj["consumoCalidad-5"];
+    delete finalObj["cantidadAvio-0"];
+    delete finalObj["tipoAvio-0"];
     delete finalObj.fotos;
     delete finalObj.medidas;
     // delete finalObj["nombreNuevoFabric-0"];
