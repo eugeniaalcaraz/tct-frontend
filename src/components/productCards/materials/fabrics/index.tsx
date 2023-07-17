@@ -436,6 +436,7 @@ const Fabrics: FC<FabricProps> = ({
             });
             setCompOfSelectedQuality([]);
             setSelectedQuality("");
+            setQualities([0]);
         }
     }, [mutationSuccess]);
 
