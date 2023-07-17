@@ -62,6 +62,7 @@ export const defaultValues = {
     proyecta: false,
     fabricCode: "",
     ["placement-0"]: "",
+    ["consumoCalidad-0"]: "",
     ["tipoAvio-0"]: "",
     ["cantidadAvio-0"]: "",
 };
