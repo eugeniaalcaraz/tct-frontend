@@ -25,4 +25,5 @@ export const Values = styled(Box)({
     justifyContent: "flex-start",
     width: "25%",
     gap: "3rem",
+    flex: 1,
 }) as typeof Box;

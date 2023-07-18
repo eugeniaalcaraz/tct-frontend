@@ -111,10 +111,12 @@ const Overall = () => {
                                         {formatNumber(quantity)}
                                     </TableCell>
                                     <TableCell component="th" scope="row">
-                                        {formatNumber(
-                                            Number(comboPrintCount) +
-                                                Number(comboColorCount)
-                                        )}
+                                        {comboPrintCount && comboColorCount
+                                            ? formatNumber(
+                                                  Number(comboPrintCount) +
+                                                      Number(comboColorCount)
+                                              )
+                                            : 1}
                                     </TableCell>
                                 </TableRow>
 
@@ -148,10 +150,17 @@ const Overall = () => {
                                                 {formatNumber(quantity)}
                                             </TableCell>
                                             <TableCell>
-                                                {formatNumber(
-                                                    Number(comboPrintCount) +
-                                                        Number(comboColorCount)
-                                                )}
+                                                {comboPrintCount &&
+                                                comboColorCount
+                                                    ? formatNumber(
+                                                          Number(
+                                                              comboPrintCount
+                                                          ) +
+                                                              Number(
+                                                                  comboColorCount
+                                                              )
+                                                      )
+                                                    : 1}
                                             </TableCell>
                                         </TableRow>
                                     )
