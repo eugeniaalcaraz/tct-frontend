@@ -138,7 +138,7 @@ const Fabrics: FC<FabricProps> = ({
                 description: selectedFabric.Description,
                 composition: selectedFabric.Composition.map(
                     ({ Description, Percentage }) => ({
-                        idFiber: 0,
+                        // idFiber: 0,
                         percentage: Percentage,
                         descripcion: Description,
                     })
