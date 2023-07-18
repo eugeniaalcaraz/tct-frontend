@@ -123,13 +123,15 @@ export const UpdateProduct = () => {
                     ],
                     colors: fabric?.comboColors.map((combo) => ({
                         idColor: combo?.idColor,
-                        sizeCurve: combo?.sizeCurve,
+                        sizeCurve:
+                            combo?.sizeCurve && Object.values(combo?.sizeCurve),
                         idStatus: combo?.idStatus,
                     })),
                     prints: fabric?.comboPrints.map((print) => ({
                         nombre: "name",
                         cantidadColor: "2",
-                        sizeCurve: print?.sizeCurve,
+                        sizeCurve:
+                            print?.sizeCurve && Object.values(print?.sizeCurve),
                         idStatus: print?.idStatus,
                     })),
                     entryDate: fabric?.entryDate,
@@ -164,11 +166,11 @@ export const UpdateProduct = () => {
                 weight: productInfo?.weight,
                 modelingDate: productInfo?.modelingDate,
                 idCareLabel: "1",
-                // measurmentTable: productInfo?.measurmentTable,
-                measurmentTable: "",
+                measurmentTable: productInfo?.measurmentTable,
+                //measurmentTable: "",
                 idStatusMeasurmentTable:
                     productInfo?.idStatusMeasurementTable ?? 5,
-                idShoeMaterial: productInfo?.idShoeMaterial ?? "",
+                idShoeMaterial: productInfo?.idShoeMaterial ?? 0,
                 costInStore: productInfo?.costInStore,
                 pictures: [
                     {

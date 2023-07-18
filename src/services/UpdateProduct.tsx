@@ -71,7 +71,12 @@ export const updateProduct = async ({
         telas,
         avios,
         sizeCurveType: Number(sizeCurveType),
-        extendedSize,
+        extendedSize:
+            extendedSize === 0
+                ? false
+                : extendedSize === 1
+                ? true
+                : extendedSize,
         idDesigner: Number(idDesigner),
         idMerchant: Number(idMerchant),
         idExistingProduct: "0",
@@ -82,7 +87,7 @@ export const updateProduct = async ({
         idCareLabel: "1",
         measurmentTable,
         idStatusMeasurmentTable: Number(idStatusMeasurmentTable),
-        idShoeMaterial: Number(idStatusMeasurmentTable),
+        idShoeMaterial: Number(idShoeMaterial),
         costInStore: Number(costInStore),
         sampleType: Number(sampleType),
         idManagmentUnit: Number(idManagmentUnit),
