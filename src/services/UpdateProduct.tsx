@@ -43,6 +43,7 @@ export const updateProduct = async ({
     costInStore,
     pictures,
     idManagmentUnit,
+    productNumber,
 }) => {
     const path = `/dataSheet/updateProduct`;
 
@@ -93,6 +94,7 @@ export const updateProduct = async ({
         idManagmentUnit: Number(idManagmentUnit),
         idCollection: 1,
         pictures,
+        productNumber: Number(productNumber),
     };
 
     try {

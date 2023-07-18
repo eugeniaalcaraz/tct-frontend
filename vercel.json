@@ -3,7 +3,7 @@
       { "source": "/login", "destination": "/" },
       { "source": "/dashboard", "destination": "/" },
       { "source": "/new-product", "destination": "/" },
-      { "source": "/update-product/:id", "destination": "/" },
+      { "source": "/update-product/:id/:season", "destination": "/" },
       { "source": "/server-error", "destination": "/" },
       { "source": "/products", "destination": "/" },
       { "source": "/(.*)", "destination": "/" }

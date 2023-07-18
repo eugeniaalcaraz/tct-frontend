@@ -36,6 +36,7 @@ const dropdowns = [
     "rises",
     "bodyFit",
     "industries",
+    "tipologies",
 ];
 
 const Layout = () => {

@@ -28,8 +28,10 @@ import defaultImage from "@assets/images/defaultImage.jpeg";
 
 const Row = (props: { row }) => {
     const { row } = props;
-    const { allSeasons, seasons, brands, tipologiesByIndustry } =
-        useAppSelector((state) => state.product);
+    const { idMerchant } = useAppSelector((state) => state.user);
+    const { allSeasons, seasons, brands, tipologies } = useAppSelector(
+        (state) => state.product
+    );
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -47,8 +49,20 @@ const Row = (props: { row }) => {
 
     const handleClick = async () => {
         setIsLoading(true);
-        dispatch(setUpdateProduct(await getProductById(row.idProduct)));
-        navigate(`${urlFormat(Pages.UpdateProduct)}/${row.idProduct}`);
+        dispatch(
+            setUpdateProduct(
+                await getProductById({
+                    productNumber: row?.productNumber,
+                    idSeason: row?.idSeason,
+                    idMerchant,
+                })
+            )
+        );
+        navigate(
+            `${urlFormat(Pages.UpdateProduct)}/${row?.productNumber}/${
+                row?.idSeason
+            }`
+        );
         setIsLoading(false);
     };
 
@@ -81,7 +95,7 @@ const Row = (props: { row }) => {
                 <TableCell>
                     {getCodeByName(row?.brand, brands)}
                     {getCodeById(row?.idSeason, seasons)}
-                    {getCodeById(row?.idTipology, tipologiesByIndustry)}
+                    {getCodeById(row?.idTipology, tipologies)}
                     {row?.productNumber}
                 </TableCell>
                 <TableCell>{row?.name}</TableCell>

@@ -13,21 +13,24 @@ import { Container, DayContainer } from "./ShipmentStyles";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { handleDashboardData, setCards } from "@/state/features";
 import { getCalendarValue } from "@/services";
-import { pluralize } from "@/utils";
+import { getCodeById, getCodeByName, pluralize } from "@/utils";
 
 const Shipments = () => {
     dayjs.locale(es);
     const { idMerchant } = useAppSelector((state) => state.user);
     const { temporada } = useAppSelector((state) => state.dashboard);
+    const { seasons, brands, tipologies } = useAppSelector(
+        (state) => state.product
+    );
     const requestAbortController = useRef<AbortController | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [highlightedDays, setHighlightedDays] = useState<
         { shipment: number | ""; wharehouse: number | ""; entry: number | "" }[]
     >([]);
     const [value, setValue] = useState<Dayjs | null>(dayjs());
-    const [orderNumbers, setOrderNumbers] = useState<number[]>([]);
-    const [whareouseOrders, setWhareouseOrders] = useState<number[]>([]);
-    const [storeOrders, setStoreOrders] = useState<number[]>([]);
+    const [orderNumbers, setOrderNumbers] = useState<string[]>([]);
+    const [whareouseOrders, setWhareouseOrders] = useState<string[]>([]);
+    const [storeOrders, setStoreOrders] = useState<string[]>([]);
     const [embarques, setEmbarques] = useState([]);
 
     const handleMonthChange = async (date: Dayjs) => {
@@ -92,14 +95,28 @@ const Shipments = () => {
         }
 
         embarques?.map(
-            ({ ShippingDate, ProductNumber, WarehouseDate, EntryDate }) => {
+            ({
+                ShippingDate,
+                ProductNumber,
+                IdTipology,
+                IdBrand,
+                IdSeason,
+                WarehouseDate,
+                EntryDate,
+            }) => {
                 if (
                     dayjs(ShippingDate).date() === Number(day.date()) &&
                     dayjs(ShippingDate).month() === Number(day.month())
                 ) {
                     setOrderNumbers((prevState) => [
                         ...prevState,
-                        ProductNumber,
+                        `${getCodeByName(IdBrand, brands)}${getCodeById(
+                            IdSeason,
+                            seasons
+                        )}${getCodeById(
+                            IdTipology,
+                            tipologies
+                        )}${ProductNumber}`,
                     ]);
                 } else if (
                     dayjs(WarehouseDate).date() === Number(day.date()) &&
@@ -107,7 +124,13 @@ const Shipments = () => {
                 ) {
                     setWhareouseOrders((prevState) => [
                         ...prevState,
-                        ProductNumber,
+                        `${getCodeByName(IdBrand, brands)}${getCodeById(
+                            IdSeason,
+                            seasons
+                        )}${getCodeById(
+                            IdTipology,
+                            tipologies
+                        )}${ProductNumber}`,
                     ]);
                 } else if (
                     dayjs(EntryDate).date() === Number(day.date()) &&
@@ -115,7 +138,13 @@ const Shipments = () => {
                 ) {
                     setStoreOrders((prevState) => [
                         ...prevState,
-                        ProductNumber,
+                        `${getCodeByName(IdBrand, brands)}${getCodeById(
+                            IdSeason,
+                            seasons
+                        )}${getCodeById(
+                            IdTipology,
+                            tipologies
+                        )}${ProductNumber}`,
                     ]);
                 }
             }

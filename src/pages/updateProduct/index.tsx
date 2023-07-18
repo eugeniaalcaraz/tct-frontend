@@ -38,14 +38,8 @@ import { setData, updateSampleStatus } from "@/state/features/updatedProduct";
 export const UpdateProduct = () => {
     const methods = useForm();
     const { idMerchant } = useAppSelector((state) => state.user);
-    const {
-        updateProduct,
-        edition,
-        brands,
-        seasons,
-        composition,
-        tipologiesByIndustry,
-    } = useAppSelector((state) => state.product);
+    const { updateProduct, edition, brands, seasons, composition, tipologies } =
+        useAppSelector((state) => state.product);
     const {
         sampleType,
         idSampleStatus,
@@ -60,7 +54,7 @@ export const UpdateProduct = () => {
     } = useAppSelector((state) => state.updatedProduct);
     const { mutateAsync, isLoading } = useMutation(getProductById);
 
-    const { id } = useParams();
+    const { id, season } = useParams();
     const dispatch = useAppDispatch();
 
     const productInfo = updateProduct?.basicInfo[0];
@@ -72,7 +66,15 @@ export const UpdateProduct = () => {
     };
 
     const loadProduct = async () => {
-        dispatch(setUpdateProduct(await mutateAsync(id)));
+        dispatch(
+            setUpdateProduct(
+                await mutateAsync({
+                    productNumber: id,
+                    idSeason: season,
+                    idMerchant,
+                })
+            )
+        );
     };
 
     const updateIndustriesAndTipologies = async () => {
@@ -96,7 +98,7 @@ export const UpdateProduct = () => {
     const loadProductState = () => {
         dispatch(
             setData({
-                idProduct: id,
+                idProduct: productInfo?.id,
                 idManagmentUnit: productInfo?.idManagmentUnit,
                 productNumber: productInfo?.productNumber,
                 idSampleStatus: productInfo?.idSampleStatus,
@@ -251,7 +253,7 @@ export const UpdateProduct = () => {
                         <h1>
                             {getCodeById(idMerchantBrand, brands)}
                             {getCodeById(idSeason, seasons)}
-                            {getCodeById(idTipology, tipologiesByIndustry)}
+                            {getCodeById(idTipology, tipologies)}
                             {productNumber} -{" "}
                             {edition ? (
                                 <Select

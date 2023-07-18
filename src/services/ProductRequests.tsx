@@ -93,8 +93,12 @@ export const getApprovalsOfProduct = async (idProduct) => {
     }
 };
 
-export const getProductById = async (idProduct) => {
-    const path = `/merchant/getProduct/${idProduct}`;
+export const getProductById = async ({
+    productNumber,
+    idSeason,
+    idMerchant,
+}) => {
+    const path = `/merchant/getProduct/${productNumber}/${idSeason}/${idMerchant}`;
     try {
         return await getJsonRequest(path);
     } catch (error) {
@@ -154,6 +158,8 @@ const getQuery = (card) => {
             return "getMerchantRise";
         case "bodyFit":
             return "getMerchantBodyFit";
+        case "tipologies":
+            return "getAllTipologies";
         default:
             return -1;
     }

@@ -55,6 +55,7 @@ export interface productState {
     updateProduct: UpdateProduct | null;
     industriesByUnit: OptionsType[];
     tipologiesByIndustry: OptionsType[];
+    tipologies: OptionsType[];
 }
 
 const initialState: productState = {
@@ -90,6 +91,7 @@ const initialState: productState = {
     updateProduct: null,
     industriesByUnit: [],
     tipologiesByIndustry: [],
+    tipologies: [],
 };
 
 const productSlice = createSlice({

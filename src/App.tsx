@@ -72,7 +72,9 @@ function App() {
                             element={<ServerDown />}
                         />
                         <Route
-                            path={`${urlFormat(Pages.UpdateProduct)}/:id`}
+                            path={`${urlFormat(
+                                Pages.UpdateProduct
+                            )}/:id/:season`}
                             element={<UpdateProduct />}
                         />
                     </Route>
