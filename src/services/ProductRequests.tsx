@@ -63,7 +63,12 @@ export const getDropdownValues = async ({ card, idMerchant }) => {
     const query = getQuery(card);
 
     if (query !== -1) {
-        const path = `${BASE_URL}/${query}/${idMerchant}`;
+        let path;
+        if (card === "tipologies") {
+            path = `${BASE_URL}/${query}`;
+        } else {
+            path = `${BASE_URL}/${query}/${idMerchant}`;
+        }
         try {
             return await getJsonRequest(path);
         } catch (error) {
