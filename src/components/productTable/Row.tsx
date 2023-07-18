@@ -28,9 +28,8 @@ import defaultImage from "@assets/images/defaultImage.jpeg";
 
 const Row = (props: { row }) => {
     const { row } = props;
-    const { allSeasons, seasons, brands } = useAppSelector(
-        (state) => state.product
-    );
+    const { allSeasons, seasons, brands, tipologiesByIndustry } =
+        useAppSelector((state) => state.product);
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -82,6 +81,7 @@ const Row = (props: { row }) => {
                 <TableCell>
                     {getCodeByName(row?.brand, brands)}
                     {getCodeById(row?.idSeason, seasons)}
+                    {getCodeById(row?.idTipology, tipologiesByIndustry)}
                     {row?.productNumber}
                 </TableCell>
                 <TableCell>{row?.name}</TableCell>

@@ -17,7 +17,9 @@ import { exportToExcel } from "@/utils";
 import dayjs from "dayjs";
 
 const ProductsHeader = () => {
-    const { product, filteredData } = useAppSelector((state) => state.product);
+    const { product, filteredData, tipologiesByIndustry } = useAppSelector(
+        (state) => state.product
+    );
     const {
         allSeasons,
         supplier,
@@ -83,9 +85,10 @@ const ProductsHeader = () => {
             row[ProductHeaders.Code] = `${getCodeByName(
                 product?.brand,
                 brands
-            )}${getCodeById(product?.idSeason, seasons)}${
-                product?.productNumber
-            }`;
+            )}${getCodeById(product?.idSeason, seasons)}${getCodeById(
+                product?.idTipology,
+                tipologiesByIndustry
+            )}${product?.productNumber}`;
             row[ProductHeaders.Name] = product?.name;
             row[ProductHeaders.Season] = `${getSeasonById(
                 product?.idSeason,

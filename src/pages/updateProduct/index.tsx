@@ -38,8 +38,14 @@ import { setData, updateSampleStatus } from "@/state/features/updatedProduct";
 export const UpdateProduct = () => {
     const methods = useForm();
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { updateProduct, edition, brands, seasons, composition } =
-        useAppSelector((state) => state.product);
+    const {
+        updateProduct,
+        edition,
+        brands,
+        seasons,
+        composition,
+        tipologiesByIndustry,
+    } = useAppSelector((state) => state.product);
     const {
         sampleType,
         idSampleStatus,
@@ -50,6 +56,7 @@ export const UpdateProduct = () => {
         productNumber,
         idIndustry,
         idManagmentUnit,
+        idTipology,
     } = useAppSelector((state) => state.updatedProduct);
     const { mutateAsync, isLoading } = useMutation(getProductById);
 
@@ -244,6 +251,7 @@ export const UpdateProduct = () => {
                         <h1>
                             {getCodeById(idMerchantBrand, brands)}
                             {getCodeById(idSeason, seasons)}
+                            {getCodeById(idTipology, tipologiesByIndustry)}
                             {productNumber} -{" "}
                             {edition ? (
                                 <Select
