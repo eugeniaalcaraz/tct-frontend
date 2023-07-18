@@ -6,6 +6,7 @@ import StateOptions from "../stateLabel/StateOptions";
 import { getStatus } from "@/utils";
 import { setMmtTable } from "@/state/features/updatedProduct";
 import styles from "./Measurements.module.css";
+import defaultImage from "@assets/images/defaultImage.jpeg";
 
 const Measurements = () => {
     const [table, setTable] = useState("");
@@ -114,7 +115,7 @@ const Measurements = () => {
                             objectFit: "cover",
                         }}
                         alt={`Tabla de medidas de producto ${updateData?.idProduct}`}
-                        src={updateData?.measurmentTable}
+                        src={updateData?.measurmentTable ?? defaultImage}
                     />
                 )}
             </div>

@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { ScreenLoader } from "@components/common";
 import dayjs from "dayjs";
 import { StatusLabel } from "@/pages/updateProduct/stateLabel";
+import defaultImage from "@assets/images/defaultImage.jpeg";
 
 const Row = (props: { row }) => {
     const { row } = props;
@@ -74,7 +75,7 @@ const Row = (props: { row }) => {
                 <TableCell component="th" scope="row" align="center">
                     <img
                         style={{ width: 50, height: 50 }}
-                        src={row?.pic}
+                        src={row?.pic ?? defaultImage}
                         alt=""
                     />
                 </TableCell>

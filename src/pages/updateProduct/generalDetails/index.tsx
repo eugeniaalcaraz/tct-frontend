@@ -24,6 +24,7 @@ import { getBottomRows, getGeneralDetails } from "./getGeneralDetails";
 import { toBase64 } from "@/utils/toBase64";
 import { setPicture } from "@/state/features/updatedProduct";
 import styles from "./GeneralDetails.module.css";
+import defaultImage from "@assets/images/defaultImage.jpeg";
 
 export const GeneralDetails = () => {
     const {
@@ -143,7 +144,7 @@ export const GeneralDetails = () => {
                         <img
                             className={styles.pic}
                             alt={`Foto de producto ${updateData?.idProduct}`}
-                            src={updateData?.pictures[0]?.pic}
+                            src={updateData?.pictures[0]?.pic ?? defaultImage}
                         />
                     )}
                 </div>

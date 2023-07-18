@@ -13,7 +13,13 @@ import { SizeCurve } from "./sizeCurve";
 import { Measurements } from "./measurements";
 import StateOptions from "./stateLabel/StateOptions";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
-import { getCodeById, getSampleType, getStatus, getStatusId } from "@/utils";
+import {
+    getCodeById,
+    getSampleType,
+    getStatus,
+    getStatusId,
+    getFiberId,
+} from "@/utils";
 import { useParams } from "react-router-dom";
 import {
     setIndustriesByUnit,
@@ -32,9 +38,8 @@ import { setData, updateSampleStatus } from "@/state/features/updatedProduct";
 export const UpdateProduct = () => {
     const methods = useForm();
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { updateProduct, edition, brands, seasons } = useAppSelector(
-        (state) => state.product
-    );
+    const { updateProduct, edition, brands, seasons, composition } =
+        useAppSelector((state) => state.product);
     const {
         sampleType,
         idSampleStatus,
@@ -115,12 +120,18 @@ export const UpdateProduct = () => {
                     consumption: fabric?.consumption,
                     weight: fabric?.weight,
                     placement: fabric?.idPlacement,
-                    composition: [
-                        {
-                            idFiber: 1,
-                            percentage: 100,
-                        },
-                    ],
+                    composition: fabric?.composition.map(
+                        ({ Description, Percentage }) => ({
+                            idFiber: getFiberId(Description, composition),
+                            percentage: Percentage,
+                        })
+                    ),
+                    // composition: [
+                    //     {
+                    //         idFiber: fabric?.composition,
+                    //         percentage: 100,
+                    //     },
+                    // ],
                     colors: fabric?.comboColors.map((combo) => ({
                         idColor: combo?.idColor,
                         sizeCurve:
@@ -166,8 +177,7 @@ export const UpdateProduct = () => {
                 weight: productInfo?.weight,
                 modelingDate: productInfo?.modelingDate,
                 idCareLabel: "1",
-                measurmentTable: productInfo?.measurmentTable,
-                //measurmentTable: "",
+                measurmentTable: productInfo?.measurementTable,
                 idStatusMeasurmentTable:
                     productInfo?.idStatusMeasurementTable ?? 5,
                 idShoeMaterial: productInfo?.idShoeMaterial ?? 0,
@@ -205,9 +215,11 @@ export const UpdateProduct = () => {
     };
 
     useEffect(() => {
+        updateIndustriesAndTipologies();
         if (updateProduct === undefined || updateProduct === null) {
             loadProduct();
         } else {
+            updateIndustriesAndTipologies();
             loadProductState();
         }
     }, [updateProduct]);

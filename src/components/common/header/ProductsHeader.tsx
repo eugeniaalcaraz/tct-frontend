@@ -4,11 +4,17 @@ import { FilterButton, ActionsButtons } from "./HeaderStyles";
 
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { toggleFilters } from "@/state/features";
-import { getSeasonById, handleInputNumber } from "@/utils";
+import {
+    getCodeById,
+    getCodeByName,
+    getSeasonById,
+    handleInputNumber,
+} from "@/utils";
 import { setFilterData } from "@/state/features/product";
 import { useIconsContext } from "@components/hooks";
 import { ProductHeaders } from "@/types";
 import { exportToExcel } from "@/utils";
+import dayjs from "dayjs";
 
 const ProductsHeader = () => {
     const { product, filteredData } = useAppSelector((state) => state.product);
@@ -23,6 +29,7 @@ const ProductsHeader = () => {
         concepts,
         lines,
         bodyFit,
+        seasons,
     } = useAppSelector((state) => state.product);
     const dispatch = useAppDispatch();
     const { icons } = useIconsContext();
@@ -72,31 +79,39 @@ const ProductsHeader = () => {
 
         products.forEach((product) => {
             const row = {};
-            row[ProductHeaders.Picture] = ""; //product?.pictures[0];
-            //row[ProductHeaders.Code] = product?.code, TODO - No lo encontre;
+            row[ProductHeaders.Picture] = product?.pic;
+            row[ProductHeaders.Code] = `${getCodeByName(
+                product?.brand,
+                brands
+            )}${getCodeById(product?.idSeason, seasons)}${
+                product?.productNumber
+            }`;
             row[ProductHeaders.Name] = product?.name;
             row[ProductHeaders.Season] = `${getSeasonById(
                 product?.idSeason,
                 allSeasons
-            )} ${product?.year}`;
+            )}`;
             row[ProductHeaders.Supplier] = product?.supplier;
-            //row[ProductHeaders.ShipmentDate] = String(
-            //         product?.Fabrics.map((fabric) => fabric?.shippingDate) &&
-            //             "-"
-            //     ), //TODO - En un lugar de la doc encontre el array "Fabrics" no se si eso se mantiene o no;
+            row[ProductHeaders.ShipmentDate] = dayjs(
+                product?.shippingDate
+            ).format("YYYY-MM-DD");
             row[ProductHeaders.Concept] = product?.concept;
             row[ProductHeaders.Line] = product?.line;
-            (row[ProductHeaders.Unit] = product?.managementUnit),
-                (row[ProductHeaders.Category] = product?.industry); // TODO creo que esto es = a "Rubro"
+            row[ProductHeaders.Unit] = product?.managmentUnit;
+            row[ProductHeaders.Category] = product?.industry;
             row[ProductHeaders.Tipology] = product?.tipology;
             row[ProductHeaders.BodyFit] = product?.bodyFit;
-            //row[ProductHeaders.Composition] = String(product?.combos[0].map((fabric) => fabric.composition)), //TODO - En un lugar de la doc encontre el array "combos" no se si eso se mantiene o no
+            row[ProductHeaders.Composition] =
+                product?.fabricData[0]?.Description;
             row[ProductHeaders.TotalQuanity] = product?.quantity;
             row[ProductHeaders.Buying] = product?.cost;
-            row[ProductHeaders.Selling] = product?.costInStore;
-            //row[ProductHeaders.SellingUy] = //product?.costInStore * valorConversion, TODO - no lo encontre
-            row[ProductHeaders.DepositDate] = product?.warehouseEntryDate;
-            row[ProductHeaders.StoreDate] = product?.entryDate;
+            row[ProductHeaders.SellingUy] = product?.costInStore;
+            row[ProductHeaders.DepositDate] = dayjs(
+                product?.warehouseEntryDate
+            ).format("YYYY-MM-DD");
+            row[ProductHeaders.StoreDate] = dayjs(product?.entryDate).format(
+                "YYYY-MM-DD"
+            );
             rows.push(row);
         });
         exportToExcel(rowHeaders, rows);

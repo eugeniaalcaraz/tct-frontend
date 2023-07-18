@@ -49,6 +49,20 @@ export const getCodeByName = (name, category) => {
     return item?.Code ?? "-";
 };
 
+export const getFiberId = (name, category) => {
+    const item = category?.find(
+        (item) => String(item.Description) === String(name)
+    );
+    return item?.Id ?? "-";
+};
+
+export const getIdByName = (name, category) => {
+    const item = category?.find(
+        (item) => String(item.Description) === String(name)
+    );
+    return item?.Id ?? "-";
+};
+
 export const getStatus = (id) => {
     switch (id) {
         case 1:

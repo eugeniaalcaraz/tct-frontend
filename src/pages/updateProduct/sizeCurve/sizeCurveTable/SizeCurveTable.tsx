@@ -170,8 +170,9 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
     const handleChange = (e, position) => {
         const newCurve = curve.slice();
         newCurve[position] = Number(e.target.value);
+        newCurve.push(curveSumary);
         dispatch(setData({ curve: newCurve }));
-        dispatch(saveCurves(curve));
+        dispatch(saveCurves(newCurve));
     };
 
     return (

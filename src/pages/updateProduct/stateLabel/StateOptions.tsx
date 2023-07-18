@@ -1,5 +1,7 @@
 import React, { FC, useState, useEffect } from "react";
 import { StatusLabel } from ".";
+import { useAppSelector } from "@/state/app/hooks";
+import { updateProduct } from "@/services/UpdateProduct";
 
 type StateOptionsProps = {
     status: string;
@@ -10,13 +12,19 @@ type StateOptionsProps = {
 const states = ["pendiente", "enviado", "aprobado", "reprobado", "recibido"];
 
 const StateOptions: FC<StateOptionsProps> = ({ status, id, updateAction }) => {
+    const { edition } = useAppSelector((state) => state.product);
+    const updateData = useAppSelector((state) => state.updatedProduct);
     const [chipStatus, setChipStatus] = useState(status);
     const [openList, setOpenList] = useState(false);
     const { index, parentIndex } = id;
 
-    const handleChipStatus = (clickedStatus) => {
-        updateAction &&
+    const handleChipStatus = async (clickedStatus) => {
+        if (updateAction) {
             updateAction({ index, parentIndex, status: clickedStatus });
+            if (!edition) {
+                await updateProduct(updateData);
+            }
+        }
         setChipStatus(clickedStatus);
     };
 
