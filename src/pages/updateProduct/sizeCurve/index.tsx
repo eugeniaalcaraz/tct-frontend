@@ -5,11 +5,14 @@ import { useAppSelector } from "@/state/app/hooks";
 
 export const SizeCurve = () => {
     const updateData = useAppSelector((state) => state.updatedProduct);
-    const { curve } = useAppSelector((state) => state.updatedProduct);
-
-    const adjustedCurve = curve.slice(0, curve.length - 1);
 
     const fabrics = updateData?.telas;
+    const curve =
+        fabrics[0]?.colors[0]?.sizeCurve || fabrics[0]?.prints[0]?.sizeCurve;
+
+    const adjustedCurve = curve?.slice(0, curve.length - 1);
+
+    console.log(curve, adjustedCurve);
 
     return (
         <>

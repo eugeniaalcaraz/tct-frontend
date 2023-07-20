@@ -200,20 +200,6 @@ export const UpdateProduct = () => {
                 entryDate: fabrics && fabrics[0]?.entryDate,
                 shippingDate: fabrics && fabrics[0]?.shippinDate,
                 warehouseEntryDate: fabrics && fabrics[0]?.warehouseEntryDate,
-                curve:
-                    fabrics && fabrics[0]?.comboColors[0]?.sizeCurve[0]
-                        ? Object.values(
-                              fabrics[0]?.comboColors[0]?.sizeCurve[0]
-                          )
-                        : fabrics && fabrics[0]?.comboPrints[0]?.sizeCurve[0]
-                        ? Object.values(
-                              fabrics[0]?.comboPrints[0]?.sizeCurve[0]
-                          )
-                        : productInfo?.sizeCurveType === 3
-                        ? Array.from(Array(9), () => 0)
-                        : productInfo?.sizeCurveType == 2
-                        ? Array.from(Array(13), () => 0)
-                        : Array.from(Array(7), () => 0),
             })
         );
     };

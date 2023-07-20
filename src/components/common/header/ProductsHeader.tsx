@@ -106,6 +106,11 @@ const ProductsHeader = () => {
             row[ProductHeaders.BodyFit] = product?.bodyFit;
             row[ProductHeaders.Composition] =
                 product?.fabricData[0]?.Description;
+            row[ProductHeaders.Margin] = (
+                ((product?.costInStore / 1.22 - product?.cost) /
+                    (product?.costInStore / 1.22)) *
+                100
+            ).toFixed(2);
             row[ProductHeaders.TotalQuanity] = product?.quantity;
             row[ProductHeaders.Buying] = product?.cost;
             row[ProductHeaders.SellingUy] = product?.costInStore;

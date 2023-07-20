@@ -30,7 +30,14 @@ export const CostAndMargin = () => {
             { label: "", data: "", name: "" },
         ],
         [
-            { label: "Margen", data: "calculo de margen", name: "" },
+            {
+                label: "Margen (%):",
+                data: (
+                    ((costInStore / 1.22 - cost) / (costInStore / 1.22)) *
+                    100
+                ).toFixed(2),
+                name: "",
+            },
             {
                 label: "Precio Santander($)",
                 data: costInStore * 0.85,

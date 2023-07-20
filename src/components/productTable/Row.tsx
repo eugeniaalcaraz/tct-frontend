@@ -114,7 +114,13 @@ const Row = (props: { row }) => {
                 <TableCell>{row?.bodyFit}</TableCell>
                 <TableCell>{row?.fabricData[0]?.Description}</TableCell>
                 <TableCell>{row?.quantity}</TableCell>
-                <TableCell>Margen</TableCell>
+                <TableCell>
+                    {(
+                        ((row?.costInStore / 1.22 - row?.cost) /
+                            (row?.costInStore / 1.22)) *
+                        100
+                    ).toFixed(2)}
+                </TableCell>
                 <TableCell>{row?.cost}</TableCell>
                 <TableCell>{row?.costInStore}</TableCell>
                 {/* <TableCell>Venta $</TableCell> */}

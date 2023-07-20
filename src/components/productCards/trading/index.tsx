@@ -60,7 +60,8 @@ const Trading: FC<TradingProps> = ({ formMethods }) => {
 
     useEffect(() => {
         if (pvpChecked) {
-            setSelling(buying + buying * (margin / 100));
+            //setSelling(buying + buying * (margin / 100));
+            setSelling((buying / (1 - margin)) * 1.22);
         }
     }, [margin, buying]);
 

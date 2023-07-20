@@ -50,14 +50,8 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
     const dispatch = useAppDispatch();
     const { icons } = useIconsContext();
     const initialValue = 0;
-    const curveSumary = curve.reduce(
+    const summary = curve?.reduce(
         (accumulator, currentValue) => accumulator + currentValue,
-        initialValue
-    );
-    const summary = curve.reduce(
-        (accumulator, currentValue) =>
-            accumulator +
-            Math.round((quantityOfCombo / curveSumary) * currentValue),
         initialValue
     );
 
@@ -66,10 +60,10 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
             case 2:
                 return (
                     <>
-                        {clothes.map(({ Description }, index) => (
+                        {clothes?.map(({ Description }, index) => (
                             <Fragment key={uuid()}>
                                 {!edition ? (
-                                    curve[index] > 0 ? (
+                                    curve && curve[index] > 0 ? (
                                         <TableCell key={uuid()} align="center">
                                             {Description}
                                         </TableCell>
@@ -88,7 +82,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
             case 3:
                 return (
                     <>
-                        {denim.map((size) => (
+                        {denim?.map((size) => (
                             <TableCell key={uuid()} align="center">
                                 {size}
                             </TableCell>
@@ -98,7 +92,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
             default:
                 return (
                     <>
-                        {shoes.map((size) => (
+                        {shoes?.map((size) => (
                             <TableCell key={uuid()} align="center">
                                 {size}
                             </TableCell>
@@ -125,7 +119,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
 
         return (
             <>
-                {sizes.map((_, index) => (
+                {sizes?.map((_, index) => (
                     <TableCell key={uuid()} align="center">
                         <TextField
                             onBlur={(e) => handleChange(e, index)}
@@ -141,36 +135,10 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
         );
     };
 
-    const getQuantityPerSize = () => {
-        return (
-            <>
-                {curve.map((size) => (
-                    <Fragment key={uuid()}>
-                        {!edition ? (
-                            size > 0 ? (
-                                <TableCell key={uuid()} align="center">
-                                    {Math.round(
-                                        (quantityOfCombo / curveSumary) * size
-                                    )}
-                                </TableCell>
-                            ) : (
-                                <></>
-                            )
-                        ) : (
-                            <TableCell key={uuid()} align="center">
-                                0
-                            </TableCell>
-                        )}
-                    </Fragment>
-                ))}
-            </>
-        );
-    };
-
     const handleChange = (e, position) => {
         const newCurve = curve.slice();
         newCurve[position] = Number(e.target.value);
-        newCurve.push(curveSumary);
+        newCurve.push(summary);
         dispatch(setData({ curve: newCurve }));
         dispatch(saveCurves(newCurve));
     };
@@ -201,7 +169,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                         </TableCell>
                         {edition
                             ? getFields()
-                            : curve.map((size) => (
+                            : curve?.map((size) => (
                                   <Fragment key={uuid()}>
                                       {size > 0 ? (
                                           <TableCell
@@ -216,7 +184,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                                   </Fragment>
                               ))}
                     </TableRow>
-                    <TableRow>
+                    {/* <TableRow>
                         <TableCell
                             component="th"
                             scope="row"
@@ -225,7 +193,7 @@ export const SizeCurveTable: FC<SizeCurveTableProps> = ({
                             Cantidad:
                         </TableCell>
                         {getQuantityPerSize()}
-                    </TableRow>
+                    </TableRow> */}
                     <TableRow>
                         <TableCell
                             component="th"
