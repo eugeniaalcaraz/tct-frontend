@@ -1,0 +1,5 @@
+@media print{
+    .colorBox {
+        -webkit-print-color-adjust: exact;
+    }
+}

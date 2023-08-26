@@ -20,12 +20,12 @@
 }
 
 .text > p >  a{
-    color:#233906;
+    color:#31654B;
     transition:all 0.6s ease;
 }
 
 .text > p > a:hover{
-    color:#839270
+    color:#31654B
 }
 
 .empty{
@@ -42,7 +42,7 @@
     height: 2rem;
     display: block;
     position: relative;
-    border: 1px solid #233906;
+    border: 1px solid #314C95;
     border-radius: 50%;
     box-sizing: border-box;
     animation: animloader 2s linear infinite;
@@ -52,7 +52,7 @@
     box-sizing: border-box;
     width: 0.25rem;
     height: 1rem;
-    background: #233906;
+    background: #919ECC;
     transform: rotate(-45deg);
     position: absolute;
     bottom: -0.83rem;

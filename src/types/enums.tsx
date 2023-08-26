@@ -4,6 +4,7 @@ export enum Pages {
     Products = "Products",
     NewProduct = "New Product",
     NewProvider = "New Provider",
+    UpdateProduct = "Update Product",
     ServerError = "Server Error",
 }
 
@@ -26,6 +27,9 @@ export enum ProdStatusOptions {
 
 export enum ModalTypes {
     NewProductError = "NewProductError",
+    NewFabricColor = "NewFabricColor",
+    NewFabricPrint = "NewFabricPrint",
+    NewTrimColor = "NewTrimColor",
 }
 
 export enum ApprovalElements {
@@ -33,4 +37,35 @@ export enum ApprovalElements {
     AviosApprovals = "AviosApprovals",
     ColorsApprovals = "ColorsApprovals",
     PrintsApprovals = "PrintsApprovals",
+}
+
+export enum ProductHeaders {
+    ExpandIcon = "",
+    Picture = "Foto",
+    Code = "Código",
+    Name = "Nombre",
+    Season = "Temporada",
+    Supplier = "Proveedor",
+    ShipmentDate = "Fecha de Embarque",
+    Concept = "Concepto",
+    Line = "Línea",
+    Unit = "U. de Gestión",
+    Category = "Rubro",
+    Tipology = "Tipología",
+    BodyFit = "Body Fit",
+    Composition = "Composition",
+    TotalQuanity = "Cantidad Total",
+    Margin = "Márgen",
+    Buying = "Compra ($)",
+    //Selling = "PVP (USD)",
+    SellingUy = "PVP ($)",
+    DepositDate = "Ingreso a Depósito",
+    StoreDate = "Ingreso a Tienda",
+}
+
+export enum OverallHeaders {
+    Category = "RUBRO",
+    Total = "COSTO TOTAL",
+    Pieces = "PIEZAS",
+    Skus = "SKUS",
 }

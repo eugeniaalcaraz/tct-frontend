@@ -4,6 +4,7 @@ import userReducer from "@/state/features/user";
 import dashboardReducer from "@/state/features/dashboard";
 import productReducer from "@/state/features/product";
 import modalReducer from "@/state/features/modal";
+import updatedProductReducer from "@/state/features/updatedProduct";
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         dashboard: dashboardReducer,
         product: productReducer,
         modal: modalReducer,
+        updatedProduct: updatedProductReducer,
     },
 });
 

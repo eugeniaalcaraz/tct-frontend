@@ -36,10 +36,14 @@ const getQuery = (card) => {
             return "getPendantApprovals";
         case "margen":
             return "getSeasonMargin";
-        case "muestrasEnviadas":
-            return "getTopSixSentSamples";
-        case "skuYPiezasTotales":
-            return "getAllSKUsAndPieces";
+        // case "muestrasEnviadas":
+        //     return "getTopSixSentSamples";
+        case "composicionPorColor":
+            return "getPiecesByColor";
+        case "resumenDeMaterialidades":
+            return "getMaterialsSummary";
+        case "overall":
+            return "SKUandPieces";
         default:
             return -1;
     }

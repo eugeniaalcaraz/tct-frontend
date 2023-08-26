@@ -3,6 +3,7 @@ import {
     ProductionStatusType,
     SkuType,
     PendingApprovals,
+    OverallType,
 } from "@/types";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -19,8 +20,25 @@ interface dashboardState {
     skuYPiezasTotales: SkuType[];
     departamento: string;
     temporada: string | number;
-    embarques: { ShippingDate: string; OrderNumber: number }[];
+    embarques: {
+        ShippingDate: string;
+        EntryDate: string;
+        WarehouseDate: string;
+        ProductNumber: number;
+    }[];
     muestrasEnviadas: { name: string }[];
+    overall: OverallType[];
+    resumenDeMaterialidades: {
+        Description: string;
+        Weight: string;
+        Percentage: number;
+    }[];
+    composicionPorColor: {
+        idColor: number;
+        colorDescription: string;
+        RGB: string;
+        totalPieces: number;
+    }[];
 }
 
 const initialState: dashboardState = {
@@ -33,6 +51,9 @@ const initialState: dashboardState = {
     temporada: "",
     embarques: [],
     muestrasEnviadas: [],
+    overall: [],
+    resumenDeMaterialidades: [],
+    composicionPorColor: [],
 };
 
 const dashboardSlice = createSlice({
@@ -42,8 +63,11 @@ const dashboardSlice = createSlice({
         handleDashboardData(state, action: PayloadAction<PayloadData>) {
             state[action.payload.name] = action.payload.value;
         },
+        setCards(state, action: PayloadAction<Partial<any>>) {
+            return { ...state, ...action.payload };
+        },
     },
 });
 
-export const { handleDashboardData } = dashboardSlice.actions;
+export const { handleDashboardData, setCards } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

@@ -22,7 +22,15 @@ interface filterState {
     origen: string[];
     destino: string[];
     embarque: string[];
+    unidad: string[];
+    marca: string[];
+    rubro: string[];
+    concepto: string[];
+    linea: string[];
+    fit: string[];
     fecha: string;
+    deposito: string;
+    store: string;
     nombre: string;
     cantidad: string;
     costo: string;
@@ -41,7 +49,15 @@ const initialState: filterState = {
     origen: [],
     destino: [],
     embarque: [],
+    marca: [],
+    unidad: [],
+    rubro: [],
+    concepto: [],
+    linea: [],
+    fit: [],
     fecha: "",
+    deposito: "",
+    store: "",
     nombre: "",
     cantidad: "",
     costo: "",

@@ -5,7 +5,8 @@ interface userState {
 }
 
 const initialState: userState = {
-    idMerchant: "",
+    // TODO: eliminar estado harcodeado
+    idMerchant: "1",
 };
 
 const userSlice = createSlice({

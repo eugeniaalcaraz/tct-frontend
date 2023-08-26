@@ -3,31 +3,31 @@ import { Checkbox, FormControlLabel } from "@mui/material";
 import { Controller } from "react-hook-form";
 
 type ControlledCheckboxProps = {
-    id?: string | number;
     name: string;
-    label?: string;
-    disabled?: boolean;
+    label: string;
+    defaultCheckedProp?: boolean;
+    externalOnChange?: any;
 };
 
-const ControlledCheckbox: FC<ControlledCheckboxProps> = ({
-    id,
+export const ControlledCheckbox: FC<ControlledCheckboxProps> = ({
     name,
+    defaultCheckedProp = false,
     label,
-    disabled = false
+    externalOnChange,
 }) => {
     return (
         <Controller
+            shouldUnregister
             name={name}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
                 <FormControlLabel
-                    sx={{"&& > .MuiFormControlLabel-label ": {fontSize: '12px'}}}
                     control={
                         <Checkbox
-                            id={String(id)}
-                            onChange={e => onChange(e.target.checked)}
-                            checked={value}
-                            disabled={disabled}
-                            color="primary"
+                            onChange={(e) => {
+                                onChange(e);
+                                externalOnChange && externalOnChange(e);
+                            }}
+                            defaultChecked={defaultCheckedProp}
                         />
                     }
                     label={label}
@@ -36,5 +36,3 @@ const ControlledCheckbox: FC<ControlledCheckboxProps> = ({
         />
     );
 };
-
-export { ControlledCheckbox };

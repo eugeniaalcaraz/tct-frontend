@@ -1,6 +1,6 @@
 import React, { FC, FocusEventHandler } from "react";
-import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
+import { SyledTextField } from "@components/common/textInput/StyledTextField";
 
 type ControlledProps = {
     id?: string | number;
@@ -10,12 +10,15 @@ type ControlledProps = {
     multiline?: boolean;
     rows?: number;
     readOnly?: boolean;
-    onBlur?:
-        | FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>
-        | undefined;
+    onBlur?: FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     error?: boolean;
     helperText?: string;
     type?: React.HTMLInputTypeAttribute;
+    maxLength?: number;
+    defaultValue?: string | number;
+    externalOnChange?: (e) => void;
+    useFormhook?: boolean;
+    externalValue?: string;
 };
 
 const ControlledInput: FC<ControlledProps> = ({
@@ -30,49 +33,71 @@ const ControlledInput: FC<ControlledProps> = ({
     error = false,
     helperText = "",
     type = "text",
+    maxLength,
+    defaultValue,
+    externalOnChange,
+    useFormhook = true,
+    externalValue = "",
 }) => {
+    if (useFormhook) {
+        return (
+            <Controller
+                shouldUnregister
+                defaultValue={""}
+                name={name}
+                render={({ field: { onChange, value } }) => (
+                    <SyledTextField
+                        size="small"
+                        id={String(id)}
+                        label={label}
+                        value={value}
+                        onChange={(e) => {
+                            onChange(e);
+                            externalOnChange && externalOnChange(e);
+                        }}
+                        type={type}
+                        autoComplete="off"
+                        disabled={disabled}
+                        className={`input ${error ? "error" : ""}`}
+                        multiline={multiline}
+                        rows={rows}
+                        inputProps={{ maxLength }}
+                        InputProps={{
+                            readOnly: readOnly,
+                        }}
+                        onBlur={onBlur}
+                        error={error}
+                        helperText={helperText}
+                        defaultValue={defaultValue}
+                    />
+                )}
+            />
+        );
+    }
+
     return (
-        <Controller
-            shouldUnregister
-            name={name}
-            render={({ field: { onChange } }) => (
-                <TextField
-                    sx={{
-                        width: "13rem",
-                        maxWidth: "100%",
-                        "&& > *": { fontSize: "1.3rem" },
-                        "&& > label": { textTransform: "capitalize" },
-                        "&& > p": {
-                            margin: 0,
-                            paddingTop: "0.5rem",
-                            paddingLeft: "0.5rem",
-                            height: 0,
-                            overflow: "hidden",
-                            fontSize: "1rem",
-                            transition: "all 0.8s ease",
-                        },
-                        "&&.error > p": {
-                            height: "2.1rem",
-                        },
-                    }}
-                    size="small"
-                    id={String(id)}
-                    label={label}
-                    onChange={onChange}
-                    autoComplete="off"
-                    disabled={disabled}
-                    className={`input ${error ? "error" : ""}`}
-                    multiline={multiline}
-                    rows={rows}
-                    InputProps={{
-                        readOnly: readOnly,
-                    }}
-                    type={type}
-                    onBlur={onBlur}
-                    error={error}
-                    helperText={helperText}
-                />
-            )}
+        <SyledTextField
+            size="small"
+            id={String(id)}
+            label={label}
+            value={externalValue}
+            onChange={(e) => {
+                externalOnChange && externalOnChange(e);
+            }}
+            autoComplete="off"
+            disabled={disabled}
+            className={` ${error ? "error" : ""}`}
+            multiline={multiline}
+            rows={rows}
+            inputProps={{ maxLength }}
+            InputProps={{
+                readOnly: readOnly,
+            }}
+            type={type}
+            onBlur={onBlur}
+            error={error}
+            helperText={helperText}
+            defaultValue={defaultValue}
         />
     );
 };

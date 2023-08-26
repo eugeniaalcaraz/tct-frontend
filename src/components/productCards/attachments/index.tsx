@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Button, Box } from "@mui/material";
 import { Container } from "./AttachmentsStyles";
 import { pluralize } from "@/utils";
 import filePreview from "@/assets/images/filePreview.png";
+import { useAppSelector } from "@/state/app/hooks";
 
 const Attachments = () => {
+    const { mutationSuccess } = useAppSelector((state) => state.product);
     const [filesURLs, setFilesURLs] = useState<string[]>([]);
     const [mmtPreview, setMMtPreview] = useState<string[]>([]);
     const { register } = useFormContext();
@@ -36,6 +38,13 @@ const Attachments = () => {
         }
     };
 
+    useEffect(() => {
+        if (mutationSuccess) {
+            setFilesURLs([]);
+            setMMtPreview([]);
+        }
+    }, [mutationSuccess]);
+
     return (
         <Container>
             <Button variant="outlined" component="label" className="files">
@@ -45,7 +54,8 @@ const Attachments = () => {
                     hidden
                     {...imagesField}
                     onChange={handlePreview}
-                    multiple
+                    accept="image/*"
+                    //multiple
                 />
             </Button>
             <Button variant="outlined" component="label" className="files">
@@ -55,7 +65,7 @@ const Attachments = () => {
                     hidden
                     {...measurementsField}
                     onChange={(e) => handlePreview(e, true)}
-                    multiple
+                    accept="image/*"
                 />
             </Button>
             <Box className="preview">
@@ -77,9 +87,7 @@ const Attachments = () => {
                         <img key={file} src={file} alt="Selected file" />
                     ))}
                 {mmtPreview.length > 0 &&
-                    mmtPreview.map((file) => (
-                        <img key={file} src={filePreview} />
-                    ))}
+                    mmtPreview.map((file) => <img key={file} src={file} />)}
             </Box>
 
             <span

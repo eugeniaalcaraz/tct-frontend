@@ -1,0 +1,7 @@
+@media print{
+    .tableWrapper,
+    .tablePreview,
+    .table{
+        -webkit-print-color-adjust: exact;
+    }
+}

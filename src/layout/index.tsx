@@ -17,7 +17,7 @@ import { Pages } from "@/types";
 const dropdowns = [
     "seasons",
     "tipology",
-    "departments",
+    "managementUnit",
     "designers",
     "fabrics",
     "composition",
@@ -30,6 +30,13 @@ const dropdowns = [
     "status",
     "allSeasons",
     "name",
+    "brands",
+    "concepts",
+    "lines",
+    "rises",
+    "bodyFit",
+    "industries",
+    "tipologies",
 ];
 
 const Layout = () => {
@@ -77,12 +84,16 @@ const Layout = () => {
         if (location.pathname === "/") {
             navigate(urlFormat(Pages.Dashboard));
         }
-    }, []);
+    }, [location.pathname]);
 
     useEffect(() => {
         if (dropdownsError) {
-            navigate(urlFormat(Pages.ServerError));
-        } else if (location.pathname !== urlFormat(Pages.ServerError)) {
+            //navigate(urlFormat(Pages.ServerError));
+            console.log(dropdownsError);
+        } else if (
+            location.pathname !== urlFormat(Pages.ServerError) &&
+            location.pathname !== "/"
+        ) {
             navigate(location.pathname);
         } else {
             navigate(urlFormat(Pages.Dashboard));

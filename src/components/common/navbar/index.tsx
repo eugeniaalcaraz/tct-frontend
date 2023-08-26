@@ -32,7 +32,15 @@ const Navbar: FC<NavbarProps> = ({ open, handleMenu }) => {
             className={open ? "open" : "closed"}
         >
             <ul>
-                <img src={logo} alt="logo" />
+                <img
+                    src={logo}
+                    alt="logo"
+                    style={{
+                        width: "12rem",
+                        height: "8rem",
+                        objectFit: "cover",
+                    }}
+                />
                 {navLinks.map((link) => (
                     <NavLink
                         to={urlFormat(link)}

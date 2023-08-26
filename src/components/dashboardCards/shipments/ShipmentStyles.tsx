@@ -23,16 +23,26 @@ export const DayContainer = styled(Box)({
     position: "relative",
 
     "& > span:nth-of-type(1)": {
-        fontSize: "2.8rem",
-        fontWeight: 600,
-        textTransform: "capitalize",
-        letterSpacing: "0.15rem",
-        color: "#839270",
+        display: "flex",
+        flexDirection: "column",
+        color: "#314C95",
+
+        "& > span:nth-of-type(1)": {
+            fontSize: "2rem",
+            fontWeight: 600,
+            textTransform: "capitalize",
+            letterSpacing: "0.15rem",
+        },
+        "& > span:nth-of-type(2)": {
+            fontSize: "1.4rem",
+            fontWeight: 400,
+        },
     },
     "& > span:nth-of-type(2)": {
         display: "flex",
         flexDirection: "column",
-        fontSize: "1.4rem",
+        fontSize: "1.2rem",
+        color: "#314C95",
 
         "& > span": {
             fontSize: "1.2rem",
@@ -46,12 +56,7 @@ export const DayContainer = styled(Box)({
             position: "absolute",
             bottom: 0,
             right: 0,
-            cursor: "pointer",
-            transition: "all 0.8s ease",
-
-            "&:hover": {
-                color: "#839270",
-            },
+            color: "#314C95",
         },
     },
 }) as typeof Box;

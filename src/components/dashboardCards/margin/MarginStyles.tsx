@@ -3,7 +3,6 @@ import { Box } from "@mui/material";
 
 export const Container = styled(Box)({
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
     height: "90%",
     alignItems: "flex-start",
@@ -13,15 +12,18 @@ export const Container = styled(Box)({
         fontWeight: 600,
         fontSize: "6.4rem",
         lineHeight: "8.7rem",
-        color: "#839270",
+        color: "#314C95",
+        flex: 1,
     },
 }) as typeof Box;
 
 export const Values = styled(Box)({
     display: "flex",
+    flexDirection: "column",
     fontSize: "1.4rem",
     letterSpacing: "0.15rem",
     justifyContent: "flex-start",
-    width: "100%",
+    width: "25%",
     gap: "3rem",
+    flex: 1,
 }) as typeof Box;

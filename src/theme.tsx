@@ -5,25 +5,22 @@ export const theme = createTheme({
     spacing: 10,
     palette: {
         primary: {
-            main: "#233906",
-            light: "#B5BBAD",
+            main: "#31654B",
+            light: "#CFD779",
         },
         secondary: {
-            main: "#839270",
-            light: "rgba(131, 146, 112, 0.6)",
+            main: "#314C95",
+            light: "#919ECC",
         },
         warning: {
-            main: "#CEB471",
-            light: "rgba(206, 180, 113, 0.6)",
+            main: "#E28B4A",
+            light: "#E9CE67",
         },
         error: {
-            main: "#BB855E",
-            light: "rgba(187, 133, 94, 0.6)",
+            main: "#BC392B",
+            light: "#DFB6D2",
         },
-        // disabled: {
-        //     main: "#D0D8D0",
-        //     text: "#D9D9D9",
-        // },
+
         background: {
             default: "#E4E4E4",
         },
@@ -81,7 +78,7 @@ export const theme = createTheme({
             styleOverrides: {
                 root: {
                     backgroundColor: "#E8E8E8",
-                    color: "#233906",
+                    color: "#000000",
                     padding: "1.8rem",
                     borderRadius: "5px",
                 },
@@ -151,7 +148,7 @@ export const theme = createTheme({
                     "&& > svg": {
                         width: "2rem",
                         height: "2rem",
-                        fill: "#233906",
+                        fill: "#000000",
                     },
                 },
             },
@@ -162,6 +159,18 @@ export const theme = createTheme({
                     fontSize: "1.3rem",
                     margin: "0.6rem",
                     background: "transparent",
+                },
+            },
+        },
+        MuiBadge: {
+            styleOverrides: {
+                root: {
+                    "& > .Mui-selected": {
+                        background: "#314C95",
+                        "&:focus": {
+                            background: "#314C95",
+                        },
+                    },
                 },
             },
         },

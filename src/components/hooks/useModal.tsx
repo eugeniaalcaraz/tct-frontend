@@ -1,5 +1,6 @@
 import { useAppDispatch } from "@/state/app/hooks";
 import { handleModalData } from "@/state/features/modal";
+import { ModalTypes } from "@/types";
 import { useMemo } from "react";
 
 export const useModal = () => {

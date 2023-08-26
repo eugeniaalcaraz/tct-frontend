@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import {
     ControlledDropdown,
@@ -9,72 +9,143 @@ import { Button, Box } from "@mui/material";
 import { FabricContainer } from "../MaterialsStyles";
 
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
-import { handleTrimCombos } from "@/state/features/product";
+import {
+    handleTrimCombos,
+    removeReduxError,
+    setReduxErrors,
+} from "@/state/features/product";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+    checkIfError,
+    checkErrorMessage,
+} from "@/pages/newProduct/aux/errorValidation";
+import { useFormContext } from "react-hook-form";
+type TrimsProps = {
+    trimNumber: number;
+};
 
-const Trims = () => {
-    const { trims, colors, trimCombos, errors } = useAppSelector(
-        (state) => state.product
-    );
+const Trims: FC<TrimsProps> = ({ trimNumber }) => {
+    const { trims, avios, colors, reduxErrors, mutationSuccess } =
+        useAppSelector((state) => state.product);
     const [open, setOpen] = useState<boolean>(false);
-    const [trimColor, setTrimColor] = useState<number[]>([]);
+    const [selectedIdColor, setSelectedIdColor] = useState("");
+    const [trimColor, setTrimColor] = useState<number>(0);
+    const [quantity, setQuantity] = useState("");
+    const [idAvio, setIdAvio] = useState("");
     const dispatch = useAppDispatch();
+    const {
+        formState: { isSubmitting },
+    } = useFormContext();
 
     const openOptions = () => {
         setOpen((prevState) => !prevState);
     };
 
     const addCombo = () => {
-        if (trimColor.length > 0) {
-            dispatch(handleTrimCombos({ idTrimColor: String(trimColor[0]) }));
-            setTimeout(() => {
-                setOpen(false);
-            }, 500);
-            setTrimColor([]);
-        }
+        dispatch(
+            handleTrimCombos({
+                trimComboNumber: trimNumber,
+                trimCombo: {
+                    idAvio: Number(idAvio),
+                    idStatus: 1,
+                    quantity: Number(quantity),
+                    idShipping: "",
+                    idCountryDestination: "",
+                    shippingDate: "",
+                    entryDate: "",
+                    warehouseEntryDate: "",
+                    colors: [{ idColor: trimColor, idStatus: 1 }],
+                },
+            })
+        );
+        dispatch(removeReduxError(`comboAvio-${trimNumber}`));
+        setTimeout(() => {
+            setOpen(false);
+        }, 500);
     };
 
-    const checkIfError = (name) => {
-        if (errors) {
-            return Object.keys(errors).includes(name);
-        }
-        return false;
-    };
+    useEffect(() => {
+        if (isSubmitting) {
+            if (idAvio === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `tipoAvio-${trimNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
 
-    const checkErrorMessage = (name) => {
-        if (name.startsWith("composicion", 0)) {
-            name = "composicion";
-        }
-        if (name.startsWith("porcentaje", 0)) {
-            name = "porcentaje";
-        }
-        if (errors) {
-            const errorMessage =
-                Object.entries(errors).filter((error) => {
-                    if (error[0] === name) {
-                        return error[1];
-                    }
-                }) ?? "";
-
-            if (errorMessage && errorMessage.length > 0) {
-                return errorMessage[0][1].message;
+            if (quantity === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `cantidadAvio-${trimNumber}`,
+                        msg: "Requerido",
+                    })
+                );
+            }
+            if (selectedIdColor === "") {
+                dispatch(
+                    setReduxErrors({
+                        idError: `comboAvio-${trimNumber}`,
+                        msg: "Combo Requerido",
+                    })
+                );
             }
         }
-        return "";
-    };
+    }, [isSubmitting]);
+
+    useEffect(() => {
+        if (mutationSuccess) {
+            setIdAvio("");
+            setQuantity("");
+            setSelectedIdColor("");
+        }
+    }, [mutationSuccess]);
 
     return (
-        <FabricContainer className={checkIfError("cantidad") ? "error" : ""}>
+        <FabricContainer
+            className={
+                checkIfError(`tipoAvio-${trimNumber}`, reduxErrors)
+                    ? "error"
+                    : ""
+            }
+        >
             <h3>Avíos</h3>
             <ControlledDropdown
                 label="Tipo"
                 options={trims ?? []}
-                name="tipoAvio"
+                name={`tipoAvio-${trimNumber}`}
+                error={checkIfError(`tipoAvio-${trimNumber}`, reduxErrors)}
+                helperText={checkErrorMessage(
+                    `tipoAvio-${trimNumber}`,
+                    reduxErrors
+                )}
+                onBlur={(e) => {
+                    console.log(e.target.value);
+
+                    if (e.target.value !== "") {
+                        setIdAvio(e.target.value);
+                        dispatch(removeReduxError(`tipoAvio-${trimNumber}`));
+                    }
+                }}
             />
             <ControlledInput
                 label="Cantidad"
-                name="cantidad"
-                error={checkIfError("cantidad")}
-                helperText={checkErrorMessage("cantidad")}
+                name={`cantidadAvio-${trimNumber}`}
+                error={checkIfError(`cantidadAvio-${trimNumber}`, reduxErrors)}
+                helperText={checkErrorMessage(
+                    `cantidadAvio-${trimNumber}`,
+                    reduxErrors
+                )}
+                onBlur={(e) => {
+                    setQuantity(e.target.value);
+                    if (e.target.value !== "") {
+                        dispatch(
+                            removeReduxError(`cantidadAvio-${trimNumber}`)
+                        );
+                    }
+                }}
             />
 
             <Button
@@ -90,8 +161,12 @@ const Trims = () => {
                     label="Color"
                     options={colors ?? []} // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    value={trimColor}
-                    onChange={(e) => setTrimColor(e)}
+                    value={selectedIdColor}
+                    multipleSelect={false}
+                    onChange={(e) => {
+                        setTrimColor(e);
+                        setSelectedIdColor(e);
+                    }}
                 />
 
                 <Button
@@ -103,15 +178,39 @@ const Trims = () => {
                     + Agregar
                 </Button>
             </Box>
-            {trimCombos && trimCombos.length > 0 && (
+
+            {avios[trimNumber]?.colors && (
                 <Box className="combos">
-                    {trimCombos.map((combo, i) => (
-                        <Box key={uuid()} className="combo">
-                            <span>Combo {i + 1}</span>
-                            <Box className="solid"></Box>
-                        </Box>
-                    ))}
+                    <Box className="combo">
+                        <div className="upper-container">
+                            Combo
+                            <IconButton
+                                aria-label="delete"
+                                // onClick={() =>
+                                //     deleteCombo(selectedColor.idColor)
+                                // }
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </div>
+                        <Box
+                            sx={{
+                                backgroundColor: `${
+                                    colors?.find(
+                                        (color) =>
+                                            Number(color.Id) ===
+                                            avios[trimNumber].colors[0].idColor
+                                    )?.RGB
+                                }`,
+                            }}
+                        ></Box>
+                    </Box>
                 </Box>
+            )}
+            {checkIfError(`comboAvio-${trimNumber}`, reduxErrors) && (
+                <span className="combo-error">
+                    Es necesario ingresar al menos 1 combo
+                </span>
             )}
         </FabricContainer>
     );
