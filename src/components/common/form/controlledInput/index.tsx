@@ -15,6 +15,7 @@ type ControlledProps = {
         | undefined;
     error?: boolean;
     helperText?: string;
+    type?: React.HTMLInputTypeAttribute;
 };
 
 const ControlledInput: FC<ControlledProps> = ({
@@ -28,6 +29,7 @@ const ControlledInput: FC<ControlledProps> = ({
     onBlur,
     error = false,
     helperText = "",
+    type = "text",
 }) => {
     return (
         <Controller
@@ -65,6 +67,7 @@ const ControlledInput: FC<ControlledProps> = ({
                     InputProps={{
                         readOnly: readOnly,
                     }}
+                    type={type}
                     onBlur={onBlur}
                     error={error}
                     helperText={helperText}

@@ -11,6 +11,7 @@ import {
     NewProduct,
     NotFound,
     ServerDown,
+    NewProvider
 } from "@/pages";
 import { PrivateRoute } from "@/routes/privateRoute";
 import { Pages } from "@/types";
@@ -54,7 +55,9 @@ function App() {
             <IconsProvider>
                 <Routes>
                     <Route path={urlFormat(Pages.Login)} element={<Login />} />
-                    <Route path="/" element={<PrivateRoute />}>
+                    <Route path="/" 
+                    // element={<PrivateRoute />}
+                    >
                         <Route
                             path={urlFormat(Pages.Dashboard)}
                             element={<Dashboard />}
@@ -66,6 +69,11 @@ function App() {
                         <Route
                             path={urlFormat(Pages.NewProduct)}
                             element={<NewProduct />}
+                        />
+
+                        <Route
+                            path={urlFormat(Pages.NewProvider)}
+                            element={<NewProvider />}
                         />
                         <Route
                             path={urlFormat(Pages.ServerError)}
