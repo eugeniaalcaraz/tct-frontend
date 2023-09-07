@@ -376,7 +376,7 @@ const ProductCard: FC<ProductCardType> = ({ setSelectedManagmentUnit }) => {
                 <ControlledCheckbox name="proyecta" label="Proyecta" />
             </div>
             <div style={{ width: "100%" }}>
-                <h2>Código Rotundo</h2>
+                <h2>Código</h2>
                 <h1>{state.finalNumber}</h1>
                 {
                     //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
