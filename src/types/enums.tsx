@@ -3,9 +3,10 @@ export enum Pages {
     Dashboard = "Dashboard",
     Products = "Products",
     NewProduct = "New Product",
-    NewProvider = "New Provider",
+    NewSupplier = "New Supplier",
     UpdateProduct = "Update Product",
     ServerError = "Server Error",
+    Suppliers = "Suppliers",
 }
 
 export enum LocalStorageKeys {
@@ -62,6 +63,66 @@ export enum ProductHeaders {
     DepositDate = "Ingreso a Depósito",
     StoreDate = "Ingreso a Tienda",
 }
+
+export enum SupplierHeaders {
+    ExpandIcon = "",
+    Clasification = "",
+    Alias = "Alias",
+    supplierTypeId = "Tipo proveedor",
+    commercialName = "Nombre comercial",
+    vatNumber = "Numero Vat",
+    idCountry = "País",
+    contactPerson = "Persona contacto",
+    email = "Email"
+}
+
+export const SupplierHeadersArray = [
+    {
+        code: "ExpandIcon",
+        title: "",
+        width: 72,
+    },
+    {
+        code: "performance",
+        title: "",
+        width: 72,
+    },
+    {
+        code: "alias",
+        title: "Alias",
+        width: 150,
+    },
+    {
+        code: "supplierType",
+        title: "Tipo proveedor",
+        width: 150,
+    },
+    {
+        code: "commercialName",
+        title: "Nombre comercial",
+        width: 150,
+    },
+    {
+        code: "vatNumber",
+        title: "Numero Vat",
+        width: 125,
+    },
+    {
+        code: "Country",
+        title: "País",
+        width: 150,
+    },
+    {
+        code: "contactPerson",
+        title: "Persona contacto",
+        width: 200,
+    },
+    {
+        code: "email",
+        title: "Email",
+        width: 200,
+    }
+]
 
 export enum OverallHeaders {
     Category = "RUBRO",

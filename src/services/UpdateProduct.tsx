@@ -1,6 +1,5 @@
 import { getErrorMessage } from "@/utils";
 import { postJsonRequest } from "./BaseRequests";
-import dayjs from "dayjs";
 
 export const updateProduct = async ({
     idProduct,
@@ -32,10 +31,8 @@ export const updateProduct = async ({
     idSampleStatus,
     idDesigner,
     idMerchant,
-    idExistingProduct,
     name,
     idModeling,
-    idCareLabel,
     measurmentTable,
     idModelingStatus,
     idStatusMeasurmentTable,

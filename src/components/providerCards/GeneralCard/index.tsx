@@ -1,41 +1,30 @@
-import React from "react";
-import { ControlledCheckbox, ControlledDropdown, ControlledInput } from "@components/common";
+import React, { useContext, useMemo } from "react";
+import { ControlledCheckbox, ControlledDatePicker, ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./GeneralStyles";
 import { Typography, Box } from "@mui/material";
+import { FormStructureContext } from "@/pages/newSupplier/FormContext";
 
-const countrys = [
-    'Argentina',
-    'Uruguay'
-]
 
 const GeneralCard = () => {
+    const formContext = useContext(FormStructureContext)
 
+    const {supplierTypes, countries} = useMemo(() => {
+        if (formContext) {
+            return formContext
+        }
+        return {
+            supplierTypes: [],
+            countries: []
+        }
+    }, [formContext])
 
     return (
         <Container >
                 <ControlledDropdown
-                    name="typeprovider"
+                    name="supplierTypeId"
                     label="Tipo de proveedor *"
-                    options={[
-                        {
-                            Id: "factory",
-                            Description: "Fábrica"
-                        },
-                        {
-                            Id: "workshop",
-                            Description: "Taller"
-                        },
-                        {
-                            Id: "traiding",
-                            Description: "Traiding"
-                        },
-                        {
-                            Id: "market",
-                            Description: "Mercado"
-                        },
-
-                    ]}
-                    
+                    disabled                    
+                    options={supplierTypes.map(supplierType => ({ Id: supplierType.id+"", Description: supplierType.description }))}
                 />
                 <Box sx={{width: "calc(50% - 0.5rem)"}}/>
                 <ControlledInput
@@ -43,17 +32,18 @@ const GeneralCard = () => {
                     label="Alias *"
                 />
                 <ControlledInput
-                    name="comercialName"
+                    name="commercialName"
                     label="Nombre Comercial"
                 />
                 <ControlledInput
-                    name="nroVap"
+                    name="vatNumber"
+                    type="number"
                     label="Número Vat *"
                 />
                 <ControlledDropdown
                     name="country"
                     label="País *"
-                    options={countrys.map(country => ({ Id: country, Description: country }))}
+                    options={countries.map(country => ({ Id: country.Id+"", Description: country.Name }))}
                 />
                 <Box sx={{
                     width: '100%', 
@@ -67,25 +57,28 @@ const GeneralCard = () => {
                     />
                 </Box>
                 <ControlledInput
-                    name="contactPeople"
+                    name="contactPerson"
                     label="Persona de contacto"
                 />
                 <ControlledInput
-                    name="contactEmail"
+                    name="email"
                     label="Email de contacto"
                 />
-                <ControlledInput
-                    name="relationStart"
-                    label="Inicio relación comercial"
+                <ControlledDatePicker
+                    size="small"
+                    name="commercialRelationDate"
+                    label="Inicio relación comercial *"
+                    disableDefaultDate
+                    disablePast={false}
                     />
 
                 <ControlledInput
-                    name="anualOrderEstimate"
+                    name="estimatedAnualOrder"
                     label="Pedido anual estimado"
                     type="number"
                     />
                 <ControlledCheckbox
-                    name="anualProductionContract"
+                    name="anualContract"
                     label="Tengo un contrato de producción anual con el proveedor"
                     />
 

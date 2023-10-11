@@ -55,7 +55,9 @@ const Header: FC<HeaderProps> = ({ handleMenu }) => {
             ) : location.pathname === urlFormat(Pages.Products) ? (
                 <ProductsHeader />
             ) : location.pathname === urlFormat(Pages.NewProduct) ? (
-                <NewProductHeader />
+                <NewProductHeader formId="new-product-form" />
+            ) : location.pathname === urlFormat(Pages.NewSupplier) ? (
+                <NewProductHeader formId="new-supplier-form"/>
             ) : (
                 <ProductHeader />
             )}

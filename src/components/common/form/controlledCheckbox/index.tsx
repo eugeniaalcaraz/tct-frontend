@@ -7,6 +7,7 @@ type ControlledCheckboxProps = {
     label: string;
     defaultCheckedProp?: boolean;
     externalOnChange?: any;
+    shouldUnregister?: boolean;
 };
 
 export const ControlledCheckbox: FC<ControlledCheckboxProps> = ({
@@ -14,10 +15,11 @@ export const ControlledCheckbox: FC<ControlledCheckboxProps> = ({
     defaultCheckedProp = false,
     label,
     externalOnChange,
+    shouldUnregister = true
 }) => {
     return (
         <Controller
-            shouldUnregister
+            shouldUnregister={shouldUnregister}
             name={name}
             render={({ field: { onChange } }) => (
                 <FormControlLabel

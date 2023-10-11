@@ -82,7 +82,7 @@ const BarChartGraph: FC<BarChartProps> = ({ data, layout = "horizontal" }) => {
                     barSize={layout === "vertical" ? 22 : 50}
                     stackId="bar"
                 >
-                    {data.map((d, index) => {
+                    {data.map((d) => {
                         return (
                             <Cell
                                 fill={

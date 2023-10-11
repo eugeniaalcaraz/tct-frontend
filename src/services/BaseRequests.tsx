@@ -2,7 +2,8 @@ import { getErrorMessage } from "@/utils";
 
 // const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-const BASE_URL = "https://tct-backend.vercel.app";
+// const BASE_URL = "https://tct-backend.vercel.app";
+const BASE_URL = "http://localhost:5174";
 
 const baseRequest = async (
     path: string,
@@ -21,7 +22,7 @@ const baseRequest = async (
             body: body ? JSON.stringify(body) : null,
         });
 
-        if (!response.ok) throw new Error();
+        if (!response.ok) throw new Error(await response.text());
         return blob ? response.blob() : response.json();
     } catch (error) {
         throw new Error(getErrorMessage(error));

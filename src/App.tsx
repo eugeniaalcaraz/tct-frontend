@@ -11,7 +11,8 @@ import {
     NewProduct,
     NotFound,
     ServerDown,
-    NewProvider
+    NewProvider,
+    SupplierList
 } from "@/pages";
 import { PrivateRoute } from "@/routes/privateRoute";
 import { Pages } from "@/types";
@@ -56,7 +57,7 @@ function App() {
                 <Routes>
                     <Route path={urlFormat(Pages.Login)} element={<Login />} />
                     <Route path="/" 
-                    // element={<PrivateRoute />}
+                    element={<PrivateRoute />}
                     >
                         <Route
                             path={urlFormat(Pages.Dashboard)}
@@ -72,8 +73,13 @@ function App() {
                         />
 
                         <Route
-                            path={urlFormat(Pages.NewProvider)}
+                            path={urlFormat(Pages.NewSupplier)}
                             element={<NewProvider />}
+                        />
+
+                        <Route
+                            path={urlFormat(Pages.Suppliers)}
+                            element={<SupplierList />}
                         />
                         <Route
                             path={urlFormat(Pages.ServerError)}

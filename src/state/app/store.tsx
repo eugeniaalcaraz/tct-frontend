@@ -5,6 +5,7 @@ import dashboardReducer from "@/state/features/dashboard";
 import productReducer from "@/state/features/product";
 import modalReducer from "@/state/features/modal";
 import updatedProductReducer from "@/state/features/updatedProduct";
+import supplierReducer from "@/state/features/supplier";
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         product: productReducer,
         modal: modalReducer,
         updatedProduct: updatedProductReducer,
+        supplier: supplierReducer,
     },
 });
 

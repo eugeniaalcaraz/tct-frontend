@@ -3,4 +3,5 @@ export * from "./login";
 export * from "./productList";
 export * from "./newProduct";
 export * from "./error";
-export * from "./newProvider";
+export * from "./newSupplier";
+export * from './supplierList'

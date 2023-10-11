@@ -26,6 +26,7 @@ type ControlledDropdownProps = {
     useFormHook?: boolean;
     selectedValue?: any;
     id?: string;
+    sx?: any;
 };
 
 const ControlledDropdown: FC<ControlledDropdownProps> = ({
@@ -42,6 +43,7 @@ const ControlledDropdown: FC<ControlledDropdownProps> = ({
     shouldUnregister = true,
     useFormHook = true,
     selectedValue = "",
+    sx = {}
 }) => {
     return (
         <FormControl
@@ -55,6 +57,7 @@ const ControlledDropdown: FC<ControlledDropdownProps> = ({
                 "&& > label": {
                     textTransform: "capitalize",
                 },
+                ...sx
             }}
             disabled={disabled}
             className="dropdown"
@@ -65,11 +68,12 @@ const ControlledDropdown: FC<ControlledDropdownProps> = ({
                     name={name}
                     render={({
                         field: { value = multipleSelect ? [] : "", onChange },
+                        fieldState
                     }) => (
                         <>
                             <InputLabel
                                 id="demo-simple-select-label"
-                                error={error}
+                                error={error || !!fieldState.error}
                             >
                                 {label}
                             </InputLabel>
@@ -89,16 +93,17 @@ const ControlledDropdown: FC<ControlledDropdownProps> = ({
                                 }}
                                 input={<OutlinedInput label={label} />}
                                 onBlur={onBlur}
-                                error={error}
+                                error={error || !!fieldState.error}
                             >
                                 {options.map((option) => (
                                     <MenuItem key={uuid()} value={option.Id}>
                                         {option.Description}
                                     </MenuItem>
                                 ))}
+                                
                             </Select>
-                            <HelperText className={error ? "error" : ""}>
-                                {helperText}
+                            <HelperText className={(error || fieldState.error) ? "error" : ""}>
+                                {fieldState.error?.message ?? helperText }
                             </HelperText>
                         </>
                     )}

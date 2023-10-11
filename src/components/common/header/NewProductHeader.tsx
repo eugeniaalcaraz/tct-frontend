@@ -2,14 +2,14 @@ import React from "react";
 import { NewProductContainer } from "./HeaderStyles";
 import { FilterButton } from "./HeaderStyles";
 
-const NewProductHeader = () => {
+const NewProductHeader = ({formId}: {formId:string}) => {
     return (
         <NewProductContainer>
             <FilterButton
                 variant="contained"
                 type="submit"
                 color="primary"
-                form="new-product-form"
+                form={formId}
             >
                 Guardar
             </FilterButton>

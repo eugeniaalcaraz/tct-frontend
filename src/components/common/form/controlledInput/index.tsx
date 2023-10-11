@@ -38,6 +38,7 @@ const ControlledInput: FC<ControlledProps> = ({
     externalOnChange,
     useFormhook = true,
     externalValue = "",
+    ...restProps
 }) => {
     if (useFormhook) {
         return (
@@ -45,20 +46,20 @@ const ControlledInput: FC<ControlledProps> = ({
                 shouldUnregister
                 defaultValue={""}
                 name={name}
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange, value }, fieldState }) => (
                     <SyledTextField
                         size="small"
                         id={String(id)}
                         label={label}
                         value={value}
-                        onChange={(e) => {
+                        onChange={(e:any) => {
                             onChange(e);
                             externalOnChange && externalOnChange(e);
                         }}
                         type={type}
                         autoComplete="off"
                         disabled={disabled}
-                        className={`input ${error ? "error" : ""}`}
+                        className={`input ${fieldState.error ? "error" : ""}`}
                         multiline={multiline}
                         rows={rows}
                         inputProps={{ maxLength }}
@@ -66,8 +67,8 @@ const ControlledInput: FC<ControlledProps> = ({
                             readOnly: readOnly,
                         }}
                         onBlur={onBlur}
-                        error={error}
-                        helperText={helperText}
+                        error={!!fieldState.error || error}
+                        helperText={fieldState.error?.message ?? helperText}
                         defaultValue={defaultValue}
                     />
                 )}

@@ -1,57 +1,76 @@
-import React from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { Container } from '../ProviderStyles'
 import { Box, Typography } from '@mui/material'
 import { ControlledCheckbox, ControlledInput } from '@components/common'
+import { FormStructureContext, Certifiaction } from '@/pages/newSupplier/FormContext'
+import { CertificationOption } from '../CertificationCard'
+import { useFormContext } from 'react-hook-form'
+import { i } from 'vitest/dist/index-5aad25c1'
 
-const peopleCertifications = [
-    {
-        name: "Fair Labour Organization (FLA)",
-        value: "fla"
-    },
-    {
-        name: "WRAP",
-        value: "wrap"
-    },
-    {
-        name: "BSCI",
-        value: "bsci"
-    },
-    {
-        name: "SMETA",
-        value: "smeta"
-    },
-    {
-        name: "Fair Trade",
-        value: "fairTrade"
-    },
-    {
-        name: "Empresa B",
-        value: "companyB"
-    }
-]
+interface IPeopleMemo {
+    peopleCertifications: Certifiaction[];
+    peopleDocuments: Certifiaction[];
+}
 
 
 const PeopleCard = () => {
+    const [useTotal, setUseTotal] = React.useState(false);
+    const formContext = useContext(FormStructureContext)
+
+    const {peopleCertifications, peopleDocuments} = useMemo<IPeopleMemo>(() => {
+        if (formContext) {
+            return {
+                peopleCertifications: formContext.peopleCertifications.filter(certification => certification.type === "Certificación"),
+                peopleDocuments: formContext.peopleCertifications.filter(certification => certification.type === "Documento"),
+            }
+        }
+        return {
+            peopleCertifications: [],
+            peopleDocuments: []
+        }
+    }, [formContext])
+
+    const useForm = useFormContext()
+
+    useEffect(() => {
+        useForm.watch( (value, info) => {
+            if(info.name === "employees.useTotal"){
+                setUseTotal(value.employees.useTotal)
+                useForm.setValue("employees.men", "0")
+                useForm.setValue("employees.women", "0")
+            }
+        })
+    }, [useForm])
+
     return (
         <Container>
             <Box sx={{ rowGap: 0, display: 'flex', flexDirection: 'column' }}>
                 Cantidad de trabajadores
                 <Box sx={{mt: 1, gap: 0.5, display: 'flex', direction: 'row'}}>
                     <ControlledInput
-                        name="womenWorkers"
+                        name="employees.women"
                         label="Mujeres"
                         type="number"
+                        disabled={useTotal}
                     />
                     <ControlledInput
-                        name="menWorkers"
+                        name="employees.men"
                         label="Hombres"
                         type="number"
+                        disabled={useTotal}
+
                     />
                     <ControlledInput
-                        name="totalWorkers"
+                        name="employees.total"
                         label="Total"
                         type="number"
-                        disabled={true}
+                        disabled={!useTotal}
+                    />
+                </Box>
+                <Box sx={{mt: 1, gap: 0.5, display: 'flex', direction: 'row'}}>
+                    <ControlledCheckbox
+                        name="employees.useTotal"
+                        label="Usar total"
                     />
                 </Box>
 
@@ -60,25 +79,18 @@ const PeopleCard = () => {
                 <Typography variant="h2">ES PARTE DE/ CUENTA CON ALGUNA DE LAS SIGUIENTE CERTIFICACIONES/PRORAMAS</Typography>
                 {
                     peopleCertifications.map((certification, index) => (
-                        <ControlledCheckbox
-                            key={index}
-                            label={certification.name}
-                            name={certification.value}
-                        />
+                        <CertificationOption key={certification.id} certification={certification} index={index}/>
                     ))
                 }
             </Box>
             <Box sx={{ rowGap: 0, display: 'flex', flexDirection: 'column' }}>
 
                 <Typography variant="h2">CÓDIGO DE CONDUCTA</Typography>
-                    <ControlledCheckbox
-                        label={"Cuento con una declaración jurada firmada por el proveedor el cual declara cumplir con los principios básicos de la OIT."}
-                        name={"oit"}
-                    />
-                    <ControlledCheckbox
-                        label={"El proveedor cuenta con un código de conducta para sus proveedores o sub contratos"}
-                        name={"conductControll"}
-                    />
+                {
+                    peopleDocuments.map((certification, index) => (
+                        <CertificationOption key={certification.id} certification={certification} index={index}/>
+                    ))
+                }
             </Box>
 
         </Container>

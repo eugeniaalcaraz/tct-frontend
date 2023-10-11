@@ -63,7 +63,7 @@ const dashboardSlice = createSlice({
         handleDashboardData(state, action: PayloadAction<PayloadData>) {
             state[action.payload.name] = action.payload.value;
         },
-        setCards(state, action: PayloadAction<Partial<any>>) {
+        setCards(state, action: PayloadAction<Partial<unknown>>) {
             return { ...state, ...action.payload };
         },
     },
