@@ -112,7 +112,8 @@ const Row = (props: { row }) => {
                 <TableCell>{row?.industry}</TableCell>
                 <TableCell>{row?.tipology}</TableCell>
                 <TableCell>{row?.bodyFit}</TableCell>
-                <TableCell>{row?.fabricData[0]?.Description}</TableCell>
+                <TableCell>Composition</TableCell>
+                {/* <TableCell>{row?.fabricData[0]?.Description}</TableCell> */}
                 <TableCell>{row?.quantity}</TableCell>
                 <TableCell>
                     {(

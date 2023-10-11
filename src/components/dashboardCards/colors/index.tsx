@@ -133,7 +133,7 @@ const Colors = () => {
                             tickLine={false}
                             axisLine={false}
                             hide
-                            domain={[0, "dataMax + 100"]}
+                            domain={[0, "dataMax + 800"]}
                         />
                         <Bar
                             dataKey="quantity"
