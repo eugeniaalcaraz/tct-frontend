@@ -1,43 +1,186 @@
-import React from "react";
-import { useAppSelector } from "@/state/app/hooks";
+import React, { FC, useEffect, useMemo, useReducer, useState } from "react";
+import { v4 as uuid } from "uuid";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ProductStyles";
+import { ControlledCheckbox } from "@components/common/form/controlledCheckbox";
 
-const ProductCard = () => {
-    const { seasons, tipology, departments, designers, errors } =
-        useAppSelector((state) => state.product);
+import dayjs from "dayjs";
+import _ from "lodash";
+import { productReducer, initialProductState } from "./hooks/hooks";
 
-    const dropdowns = [
-        {
-            label: "temporada *",
-            name: "temporada",
-            options:
-                seasons?.map((season) => ({
-                    Id: season.Id,
-                    Description: season.Name,
-                })) ?? [],
-        },
-        {
-            label: "tipologia *",
-            name: "tipologia",
-            options: tipology ?? [],
-        },
+import { useMutation } from "@tanstack/react-query";
+import {
+    getMerchantIndustryDropdownValue,
+    getMerchantTypologyDropdownValue,
+} from "@/services/ProductRequests";
+import { OptionsType, TipologyOptions } from "@/types";
+import { changeTelasLength, handleProductData } from "@/state/features/product";
+import { getCodeById } from "@/utils";
 
-        {
-            label: "departamento",
-            name: "departamento",
-            options: departments ?? [],
-        },
-        {
-            label: "diseñador",
-            name: "diseñador",
-            options:
-                designers?.map((designer) => ({
-                    Id: designer.Id,
-                    Description: `${designer.Name} ${designer.LastName}`,
-                })) ?? [],
-        },
-    ];
+type ProductCardType = {
+    setSelectedManagmentUnit: any;
+};
+
+const ProductCard: FC<ProductCardType> = ({ setSelectedManagmentUnit }) => {
+    const {
+        seasons,
+        brands,
+        concepts,
+        lines,
+        rises,
+        bodyFit,
+        managementUnit,
+        errors,
+        mutationSuccess,
+        tipology: tipologiesByIndustry,
+    } = useAppSelector((state) => state.product);
+    const { idMerchant } = useAppSelector((state) => state.user);
+    const reduxDispatch = useAppDispatch();
+
+    //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
+    const [state, dispatch] = useReducer(productReducer, initialProductState);
+    const [rubros, setRubros] = useState<OptionsType[]>([]);
+    const [tipology, setTipology] = useState<TipologyOptions[]>([]);
+
+    const yearsDropdownArr = useMemo(() => {
+        const currentYear = Number(dayjs().format("YY"));
+        return _.range(currentYear, currentYear + 4);
+    }, []);
+
+    const {
+        mutateAsync: getMerchantIndustryAsync,
+        isLoading: merchantIndustryIsLoading,
+        isError: merchantIndustryError,
+    } = useMutation(getMerchantIndustryDropdownValue);
+
+    const {
+        mutateAsync: getMerchantTipologyAsync,
+        isLoading: merchantIsTipologyLoading,
+        isError: merchantTipologyError,
+    } = useMutation(getMerchantTypologyDropdownValue);
+
+    const idShoes = useMemo(
+        () =>
+            managementUnit?.find(
+                (managementUnitObj) =>
+                    (managementUnitObj.Description as string).includes(
+                        "Shoes"
+                    ) ?? 0
+            ),
+        [managementUnit]
+    );
+
+    const weightValue = useMemo(() => {
+        if (mutationSuccess) {
+            return "";
+        } else {
+            return tipology.find(
+                (tipology) => tipology.Id === state.selectedTipology
+            )?.Weight;
+        }
+    }, [state.selectedTipology, mutationSuccess]);
+
+    const generalPropsDropdowns = useMemo(
+        () => [
+            {
+                label: "marca *",
+                name: "idMerchantBrand",
+                options:
+                    brands?.map((brand) => ({
+                        Id: brand.Id,
+                        Description: brand.Name,
+                    })) ?? [],
+                disabled: false,
+            },
+            {
+                label: "temporada *",
+                name: "idSeason",
+                options:
+                    seasons?.map((season) => ({
+                        Id: season.Id,
+                        Description: season.Name,
+                    })) ?? [],
+                disabled: false,
+            },
+            // {
+            //     label: "Año *",
+            //     name: "year",
+            //     options:
+            //         yearsDropdownArr?.map((year) => ({
+            //             Id: year,
+            //             Description: year,
+            //         })) ?? [],
+            // },
+            {
+                label: "unidad de gestion",
+                name: "idManagmentUnit",
+                options: managementUnit ?? [],
+                disabled: false,
+            },
+            {
+                label: "rubro *",
+                name: "idIndustry",
+                options: rubros,
+                disabled: !rubros.length,
+            },
+            {
+                label: "tipologia *",
+                name: "idTipology",
+                options: tipology,
+                disabled: !tipology.length,
+            },
+        ],
+        [
+            seasons,
+            tipology,
+            managementUnit,
+            rubros,
+            yearsDropdownArr,
+            state.selectedManagementUnit,
+        ]
+    );
+
+    const specificPropsDropdowns = useMemo(
+        () => [
+            {
+                label: "Concepto",
+                name: "idConcept",
+                options: concepts ?? [],
+                disable: false,
+            },
+            {
+                label: "Línea",
+                name: "idLine",
+                options: lines ?? [],
+                disable: false,
+            },
+            {
+                label: "Body Fit",
+                name: "idBodyFit",
+                options: bodyFit ?? [],
+                disable: false,
+            },
+            {
+                label: "Tiro (Exclusivo Jean)",
+                name: "idRise",
+                options: rises ?? [],
+                disable:
+                    state.selectedManagementUnit !==
+                    managementUnit?.find((unit) =>
+                        (unit.Description as string).includes("Denim")
+                    )?.Id,
+            },
+        ],
+        [
+            concepts,
+            lines,
+            bodyFit,
+            rises,
+            state.selectedManagementUnit,
+            managementUnit,
+        ]
+    );
 
     const checkIfError = (name) => {
         if (errors) {
@@ -68,9 +211,93 @@ const ProductCard = () => {
         return "";
     };
 
+    const dropdownOnSelect = (e) => {
+        //TODO get CODE by id
+        if (e.name === "idMerchantBrand") {
+            dispatch({
+                type: "setSelectedBrand",
+                payload: getCodeById(e.value, brands),
+            });
+
+            // dispatch({ type: "setSelectedYear", payload: 1 });
+        }
+        if (e.name === "idSeason") {
+            dispatch({
+                type: "setSelectedSeason",
+                payload: getCodeById(e.value, seasons),
+            });
+        }
+        // if (e.name === "year") {
+        //     dispatch({ type: "setSelectedYear", payload: getCodeById(e.value, ) });
+        // }
+        if (e.name === "idTipology") {
+            dispatch({
+                type: "setSelectedTipology",
+                payload: getCodeById(e.value, tipologiesByIndustry),
+            });
+        }
+        if (e.name === "idManagmentUnit") {
+            setSelectedManagmentUnit(e.value);
+            if (e.value !== idShoes) {
+                reduxDispatch(changeTelasLength(1));
+            }
+
+            dispatch({
+                type: "setSelectedManagementUnit",
+                payload: e.value,
+            });
+        }
+        if (e.name === "idIndustry") {
+            dispatch({
+                type: "setSelectedIndustry",
+                payload: e.value,
+            });
+        }
+    };
+
+    const getIndustriesDropdownValue = async () => {
+        const response = await getMerchantIndustryAsync({
+            idManagementUnit: state.selectedManagementUnit,
+            idMerchant,
+        });
+
+        return response;
+    };
+
+    const getTipologyDropdownValue = async () => {
+        const response = await getMerchantTipologyAsync({
+            idIndustry: state.selectedIndustry,
+        });
+
+        return response;
+    };
+
+    useEffect(() => {
+        if (state.selectedManagementUnit !== "") {
+            getIndustriesDropdownValue().then((response) =>
+                setRubros(response)
+            );
+        }
+    }, [state.selectedManagementUnit]);
+
+    useEffect(() => {
+        if (state.selectedIndustry !== "") {
+            getTipologyDropdownValue().then((tipology) => {
+                setTipology(tipology);
+                reduxDispatch(handleProductData({ tipology }));
+            });
+        }
+    }, [state.selectedIndustry]);
+
+    useEffect(() => {
+        if (mutationSuccess) {
+            dispatch({ type: "resetStates" });
+        }
+    }, [mutationSuccess]);
+
     return (
         <Container>
-            {dropdowns.map(({ name, label, options }) => {
+            {generalPropsDropdowns.map(({ name, label, options, disabled }) => {
                 return (
                     <ControlledDropdown
                         key={name}
@@ -81,25 +308,80 @@ const ProductCard = () => {
                         name={name}
                         error={checkIfError(name)}
                         helperText={checkErrorMessage(name)}
+                        externalOnChange={dropdownOnSelect}
+                        disabled={disabled}
                     />
                 );
             })}
+            <div className="readOnlyContainer">
+                <ControlledInput
+                    label="Peso"
+                    name="peso"
+                    useFormhook={false}
+                    disabled={true}
+                    externalValue={weightValue}
+                />
+            </div>
+            {specificPropsDropdowns.map(({ name, label, options, disable }) => {
+                return (
+                    <ControlledDropdown
+                        key={name}
+                        label={label}
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        options={options}
+                        name={name}
+                        error={checkIfError(name)}
+                        disabled={disable}
+                        helperText={checkErrorMessage(name)}
+                    />
+                );
+            })}
+            <div>
+                <ControlledInput
+                    label="Nombre del producto *"
+                    name="nombreDelProducto"
+                    error={checkIfError("nombreDelProducto")}
+                    helperText={checkErrorMessage("nombreDelProducto")}
+                />
+            </div>
 
-            <ControlledInput
-                label="Nombre del producto *"
-                name="nombreDelProducto"
-                error={checkIfError("nombreDelProducto")}
-                helperText={checkErrorMessage("nombreDelProducto")}
-            />
+            {/* <div>
+                <ControlledInput
+                    label="Numero"
+                    useFormhook={false}
+                    name="numero"
+                    disabled={true}
+                    readOnly={true}
+                    externalValue={"test Numero"}
+                    externalOnChange={(e) =>
+                        dispatch({
+                            type: "setSelectedProductNumber",
+                            payload: e,
+                        })
+                    }
+                />
+            </div> */}
 
             <ControlledInput
                 label="Descripción"
                 multiline
                 rows={4}
-                name="descripcion"
+                name="detail"
+                id="detail"
                 error={checkIfError("descripcion")}
                 helperText={checkErrorMessage("descripcion")}
             />
+            <div>
+                <ControlledCheckbox name="proyecta" label="Proyecta" />
+            </div>
+            <div style={{ width: "100%" }}>
+                <h2>Código</h2>
+                <h1>{state.finalNumber}</h1>
+                {
+                    //IdMarca/Temporada/Año/IdTipologia/NroDeProducto(3 cifras).
+                }
+            </div>
         </Container>
     );
 };

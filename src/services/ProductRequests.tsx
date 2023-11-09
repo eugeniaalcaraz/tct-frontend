@@ -5,25 +5,53 @@ const BASE_URL = `/merchant`;
 const BASE_LISTING = "/listing";
 
 export const getProducts = async ({
+    productName,
     idMerchant,
     idSeason,
-    idDesigner,
-    idFabric,
-    idDepartment,
-    idSupplier,
+    idBrand,
+    idManagmentUnit,
+    idIndustry,
     idTipology,
-    idStatus,
-    ProductName,
-    ProductPrice,
-    ProductWeight,
-    idOrigin,
-    idDestination,
+    idConcept,
+    idLine,
+    idBodyFit,
+    entryDate,
+    warehouseEntryDate,
+    storeDate,
     idShippingType,
-    shippingDate,
-    quantity,
+    idFabric,
 }) => {
-    const path = `/listing/getAllProductsWithFilters/${idMerchant}/${idSeason}/${idDesigner}/${idFabric}/${idDepartment}/${idSupplier}/${idTipology}/${idStatus}/${ProductName}/${ProductPrice}/${ProductWeight}/${idOrigin}/${idDestination}/${idShippingType}/${shippingDate}/${quantity}`;
+    const path = `/listing/getAllProductsWithFilters/${idMerchant}/${idSeason}/${idBrand}/${idManagmentUnit}/${idIndustry}/${idTipology}/${idConcept}/${idLine}/${idBodyFit}/${entryDate}/${warehouseEntryDate}/${storeDate}/${idShippingType}/${idFabric}/${productName}`;
+    try {
+        return await getJsonRequest(path);
+    } catch (error) {
+        throw new Error(getErrorMessage(error));
+    }
+};
 
+export const getMerchantIndustryDropdownValue = async ({
+    idManagementUnit,
+    idMerchant,
+}) => {
+    const path = `${BASE_URL}/getMerchantIndustries/${idMerchant}/${idManagementUnit}`;
+    try {
+        return await getJsonRequest(path);
+    } catch (error) {
+        throw new Error(getErrorMessage(error));
+    }
+};
+
+export const getMerchantShoeMaterialDropdownValue = async ({ idMerchant }) => {
+    const path = `${BASE_URL}/getMerchantShoeMaterials/${idMerchant}`;
+    try {
+        return await getJsonRequest(path);
+    } catch (error) {
+        throw new Error(getErrorMessage(error));
+    }
+};
+
+export const getMerchantTypologyDropdownValue = async ({ idIndustry }) => {
+    const path = `${BASE_URL}/getTipologies/${idIndustry}`;
     try {
         return await getJsonRequest(path);
     } catch (error) {
@@ -35,7 +63,12 @@ export const getDropdownValues = async ({ card, idMerchant }) => {
     const query = getQuery(card);
 
     if (query !== -1) {
-        const path = `${BASE_URL}/${query}/${idMerchant}`;
+        let path;
+        if (card === "tipologies") {
+            path = `${BASE_URL}/${query}`;
+        } else {
+            path = `${BASE_URL}/${query}/${idMerchant}`;
+        }
         try {
             return await getJsonRequest(path);
         } catch (error) {
@@ -65,6 +98,19 @@ export const getApprovalsOfProduct = async (idProduct) => {
     }
 };
 
+export const getProductById = async ({
+    productNumber,
+    idSeason,
+    idMerchant,
+}) => {
+    const path = `/merchant/getProduct/${productNumber}/${idSeason}/${idMerchant}`;
+    try {
+        return await getJsonRequest(path);
+    } catch (error) {
+        throw new Error(getErrorMessage(error));
+    }
+};
+
 export const createProduct = async ({
     formData,
     idMerchant,
@@ -87,10 +133,8 @@ const getQuery = (card) => {
     switch (card) {
         case "seasons":
             return "getMerchantSeasons";
-        case "tipology":
-            return "getTipologies";
-        case "departments":
-            return "getMerchantDepartments";
+        case "managementUnit":
+            return "getMerchantManagmentUnits";
         case "designers":
             return "getMerchantDesigners";
         case "fabrics":
@@ -109,6 +153,18 @@ const getQuery = (card) => {
             return "getMerchantSuppliers";
         case "typeOfshipment":
             return "getShippingTypes";
+        case "brands":
+            return "getMerchantBrands";
+        case "concepts":
+            return "getMerchantConcepts";
+        case "lines":
+            return "getMerchantLines";
+        case "rises":
+            return "getMerchantRise";
+        case "bodyFit":
+            return "getMerchantBodyFit";
+        case "tipologies":
+            return "getAllTipologies";
         default:
             return -1;
     }
@@ -116,8 +172,8 @@ const getQuery = (card) => {
 
 const getListingPath = (name) => {
     switch (name) {
-        case "status":
-            return "getStatus";
+        // case "status":
+        //     return "getStatus";
         case "allSeasons":
             return "getSeasons";
         default:
@@ -126,191 +182,219 @@ const getListingPath = (name) => {
 };
 
 const getBodyWithExitingQuality = (formData, idMerchant) => {
-    return {
-        idExistingProduct: "0",
-        name: formData.nombreDelProducto,
-        quantity: Number(formData.cantidadEmbarque),
-        idCollection: Number(formData.temporada),
-        idModeling: 1,
-        detail: formData.descripcion,
-        weight: 0,
-        idMeasurmentTable: 1,
-        idCareLabel: "1",
-        idSupplier: Number(formData.proveedor),
-        idDepartment: Number(formData.departamento),
-        sizeCurve: [
-            Number(formData["XXS"] ?? 0),
-            Number(formData["XS"] ?? 0),
-            Number(formData["S"] ?? 0),
-            Number(formData["M"] ?? 0),
-            Number(formData["L"] ?? 0),
-            Number(formData["XL"] ?? 0),
-            Number(formData["XXL"] ?? 0),
-            Number(formData["3XL"] ?? 0),
-            Number(formData["4XL"] ?? 0),
-        ],
-        cost: Number(formData.costo),
-        costInStore: Number(formData.precioVenta),
-        idDesigner: Number(formData["diseñador"]),
-        idSeason: Number(formData.temporada),
+    const finalObj = {
+        ...formData,
+        idSampleStatus: 5,
+        idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
         idMerchant: Number(idMerchant),
-        idShipping: String(formData.embarque),
-        idCountry: Number(formData.origen),
-        idCountryDestination: Number(formData.destino),
-        shippingDate: formData.fecha,
-        idTipology: Number(formData.tipologia),
-        pictures: [], // formData.fotos
-        fabrics:
-            formData.combos.length === 0
-                ? [
-                      {
-                          idFabric: Number(formData.calidad),
-                          description: "",
-                          weight: 0,
-                          idColor: 0,
-                          placement: Number(formData.localizacion),
-                          colorCount: 0,
-                          printDescription: "",
-                          composition: [],
-                      },
-                  ]
-                : formData.combos.map(({ fabric, colorAmount, name }) => ({
-                      idFabric: Number(formData.calidad),
-                      description: "",
-                      weight: 0,
-                      idColor: fabric === "solid" ? Number(name) : 0,
-                      placement: Number(formData.localizacion),
-                      colorCount:
-                          fabric === "printed" ? Number(colorAmount) : 0,
-                      printDescription: fabric === "printed" ? name : "",
-                      composition: Object.keys(formData)
-                          .filter(
-                              (key) =>
-                                  key.includes("composicion") &&
-                                  formData[key] &&
-                                  formData[`porcentaje-${key[key.length - 1]}`]
-                          )
-                          .map((composition) => ({
-                              idFiber: Number(formData[composition]),
-                              percentage: Number(
-                                  formData[
-                                      `porcentaje-${
-                                          composition[composition.length - 1]
-                                      }`
-                                  ]
-                              ),
-                          })),
-                  })),
-
-        avios: formData.trimCombos.map(({ idTrimColor }) => ({
-            idAvio: Number(formData.tipoAvio),
-            idColor: Number(idTrimColor ?? 1),
-            quantity: Number(formData.cantidad),
-        })),
+        sampleType: 1,
+        idRise: Number(formData.idRise),
+        idSeason: Number(formData.idSeason),
+        idBodyFit: Number(formData.idBodyFit),
+        idConcept: Number(formData.idConcept),
+        idManagmentUnit: Number(formData.idManagmentUnit),
+        idIndustry: Number(formData.idIndustry),
+        idLine: Number(formData.idLine),
+        idMerchantBrand: Number(formData.idMerchantBrand),
+        idTipology: Number(formData.idTipology),
+        idExistingProduct: "0",
+        year: Number(formData.year ?? 0),
+        weight: Number(formData.weight ?? 0),
+        name: formData.nombreDelProducto,
+        quantity: Number(formData.quantity),
+        idModeling: 5,
+        idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1,
+        measurmentTable: formData.medidas,
+        idModelingStatus: 5,
+        idStatusMeasurmentTable: 5,
+        idShoeMaterial: Number(formData.idShoeMaterial ?? 0),
+        idCountry: Number(formData.idCountry),
+        cost: Number(formData.cost),
+        costInStore: Number(formData.precioVenta),
+        pictures: formData.fotos, // formData.fotos
+        idSupplier: Number(formData.idSupplier),
+        sizeCurveType: Number(formData.sizeCurveType),
     };
+
+    delete finalObj.nombreDelProducto;
+    delete finalObj.precioVenta;
+    delete finalObj.cantidadDeAvios;
+    delete finalObj.cantidadDeTelas;
+    delete finalObj.peso;
+    delete finalObj["porcentaje-0-0"];
+    delete finalObj["composicion-0"];
+    delete finalObj["placement-0"];
+    delete finalObj["placement-1"];
+    delete finalObj["placement-2"];
+    delete finalObj["placement-3"];
+    delete finalObj["placement-4"];
+    delete finalObj["consumoCalidad-0"];
+    delete finalObj["consumoCalidad-1"];
+    delete finalObj["consumoCalidad-2"];
+    delete finalObj["consumoCalidad-3"];
+    delete finalObj["consumoCalidad-4"];
+    delete finalObj["consumoCalidad-5"];
+    delete finalObj["cantidadAvio-0"];
+    delete finalObj["tipoAvio-0"];
+    delete finalObj["weight-0"];
+    delete finalObj["weight-0"];
+    delete finalObj["weight-1"];
+    delete finalObj["weight-2"];
+    delete finalObj["weight-3"];
+    delete finalObj["weight-4"];
+    delete finalObj["weight-5"];
+    delete finalObj["weight-6"];
+    delete finalObj["weight-7"];
+    delete finalObj["weight-8"];
+    delete finalObj["composicion-0-0"];
+    delete finalObj["composicion-0-1"];
+    delete finalObj["composicion-0-2"];
+    delete finalObj["composicion-0-3"];
+    delete finalObj["composicion-0-4"];
+    delete finalObj["composicion-1-0"];
+    delete finalObj["composicion-1-1"];
+    delete finalObj["composicion-1-2"];
+    delete finalObj["composicion-1-3"];
+    delete finalObj["composicion-1-4"];
+    delete finalObj["composicion-2-0"];
+    delete finalObj["composicion-2-1"];
+    delete finalObj["composicion-2-2"];
+    delete finalObj["composicion-2-3"];
+    delete finalObj["composicion-2-4"];
+    delete finalObj["porcentaje-0-0"];
+    delete finalObj["porcentaje-0-1"];
+    delete finalObj["porcentaje-0-2"];
+    delete finalObj["porcentaje-0-3"];
+    delete finalObj["porcentaje-0-4"];
+    delete finalObj["porcentaje-1-0"];
+    delete finalObj["porcentaje-1-1"];
+    delete finalObj["porcentaje-1-2"];
+    delete finalObj["porcentaje-1-3"];
+    delete finalObj["porcentaje-1-4"];
+    delete finalObj["porcentaje-2-0"];
+    delete finalObj["porcentaje-2-1"];
+    delete finalObj["porcentaje-2-2"];
+    delete finalObj["porcentaje-2-3"];
+    delete finalObj["porcentaje-2-4"];
+    delete finalObj["nombreNuevoFabric-0"];
+    delete finalObj["nombreNuevoFabric-1"];
+    delete finalObj["nombreNuevoFabric-2"];
+    delete finalObj["nombreNuevoFabric-3"];
+    delete finalObj["nombreNuevoFabric-4"];
+    delete finalObj.fotos;
+    delete finalObj.medidas;
+    // delete finalObj["nombreNuevoFabric-0"];
+    // delete finalObj["weight-0"];
+    // delete finalObj["composicion-0-0"];
+
+    return finalObj;
 };
 
 const getBody = (formData, idMerchant) => {
-    return {
-        idExistingProduct: "0",
-        name: formData.nombreDelProducto,
-        quantity: Number(formData.cantidadEmbarque),
-        idCollection: Number(formData.temporada),
-        idModeling: 1,
-        detail: formData.descripcion,
-        weight: 0,
-        idMeasurmentTable: 1,
-        idCareLabel: "1",
-        idSupplier: Number(formData.proveedor),
-        idDepartment: Number(formData.departamento),
-        sizeCurve: [
-            Number(formData["XXS"] ?? 0),
-            Number(formData["XS"] ?? 0),
-            Number(formData["S"] ?? 0),
-            Number(formData["M"] ?? 0),
-            Number(formData["L"] ?? 0),
-            Number(formData["XL"] ?? 0),
-            Number(formData["XXL"] ?? 0),
-            Number(formData["3XL"] ?? 0),
-            Number(formData["4XL"] ?? 0),
-        ],
-        cost: Number(formData.costo),
-        costInStore: Number(formData.precioVenta),
-        idDesigner: Number(formData["diseñador"]),
-        idSeason: Number(formData.temporada),
+    const finalObj = {
+        ...formData,
+        idSampleStatus: 5,
+        idDesigner: 1, //este se deja hardoceado, puede ser que lo soliciten mas adelante
         idMerchant: Number(idMerchant),
-        idShipping: String(formData.embarque),
-        idCountry: Number(formData.origen),
-        idCountryDestination: Number(formData.destino),
-        shippingDate: formData.fecha,
-        idTipology: Number(formData.tipologia),
-        pictures: [], // formData.fotos
-        fabrics:
-            formData.combos.length === 0
-                ? [
-                      {
-                          idFabric: 0,
-                          description: formData.fabricDescription,
-                          weight: Number(formData.peso),
-                          idColor: 0,
-                          placement: Number(formData.localizacion),
-                          colorCount: 0,
-                          printDescription: "",
-                          composition: Object.keys(formData)
-                              .filter(
-                                  (key) =>
-                                      key.includes("composicion") &&
-                                      formData[key] &&
-                                      formData[
-                                          `porcentaje-${key[key.length - 1]}`
-                                      ]
-                              )
-                              .map((composition) => ({
-                                  idFiber: Number(formData[composition]),
-                                  percentage: Number(
-                                      formData[
-                                          `porcentaje-${
-                                              composition[
-                                                  composition.length - 1
-                                              ]
-                                          }`
-                                      ]
-                                  ),
-                              })),
-                      },
-                  ]
-                : formData.combos.map(({ fabric, colorAmount, name }) => ({
-                      idFabric: 0,
-                      description: formData.fabricDescription,
-                      weight: Number(formData.peso),
-                      idColor: fabric === "solid" ? Number(name) : 0,
-                      placement: Number(formData.localizacion),
-                      colorCount:
-                          fabric === "printed" ? Number(colorAmount) : 0,
-                      printDescription: fabric === "printed" ? name : "",
-                      composition: Object.keys(formData)
-                          .filter(
-                              (key) =>
-                                  key.includes("composicion") &&
-                                  formData[key] &&
-                                  formData[`porcentaje-${key[key.length - 1]}`]
-                          )
-                          .map((composition) => ({
-                              idFiber: Number(formData[composition]),
-                              percentage: Number(
-                                  formData[
-                                      `porcentaje-${
-                                          composition[composition.length - 1]
-                                      }`
-                                  ]
-                              ),
-                          })),
-                  })),
-
-        avios: formData.trimCombos.map(({ idTrimColor }) => ({
-            idAvio: Number(formData.tipoAvio),
-            idColor: Number(idTrimColor ?? 1),
-            quantity: Number(formData.cantidad),
-        })),
+        sampleType: 1,
+        idRise: Number(formData.idRise),
+        idSeason: Number(formData.idSeason),
+        idBodyFit: Number(formData.idBodyFit),
+        idConcept: Number(formData.idConcept),
+        idManagmentUnit: Number(formData.idManagmentUnit),
+        idIndustry: Number(formData.idIndustry),
+        idLine: Number(formData.idLine),
+        idMerchantBrand: Number(formData.idMerchantBrand),
+        idTipology: Number(formData.idTipology),
+        idExistingProduct: "0",
+        year: Number(formData.year ?? 0),
+        weight: Number(formData.weight ?? 0),
+        name: formData.nombreDelProducto,
+        quantity: Number(formData.quantity),
+        idModeling: 5,
+        idCareLabel: "1", //este es viejo, pero se manda hardcoded en 1,
+        measurmentTable: formData.medidas,
+        idModelingStatus: 5,
+        idStatusMeasurmentTable: 5,
+        idShoeMaterial: Number(formData.idShoeMaterial ?? 0),
+        idCountry: Number(formData.idCountry),
+        cost: Number(formData.cost),
+        costInStore: Number(formData.precioVenta),
+        pictures: formData.fotos, // formData.fotos
+        idSupplier: Number(formData.idSupplier),
+        sizeCurveType: Number(formData.sizeCurveType),
     };
+
+    delete finalObj.nombreDelProducto;
+    delete finalObj.precioVenta;
+    delete finalObj.cantidadDeAvios;
+    delete finalObj.cantidadDeTelas;
+    delete finalObj.peso;
+    delete finalObj["porcentaje-0-0"];
+    delete finalObj["composicion-0"];
+    delete finalObj["placement-0"];
+    delete finalObj["placement-1"];
+    delete finalObj["placement-2"];
+    delete finalObj["placement-3"];
+    delete finalObj["placement-4"];
+    delete finalObj["consumoCalidad-0"];
+    delete finalObj["consumoCalidad-1"];
+    delete finalObj["consumoCalidad-2"];
+    delete finalObj["consumoCalidad-3"];
+    delete finalObj["consumoCalidad-4"];
+    delete finalObj["consumoCalidad-5"];
+    delete finalObj["cantidadAvio-0"];
+    delete finalObj["tipoAvio-0"];
+    delete finalObj["weight-0"];
+    delete finalObj["weight-0"];
+    delete finalObj["weight-1"];
+    delete finalObj["weight-2"];
+    delete finalObj["weight-3"];
+    delete finalObj["weight-4"];
+    delete finalObj["weight-5"];
+    delete finalObj["weight-6"];
+    delete finalObj["weight-7"];
+    delete finalObj["weight-8"];
+    delete finalObj["composicion-0-0"];
+    delete finalObj["composicion-0-1"];
+    delete finalObj["composicion-0-2"];
+    delete finalObj["composicion-0-3"];
+    delete finalObj["composicion-0-4"];
+    delete finalObj["composicion-1-0"];
+    delete finalObj["composicion-1-1"];
+    delete finalObj["composicion-1-2"];
+    delete finalObj["composicion-1-3"];
+    delete finalObj["composicion-1-4"];
+    delete finalObj["composicion-2-0"];
+    delete finalObj["composicion-2-1"];
+    delete finalObj["composicion-2-2"];
+    delete finalObj["composicion-2-3"];
+    delete finalObj["composicion-2-4"];
+    delete finalObj["porcentaje-0-0"];
+    delete finalObj["porcentaje-0-1"];
+    delete finalObj["porcentaje-0-2"];
+    delete finalObj["porcentaje-0-3"];
+    delete finalObj["porcentaje-0-4"];
+    delete finalObj["porcentaje-1-0"];
+    delete finalObj["porcentaje-1-1"];
+    delete finalObj["porcentaje-1-2"];
+    delete finalObj["porcentaje-1-3"];
+    delete finalObj["porcentaje-1-4"];
+    delete finalObj["porcentaje-2-0"];
+    delete finalObj["porcentaje-2-1"];
+    delete finalObj["porcentaje-2-2"];
+    delete finalObj["porcentaje-2-3"];
+    delete finalObj["porcentaje-2-4"];
+    delete finalObj["nombreNuevoFabric-0"];
+    delete finalObj["nombreNuevoFabric-1"];
+    delete finalObj["nombreNuevoFabric-2"];
+    delete finalObj["nombreNuevoFabric-3"];
+    delete finalObj["nombreNuevoFabric-4"];
+    delete finalObj.fotos;
+    delete finalObj.medidas;
+    // delete finalObj["nombreNuevoFabric-0"];
+    // delete finalObj["weight-0"];
+    // delete finalObj["composicion-0-0"];
+
+    return finalObj;
 };

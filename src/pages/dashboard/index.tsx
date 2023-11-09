@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { v4 as uuid } from "uuid";
 import { urlFormat } from "@/utils";
 import { Pages } from "@/types";
 import { WidthProvider, Responsive } from "react-grid-layout";
@@ -10,10 +11,11 @@ import {
     Balance,
     ProductionStatus,
     Shipments,
-    Sections,
+    Colors,
     PendingApprovals,
     Margin,
-    SentSamples,
+    Overall,
+    MaterialsOverall,
 } from "@components/dashboardCards";
 import { getLocalStorage, setLocalStorage } from "@/utils/localStorage";
 import { LocalStorageKeys } from "@/types";
@@ -23,8 +25,8 @@ import { Container } from "./DashboardStyles";
 import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { Box } from "@mui/material";
 import dayjs from "dayjs";
-import { handleDashboardData } from "@/state/features";
-import { getCalendarValue, getCardValue } from "@/services";
+import { handleDashboardData, setCards } from "@/state/features";
+import { getCardValue } from "@/services";
 
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
@@ -35,12 +37,9 @@ const dashboard = {
     embarques: <Shipments />,
     aprobacionesPendientes: <PendingApprovals />,
     margen: <Margin />,
-    camisetasTops: <Sections name="camisetasTops" />,
-    camisasBlusas: <Sections name="camisasBlusas" />,
-    faldasShorts: <Sections name="faldasShorts" />,
-    vestidosMonos: <Sections name="vestidosMonos" />,
-    muestrasEnviadas: <SentSamples />,
-    skuYPiezasTotales: <Sections name="all" layout="vertical" />,
+    resumenDeMaterialidades: <MaterialsOverall />,
+    overall: <Overall />,
+    composicionPorColor: <Colors />,
 };
 
 const originalItems = [
@@ -49,12 +48,9 @@ const originalItems = [
     "Embarques",
     "Aprobaciones pendientes",
     "Margen",
-    "Camisetas & tops",
-    "Camisas & blusas",
-    "Faldas & shorts",
-    "Vestidos & monos",
-    "Muestras Enviadas",
-    "SKU y Piezas totales",
+    "Resumen de Materialidades",
+    "Overall",
+    "Composición por color",
 ];
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -62,7 +58,18 @@ const originalLayouts = getFromLS("layouts") || initialLayouts;
 
 const Dashboard = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { temporada } = useAppSelector((state) => state.dashboard);
+    const {
+        temporada,
+        balance,
+        estadoDeProduccion,
+        aprobacionesPendientes,
+        margen,
+        overall,
+        embarques,
+        resumenDeMaterialidades,
+        composicionPorColor,
+    } = useAppSelector((state) => state.dashboard);
+
     const dispatch = useAppDispatch();
     const date = dayjs();
     const {
@@ -80,34 +87,6 @@ const Dashboard = () => {
         JSON.parse(JSON.stringify(originalLayouts))
     );
 
-    const getCardData = useCallback(
-        (season) => {
-            Object.keys(dashboard).map((card) => callCardsValues(card, season));
-        },
-        [dashboard]
-    );
-
-    const callCardsValues = async (card, season) => {
-        dispatch(
-            handleDashboardData({
-                name: card,
-                value:
-                    card !== "embarques"
-                        ? await getCardsAsync({
-                              card,
-                              idMerchant,
-                              idSeason: season,
-                          })
-                        : await getCalendarValue(
-                              idMerchant,
-                              1,
-                              date.month() + 1,
-                              date.year()
-                          ),
-            })
-        );
-    };
-
     const onLayoutChange = (layout, layouts) => {
         saveToLS("layouts", layouts);
     };
@@ -115,15 +94,16 @@ const Dashboard = () => {
         setBreakpoint(breakpoint);
     };
 
-    useEffect(() => {
-        Number(temporada) !== 0 && getCardData(temporada);
-    }, [temporada]);
+    // useEffect(() => {
+    //     Number(temporada) !== 0 && getCardData(temporada);
+    // }, [temporada]);
 
-    useEffect(() => {
-        if (cardsError) {
-            navigate(urlFormat(Pages.ServerError));
-        }
-    }, [cardsError]);
+    // useEffect(() => {
+    //     if (cardsError) {
+    //         console.log("error", cardsError);
+    //         navigate(urlFormat(Pages.ServerError));
+    //     }
+    // }, [cardsError]);
 
     return (
         <>
@@ -138,7 +118,7 @@ const Dashboard = () => {
                 >
                     {items.map((key, index) => (
                         <div
-                            key={key}
+                            key={uuid()}
                             data-grid={initialLayouts[breakpoint][index]}
                         >
                             <CardBase

@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { v4 as uuid } from "uuid";
 import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { ProdStatusOptions, ProductionStatusType } from "@/types";
 
@@ -18,17 +19,22 @@ const PieChartGraph: FC<PieChartProps> = ({ data }) => (
                 dataKey="percentage"
                 stroke="0"
             >
-                {data.map((d, index) => {
+                {data?.map((d, index) => {
                     return (
                         <Cell
                             fill={
-                                d.Status === ProdStatusOptions.Approval
-                                    ? "#BB855E"
-                                    : d.Status === ProdStatusOptions.Produccion
-                                    ? "#839270"
-                                    : "#CEB471"
+                                // d.Status === ProdStatusOptions.Approval
+                                //     ? "#DFB6D2"
+                                //     : d.Status === ProdStatusOptions.Produccion
+                                //     ? "#CFD779"
+                                //     : "#919ECC"
+                                index === 0
+                                    ? "#DFB6D2"
+                                    : index === 1
+                                    ? "#CFD779"
+                                    : "#919ECC"
                             }
-                            key={Symbol(index).toString()}
+                            key={uuid()}
                         />
                     );
                 })}
@@ -56,7 +62,7 @@ const renderLegend = (props) => {
 
     return (
         <ul>
-            {payload.map((entry, index) => (
+            {payload?.map((entry, index) => (
                 <li
                     key={`list-${entry}-${index}`}
                     style={{
@@ -75,7 +81,7 @@ const renderLegend = (props) => {
                             letterSpacing: "0.15rem",
                             fontWeight: 400,
                             verticalAlign: "bottom",
-                            color: "#233906",
+                            color: "#000",
                             lineHeight: "1.9rem",
                         }}
                     >

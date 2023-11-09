@@ -1,25 +1,26 @@
 import React from "react";
-
+import { v4 as uuid } from "uuid";
 import { useAppSelector } from "@/state/app/hooks";
 import { Date, Dropdown, Input } from "@/components/common";
 
 import { FiltersContainer } from "./TableStyles";
 import { OptionsType } from "@/types";
 
-const inputFilters = ["nombre", "cantidad", "costo", "peso"];
+const inputFilters = ["nombre"];
 
 const Filters = () => {
     const filters = useAppSelector((state) => state.filters);
     const {
         allSeasons,
         supplier,
-        departments,
+        managementUnit,
         tipology,
         fabrics,
-        designers,
-        countries,
-        status,
-        typeOfshipment,
+        brands,
+        industries,
+        concepts,
+        lines,
+        bodyFit,
     } = useAppSelector((state) => state.product);
 
     const dropdownFilters = [
@@ -41,8 +42,21 @@ const Filters = () => {
                 })
             ),
         },
-        { name: "departamento", options: departments },
+        {
+            name: "marca",
+            options: brands?.map(
+                ({ Id, Name }): OptionsType => ({
+                    Id: String(Id),
+                    Description: Name,
+                })
+            ),
+        },
+        { name: "unidad", options: managementUnit },
+        { name: "rubro", options: industries },
         { name: "tipologia", options: tipology },
+        { name: "concepto", options: concepts },
+        { name: "linea", options: lines },
+        { name: "fit", options: bodyFit },
         {
             name: "calidad",
             options: fabrics?.map(
@@ -52,63 +66,10 @@ const Filters = () => {
                 })
             ),
         },
-        {
-            name: "estado",
-            options: status?.map(
-                ({ IdStatus, Description }): OptionsType => ({
-                    Id: String(IdStatus),
-                    Description,
-                })
-            ),
-        },
-        {
-            name: "diseñador",
-            options: designers?.map(
-                ({ Id, Name, LastName }): OptionsType => ({
-                    Id: String(Id),
-                    Description: `${Name} ${LastName}`,
-                })
-            ),
-        },
-        {
-            name: "origen",
-            options: countries?.map(
-                ({ Id, Name }): OptionsType => ({
-                    Id: String(Id),
-                    Description: Name,
-                })
-            ),
-        },
-        {
-            name: "destino",
-            options: countries?.map(
-                ({ Id, Name }): OptionsType => ({
-                    Id: String(Id),
-                    Description: Name,
-                })
-            ),
-        },
-        {
-            name: "embarque",
-            options: typeOfshipment,
-        },
     ];
 
     return (
         <FiltersContainer className={filters.open ? "open" : "closed"}>
-            {dropdownFilters.map(({ name, options }) => {
-                return (
-                    <Dropdown
-                        key={name}
-                        label={name}
-                        options={options ?? []}
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        value={filters[name]}
-                    />
-                );
-            })}
-            <Date label="Fecha" />
             {inputFilters.map((filter) => {
                 return (
                     <Input
@@ -118,6 +79,21 @@ const Filters = () => {
                     />
                 );
             })}
+            {dropdownFilters.map(({ name, options }) => {
+                return (
+                    <Dropdown
+                        key={uuid()}
+                        label={name}
+                        options={options ?? []}
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        value={filters[name]}
+                    />
+                );
+            })}
+            <Date label="Fecha Embarque" type="fecha" />
+            <Date label="Ingreso Depósito" type="deposito" />
+            <Date label="Ingreso Tienda" type="store" />
         </FiltersContainer>
     );
 };

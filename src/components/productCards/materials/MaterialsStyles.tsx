@@ -63,6 +63,19 @@ export const FabricContainer = styled(Box)({
         },
     },
 
+    ".composition-error": {
+        marginTop: "-15px",
+        marginBottom: "10px",
+        width: "100%",
+        color: "##BC392B",
+    },
+    ".combo-error": {
+        marginTop: "-25px",
+        marginBottom: "10px",
+        width: "100%",
+        color: "##BC392B",
+    },
+
     "&& > .existingQualities": {
         "& > div": {
             "& > .input": {
@@ -139,22 +152,36 @@ export const FabricContainer = styled(Box)({
         display: "flex",
         gap: "2rem",
         paddingLeft: "1rem",
-        marginBottom: "1rem",
+        marginBottom: "3rem",
 
         "& > .combo": {
             fontSize: "1.3rem",
+            width: "10rem",
+            "& > .upper-container": {
+                border: "none",
+                display: "flex",
+                whiteSpace: "nowrap",
+                alignItems: "center",
+                marginLeft: "0",
+            },
             "& > div": {
                 width: "5.5rem",
                 height: "3rem",
                 border: "1px solid",
                 borderRadius: "2px",
+                marginLeft: "10px",
             },
+
             "& > .printed": {
                 backgroundImage: "url('src/assets/images/printExample.jpeg')",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "100px 100px",
                 opacity: 0.7,
             },
+        },
+
+        "& > .combo-print": {
+            width: "9rem",
         },
     },
 
@@ -180,8 +207,8 @@ export const FabricContainer = styled(Box)({
     },
 
     "&& > .comboBox": {
+        width: "100%",
         height: 0,
-        width: "67%",
         gap: "1.2rem",
         overflow: "hidden",
         display: "flex",
@@ -189,6 +216,17 @@ export const FabricContainer = styled(Box)({
         padding: 0,
         paddingLeft: "1rem",
         transition: "height .8s ease, width .8s ease, padding .3s ease",
+        ".dropdownSolid": { flexGrow: "1", "& > div": { width: "100%" } },
+
+        ".radioContainer": {
+            justifyContent: "space-between",
+        },
+        "&  button": {
+            fontWeight: "600",
+            fontSize: "1.3rem",
+            lineHeight: "1.8rem",
+            letterSpacing: "0.15em",
+        },
 
         "& > div": {
             display: "flex",

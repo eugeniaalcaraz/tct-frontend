@@ -3,12 +3,14 @@ import { useLocation } from "react-router-dom";
 import { Container } from "./HeaderStyles";
 
 import { urlFormat } from "@/utils";
-import { Pages } from "@/types";
+import { Pages, SupplierHeaders } from "@/types";
 
 import ProductsHeader from "./ProductsHeader";
+import ProductHeader from "./ProductHeader";
 import DashboardHeader from "./DashboardHeader";
 import NewProductHeader from "./NewProductHeader";
 import { useIconsContext } from "@components/hooks";
+import SuppliersHeader from "./SuppliersHeader";
 
 type HeaderProps = {
     handleMenu: (arg0: boolean) => void;
@@ -53,8 +55,14 @@ const Header: FC<HeaderProps> = ({ handleMenu }) => {
                 <DashboardHeader />
             ) : location.pathname === urlFormat(Pages.Products) ? (
                 <ProductsHeader />
+            ) : location.pathname === urlFormat(Pages.Suppliers) ? (
+                <SuppliersHeader />
+            ) : location.pathname === urlFormat(Pages.NewProduct) ? (
+                <NewProductHeader formId="new-product-form" />
+            ) : location.pathname === urlFormat(Pages.NewSupplier) ? (
+                <NewProductHeader formId="new-supplier-form"/>
             ) : (
-                <NewProductHeader />
+                <ProductHeader />
             )}
         </Container>
     );

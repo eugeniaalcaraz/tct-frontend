@@ -24,16 +24,16 @@ const DashboardHeader = () => {
         );
     }, [allSeasons]);
 
-    const handleSelectedSeason = () => {
+    const handleSelectedSeason = useCallback(() => {
         if (allSeasons) {
             dispatch(
                 handleDashboardData({
                     name: "temporada",
-                    value: allSeasons[0].IdSeason,
+                    value: allSeasons[0]?.IdSeason,
                 })
             );
         }
-    };
+    }, [allSeasons, temporada]);
 
     useEffect(() => {
         allSeasons === null && handleSeasons();

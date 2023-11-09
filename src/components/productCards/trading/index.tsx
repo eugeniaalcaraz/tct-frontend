@@ -1,14 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { ControlledInput } from "@components/common";
 import { Container } from "./TradingStyles";
+import Switch from "@mui/material/Switch";
 import { useAppSelector } from "@/state/app/hooks";
 
-const Trading = () => {
-    const { errors } = useAppSelector((state) => state.product);
+type TradingProps = {
+    formMethods: any;
+};
+
+const Trading: FC<TradingProps> = ({ formMethods }) => {
+    const { errors, mutationSuccess } = useAppSelector(
+        (state) => state.product
+    );
 
     const [buying, setBuying] = useState<number>(0);
     const [selling, setSelling] = useState<number>(0);
+    const [finalPrice, setFinalPrice] = useState<number>(0);
     const [margin, setMargin] = useState<number>(0);
+    const [pvpChecked, setPvpChecked] = useState(false);
 
     const checkIfError = (name) => {
         if (errors) {
@@ -40,8 +49,44 @@ const Trading = () => {
     };
 
     useEffect(() => {
-        setMargin(((selling / 1.22 - buying) / (selling / 1.22)) * 100);
+        if (!pvpChecked) {
+            if (selling !== 0 && buying !== 0) {
+                setMargin(((selling / 1.22 - buying) / (selling / 1.22)) * 100);
+            } else {
+                setMargin(0);
+            }
+        }
     }, [buying, selling]);
+
+    useEffect(() => {
+        if (pvpChecked) {
+            //setSelling(buying + buying * (margin / 100));
+            setSelling((buying / (1 - margin)) * 1.22);
+        }
+    }, [margin, buying]);
+
+    useEffect(() => {
+        setFinalPrice(selling * 40);
+    }, [selling]);
+
+    useEffect(() => {
+        setSelling(0);
+
+        setBuying(0);
+        setFinalPrice(0);
+        setMargin(0);
+        // formMethods.reset({ margin: "", cost: "", precioVenta: "" });
+    }, [pvpChecked]);
+
+    useEffect(() => {
+        if (mutationSuccess) {
+            setSelling(0);
+
+            setBuying(0);
+            setFinalPrice(0);
+            setMargin(0);
+        }
+    }, [mutationSuccess]);
 
     return (
         <Container
@@ -51,23 +96,47 @@ const Trading = () => {
                     : ""
             }
         >
+            <div className="toggle-container">
+                <span>Margen</span>
+                <Switch
+                    checked={pvpChecked}
+                    onChange={() => setPvpChecked(!pvpChecked)}
+                />
+                <span>PVP</span>
+            </div>
             <ControlledInput
-                label="Costo"
-                name="costo"
+                label="Costo($)"
+                name="cost"
                 onBlur={(e) => setBuying(Number(e.target.value))}
-                error={checkIfError("costo")}
-                helperText={checkErrorMessage("costo")}
+                error={checkIfError("cost")}
+                helperText={checkErrorMessage("cost")}
             />
-            <ControlledInput
-                label="Precio Tienda"
-                name="precioVenta"
-                onBlur={(e) => setSelling(Number(e.target.value))}
-                error={checkIfError("precioVenta")}
-                helperText={checkErrorMessage("precioVenta")}
-            />
-            {margin > 0 && !isNaN(margin) && (
-                <span className="margin">Margen % {margin.toFixed(2)}</span>
+            {pvpChecked ? (
+                <ControlledInput
+                    label="Margen"
+                    name="margin"
+                    onBlur={(e) => setMargin(Number(e.target.value))}
+                    error={checkIfError("margin")}
+                    helperText={checkErrorMessage("margin")}
+                />
+            ) : (
+                <ControlledInput
+                    label="Venta($)"
+                    name="precioVenta"
+                    onBlur={(e) => setSelling(Number(e.target.value))}
+                    error={checkIfError("precioVenta")}
+                    helperText={checkErrorMessage("precioVenta")}
+                />
             )}
+
+            <div className="pvp-container">
+                {pvpChecked ? (
+                    <span>{`PVP($): ${selling.toFixed(2)}`}</span>
+                ) : (
+                    <span>Margen % {margin.toFixed(2)}</span>
+                )}
+                {/* <span>{`Precio Tienda: ${finalPrice.toFixed(2)}`}</span> */}
+            </div>
         </Container>
     );
 };

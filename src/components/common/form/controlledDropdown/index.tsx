@@ -20,17 +20,30 @@ type ControlledDropdownProps = {
     onBlur?: (e) => void;
     error?: boolean;
     helperText?: string;
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    externalOnChange?: Function;
+    shouldUnregister?: boolean;
+    useFormHook?: boolean;
+    selectedValue?: any;
+    id?: string;
+    sx?: any;
 };
 
 const ControlledDropdown: FC<ControlledDropdownProps> = ({
     name,
     label,
+    id = "simple-select",
     options,
     multipleSelect = false,
     disabled = false,
     onBlur,
     error = false,
     helperText = "",
+    externalOnChange,
+    shouldUnregister = true,
+    useFormHook = true,
+    selectedValue = "",
+    sx = {}
 }) => {
     return (
         <FormControl
@@ -44,43 +57,90 @@ const ControlledDropdown: FC<ControlledDropdownProps> = ({
                 "&& > label": {
                     textTransform: "capitalize",
                 },
+                ...sx
             }}
             disabled={disabled}
             className="dropdown"
         >
-            <Controller
-                shouldUnregister
-                name={name}
-                render={({
-                    field: { value = multipleSelect ? [] : "", onChange },
-                }) => (
-                    <>
-                        <InputLabel id="demo-simple-select-label" error={error}>
-                            {label}
-                        </InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={value}
-                            multiple={multipleSelect}
-                            label={label}
-                            onChange={onChange}
-                            input={<OutlinedInput label={label} />}
-                            onBlur={onBlur}
-                            error={error}
-                        >
-                            {options.map((option) => (
-                                <MenuItem key={uuid()} value={option.Id}>
-                                    {option.Description}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                        <HelperText className={error ? "error" : ""}>
-                            {helperText}
-                        </HelperText>
-                    </>
-                )}
-            />
+            {useFormHook ? (
+                <Controller
+                    shouldUnregister={shouldUnregister}
+                    name={name}
+                    render={({
+                        field: { value = multipleSelect ? [] : "", onChange },
+                        fieldState
+                    }) => (
+                        <>
+                            <InputLabel
+                                id="demo-simple-select-label"
+                                error={error || !!fieldState.error}
+                            >
+                                {label}
+                            </InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={value}
+                                multiple={multipleSelect}
+                                label={label}
+                                onChange={(e) => {
+                                    onChange(e);
+                                    externalOnChange &&
+                                        externalOnChange({
+                                            value: e.target.value,
+                                            name,
+                                        });
+                                }}
+                                input={<OutlinedInput label={label} />}
+                                onBlur={onBlur}
+                                error={error || !!fieldState.error}
+                            >
+                                {options.map((option) => (
+                                    <MenuItem key={uuid()} value={option.Id}>
+                                        {option.Description}
+                                    </MenuItem>
+                                ))}
+                                
+                            </Select>
+                            <HelperText className={(error || fieldState.error) ? "error" : ""}>
+                                {fieldState.error?.message ?? helperText }
+                            </HelperText>
+                        </>
+                    )}
+                />
+            ) : (
+                <>
+                    <InputLabel id="demo-simple-select-label" error={error}>
+                        {label}
+                    </InputLabel>
+                    <Select
+                        labelId={id}
+                        id={id}
+                        value={selectedValue}
+                        multiple={multipleSelect}
+                        label={label}
+                        onChange={(e) => {
+                            externalOnChange &&
+                                externalOnChange({
+                                    value: e.target.value,
+                                    name,
+                                });
+                        }}
+                        input={<OutlinedInput label={label} />}
+                        onBlur={onBlur}
+                        error={error}
+                    >
+                        {options.map((option) => (
+                            <MenuItem key={uuid()} value={option.Id}>
+                                {option.Description}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <HelperText className={error ? "error" : ""}>
+                        {helperText}
+                    </HelperText>
+                </>
+            )}
         </FormControl>
     );
 };

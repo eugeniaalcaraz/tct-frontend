@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { productValidation } from "./productValidation";
 import {
@@ -20,25 +20,67 @@ import {
     Shipment,
     SizeCurve,
 } from "@components/productCards";
-import { useAppSelector } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 
 import { createProduct } from "@/services/ProductRequests";
 import { toBase64 } from "@/utils/toBase64";
 import { useMutation } from "@tanstack/react-query";
-
-const product = {
-    producto: <ProductCard />,
-    adjuntos: <Attachments />,
-    compraYVenta: <Trading />,
-    embarque: <Shipment />,
-    materiales: <Materials />,
-    curvaDeTalles: <SizeCurve />,
-};
+import { useForm } from "react-hook-form";
+import { NumberSizeCurve } from "@components/productCards/sizeCurve/numberSizeCurve";
+import {
+    defaultValues,
+    denimSizes,
+    shoesSizes,
+    sizeCurveTableTypeChooser,
+} from "./aux/aux";
+import {
+    clearAviosCombos,
+    clearReduxErrors,
+    clearTelasCombos,
+    setMutationState,
+    setReduxErrors,
+    setSpecialSizeCurve,
+} from "@/state/features/product";
+import dayjs from "dayjs";
+import { managementUnitEnum } from "./enum";
 
 const NewProduct = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { combos, trimCombos } = useAppSelector((state) => state.product);
+    const {
+        telas,
+        avios,
+        specialSizeCurve,
+        tipology,
+        reduxErrors,
+        errors,
+        managementUnit,
+    } = useAppSelector((state) => state.product);
+    const [isExisting, setIsExisting] = useState(false);
+    const [selectedManagmentUnit, setSelectedManagementUnit] = useState(0);
     const resolver = yupResolver(productValidation);
+    const methods = useForm({ resolver, defaultValues });
+    const dispatch = useAppDispatch();
+    const isShoeSelected = useMemo(
+        () =>
+            selectedManagmentUnit ===
+            (managementUnit?.find((managementUnitObj) =>
+                (managementUnitObj.Description as string).includes(
+                    managementUnitEnum.SHOES
+                )
+            )?.Id ?? 10000),
+        [selectedManagmentUnit, managementUnit]
+    );
+    const isDenimSelected = useMemo(
+        () =>
+            selectedManagmentUnit ===
+            (managementUnit?.find((managementUnitObj) =>
+                (managementUnitObj.Description as string).includes(
+                    managementUnitEnum.DENIM
+                )
+            )?.Id ?? 10000),
+        [selectedManagmentUnit, managementUnit]
+    );
+
     const {
         mutateAsync: createProdAsync,
         isLoading: productLoading,
@@ -48,11 +90,12 @@ const NewProduct = () => {
 
     const [seed, setSeed] = useState(1);
 
-    const onSave = async (formData) => {
-        const formattedDate = formData.fecha.format("YYYY-MM-DD");
+    const onSave = async (formData, e) => {
         let fotos;
+        let medidas;
 
-        if (formData.fotos) {
+        dispatch(setMutationState(false));
+        if (formData.fotos.length) {
             const files = Object.values(formData.fotos);
             const response = files.map((file) => toBase64(file));
             const picturesArray = await Promise.all(response);
@@ -64,20 +107,108 @@ const NewProduct = () => {
             fotos = [];
         }
 
+        if (formData.medidas.length) {
+            const files = Object.values(formData.medidas);
+            const response = files.map((file) => toBase64(file));
+            const excelArr = await Promise.all(response);
+            medidas = excelArr[0];
+        } else {
+            medidas = "";
+        }
+
+        // esto es lo que recibo en tipology
+        // {
+        //     "Id": 1,
+        //     "Description": "Remera",
+        //     "Code": "AAAA",
+        //     "Weight": "11"
+        // },
+        // {
+        //     "Id": 2,
+        //     "Description": "Zapato",
+        //     "Code": "BBBB",
+        //     "Weight": "10"
+        // },
+        // {
+        //     "Id": 3,
+        //     "Description": "Jean",
+        //     "Code": "CCC",
+        //     "Weight": "50"
+        // }
+        // este es el enum de back
+        // const sizeCurveEnum = {
+        //     shoe: 1,
+        //     clothes: 2,
+        //     denim: 3
+        //   };
+
+        // const sizeCurveTypeChooser = {
+        //     2: 1,
+        //     1: 2,
+        //     3: 3,
+        // };
+
         createProdAsync({
             formData: {
                 ...formData,
-                fecha: formattedDate,
                 fotos,
-                combos,
-                trimCombos,
+                medidas,
+                telas,
+                avios,
+                sizeCurveType: sizeCurveTableTypeChooser(
+                    Number(formData.idManagementUnit)
+                ),
+                extendedSize: specialSizeCurve,
+                modelingDate: dayjs().format("YYYY-MM-DD"),
+                sampleDate: dayjs().format("YYYY-MM-DD"),
+                weight: tipology?.find(
+                    (tipology) => tipology.Id === formData.idTipology
+                )?.Weight,
             },
             idMerchant,
             existingQuality: formData.existingQuality,
         });
-
-        setSeed(Math.random());
     };
+
+    const product = {
+        producto: (
+            <ProductCard setSelectedManagmentUnit={setSelectedManagementUnit} />
+        ),
+        adjuntos: <Attachments />,
+        compraYVenta: <Trading formMethods={methods} />,
+        embarque: <Shipment />,
+        materiales: <Materials isShoe={isShoeSelected} />,
+        curvaDeTalles:
+            isDenimSelected || isShoeSelected ? (
+                <NumberSizeCurve
+                    sizes={isShoeSelected ? shoesSizes : denimSizes}
+                />
+            ) : (
+                <SizeCurve />
+            ),
+    };
+
+    useEffect(() => {
+        console.log({ isDenimSelected, isShoeSelected });
+    }, [selectedManagmentUnit]);
+
+    useEffect(() => {
+        if (productSuccess) {
+            dispatch(setSpecialSizeCurve(false));
+            dispatch(setMutationState(true));
+            dispatch(clearTelasCombos());
+            dispatch(clearAviosCombos());
+            setSeed(Math.random());
+            dispatch(
+                setReduxErrors({ idError: "initialError", msg: "initial" })
+            );
+            methods.reset(defaultValues, { keepDefaultValues: true });
+        }
+
+        if (reduxErrors && Object.keys(reduxErrors).length) {
+            dispatch(clearReduxErrors());
+        }
+    }, [productSuccess]);
 
     return (
         <>
@@ -85,7 +216,8 @@ const NewProduct = () => {
                 {seed && (
                     <Content>
                         <Form
-                            resolver={resolver}
+                            // resolver={resolver}
+                            methods={methods}
                             onSubmit={onSave}
                             id="new-product-form"
                         >
@@ -104,7 +236,7 @@ const NewProduct = () => {
                                     content={product["compraYVenta"]}
                                 />
                                 <CardBase
-                                    header="Embarque"
+                                    header="Proveedores y Embarque"
                                     content={product["embarque"]}
                                 />
                             </Box>

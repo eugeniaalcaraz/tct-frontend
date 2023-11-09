@@ -7,7 +7,6 @@ export const useFilters = () => {
     const getFunction = (filter, id, category) => {
         switch (filter) {
             case "temporada":
-                console.log(filter, id, category);
                 return category.find((option) => option.IdSeason === Number(id))
                     ?.SeasonName;
 

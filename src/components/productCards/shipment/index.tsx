@@ -1,18 +1,17 @@
-import React from "react";
-import {
-    ControlledDatePicker,
-    ControlledDropdown,
-    ControlledInput,
-} from "@components/common";
-import { Button, Box, Tooltip } from "@mui/material";
+import React, { useState } from "react";
+import { v4 as uuid } from "uuid";
+import { ControlledDropdown, ControlledInput } from "@components/common";
 import { Container } from "./ShipmentStyles";
 import { useAppSelector } from "@/state/app/hooks";
 import { OptionsType } from "@/types";
+import { ShipmentCombo } from "./shipmentCombo";
 
 const Shipment = () => {
-    const { countries, supplier, typeOfshipment, errors } = useAppSelector(
+    const { countries, supplier, errors, telas } = useAppSelector(
         (state) => state.product
     );
+
+    const [allCombosShareShipment, setAllCombosShareShipment] = useState(true);
 
     const checkIfError = (name) => {
         if (errors) {
@@ -49,7 +48,9 @@ const Shipment = () => {
                         })
                     ) ?? []
                 }
-                name="origen"
+                name="idCountry"
+                error={checkIfError("idCountry")}
+                helperText={checkErrorMessage("idCountry")}
             />
             <ControlledDropdown
                 label="Proveedor"
@@ -61,42 +62,41 @@ const Shipment = () => {
                         })
                     ) ?? []
                 }
-                name="proveedor"
-            />
-            <ControlledDatePicker name="fecha" label="Fecha" />
-            <ControlledDropdown
-                label="Embarque"
-                options={typeOfshipment ?? []}
-                name="embarque"
-            />
-            <ControlledDropdown
-                label="Destino"
-                options={
-                    countries?.map(
-                        ({ Id, Name }): OptionsType => ({
-                            Id: String(Id),
-                            Description: Name,
-                        })
-                    ) ?? []
-                }
-                name="destino"
+                name="idSupplier"
+                error={checkIfError("idSupplier")}
+                helperText={checkErrorMessage("idSupplier")}
             />
             <ControlledInput
-                label="Cantidad"
-                name="cantidadEmbarque"
-                error={checkIfError("cantidadEmbarque")}
-                helperText={checkErrorMessage("cantidadEmbarque")}
+                label="Cantidad Total"
+                name="quantity"
+                error={checkIfError("quantity")}
+                helperText={checkErrorMessage("quantity")}
             />
-
-            <Box className="add">
-                <hr />
-                <Tooltip title="Proximamente 😉" placement="right" arrow>
-                    <Button variant="text" type="button" color="primary">
-                        + AGREGAR EMBARQUE
-                    </Button>
-                </Tooltip>
-                <hr />
-            </Box>
+            <ControlledInput
+                label="Codigo de fabrica"
+                name="fabricCode"
+                error={checkIfError("fabricCode")}
+                helperText={checkErrorMessage("fabricCode")}
+            />
+            <div className="checkboxContainer">
+                {/* TODO: queda para implementar despues<ControlledCheckbox
+                    name="mismoComboParaTodoEmbarque"
+                    label="Todos los combos tienen el mismo embarque ?"
+                    defaultCheckedProp={true}
+                    externalOnChange={() =>
+                        setAllCombosShareShipment(!allCombosShareShipment)
+                    }
+                /> */}
+            </div>
+            {(allCombosShareShipment ? Array.from(Array(1).keys()) : telas).map(
+                (value, index) => (
+                    <ShipmentCombo
+                        key={index}
+                        comboNumber={index + 1}
+                        isForAllCombos={allCombosShareShipment}
+                    />
+                )
+            )}
         </Container>
     );
 };

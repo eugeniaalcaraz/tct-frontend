@@ -1,5 +1,4 @@
-import React, { useState, Fragment } from "react";
-import FilePreview from "@/assets/images/filePreview.png";
+import React, { useState } from "react";
 import { v4 as uuid } from "uuid";
 import {
     Box,
@@ -16,28 +15,63 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 import { StyledTableRow } from "./TableStyles";
-import { ApprovalElements, Approvals, Product } from "@/types";
-import { getApprovalsOfProduct } from "@/services/ProductRequests";
-import { getApprovalName } from "@/utils";
+import { Pages } from "@/types";
+import { getProductById } from "@/services/ProductRequests";
+import { getCodeById, getCodeByName, getSeasonById, urlFormat } from "@/utils";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
+import { setUpdateProduct } from "@/state/features/product";
+import { useNavigate } from "react-router-dom";
+import { ScreenLoader } from "@components/common";
+import dayjs from "dayjs";
+import { StatusLabel } from "@/pages/updateProduct/stateLabel";
+import defaultImage from "@assets/images/defaultImage.jpeg";
 
-const Row = (props: { row: Product }) => {
+const Row = (props: { row }) => {
     const { row } = props;
+    const { idMerchant } = useAppSelector((state) => state.user);
+    const { allSeasons, seasons, brands, tipologies } = useAppSelector(
+        (state) => state.product
+    );
     const [open, setOpen] = useState(false);
-    const [photo, setPhoto] = useState("");
-    const [approval, setApproval] = useState<Approvals[] | null>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleOpen = async () => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const handleOpen = async (e) => {
+        e.stopPropagation();
         if (!open) {
-            setApproval(await getApprovalsOfProduct(row.IdProduct));
             setOpen(true);
         } else {
             setOpen(false);
         }
     };
 
+    const handleClick = async () => {
+        setIsLoading(true);
+        dispatch(
+            setUpdateProduct(
+                await getProductById({
+                    productNumber: row?.productNumber,
+                    idSeason: row?.idSeason,
+                    idMerchant,
+                })
+            )
+        );
+        navigate(
+            `${urlFormat(Pages.UpdateProduct)}/${row?.productNumber}/${
+                row?.idSeason
+            }`
+        );
+        setIsLoading(false);
+    };
+
     return (
         <React.Fragment>
-            <StyledTableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+            <StyledTableRow
+                sx={{ cursor: "pointer", "& > *": { borderBottom: "unset" } }}
+                onClick={handleClick}
+            >
                 <TableCell>
                     <IconButton
                         aria-label="expand row"
@@ -51,25 +85,52 @@ const Row = (props: { row: Product }) => {
                         )}
                     </IconButton>
                 </TableCell>
-                {/* <TableCell component="th" scope="row" align="center">
-                    <img src={FilePreview} alt="" />
-                </TableCell> */}
-                <TableCell>{row.IdProduct}</TableCell>
-                <TableCell>{row.ProductoNombre}</TableCell>
-                <TableCell>{row.Proveedor}</TableCell>
-                <TableCell>{row.Cantidad} pcs</TableCell>
-                <TableCell>{row.Departamento}</TableCell>
-                <TableCell>{row.Tipo}</TableCell>
-                <TableCell>
-                    {row.Calidad}{" "}
-                    {row.CalidadesAdicionales &&
-                        `(+${row.CalidadesAdicionales})`}
+                <TableCell component="th" scope="row" align="center">
+                    <img
+                        style={{ width: 50, height: 50 }}
+                        src={row?.pic ?? defaultImage}
+                        alt=""
+                    />
                 </TableCell>
-                <TableCell>{row.Peso} gr</TableCell>
-                <TableCell>$ {row.Costo}</TableCell>
-                <TableCell>$ {row.Precio}</TableCell>
-                <TableCell>{row.Margin} %</TableCell>
-                <TableCell>{row.Estado}</TableCell>
+                <TableCell>
+                    {getCodeByName(row?.brand, brands)}
+                    {getCodeById(row?.idSeason, seasons)}
+                    {getCodeById(row?.idTipology, tipologies)}
+                    {row?.productNumber}
+                </TableCell>
+                <TableCell>{row?.name}</TableCell>
+                <TableCell>
+                    {getSeasonById(row?.idSeason, allSeasons)}
+                </TableCell>
+                <TableCell>{row?.supplier}</TableCell>
+                <TableCell>
+                    {dayjs(row?.shippingDate).format("YYYY-MM-DD")}
+                </TableCell>
+                <TableCell>{row?.concept}</TableCell>
+                <TableCell>{row?.line}</TableCell>
+                <TableCell>{row?.managmentUnit}</TableCell>
+                <TableCell>{row?.industry}</TableCell>
+                <TableCell>{row?.tipology}</TableCell>
+                <TableCell>{row?.bodyFit}</TableCell>
+                <TableCell>Composition</TableCell>
+                {/* <TableCell>{row?.fabricData[0]?.Description}</TableCell> */}
+                <TableCell>{row?.quantity}</TableCell>
+                <TableCell>
+                    {(
+                        ((row?.costInStore / 1.22 - row?.cost) /
+                            (row?.costInStore / 1.22)) *
+                        100
+                    ).toFixed(2)}
+                </TableCell>
+                <TableCell>{row?.cost}</TableCell>
+                <TableCell>{row?.costInStore}</TableCell>
+                {/* <TableCell>Venta $</TableCell> */}
+                <TableCell>
+                    {dayjs(row?.warehouseEntryDate).format("YYYY-MM-DD")}
+                </TableCell>
+                <TableCell>
+                    {dayjs(row?.entryDate).format("YYYY-MM-DD")}
+                </TableCell>
             </StyledTableRow>
 
             <TableRow
@@ -98,48 +159,97 @@ const Row = (props: { row: Product }) => {
                                     <TableRow>
                                         <TableCell></TableCell>
                                         <TableCell>Estado</TableCell>
-                                        <TableCell align="right">
-                                            Fecha
-                                        </TableCell>
-                                        <TableCell align="right">
-                                            Responsable
-                                        </TableCell>
+                                        <TableCell>Fecha</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {approval &&
-                                        approval.length > 0 &&
-                                        approval.map((approvalRow) => (
-                                            <Fragment key={uuid()}>
-                                                <TableRow key={uuid()}>
-                                                    <TableCell
-                                                        component="th"
-                                                        scope="row"
-                                                    >
-                                                        {getApprovalName(
-                                                            approvalRow?.Tipo
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {approvalRow?.Estado}
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        {approvalRow?.Fecha}
-                                                    </TableCell>
-                                                    <TableCell align="right">
-                                                        {
-                                                            approvalRow?.Responsable
-                                                        }
-                                                    </TableCell>
-                                                </TableRow>
-                                            </Fragment>
-                                        ))}
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">
+                                            Muestra
+                                        </TableCell>
+                                        <TableCell>
+                                            <StatusLabel
+                                                status={
+                                                    row?.statusSample?.toLowerCase() ??
+                                                    "-"
+                                                }
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            {row?.statusSampleDate
+                                                ? dayjs(
+                                                      row?.statusSampleDate
+                                                  ).format("YYYY-MM-DD")
+                                                : "-"}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">
+                                            Calidad
+                                        </TableCell>
+                                        <TableCell>
+                                            <StatusLabel
+                                                status={
+                                                    row?.statusFabric?.toLowerCase() ??
+                                                    "-"
+                                                }
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            {row?.statusFabricDate
+                                                ? dayjs(
+                                                      row.statusFabricDate
+                                                  ).format("YYYY-MM-DD")
+                                                : "-"}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow key={uuid()}>
+                                        <TableCell component="th" scope="row">
+                                            Avios
+                                        </TableCell>
+                                        <TableCell>
+                                            <StatusLabel
+                                                status={
+                                                    row?.statusAvio?.toLowerCase() ??
+                                                    "-"
+                                                }
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            {row?.statusAvioDate
+                                                ? dayjs(
+                                                      row.statusAvioDate
+                                                  ).format("YYYY-MM-DD")
+                                                : "-"}
+                                        </TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">
+                                            Modelaje
+                                        </TableCell>
+                                        <TableCell>
+                                            <StatusLabel
+                                                status={
+                                                    row?.statusModeling?.toLowerCase() ??
+                                                    "-"
+                                                }
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            {row?.statusModelingDate
+                                                ? dayjs(
+                                                      row.statusModelingDate
+                                                  ).format("YYYY-MM-DD")
+                                                : "-"}
+                                        </TableCell>
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </Box>
                     </Collapse>
                 </TableCell>
             </TableRow>
+            {isLoading && <ScreenLoader loading={true} />}
         </React.Fragment>
     );
 };

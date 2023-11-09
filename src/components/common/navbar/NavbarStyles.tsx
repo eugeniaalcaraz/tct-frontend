@@ -42,11 +42,11 @@ export const Container = styled(Box)(({ theme, className }) => ({
         fontSize: "1.3rem",
         textDecoration: "none",
         padding: "0.5rem",
-        color: theme.palette.secondary.main,
+        color: theme.palette.primary.main,
         fontWeight: 400,
 
         "&:hover": {
-            color: theme.palette.primary.main,
+            color: "#AAB96E",
             fontWeight: 600,
         },
         "& > li": {

@@ -15,7 +15,7 @@ type NavbarProps = {
     handleMenu: (arg: boolean) => void;
 };
 
-const navLinks = [Pages.Dashboard, Pages.Products, Pages.NewProduct];
+const navLinks = [Pages.Dashboard, Pages.Products, Pages.NewProduct, Pages.NewSupplier, Pages.Suppliers];
 
 const Navbar: FC<NavbarProps> = ({ open, handleMenu }) => {
     const navigate = useNavigate();
@@ -32,7 +32,15 @@ const Navbar: FC<NavbarProps> = ({ open, handleMenu }) => {
             className={open ? "open" : "closed"}
         >
             <ul>
-                <img src={logo} alt="logo" />
+                <img
+                    src={logo}
+                    alt="logo"
+                    style={{
+                        width: "12rem",
+                        height: "8rem",
+                        objectFit: "cover",
+                    }}
+                />
                 {navLinks.map((link) => (
                     <NavLink
                         to={urlFormat(link)}

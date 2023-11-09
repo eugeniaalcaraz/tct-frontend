@@ -5,45 +5,21 @@ const required = "Requerido";
 export const productValidation = yup
     .object()
     .shape({
-        temporada: yup.string().required(required),
-        tipologia: yup.string().required(required),
-        existingQuality: yup.boolean(),
-        localizacion: yup.string().required(required),
-        calidad: yup.string().when("existingQuality", {
-            is: true,
+        //--------PRODUCT CARD---------------
+        idTipology: yup.string().required(required),
+        idMerchantBrand: yup.string().required(required),
+        idSeason: yup.string().required(required),
+        //year: yup.string().required(required),
+        idManagmentUnit: yup.string().required(required),
+        idIndustry: yup.string().required(required),
+        idConcept: yup.string().required(required),
+        idLine: yup.string().required(required),
+        idBodyFit: yup.string().required(required),
+        idRise: yup.string().when("idTipology", {
+            is: (idTipology) => idTipology === "3",
             then: yup.string().required(required),
         }),
-
-        description: yup.string().when("existingQuality", {
-            is: true,
-            then: yup.string(),
-            otherwise: yup.string().required(required),
-        }),
-
-        fabricDescription: yup.string().when("existingQuality", {
-            is: true,
-            then: yup.string(),
-            otherwise: yup.string().required(required),
-        }),
-        peso: yup.string().when("existingQuality", {
-            is: true,
-            then: yup.string(),
-            otherwise: yup.string().required(required),
-        }),
-
-        ["composicion-0"]: yup.string().when("existingQuality", {
-            is: true,
-            then: yup.string(),
-            otherwise: yup.string().required(required),
-        }),
-
-        ["porcentaje-0"]: yup.string().when("existingQuality", {
-            is: true,
-            then: yup.string(),
-            otherwise: yup.string().required(required),
-        }),
-
-        descripcion: yup
+        detail: yup
             .string()
             .max(
                 1500,
@@ -56,12 +32,27 @@ export const productValidation = yup
                 "Mmm parece que tu nombre es muy largo, prueba con menos caracteres"
             )
             .required(required),
-        costo: yup.string().matches(/^[0-9.,\b]+$/, "Solo numeros aqui!"),
-        precioVenta: yup.string().matches(/^[0-9.,\b]+$/, "Solo numeros aqui!"),
-        cantidadEmbarque: yup
+        //------TRADING CARD-------
+        cost: yup
             .string()
-            .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!"),
-        cantidad: yup.string().matches(/^[0-9.,\b]+$/, "Solo numeros aqui!"),
+            .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
+            .required(required),
+        // margin: yup
+        //     .string()
+        //     .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
+        //     .required(required),
+        precioVenta: yup
+            .string()
+            .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
+            .required(required),
+        //--------SHIPMENT CARD-------------------
+        idCountry: yup.string().required(required),
+        idSupplier: yup.string().required(required),
+        // fabricCode: yup.string().required(required),
+        quantity: yup
+            .string()
+            .matches(/^[0-9.,\b]+$/, "Solo numeros aqui!")
+            .required(required),
     })
     .required(required);
 

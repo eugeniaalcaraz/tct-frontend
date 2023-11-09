@@ -11,6 +11,8 @@ import {
     NewProduct,
     NotFound,
     ServerDown,
+    NewProvider,
+    SupplierList
 } from "@/pages";
 import { PrivateRoute } from "@/routes/privateRoute";
 import { Pages } from "@/types";
@@ -25,14 +27,15 @@ declare module "@mui/styles/defaultTheme" {
 
 import Amplify from "aws-amplify";
 import { IconsProvider } from "@components/hooks";
+import { UpdateProduct } from "./pages/updateProduct";
 
 Amplify.configure({
     Auth: {
         region: "us-east-1",
-        userPoolId: "us-east-1_I4SiBfOj4",
-        userPoolWebClientId: "5v174f2nnm6evcjj7mv4ehae8b",
+        userPoolId: "us-east-1_QA9zDgySb",
+        userPoolWebClientId: "mrn4nbego27f03qt37o7n0rni",
         oauth: {
-            domain: "impacta-cognito",
+            domain: "the-circular-tech",
             scope: [
                 "phone",
                 "email",
@@ -46,7 +49,6 @@ Amplify.configure({
         },
     },
 });
-
 function App() {
     return (
         <ThemeProvider theme={theme}>
@@ -54,7 +56,9 @@ function App() {
             <IconsProvider>
                 <Routes>
                     <Route path={urlFormat(Pages.Login)} element={<Login />} />
-                    <Route path="/" element={<PrivateRoute />}>
+                    <Route path="/" 
+                    element={<PrivateRoute />}
+                    >
                         <Route
                             path={urlFormat(Pages.Dashboard)}
                             element={<Dashboard />}
@@ -67,9 +71,25 @@ function App() {
                             path={urlFormat(Pages.NewProduct)}
                             element={<NewProduct />}
                         />
+
+                        <Route
+                            path={urlFormat(Pages.NewSupplier)}
+                            element={<NewProvider />}
+                        />
+
+                        <Route
+                            path={urlFormat(Pages.Suppliers)}
+                            element={<SupplierList />}
+                        />
                         <Route
                             path={urlFormat(Pages.ServerError)}
                             element={<ServerDown />}
+                        />
+                        <Route
+                            path={`${urlFormat(
+                                Pages.UpdateProduct
+                            )}/:id/:season`}
+                            element={<UpdateProduct />}
                         />
                     </Route>
                     <Route path="/*" element={<NotFound />} />

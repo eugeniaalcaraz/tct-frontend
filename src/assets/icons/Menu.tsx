@@ -11,21 +11,21 @@ const Menu = () => {
         >
             <path
                 d="M5 14.8945H27"
-                stroke="#839270"
+                stroke="#31654B"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
             <path
                 d="M5 7.44727H27"
-                stroke="#839270"
+                stroke="#31654B"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
             <path
                 d="M5 22.3423H27"
-                stroke="#839270"
+                stroke="#31654B"
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"

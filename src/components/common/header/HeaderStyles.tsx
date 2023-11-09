@@ -24,6 +24,10 @@ export const Container = styled(Box)({
         cursor: "pointer",
         zIndex: 11,
     },
+
+    "@media print": {
+        display: "none",
+    },
 }) as typeof Box;
 
 export const FilterButton = styled(Button)({
@@ -61,4 +65,12 @@ export const NewProductContainer = styled(Box)({
     gap: "1.5rem",
     width: "calc(100% - 6rem)",
     transition: "all 0.8s ease",
+}) as typeof Box;
+
+export const ActionsButtons = styled(Box)({
+    display: "flex",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    gap: "1.5rem",
+    width: "100%",
 }) as typeof Box;

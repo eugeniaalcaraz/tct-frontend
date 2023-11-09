@@ -3,16 +3,18 @@ import { Box, Link } from "@mui/material";
 
 export const Container = styled(Box)({
     display: "flex",
-    flexDirection: "column",
+    // flexDirection: "column",
+    width: "80%",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     position: "absolute",
     top: "50%",
     left: "50%",
     transform: "translate(-50%,-50%)",
     minWidth: 250,
-    maxWidth: 300,
-    height: "70vh",
+    gap: "10rem",
+    // maxWidth: 300,
+    // height: "70vh",
 
     "& > form > div": {
         marginBottom: "3.5rem",

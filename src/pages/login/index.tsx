@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { Button, Fade, TextField, Typography } from "@mui/material";
+import logo from "@/assets/images/logo_alone.png";
 import { Container, ForgotPassword, Messages } from "./LoginStyles";
 import { getCurrentUser, setLocalStorage, urlFormat } from "@/utils";
 import { LocalStorageKeys, Pages } from "@/types";
@@ -58,7 +59,7 @@ const Login = () => {
         <>
             <Container>
                 <Fade in={landing}>
-                    <Typography
+                    {/* <Typography
                         sx={{
                             letterSpacing: "0.15rem",
                             textTransform: "uppercase",
@@ -70,15 +71,27 @@ const Login = () => {
                         color="primary"
                     >
                         Inicio de Sesión
-                    </Typography>
+                    </Typography> */}
+                    <img
+                        src={logo}
+                        alt="logo"
+                        style={{
+                            width: "50rem",
+                            height: "25rem",
+                            objectFit: "cover",
+                        }}
+                    />
                 </Fade>
-                <Messages className={error ? "open" : ""}>
-                    <Typography>Whops! Parece que algo salió mal.</Typography>
-                    <Typography>
-                        Chequea que tu usuario y/o contraseña sean correctos
-                    </Typography>
-                </Messages>
-                <form onSubmit={onSubmit}>
+
+                <form onSubmit={onSubmit} style={{ width: "35rem" }}>
+                    <Messages className={error ? "open" : ""}>
+                        <Typography>
+                            Whops! Parece que algo salió mal.
+                        </Typography>
+                        <Typography>
+                            Chequea que tu usuario y/o contraseña sean correctos
+                        </Typography>
+                    </Messages>
                     <TextField
                         id="standard-basic"
                         label="Usuario"
@@ -110,6 +123,7 @@ const Login = () => {
                             textTransform: "capitalize",
                             letterSpacing: "0.1rem",
                             fontSize: "1rem",
+                            // color: "#fff",
                         }}
                     >
                         {loading ? <Loader /> : "Ingresar"}
@@ -120,9 +134,9 @@ const Login = () => {
                         href="!#"
                         sx={{ textDecoration: "none" }}
                     >
-                        <Typography sx={{ fontSize: "0.9rem" }} variant="body2">
+                        {/* <Typography sx={{ fontSize: "0.9rem" }} variant="body2">
                             Olvide mi contraseña
-                        </Typography>
+                        </Typography> */}
                     </ForgotPassword>
                 </form>
             </Container>
