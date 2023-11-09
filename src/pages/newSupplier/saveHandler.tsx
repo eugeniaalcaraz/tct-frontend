@@ -39,6 +39,19 @@ const supplierFormToQuery = (data: z.infer<typeof zSupplier>, formContext: any )
         })
     }
 
+
+    if(data.process) {
+        Object.keys(data.process).map((index) => {
+            if(!data.process) return
+            let certification = data.process[index]
+            certifications.push({
+                "id": index,
+                "category": 'process',
+                "subCat": formContext.processCertifications.find((c:any) => c.id == index)?.subCat == 'Dentro de las instalaciones' ? 'DI' : 'TDS',
+            })
+        })
+    }
+
     return {
         "idMerchant": data.idMerchant,
         "supplierTypeId": data.supplierTypeId,

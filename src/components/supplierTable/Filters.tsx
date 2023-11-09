@@ -1,99 +1,86 @@
-import React from "react";
+import React, { useContext } from "react";
 import { v4 as uuid } from "uuid";
-import { useAppSelector } from "@/state/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/state/app/hooks";
 import { Date, Dropdown, Input } from "@/components/common";
 
 import { FiltersContainer } from "./TableStyles";
 import { OptionsType } from "@/types";
+import { CalificationsSupplier } from "./Row";
+import { FormStructureContext } from "@/pages/newSupplier/FormContext";
+import { handleSelectChange } from "@/state/features/supplierFilters";
 
 const inputFilters = ["nombre"];
 
+
 const Filters = () => {
-    const filters = useAppSelector((state) => state.filters);
-    const {
-        allSeasons,
-        supplier,
-        managementUnit,
-        tipology,
-        fabrics,
-        brands,
-        industries,
-        concepts,
-        lines,
-        bodyFit,
-    } = useAppSelector((state) => state.product);
+    const filters = useAppSelector((state) => state.filtersSupplier);
+
+    const dispatch = useAppDispatch();
+    const formContext = useContext(FormStructureContext)
 
     const dropdownFilters = [
         {
-            name: "temporada",
-            options: allSeasons?.map(
-                ({ IdSeason, SeasonName }): OptionsType => ({
-                    Id: String(IdSeason),
-                    Description: SeasonName,
+            name: "score",
+            options: CalificationsSupplier?.map(
+                ({ name }): OptionsType => ({
+                    Id: name,
+                    Description: name,
                 })
             ),
         },
         {
-            name: "proveedor",
-            options: supplier?.map(
-                ({ Id, Name, Lastname }): OptionsType => ({
-                    Id: String(Id),
-                    Description: `${Name} ${Lastname}`,
-                })
-            ),
-        },
-        {
-            name: "marca",
-            options: brands?.map(
+            name: "origin",
+            options: formContext?.countries?.map(
                 ({ Id, Name }): OptionsType => ({
                     Id: String(Id),
-                    Description: Name,
+                    Description: `${Name}`,
                 })
             ),
         },
-        { name: "unidad", options: managementUnit },
-        { name: "rubro", options: industries },
-        { name: "tipologia", options: tipology },
-        { name: "concepto", options: concepts },
-        { name: "linea", options: lines },
-        { name: "fit", options: bodyFit },
         {
-            name: "calidad",
-            options: fabrics?.map(
-                ({ IdFabric, Description }): OptionsType => ({
-                    Id: String(IdFabric),
-                    Description,
+            name: "tipo",
+            options: formContext?.supplierTypes.map(
+                ({ id, description }): OptionsType => ({
+                    Id: String(id),
+                    Description: description,
                 })
             ),
         },
+        {
+            name: "producto",
+            options: formContext?.supplierProductTypes.map(
+                ({ id, description }): OptionsType => ({
+                    Id: String(id),
+                    Description: description,
+                })
+            ),
+        }
     ];
+    
+
+    const handleFilterChange = (e, state) => {
+        let value = e.target.value;
+        dispatch(handleSelectChange({
+            label: state,
+            value:
+                typeof value === "string" ? value.split(",") : value,
+        }));
+    }
 
     return (
         <FiltersContainer className={filters.open ? "open" : "closed"}>
-            {inputFilters.map((filter) => {
-                return (
-                    <Input
-                        key={filter}
-                        label={filter}
-                        value={filters[filter]}
-                    />
-                );
-            })}
+            
             {dropdownFilters.map(({ name, options }) => {
                 return (
                     <Dropdown
                         key={uuid()}
                         label={name}
                         options={options ?? []}
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                        value={filters[name]}
+                        value={filters[name] ?? []}
+                        variant="supplierFilters"
                     />
                 );
             })}
-            <Date label="Fecha Embarque" type="fecha" />
-            <Date label="Ingreso Depósito" type="deposito" />
-            <Date label="Ingreso Tienda" type="store" />
         </FiltersContainer>
     );
 };

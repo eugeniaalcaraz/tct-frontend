@@ -13,7 +13,7 @@ import {
     Snackbars,
 } from "@components/common";
 import { Container, Content } from "../newProduct/NewProductStyles";
-import { Alert, Box, CircularProgress, Grid } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Grid } from "@mui/material";
 import { PeopleCard } from "@components/providerCards/PeopleCard";
 import { GeneralCard } from "@components/providerCards/GeneralCard";
 import { useForm } from "react-hook-form";
@@ -24,59 +24,28 @@ import CertificationModal from "@components/providerCards/CertificationModal";
 import { ProductCard } from "@components/providerCards/ProductCard";
 import { supplierFormToQuery } from "./saveHandler";
 import { getErrorMessage } from "@/utils";
+import zFactory from "./zodModels/zFactory";
+import SelectTypeForm from "./SupplierForms/SelectTypeForm";
+import { ArrowBack, ArrowLeft, Factory } from "@mui/icons-material";
+import WorkshopForm from "./SupplierForms/WorkshopForm";
+import FactoryForm from "./SupplierForms/FactoryForm";
+import MultiSupplierForm from "./SupplierForms/MultiSupplierForm";
 
 
-export const zSupplier = z.object({
-    idMerchant: z.number(),
-    supplierTypeId: z.number(),
-    alias: z.string({required_error: 'Requerido'}).min(1, 'Requerido'),
-    comercialName: z.string().optional(),
-    vatNumber: z.string({required_error: 'Requerido'}).min(1, 'Requerido'),
-    country: z.string({required_error: 'Requerido'}).min(1, 'Requerido'),
-    address: z.string({required_error: 'Requerido'}).min(1, 'Requerido'),
-    contactPerson: z.string().optional(),
-    email: z.string().optional().refine(value => {
-        if (!value || value.length === 0) return true; // allow empty string
-        return z.string().email().safeParse(value).success;
-      }, { message: "Email invalido" }),
-    commercialRelationDate: z.date(),
-    estimatedAnualOrder: z.string().default("0"),
-    anualContract: z.boolean().default(false),
-    employees: z.object({
-        women: z.string().default("0"),
-        men: z.string().default("0"),
-        total: z.string().default("0"),
-    }),
-    productTypes: z.array(z.string({required_error: 'Requerido'})).min(1, 'Requerido'),
-    planet: z.array(z.union([z.object({
-        check: z.boolean().optional(),
-        date: z.date().optional(),
-        scope: z.boolean().optional(),
-    }), z.undefined(), z.null()])).optional(),
-    people: z.array(z.union([z.object({
-        check: z.boolean().optional(),
-        date: z.date().optional(),
-        scope: z.boolean().optional(),
-    }), z.undefined(), z.null()])).optional(),
-
-
-
-
-})
 
 const NewProvider = () => {
     const [openCertification, setOpenCertification] = React.useState<false | string>(false);
     const [loadingSave, setLoadingSave] = React.useState<boolean>(false);
     const [errorMessage, setErrorMessage] = React.useState<false | string>(false);
     const [successMessage, setSuccessMessage] = React.useState<boolean>(false);
+    const [supplierType, setSupplierType] = React.useState<false | number>(false);
 
     const { idMerchant } = useAppSelector((state) => state.user);
-    const resolver = zodResolver(zSupplier)
+    const resolver = zodResolver(zFactory)
     const form = useForm<IProvider>({
         resolver,
         defaultValues: {
             idMerchant: parseInt(idMerchant) ?? 0,
-            supplierTypeId: 1,
             "employees":{
                 "women": "0",
                 "men": "0",
@@ -100,16 +69,8 @@ const NewProvider = () => {
     const [seed, setSeed] = useState(1);
     const [valueTest, setValueTest] = useState({});
 
-
-    const getSupplierPopulated = async () => {
-
-        let result = await getSupplierFormData()
-        result.productCertifications = listCertProduct
-        console.log(result)
-        return result
-    }
     
-    const queryFormStrucutre = useQuery(['getSupplierFormData'], getSupplierPopulated)
+    const queryFormStrucutre = useQuery(['getSupplierFormData'], getSupplierFormData)
 
 
     useEffect(() => {
@@ -119,6 +80,10 @@ const NewProvider = () => {
     useEffect(() => {
         form.watch((value, info) => {
             setValueTest(value)
+
+            if(value.supplierTypeId !== undefined){
+                setSupplierType(value.supplierTypeId)
+            }
 
             if(info.name == 'employees.men' || info.name == 'employees.women'){
                 let woman = parseInt(value.employees?.women+"" ?? 0)
@@ -173,6 +138,99 @@ const NewProvider = () => {
     return (
         <>
             <Container>
+                {loading ? (
+                    <Grid container justifyContent="center" alignItems="center" sx={{minHeight: '90vh'}}>
+                        <Grid item>
+                            <CircularProgress />
+                        </Grid>
+                    </Grid>
+                ) 
+                : typeof supplierType != 'number' ? (
+                    <Grid container justifyContent="center" sx={{minHeight: '90vh'}}>
+
+                    <SelectTypeForm 
+                        supplierTypes={queryFormStrucutre.data?.supplierTypes ?? []} 
+                        onSelected={(type) => {
+                            form.setValue('supplierTypeId', type)
+                        }} 
+                    />
+                    </Grid>
+
+                ) : (
+
+                    <Content>
+                        {/* {JSON.stringify(valueTest)} */}
+                        
+                        <Button 
+                        startIcon={<ArrowBack/>}
+                        onClick={() => setSupplierType(false)}
+                        sx={{mb: 1}}
+                        >
+                            Volver a selecciónar tipo de proveedor
+                        </Button>
+
+                        {/* { form.formState.errors &&
+                                <div>{JSON.stringify(form.formState.errors)}</div>
+                            } */}
+                            {errorMessage && <Alert severity="error" sx={{mb:1}}>{errorMessage}</Alert>}
+                            {successMessage && <Alert severity="success" sx={{mb:1}}>Proveedor creado</Alert>}
+                        <FormStructureContext.Provider value={queryFormStrucutre.data}>
+                        <Form
+                            
+                            methods={form}
+                            onSubmit={onSave}
+                            id="new-supplier-form"
+                        >
+                            <CertificationModal 
+                                active={openCertification}
+                                onClose={() => setOpenCertification(false)}
+                            />
+                            {
+                                supplierType == 1 ? (
+                                    <FactoryForm/>
+                                ) :
+                                [2,3].includes(supplierType) ? (
+                                    <MultiSupplierForm/>
+                                ) :
+                                supplierType == 4 ? (
+                                    <WorkshopForm/>
+                                ) : (
+                                    <h1>Formulario no soportado</h1>
+                                )
+                            }
+                            
+                        </Form>
+                        </FormStructureContext.Provider>
+                    </Content>
+                )}<Footer />
+                </Container>
+    
+                {productLoading && <ScreenLoader loading={true} />}
+                {productSuccess && (
+                    <Snackbars
+                        openSnack={true}
+                        messageSnack={{
+                            message: "Producto creado correctamente!",
+                            key: new Date().getTime(),
+                        }}
+                    />
+                )}
+                {productError && (
+                    <Snackbars
+                        openSnack={true}
+                        messageSnack={{
+                            message: "Parece que salió mal, intentalo nuevamente",
+                            key: new Date().getTime(),
+                        }}
+                    />
+                )}
+        </>
+    )
+
+
+    return (
+        <>
+            <Container>
 
                 {loading ? (
                     <Grid container justifyContent="center" alignItems="center" sx={{minHeight: '90vh'}}>
@@ -182,12 +240,11 @@ const NewProvider = () => {
                     </Grid>
                 ) : (
                     <Content>
-                        {/* {JSON.stringify(valueTest)} */}
-                        {JSON.stringify(Object.keys(queryFormStrucutre.data))}
-                        {/*
+                        {JSON.stringify(valueTest)}
+                        
                         { form.formState.errors &&
                                 <div>{JSON.stringify(form.formState.errors)}</div>
-                            } */}
+                            }
                             {errorMessage && <Alert severity="error" sx={{mb:1}}>{errorMessage}</Alert>}
                             {successMessage && <Alert severity="success" sx={{mb:1}}>Proveedor creado</Alert>}
                         <FormStructureContext.Provider value={queryFormStrucutre.data}>

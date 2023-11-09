@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useMemo, useState } from "react";
 import { ControlledCheckbox, ControlledDropdown } from "@components/common";
 import { Container } from "../ProviderStyles";
 import { Typography, Box, Button, IconButton } from "@mui/material";
-import { Certifiaction, FormStructureContext } from "@/pages/newSupplier/FormContext";
+import { Certifiaction, FormStructureContext, ProcessCertification } from "@/pages/newSupplier/FormContext";
 import { json } from "stream/consumers";
 import CertificationModal from "../CertificationModal";
 import { Controller } from "react-hook-form";
@@ -11,8 +11,8 @@ import { Delete } from "@mui/icons-material";
 
 
 interface ICertificationMemo {
-    productCertifications: Certifiaction[];
-    productDocuments: Certifiaction[];
+    processInstalation: ProcessCertification[];
+    processTerceristaion: ProcessCertification[];
 }
 
 const instalations = [
@@ -46,16 +46,16 @@ const ProductCard = () => {
 
 
 
-    const {productCertifications, productDocuments} = useMemo<ICertificationMemo>(() => {
+    const {processInstalation, processTerceristaion} = useMemo<ICertificationMemo>(() => {
         if (formContext) {
             return {
-                productCertifications: formContext.productCertifications.filter(certification => certification.type === "Certificación"),
-                productDocuments: formContext.productCertifications.filter(certification => certification.type === "Documento"),
+                processInstalation: formContext.processCertifications.filter(certification => certification.type === "Dentro de las instalaciones"),
+                processTerceristaion: formContext.processCertifications.filter(certification => certification.type === "Tercerizados Directamente o Subcontratados"),
             }
         }
         return {
-            productCertifications: [],
-            productDocuments: []
+            processInstalation: [],
+            processTerceristaion: []
         }
     }, [formContext])
 
@@ -93,7 +93,7 @@ const ProductCard = () => {
 
                 <Typography variant="h2">DENTRO DE LAS INSTALACIONES</Typography>
                 {
-                    instalations.map((instalation, index) => (
+                    processInstalation.map((instalation, index) => (
 
                         <Box key={index} 
                             sx={{
@@ -104,8 +104,8 @@ const ProductCard = () => {
                             }} >
                         <ControlledCheckbox
                             key={index}
-                            label={instalation}
-                            name={"productInstalation."+instalation}
+                            label={instalation.description}
+                            name={"process."+instalation.id}
                         />
                             
                         </Box>
@@ -116,7 +116,7 @@ const ProductCard = () => {
 
                 <Typography variant="h2">TERCERIZADOS DIRECTAMENTE O SUBCONTRATADOS</Typography>
                 {
-                    tercerisations.map((tercerisation, index) => (
+                    processTerceristaion.map((tercerisation, index) => (
 
                         <Box key={index} 
                             sx={{
@@ -127,8 +127,8 @@ const ProductCard = () => {
                             }} >
                         <ControlledCheckbox
                             key={index}
-                            label={tercerisation}
-                            name={"productTercerisation."+tercerisation}
+                            label={tercerisation.description}
+                            name={"process."+tercerisation.id}
                         />
                             
                         </Box>

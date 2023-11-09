@@ -79,6 +79,10 @@ const Row = (props: { row }) => {
         overflow: "hidden"
     };
 
+    const certificationsList = useMemo(() => {
+        return [...row?.peopleCertifications, ...row?.planetCertifications]
+    }, [row?.peopleCertifications, row?.planetCertifications])
+
     return (
         <React.Fragment>
             <StyledTableRow
@@ -142,35 +146,44 @@ const Row = (props: { row }) => {
                 >
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{display: 'flex', flexDirection: 'row', height: '100%'}}>
-                            <Box sx={{ backgroundColor: genrateColorFromCalification(row?.performance).bg, width: '20px', height: '100%', marginTop: 0  }}>
+                            <Box sx={{ backgroundColor: generateColorFromCalification(row?.performance).bg, width: '20px', height: '100%', marginTop: 0  }}>
                            
                             </Box>
                             <Box sx={{ margin: 2, display: 'grid', gridTemplateColumns: '50% 50%' }}>
                                 <Box>
                                 <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                     <Typography variant="h5" sx={{fontSize: '14px', fontWeight: 600,}}>PERSONAS</Typography>
+                                    
                                     <span style={{marginLeft: '10px', fontSize: '14px',fontWeight: 300,fontStyle: 'italic'}}>{row?.totalEmployees} trabajadores</span>
+                                    {!!row.womenEmployees && row.womenEmployees > 0 && <span style={{marginLeft: '10px', fontSize: '14px',fontWeight: 400,fontStyle: 'italic'}}>{row.womenEmployees} Mujeres</span>}
+                                    {!!row.menEmployees && row.menEmployees > 0 && <span style={{marginLeft: '10px', fontSize: '14px',fontWeight: 400,fontStyle: 'italic'}}>{row.menEmployees} Hombres</span>}
                                 </Box>
                                 <Box sx={{display: 'flex', flexDirection: 'column', mt: '8px', width: '100%'}}>
-                                    <Box sx={{fontSize: '14px', fontWeight: 300}}>No cuenta con ninguna verificacion externa. (texto ejemplo)</Box>
+                                    {row?.peopleCertifications.map((certification) => (
+                                        <ShowCertification key={JSON.stringify(certification)} certification={certification} />
+                                    ))}
+                                    <ShowCertificationsComments certifications={certificationsList} name="commentGenericPeople" />
                                     {row.countryInHighRisk && <Box sx={{fontSize: '14px', fontWeight: 300}}>País con alto riesgo de incumplimiento de legislación minima.</Box>}
                                 </Box>
                                 <Box sx={{display: 'flex', flexDirection: 'column', mt: '30px', width: '100%'}}>
                                     <Typography variant="h5" sx={{fontSize: '14px', fontWeight: 600,}}>Planeta</Typography>
-                                    
-                                    <Box sx={{fontSize: '14px', fontWeight: 300}}>Aca va información genérica si la hay.</Box>
+                                    {row?.planetCertifications.map((certification) => (
+                                        <ShowCertification key={JSON.stringify(certification)}  certification={certification} />
+                                    ))}
+                                    <ShowCertificationsComments certifications={certificationsList} name="commentGenericPlanet" />
                                 </Box>
 
                                 <Box sx={{display: 'flex', flexDirection: 'column', mt: '30px', width: '100%'}}>
                                     <Typography variant="h5" sx={{fontSize: '14px', fontWeight: 600,}}>Químicos</Typography>
-                                    
-                                    <Box sx={{fontSize: '14px', fontWeight: 300}}>OEKO TEX - Esta verificación alcanza únicamente a la materia prima certifcada. / Vence el 12/05/2024</Box>
+                                    <ShowCertificationsComments certifications={certificationsList} name="commentGenericQuimicals" />
+                                    {/* <Box sx={{fontSize: '14px', fontWeight: 300}}>OEKO TEX - Esta verificación alcanza únicamente a la materia prima certifcada. / Vence el 12/05/2024</Box> */}
                                 </Box>
-
+                                
                                 <Box sx={{display: 'flex', flexDirection: 'column', mt: '30px', width: '100%'}}>
                                     <Typography variant="h5" sx={{fontSize: '14px', fontWeight: 600,}}>Materias primas</Typography>
+                                    <ShowCertificationsComments certifications={certificationsList} name="commentGenericMaterials" />
                                     
-                                    <Box sx={{fontSize: '14px', fontWeight: 300}}>RCS - Esta verificación alcanza únicamente a la materia prima certifcada. / Vence el 12/05/2024</Box>
+                                    {/* <Box sx={{fontSize: '14px', fontWeight: 300}}>RCS - Esta verificación alcanza únicamente a la materia prima certifcada. / Vence el 12/05/2024</Box> */}
                                 </Box>
                                 </Box>
                                 <Box>
@@ -179,7 +192,7 @@ const Row = (props: { row }) => {
                                     </Box>
                                     <Box sx={{mt: '8px'}}>
                                         <Typography variant="h5" sx={{fontSize: '14px', fontWeight: 500}}>Productos</Typography>
-                                        {row?.productTypes?.map((product, index) => (
+                                        {row?.productTypes?.map((product) => (
                                         <Box key={product.description} sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic'}}>{product.description}</Box>
                                         ))}
                                         
@@ -187,14 +200,15 @@ const Row = (props: { row }) => {
                                     <Box sx={{mt: '8px', display: 'grid', gridTemplateColumns: '50% 50%' }}>
                                         <Box>
                                             <Typography variant="h5" sx={{fontSize: '14px', fontWeight: 500}}>Actividades internas</Typography>
-                                            <Box sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic'}}>Corte, confección y armado.</Box>
-                                            <Box sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic'}}>Estampado</Box>
+                                            {row?.processCertifications?.filter(process => (process.type == 'Dentro de las instalaciones')).map((process) => (
+                                                <Box key={process.description} sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic'}}>{process.description}</Box>
+                                            ))}
                                         </Box>
                                         <Box>
-                                            <Typography variant="h5" sx={{fontSize: '14px', fontWeight: 400}}>Actividades tercerizadas:</Typography>
-                                            <Box sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic'}}>Desarrollo de avíos</Box>
-                                            <Box sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic'}}>Tejido de tela.</Box>
-                                            <Box sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic'}}>Pre tratamientas y teñido.</Box>
+                                            <Typography variant="h5" sx={{fontSize: '14px', fontWeight: 400}}>Actividades tercerizadas</Typography>
+                                            {row?.processCertifications?.filter(process => (process.type == 'Tercerizados Directamente o Subcontratados')).map((process) => (
+                                                <Box key={process.description} sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic'}}>{process.description}</Box>
+                                            ))}
                                         </Box>
                                     </Box>
 
@@ -205,11 +219,11 @@ const Row = (props: { row }) => {
                                     <Box sx={{mt: '8px', display: 'grid', gridTemplateColumns: '50% 50%' }}>
                                         <Box sx={{display: 'flex', flexDirection: 'row'}}>
                                             <Box sx={{fontSize: '14px',fontWeight: 400}}>Tipo de proveedor</Box>
-                                            <Box sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic', ml: '12px'}}>Directo</Box>
+                                            <Box sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic', ml: '12px'}}>{row?.relationshipType}</Box>
                                         </Box>
                                         <Box sx={{display: 'flex', flexDirection: 'row'}}>
                                             <Box sx={{fontSize: '14px',fontWeight: 400}}>Estado</Box>
-                                            <Box sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic', ml: '12px'}}>Consolidado</Box>
+                                            <Box sx={{fontSize: '14px',fontWeight: 300,fontStyle: 'italic', ml: '12px'}}>{row?.commercialRelationship}</Box>
                                         </Box>
                                     </Box>
                                     <Box sx={{mt: "28px"}}>
@@ -219,10 +233,9 @@ const Row = (props: { row }) => {
                                     </Box>
                                 </Box>
                                 
-                                <Box sx={{mt: 20}}>
+                                {/* <Box sx={{mt: 20}}>
                                 {JSON.stringify(row)}
-
-                                </Box>
+                                </Box> */}
                             </Box>
                         </Box>
                     </Collapse>
@@ -236,7 +249,7 @@ const Row = (props: { row }) => {
 const AvatarCalification = ({calification}: {calification:string}) => {
 
     const color = useMemo(() => {
-        return genrateColorFromCalification(calification)
+        return generateColorFromCalification(calification)
     }, [calification])
 
     return <TableCell 
@@ -251,7 +264,24 @@ const AvatarCalification = ({calification}: {calification:string}) => {
 </TableCell>
 }
 
-const genrateColorFromCalification = (calification) => {
+const ShowCertificationsComments = ({certifications, name}: {certifications: any[], name: string}) => {
+
+    return <>
+    {certifications?.length == 0 && <Box sx={{fontSize: '14px', fontWeight: 300}}>No cuenta con ninguna verificacion externa.</Box>}
+    {certifications?.filter((cert) => cert[name] && cert[name] !== "").map((cert) => (
+        <Box key={cert.description} sx={{fontSize: '14px', fontWeight: 300}}>{cert[name]}</Box>
+    ))}
+    </>
+}
+
+const ShowCertification = ({certification}:any) => (
+    <Box sx={{fontSize: '14px', fontWeight: 300}}><b style={{fontWeight: 500}}>{certification.description}</b> - Esta verificación alcanza únicamente a la materia prima certifcada. / <b style={{fontWeight: 500}}>Vence el (falta campo fecha)</b></Box>
+)
+// const ShowCertification = ({certification}: any) => (
+//     <Box key={JSON.stringify(certification)}>{JSON.stringify(certification)}</Box>
+// )
+
+const generateColorFromCalification = (calification) => {
     switch (calification) {
         case "A":
             return {code: "A", bg: "#31654B", color: "#000000"};
@@ -267,5 +297,38 @@ const genrateColorFromCalification = (calification) => {
             return {code: "!", bg: "#B6B3B3", color: "#fff"};
     }
 }
+
+export const CalificationsSupplier = [
+    {
+        name: "A",
+        color: "#31654B",
+        colorText: "#000000",
+    },
+    {
+        name: "B",
+        color: "#CFD779",
+        colorText: "#233906",
+    },
+    {
+        name: "C",
+        color: "#DFB6D2",
+        colorText: "#233906",
+    },
+    {
+        name: "D",
+        color: "#E28B4A",
+        colorText: "#233906",
+    },
+    {
+        name: "E",
+        color: "#BC392B",
+        colorText: "#000000",
+    },
+    {
+        name: "!",
+        color: "#B6B3B3",
+        colorText: "#fff",
+    }
+]
 
 export { Row };

@@ -27,6 +27,12 @@ interface SupplierType {
     isCheckbox: number;
     category: "people" | "planet";
   }
+
+  export interface ProcessCertification {
+    id: number;
+    description: string;
+    type: 'Dentro de las instalaciones' | 'Tercerizados Directamente o Subcontratados';
+  }
   
   export interface MainModel {
     supplierTypes: SupplierType[];
@@ -35,6 +41,7 @@ interface SupplierType {
     peopleCertifications: Certifiaction[];
     planetCertifications: Certifiaction[];
     productCertifications: Certifiaction[];
+    processCertifications: ProcessCertification[];
   }
 
 export const FormStructureContext = createContext<MainModel | undefined>(undefined)

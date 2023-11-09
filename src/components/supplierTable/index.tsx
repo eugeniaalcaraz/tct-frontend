@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { v4 as uuid } from "uuid";
 import {
     Table,
@@ -23,32 +23,39 @@ import { setData } from "@/state/features/supplier";
 import { Pages, Product, ProductHeaders, SupplierHeaders, SupplierHeadersArray } from "@/types";
 import { isEmpty } from "@aws-amplify/core";
 import { EmptyState, ScreenLoader } from "..";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { getSupplier, getSupplierList } from "@/services/ProviderRequests";
+import { getSupplier, getSupplierFormData, getSupplierList, getSupplierListByMerchantFiltred } from "@/services/ProviderRequests";
+import { FormStructureContext } from "@/pages/newSupplier/FormContext";
 
 const SupplierTable = () => {
     const { idMerchant } = useAppSelector((state) => state.user);
-    const { data, filteredData } = useAppSelector((state) => state.supplier);
+    const { filteredData } = useAppSelector((state) => state.supplier);
     const [emptyProduct, setEmptyProduct] = useState(false);
     const [tableData, setTableData] = useState<any[]>([]);
-    const filters = useAppSelector((state) => state.filters);
+    const filters = useAppSelector((state) => state.filtersSupplier);
     
     const {
-        mutateAsync: getSupplierAsync,
-        isLoading: productsLoading,
-        isError: productsError,
+        // mutateAsync: getSupplierAsync,
+        // isLoading: productsLoading,
+        // isError: productsError,
     } = useMutation(() => getSupplierList("1"));
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const getNewListData = async () => {
-        dispatch(
-            setData(
-                await getSupplierAsync()
-            )
-        );
-    };
+
+    const {isLoading: productsLoading, data, isError: productsError} = useQuery(['getSupplierList', filters.score, filters.alias, filters.origin, filters.producto, filters.tipo], () => getSupplierListByMerchantFiltred("1", {
+        alias: filters.alias,
+        origin: filters.origin,
+        producto: filters.producto,
+        tipo: filters.tipo,
+        score: filters.score
+    }))
+
+    useEffect(() => {
+        console.log('data', data)
+        dispatch(setData(data))
+    }, [data])
 
     const loadTableData = () => {
         if (filteredData) {
@@ -61,12 +68,6 @@ const SupplierTable = () => {
             setTableData([]);
         }
     };
-
-    useEffect(() => {
-        getNewListData();
-    }, [
-        // Filters
-    ]);
 
     useEffect(() => {
         if (
@@ -92,9 +93,21 @@ const SupplierTable = () => {
        })
     }, [])
 
+    
+    const queryFormStrucutre = useQuery(['getSupplierFormData'], getSupplierFormData)
+
+
+    const loading = useMemo(() => {
+        return !(queryFormStrucutre.data)
+    }, [queryFormStrucutre.data])
+
     return (
         <Container>
+            <FormStructureContext.Provider value={queryFormStrucutre.data}>
+
+            {!loading && 
             <Filters />
+            }
             {/* <FilterChips /> */}
             <Paper
                 sx={{
@@ -161,6 +174,7 @@ const SupplierTable = () => {
                     </Box>
                 </TableContainer>
             </Paper>
+            </FormStructureContext.Provider>
         </Container>
     );
 };

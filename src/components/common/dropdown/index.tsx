@@ -11,6 +11,7 @@ import {
 
 import { useAppDispatch } from "@/state/app/hooks";
 import { handleDashboardData, handleSelectChange } from "@/state/features";
+import { handleSelectChange as handleSelectSupplierChange } from "@/state/features/supplierFilters";
 import { OptionsType } from "@/types";
 
 type DropdownProps = {
@@ -48,8 +49,14 @@ const Dropdown: FC<DropdownProps> = ({
                       value:
                           typeof value === "string" ? value.split(",") : value,
                   })
-              )
-            : dispatch(
+              ) :
+              variant === "supplierFilters" ? dispatch(
+                handleSelectSupplierChange({
+                    label: state,
+                    value:
+                        typeof value === "string" ? value.split(",") : value,
+                })
+            ) : dispatch(
                   handleDashboardData({
                       name: state?.toLowerCase(),
                       value: value,

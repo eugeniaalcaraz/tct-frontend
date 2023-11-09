@@ -6,6 +6,7 @@ import productReducer from "@/state/features/product";
 import modalReducer from "@/state/features/modal";
 import updatedProductReducer from "@/state/features/updatedProduct";
 import supplierReducer from "@/state/features/supplier";
+import filtersSupplierReducer from "@/state/features/supplierFilters";
 
 export const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
         modal: modalReducer,
         updatedProduct: updatedProductReducer,
         supplier: supplierReducer,
+        filtersSupplier: filtersSupplierReducer
     },
 });
 
